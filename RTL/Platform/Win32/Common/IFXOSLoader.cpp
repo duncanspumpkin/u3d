@@ -28,6 +28,7 @@
 //***************************************************************************
 
 #include "IFXOSLoader.h"
+#define UNICODE
 #include <wtypes.h>
 
 #if __MINGW32__

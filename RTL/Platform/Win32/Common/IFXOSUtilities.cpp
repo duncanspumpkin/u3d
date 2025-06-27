@@ -32,6 +32,8 @@
 //***************************************************************************
 
 #include "IFXOSUtilities.h"
+
+#define UNICODE
 #include <windows.h>
 #include <mmsystem.h>
 #include <float.h>

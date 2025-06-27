@@ -44,6 +44,7 @@
 //  Includes
 //***************************************************************************
 
+#define UNICODE
 #include "IFXOSUtilities.h"
 #include <windows.h>
 #include <mmsystem.h>

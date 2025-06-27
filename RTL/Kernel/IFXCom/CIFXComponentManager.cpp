@@ -269,11 +269,11 @@ IFXRESULT CIFXComponentManager::FindPlugins()
 	m_pluginNumber = 4;
 #else
 #ifdef WIN32
-    IFXString plugins = "IFXExporting.dll:IFXImporting.dll:IFXScheduling.dll:";
+    IFXString plugins = "IFXExporting.dll:";
 #else
     IFXString plugins = "libIFXExporting.so:libIFXImporting.so:libIFXScheduling.so:";
 #endif
-	m_pluginNumber = 3;
+	m_pluginNumber = 1;
 #endif
 /*
     // create recursive file iterator with default parameters
