@@ -1,5 +1,15 @@
+include(FetchContent)
+
+FetchContent_Declare(vcpkg
+    GIT_REPOSITORY https://github.com/microsoft/vcpkg.git
+    GIT_TAG 89dc8be6dbcf18482a5a1bf86a2f4615c939b0fb)
+FetchContent_MakeAvailable(vcpkg)
+
+set(CMAKE_TOOLCHAIN_FILE "${vcpkg_SOURCE_DIR}/scripts/buildsystems/vcpkg.cmake"
+    CACHE STRING "CMake toolchain file")
+
+cmake_minimum_required(VERSION 3.31)
 project(U3D)
-cmake_minimum_required(VERSION 2.8)
 
 if(NOT DEFINED U3D_SHARED)
     option(U3D_SHARED "Use system libraries for jpeg, png and z instead of bundled" ON)

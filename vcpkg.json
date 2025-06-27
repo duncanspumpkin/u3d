@@ -1,0 +1,9 @@
+{
+  "name": "u3d",
+  "version-string": "1.4.5",
+  "dependencies": [
+    "zlib",
+    "libpng",
+    "libjpeg-turbo"
+  ]
+}
