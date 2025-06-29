@@ -19,9 +19,6 @@ if( NOT MSVC )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif( NOT MSVC )
 
-# check zlib availibility
-find_package(ZLIB REQUIRED)
-
 # check png availibility
 find_package(PNG REQUIRED)
 
@@ -485,7 +482,6 @@ target_link_libraries(IFXCore
 	PUBLIC
 		Kernel
 	PRIVATE
-		ZLIB::ZLIB
 		PNG::PNG
 		JPEG::JPEG
 		Winmm
