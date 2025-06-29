@@ -58,6 +58,34 @@ INCLUDE_DIRECTORIES(
 	RTL/Dependencies/WildCards
 )
 
+set(Kernel_SRCS
+	RTL/Kernel/Common/CIFXConnector.cpp
+	RTL/Kernel/Common/CIFXPerformanceTimer.cpp
+	RTL/Kernel/Common/IFXCheckX.cpp
+	RTL/Kernel/IFXCom/CIFXComponentManager.cpp
+	RTL/Kernel/IFXCom/CIFXGUIDHashMap.cpp
+	RTL/Kernel/IFXCom/CIFXPluginProxy.cpp
+	RTL/Kernel/IFXCom/IFXCom.cpp
+	RTL/Kernel/Memory/IFXMemory.cpp
+	RTL/Kernel/DataTypes/IFXCoreArray.cpp
+	RTL/Kernel/DataTypes/IFXCoreList.cpp
+	RTL/Kernel/DataTypes/IFXFastAllocator.cpp
+	RTL/Kernel/DataTypes/IFXListNode.cpp
+	RTL/Kernel/DataTypes/IFXMatrix4x4.cpp
+	RTL/Kernel/DataTypes/IFXQuaternion.cpp
+	RTL/Kernel/DataTypes/IFXString.cpp
+	RTL/Kernel/DataTypes/IFXUnitAllocator.cpp
+	RTL/Kernel/DataTypes/IFXVector3.cpp
+	RTL/Kernel/DataTypes/IFXVector4.cpp
+	RTL/Kernel/Common/IFXDebug.cpp
+)
+
+add_library(Kernel STATIC ${Kernel_SRCS})
+target_include_directories(Kernel PUBLIC
+	"RTL/Kernel/Include"
+)
+
+
 SET( IFXCore_SRCS
 	RTL/Platform/${U3D_PLATFORM}/IFXCore/IFXCoreDllMain.cpp
 	RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
@@ -216,31 +244,11 @@ SET( IFXCore_SRCS
 	RTL/Component/UVGenerator/CIFXUVMapperPlanar.cpp
 	RTL/Component/UVGenerator/CIFXUVMapperReflection.cpp
 	RTL/Component/UVGenerator/CIFXUVMapperSpherical.cpp
-	RTL/Kernel/Common/CIFXConnector.cpp
-	RTL/Kernel/Common/CIFXPerformanceTimer.cpp 
-	RTL/Kernel/Common/IFXCheckX.cpp
-	RTL/Kernel/IFXCom/CIFXComponentManager.cpp
-	RTL/Kernel/IFXCom/CIFXGUIDHashMap.cpp
-	RTL/Kernel/IFXCom/CIFXPluginProxy.cpp
-	RTL/Kernel/IFXCom/IFXCom.cpp
-	RTL/Kernel/Memory/IFXMemory.cpp
-	RTL/Kernel/DataTypes/IFXCoreArray.cpp
-	RTL/Kernel/DataTypes/IFXCoreList.cpp
-	RTL/Kernel/DataTypes/IFXFastAllocator.cpp
-	RTL/Kernel/DataTypes/IFXListNode.cpp
-	RTL/Kernel/DataTypes/IFXMatrix4x4.cpp
-	RTL/Kernel/DataTypes/IFXQuaternion.cpp
-	RTL/Kernel/DataTypes/IFXString.cpp
-	RTL/Kernel/DataTypes/IFXUnitAllocator.cpp
-	RTL/Kernel/DataTypes/IFXVector3.cpp
-	RTL/Kernel/DataTypes/IFXVector4.cpp
 	RTL/Dependencies/WildCards/wcmatch.cpp
 	RTL/Dependencies/Predicates/predicates.cpp
-	RTL/Kernel/Common/IFXDebug.cpp
 )
 SET( IFXCore_HDRS
 	${Component_HDRS}
-	${Kernel_HDRS}
 	${Platform_HDRS}
 	RTL/Component/Base/IFXVectorHasher.h
 	RTL/Component/BitStream/CIFXBitStreamX.h
@@ -457,11 +465,6 @@ SET( IFXCore_HDRS
 	RTL/Component/UVGenerator/CIFXUVMapperPlanar.h
 	RTL/Component/UVGenerator/CIFXUVMapperReflection.h
 	RTL/Component/UVGenerator/CIFXUVMapperSpherical.h
-	RTL/Kernel/IFXCom/CIFXComponentManager.h
-	RTL/Kernel/IFXCom/CIFXGuidHashMap.h
-	RTL/Kernel/IFXCom/CIFXPluginProxy.h
-	RTL/Kernel/Common/CIFXConnector.h
-	RTL/Kernel/Common/CIFXPerformanceTimer.h
 	RTL/Dependencies/FNVHash/FNVPlusPlus.h
 	RTL/Dependencies/Predicates/predicates.h
 	RTL/Dependencies/WildCards/wcmatch.h
@@ -470,14 +473,20 @@ SET( IFXCore_HDRS
 SET( CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXCore )
 ADD_LIBRARY( IFXCore SHARED ${IFXCore_SRCS} ${IFXCore_HDRS} ${CORE_DIR}/IFXCore.rc ${CORE_DIR}/IFXResource.h ${CORE_DIR}/IFXCore.def ${DEPENDENCIES_SRCS} )
 
-target_link_libraries(IFXCore PRIVATE ZLIB::ZLIB PNG::PNG JPEG::JPEG Winmm)
+target_link_libraries(IFXCore
+	PUBLIC
+		Kernel
+	PRIVATE
+		ZLIB::ZLIB PNG::PNG JPEG::JPEG Winmm
+)
 
-INCLUDE_DIRECTORIES( RTL/Component/Include RTL/Kernel/Include RTL/Platform/Include
+INCLUDE_DIRECTORIES(
+	RTL/Component/Include
+    RTL/Platform/Include
 	RTL/Component/Exporting
 	RTL/Dependencies/WildCards )
 SET( IFXExporting_HDRS
 	${Component_HDRS}
-	${Kernel_HDRS}
 	${Platform_HDRS}
 	RTL/Component/Exporting/CIFXAnimationModifierEncoder.h
 	RTL/Component/Exporting/CIFXAuthorCLODEncoderX.h
@@ -543,18 +552,7 @@ SET( IFXExporting_SRCS
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSUtilities.cpp
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSLoader.cpp
 	RTL/Component/Base/IFXVertexMap.cpp
-	RTL/Kernel/DataTypes/IFXCoreArray.cpp
-	RTL/Kernel/DataTypes/IFXCoreList.cpp
-	RTL/Kernel/DataTypes/IFXFastAllocator.cpp
-	RTL/Kernel/DataTypes/IFXListNode.cpp
-	RTL/Kernel/DataTypes/IFXMatrix4x4.cpp
-	RTL/Kernel/DataTypes/IFXQuaternion.cpp
-	RTL/Kernel/DataTypes/IFXString.cpp
-	RTL/Kernel/DataTypes/IFXUnitAllocator.cpp
-	RTL/Kernel/DataTypes/IFXVector3.cpp
-	RTL/Kernel/DataTypes/IFXVector4.cpp
 	RTL/Dependencies/WildCards/wcmatch.cpp
-	RTL/Kernel/Common/IFXDebug.cpp
 )
 
 SET( EXPORT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXExporting )
@@ -562,7 +560,8 @@ ADD_LIBRARY( IFXExporting  SHARED ${IFXExporting_SRCS} ${IFXExporting_HDRS} ${EX
 TARGET_LINK_LIBRARIES( IFXExporting IFXCore Winmm)
 
 
-INCLUDE_DIRECTORIES( RTL/Component/Include RTL/Kernel/Include RTL/Platform/Include
+INCLUDE_DIRECTORIES( RTL/Component/Include
+    RTL/Platform/Include
 	RTL/Dependencies/WildCards
 	RTL/Component/Base
 	IDTF
@@ -611,23 +610,11 @@ SET( libIDTF_SRCS
 	RTL/Component/Base/IFXEuler.cpp
 	RTL/Component/Base/IFXVectorHasher.cpp
 	RTL/Component/Base/IFXVertexMapGroup.cpp
-	RTL/Kernel/DataTypes/IFXCoreArray.cpp
-	RTL/Kernel/DataTypes/IFXFastAllocator.cpp
-	RTL/Kernel/DataTypes/IFXMatrix4x4.cpp
-	RTL/Kernel/DataTypes/IFXString.cpp
-	RTL/Kernel/DataTypes/IFXVector3.cpp
-	RTL/Kernel/DataTypes/IFXCoreList.cpp
-	RTL/Kernel/DataTypes/IFXListNode.cpp
-	RTL/Kernel/DataTypes/IFXQuaternion.cpp
-	RTL/Kernel/DataTypes/IFXUnitAllocator.cpp
-	RTL/Kernel/DataTypes/IFXVector4.cpp
 	RTL/Component/Common/IFXDids.cpp
-	RTL/Kernel/Common/IFXDebug.cpp
 	RTL/IFXCoreStatic/IFXCoreStatic.cpp
 )
 SET( libIDTF_HDRS
 	${Component_HDRS}
-	${Kernel_HDRS}
 	${Platform_HDRS}
 	libIDTF/SceneConverterLib.h
 	libIDTF/Writer.h
@@ -710,7 +697,7 @@ SET( libIDTF_HDRS
 ADD_LIBRARY( IDTF STATIC ${libIDTF_SRCS} ${libIDTF_HDRS} )
 
 target_compile_definitions(IDTF PRIVATE UNICODE _UNICODE)
-target_link_libraries(IDTF PRIVATE Winmm)
+target_link_libraries(IDTF PRIVATE Winmm Kernel)
 
 SET_PROPERTY(
 	TARGET IDTF
