@@ -74,7 +74,6 @@ target_include_directories(Kernel
 		"RTL/Component/Texture"
 		"RTL/Component/Mesh"
 		"RTL/Component/SceneGraph"
-		"RTL/Component/Rendering"
 		"RTL/Component/ModifierChain"
 )
 target_link_libraries(Kernel 
@@ -371,43 +370,6 @@ SET( IFXCore_HDRS
 	RTL/Component/ModifierChain/IFXSet.h
 	RTL/Component/Palette/CIFXPalette.h
 	RTL/Component/Palette/CIFXSimpleObject.h
-	RTL/Component/Rendering/CIFXDeviceBase.h
-	RTL/Component/Rendering/CIFXDeviceLight.h
-	RTL/Component/Rendering/CIFXDeviceTexture.h
-	RTL/Component/Rendering/CIFXDeviceTexUnit.h
-	RTL/Component/Rendering/CIFXRender.h
-	RTL/Component/Rendering/CIFXRenderContext.h
-	RTL/Component/Rendering/CIFXRenderDevice.h
-	RTL/Component/Rendering/CIFXRenderServices.h
-	RTL/Component/Rendering/DX7/CIFXDeviceLightDX7.h
-	RTL/Component/Rendering/DX7/CIFXDeviceTextureDX7.h
-	RTL/Component/Rendering/DX7/CIFXDeviceTexUnitDX7.h
-	RTL/Component/Rendering/DX7/CIFXDirectX7.h
-	RTL/Component/Rendering/DX7/CIFXRenderDeviceDX7.h
-	RTL/Component/Rendering/DX7/CIFXRenderDX7.h
-	RTL/Component/Rendering/DX7/IFXRenderPCHDX7.h
-	RTL/Component/Rendering/DX8/CIFXDeviceLightDX8.h
-	RTL/Component/Rendering/DX8/CIFXDeviceTextureDX8.h
-	RTL/Component/Rendering/DX8/CIFXDeviceTexUnitDX8.h
-	RTL/Component/Rendering/DX8/CIFXDirectX8.h
-	RTL/Component/Rendering/DX8/CIFXRenderDeviceDX8.h
-	RTL/Component/Rendering/DX8/CIFXRenderDX8.h
-	RTL/Component/Rendering/DX8/IFXRenderPCHDX8.h
-	RTL/Component/Rendering/IFXAAFilter.h
-	RTL/Component/Rendering/IFXRenderPCH.h
-	RTL/Component/Rendering/Null/CIFXDeviceLightNULL.h
-	RTL/Component/Rendering/Null/CIFXDeviceTextureNULL.h
-	RTL/Component/Rendering/Null/CIFXDeviceTexUnitNULL.h
-	RTL/Component/Rendering/Null/CIFXRenderDeviceNULL.h
-	RTL/Component/Rendering/Null/CIFXRenderNULL.h
-	RTL/Component/Rendering/Null/IFXRenderPCHNULL.h
-	RTL/Component/Rendering/OpenGL/CIFXDeviceLightOGL.h
-	RTL/Component/Rendering/OpenGL/CIFXDeviceTextureOGL.h
-	RTL/Component/Rendering/OpenGL/CIFXDeviceTexUnitOGL.h
-	RTL/Component/Rendering/OpenGL/CIFXOpenGL.h
-	RTL/Component/Rendering/OpenGL/CIFXRenderDeviceOGL.h
-	RTL/Component/Rendering/OpenGL/CIFXRenderOGL.h
-	RTL/Component/Rendering/OpenGL/IFXRenderPCHOGL.h
 	RTL/Component/SceneGraph/CIFXBoundSphereDataElement.h
 	RTL/Component/SceneGraph/CIFXDevice.h
 	RTL/Component/SceneGraph/CIFXDummyModifier.h
