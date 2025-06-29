@@ -29,34 +29,6 @@ find_package(PNG REQUIRED)
 find_package(JPEG REQUIRED)
 
 set(U3D_PLATFORM Win32)
-INCLUDE_DIRECTORIES( 
-	RTL/Component/Include 
-	RTL/Kernel/Include RTL/Platform/Include
-	RTL/Component/Base
-	RTL/Component/BitStream
-	RTL/Component/Bones
-	RTL/Component/BoundHierarchy
-	RTL/Component/CLODAuthor
-	RTL/Component/Common
-	RTL/Component/Generators/CLOD
-	RTL/Component/Generators/Glyph2D
-	RTL/Component/Generators/LineSet
-	RTL/Component/Generators/PointSet
-	RTL/Component/Mesh
-	RTL/Component/ModifierChain
-	RTL/Component/Palette
-	RTL/Component/Rendering
-	RTL/Component/SceneGraph
-	RTL/Component/Shaders
-	RTL/Component/Subdiv
-	RTL/Component/Texture
-	RTL/Component/UVGenerator
-	RTL/Kernel/IFXCom
-	RTL/Kernel/Common
-	RTL/Dependencies/FNVHash
-	RTL/Dependencies/Predicates
-	RTL/Dependencies/WildCards
-)
 
 set(Kernel_SRCS
 	RTL/Kernel/Common/CIFXConnector.cpp
@@ -81,8 +53,15 @@ set(Kernel_SRCS
 )
 
 add_library(Kernel STATIC ${Kernel_SRCS})
-target_include_directories(Kernel PUBLIC
-	"RTL/Kernel/Include"
+target_include_directories(Kernel
+	PUBLIC
+		"RTL/Kernel/Include"
+	PRIVATE
+		"RTL/Component/Texture"
+		"RTL/Component/Mesh"
+		"RTL/Component/SceneGraph"
+		"RTL/Component/Rendering"
+		"RTL/Component/ModifierChain"
 )
 
 
@@ -472,6 +451,18 @@ SET( IFXCore_HDRS
 
 SET( CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXCore )
 ADD_LIBRARY( IFXCore SHARED ${IFXCore_SRCS} ${IFXCore_HDRS} ${CORE_DIR}/IFXCore.rc ${CORE_DIR}/IFXResource.h ${CORE_DIR}/IFXCore.def ${DEPENDENCIES_SRCS} )
+target_include_directories(IFXCore
+	PUBLIC 
+		"RTL/Component/Texture"
+		"RTL/Component/Mesh"
+		"RTL/Component/SceneGraph"
+		"RTL/Component/Rendering"
+		"RTL/Component/ModifierChain"
+		"RTL/Component/BoundHierarchy"
+		"RTL/Component/Generators/Glyph2D"
+		"RTL/Dependencies/FNVHash"
+		"RTL/Dependencies/Predicates"
+)
 
 target_link_libraries(IFXCore
 	PUBLIC
@@ -697,7 +688,11 @@ SET( libIDTF_HDRS
 ADD_LIBRARY( IDTF STATIC ${libIDTF_SRCS} ${libIDTF_HDRS} )
 
 target_compile_definitions(IDTF PRIVATE UNICODE _UNICODE)
-target_link_libraries(IDTF PRIVATE Winmm Kernel)
+target_link_libraries(IDTF
+	PUBLIC
+		Kernel
+	PRIVATE
+		Winmm)
 
 SET_PROPERTY(
 	TARGET IDTF
