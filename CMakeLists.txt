@@ -30,6 +30,23 @@ find_package(JPEG REQUIRED)
 
 set(U3D_PLATFORM Win32)
 
+add_library(WildCards STATIC 
+	RTL/Dependencies/WildCards/wcmatch.cpp
+	RTL/Dependencies/WildCards/wcmatch.h
+)
+target_include_directories(WildCards
+	PUBLIC
+		"RTL/Dependencies/WildCards"
+)
+
+add_library(FNVHash INTERFACE 
+	RTL/Dependencies/FNVHash/FNVPlusPlus.h
+)
+target_include_directories(FNVHash
+	INTERFACE
+		"RTL/Dependencies/FNVHash"
+)
+
 set(Kernel_SRCS
 	RTL/Kernel/Common/CIFXConnector.cpp
 	RTL/Kernel/Common/CIFXPerformanceTimer.cpp
@@ -63,7 +80,10 @@ target_include_directories(Kernel
 		"RTL/Component/Rendering"
 		"RTL/Component/ModifierChain"
 )
-
+target_link_libraries(Kernel 
+	PRIVATE
+		WildCards
+)
 
 SET( IFXCore_SRCS
 	RTL/Platform/${U3D_PLATFORM}/IFXCore/IFXCoreDllMain.cpp
@@ -223,7 +243,6 @@ SET( IFXCore_SRCS
 	RTL/Component/UVGenerator/CIFXUVMapperPlanar.cpp
 	RTL/Component/UVGenerator/CIFXUVMapperReflection.cpp
 	RTL/Component/UVGenerator/CIFXUVMapperSpherical.cpp
-	RTL/Dependencies/WildCards/wcmatch.cpp
 	RTL/Dependencies/Predicates/predicates.cpp
 )
 SET( IFXCore_HDRS
@@ -444,9 +463,7 @@ SET( IFXCore_HDRS
 	RTL/Component/UVGenerator/CIFXUVMapperPlanar.h
 	RTL/Component/UVGenerator/CIFXUVMapperReflection.h
 	RTL/Component/UVGenerator/CIFXUVMapperSpherical.h
-	RTL/Dependencies/FNVHash/FNVPlusPlus.h
 	RTL/Dependencies/Predicates/predicates.h
-	RTL/Dependencies/WildCards/wcmatch.h
 )
 
 SET( CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXCore )
@@ -460,7 +477,7 @@ target_include_directories(IFXCore
 		"RTL/Component/ModifierChain"
 		"RTL/Component/BoundHierarchy"
 		"RTL/Component/Generators/Glyph2D"
-		"RTL/Dependencies/FNVHash"
+	PRIVATE
 		"RTL/Dependencies/Predicates"
 )
 
@@ -468,14 +485,17 @@ target_link_libraries(IFXCore
 	PUBLIC
 		Kernel
 	PRIVATE
-		ZLIB::ZLIB PNG::PNG JPEG::JPEG Winmm
+		ZLIB::ZLIB
+		PNG::PNG
+		JPEG::JPEG
+		Winmm
+		FNVHash
 )
 
 INCLUDE_DIRECTORIES(
 	RTL/Component/Include
     RTL/Platform/Include
-	RTL/Component/Exporting
-	RTL/Dependencies/WildCards )
+	RTL/Component/Exporting )
 SET( IFXExporting_HDRS
 	${Component_HDRS}
 	${Platform_HDRS}
@@ -505,7 +525,6 @@ SET( IFXExporting_HDRS
 	RTL/Component/Exporting/CIFXViewNodeEncoder.h
 	RTL/Component/Exporting/CIFXViewResourceEncoder.h
 	RTL/Component/Exporting/CIFXWriteManager.h
-	RTL/Dependencies/WildCards/wcmatch.h
 )
 SET( IFXExporting_SRCS
 	RTL/Platform/${U3D_PLATFORM}/IFXExporting/IFXExportingDllMain.cpp
@@ -543,7 +562,6 @@ SET( IFXExporting_SRCS
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSUtilities.cpp
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSLoader.cpp
 	RTL/Component/Base/IFXVertexMap.cpp
-	RTL/Dependencies/WildCards/wcmatch.cpp
 )
 
 SET( EXPORT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXExporting )
@@ -553,7 +571,6 @@ TARGET_LINK_LIBRARIES( IFXExporting IFXCore Winmm)
 
 INCLUDE_DIRECTORIES( RTL/Component/Include
     RTL/Platform/Include
-	RTL/Dependencies/WildCards
 	RTL/Component/Base
 	IDTF
 	IDTF/Include
@@ -592,7 +609,6 @@ SET( libIDTF_SRCS
 	IDTF/Common/MetaDataList.cpp
 	IDTF/Common/ParentList.cpp
 	IDTF/Common/GlyphCommandList.cpp
-	RTL/Dependencies/WildCards/wcmatch.cpp
 	RTL/Component/Base/IFXCoincidentVertexMap.cpp
 	RTL/Component/Base/IFXFatCornerIter.cpp
 	RTL/Component/Base/IFXCornerIter.cpp
@@ -681,7 +697,6 @@ SET( libIDTF_HDRS
 	IDTF/Common/ViewNode.h
 	IDTF/Common/ViewResource.h
 	IDTF/Common/ViewResourceList.h
-	RTL/Dependencies/WildCards/wcmatch.h
 	RTL/Component/Base/IFXVectorHasher.h
 )
 
