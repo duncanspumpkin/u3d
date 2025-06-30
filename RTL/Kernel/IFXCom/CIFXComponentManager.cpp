@@ -30,7 +30,6 @@
 #include "CIFXComponentManager.h"
 #include "CIFXGuidHashMap.h"
 #include "CIFXPluginProxy.h"
-#include "IFXOSFileIterator.h"
 #include "IFXCOM.h"
 
 //***************************************************************************
@@ -42,6 +41,7 @@
 //	Constants
 //***************************************************************************
 
+const IFXCHAR IFXOSFI_DELIM[] = L":";
 
 //***************************************************************************
 //	Enumerations
@@ -275,22 +275,6 @@ IFXRESULT CIFXComponentManager::FindPlugins()
 #endif
 	m_pluginNumber = 1;
 #endif
-/*
-    // create recursive file iterator with default parameters
-    IFXOSFileIterator fr;
-
-    // pointer to the string with plugins (where they are stored with relative paths)
-    // find all plugins, get pointer to the string with their paths and plugins number:
-    IFXString plugins, path;
-
-	result = fr.GetPlugins( plugins, m_pluginNumber );
-
-	if( IFXSUCCESS(result) )
-	{
-		// get path to plugins directory
-		fr.GetPluginsLocation( path );    // pointer to the string with path to plugins directory
-	}
-*/
 
     if( 0 != m_pluginNumber )
     {
