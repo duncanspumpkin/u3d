@@ -85,7 +85,6 @@ SET( IFXCore_SRCS
 	RTL/Platform/${U3D_PLATFORM}/IFXCore/IFXCoreDllMain.cpp
 	RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSLoader.cpp
-	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSRenderWindow.cpp
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSUtilities.cpp
 	RTL/Component/Base/IFXCoincidentVertexMap.cpp
 	RTL/Component/Base/IFXCornerIter.cpp
@@ -156,6 +155,7 @@ SET( IFXCore_SRCS
 	RTL/Component/Common/IFXComponentDescriptorList.cpp
 	RTL/Component/Common/IFXComponentIds.cpp
 	RTL/Component/Common/IFXDids.cpp
+	RTL/Component/Common/IFXRenderWindow.cpp
 	RTL/Component/Generators/CLOD/CIFXAuthorCLODResource.cpp
 	RTL/Component/Generators/CLOD/CIFXAuthorMesh.cpp
 	RTL/Component/Generators/CLOD/CIFXAuthorMeshScrub.cpp
