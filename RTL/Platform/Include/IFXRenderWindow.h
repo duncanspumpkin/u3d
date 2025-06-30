@@ -21,7 +21,10 @@
 #ifndef IFX_RENDER_WINDOW_H
 #define IFX_RENDER_WINDOW_H
 
-#include "IFXOSRender.h"
+#include "IFXEnums.h"
+#include "IFXAPI.h"
+#include "IFXResult.h"
+#include "IFXRenderHelpers.h"
 
 //==============================
 // IFXRenderWindow
@@ -221,13 +224,6 @@ public:
 
 	BOOL IFXAPI SetDirtyWindow(IFXRenderWindow& window);
 
-#if defined( RENDERING ) && ( defined( LINUX ) || defined( __linux__ ) )
-	XVisualInfo* IFXAPI GetVisual() const;
-	Window GetDrawable() const;
-	IFXRESULT IFXAPI SetVisual(XVisualInfo* visInfo);
-	IFXRESULT IFXAPI SetDrawable(const Window drawable);
-#endif
-
 protected:
 	IFXenum		m_eAAEnabled;		///< AntiAliasing enabled
 	IFXenum		m_eAAMode;			///< AntiAliasing mode
@@ -235,13 +231,6 @@ protected:
 	BOOL		m_bTransparent;		///< Is this window "transparent"?
 	IFXRect		m_rcWindow;			///< Size of window or desired resolution for full screen mode
 	IFXHANDLE	m_pvWindow;			///< Destination surface (or window) for rendering.
-#ifdef WIN32
-	IFXHANDLE	m_pDC;				///< handle to a display device context 
-#endif
-#if defined( RENDERING ) && ( defined( LINUX ) || defined( __linux__ ) )
-	Window		m_Window;
-	XVisualInfo *m_pVisInfo;
-#endif
 };
 
 

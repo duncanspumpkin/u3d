@@ -16,8 +16,6 @@
 //
 //***************************************************************************
 
-#include "CIFXRenderServices.h"
-
 #include "IFXRenderWindow.h"
 
 //=======================================
@@ -41,7 +39,6 @@ void IFXRenderWindow::InitData()
 	m_bTransparent = FALSE;
 	m_rcWindow.Set(0, 0, 320, 240);
 	m_pvWindow = 0;
-//	m_pvDisplay = 0;
 }
 
 IFXRESULT IFXRenderWindow::SetAntiAliasingMode(IFXenum eAAMode)
@@ -124,12 +121,7 @@ IFXRESULT IFXRenderWindow::SetWindowPtr(IFXHANDLE pvWindow)
 	{
 		m_pvWindow = pvWindow;
 	}
-/*
-	if(pvDisplay != m_pvDisplay)
-	{
-		m_pvDisplay = pvDisplay;
-	}
-*/
+
 	return IFX_OK;
 }
 
@@ -179,61 +171,9 @@ BOOL IFXAPI IFXRenderWindow::SetDirtyWindow(IFXRenderWindow& window)
 	return bDirty;
 }
 
-#ifndef WIN32
-XVisualInfo* IFXAPI IFXRenderWindow::GetVisual() const
-{
-	return m_pVisInfo;
-}
-
-Window IFXAPI IFXRenderWindow::GetDrawable() const
-{
-	return m_Window;
-}
-
-IFXRESULT IFXAPI IFXRenderWindow::SetVisual(XVisualInfo* visInfo)
-{
-	m_pVisInfo = visInfo;
-	return IFX_OK;
-}
-
-IFXRESULT IFXAPI IFXRenderWindow::SetDrawable(const Window drawable)
-{
-	m_Window = drawable;
-	return IFX_OK;
-}
-#endif
-
-/*
-void* IFXRenderWindow::GetDisplay() const
-{
-	return m_pvDisplay;
-}
-*/
 void IFXRenderWindow::GetWindowSizeVC(IFXRect& rcIn) const
 {
-#ifdef RENDERING
-	if(m_bDirectToScreen)
-	{
-		IFXHANDLE hWnd = (IFXHANDLE)m_pvWindow;
-		rcIn = m_rcWindow;
-		IFXClientToScreen( hWnd, &rcIn.m_X, &rcIn.m_Y );
-
-		IFXRect rcParentRect;
-		IFXGetClientRect( hWnd, &rcParentRect );
-		IFXClientToScreen( hWnd, &rcParentRect.m_X, &rcParentRect.m_Y );
-		I32 x = rcParentRect.m_X+rcParentRect.m_Width;
-		I32 y = rcParentRect.m_Y+rcParentRect.m_Height;
-		IFXClientToScreen( hWnd, &x, &y );
-		rcParentRect.m_Width = x - rcParentRect.m_X;
-		rcParentRect.m_Height = y - rcParentRect.m_Y;
-
-		rcParentRect.GetIntersection(rcIn);
-	}
-	else
-#endif
-	{
-		rcIn = m_rcWindow;
-	}
+	rcIn = m_rcWindow;
 
 	return;
 }
