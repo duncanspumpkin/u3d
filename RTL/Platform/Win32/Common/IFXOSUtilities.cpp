@@ -35,7 +35,7 @@
 
 #include <windows.h>
 #include <float.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <locale.h>
 #include <chrono>
 
@@ -47,8 +47,6 @@
     #define STRICT
 #endif
 
-#define _DEBUG_REG_KEY_PROJECT      L"SOFTWARE\\3DIF\\IFX"
-#define _DEBUG_REG_VALUE_DEBUGLEVEL   L"DebugLevel"
 #define _MESSAGE_LENGTH_MAX                 1024
 
 #ifndef WIN32_LEAN_AND_MEAN
@@ -155,41 +153,14 @@ U32 IFXAPI_CALLTYPE IFXOSControlFP( U32 value, U32 mask )
 extern "C"
 IFXDebugLevel IFXAPI_CALLTYPE IFXOSGetDebugLevel( void )
 {
-  IFXDebugLevel debugLevel  = IFXDEBUG_DEFAULT;
-  HKEY      hKey;
+    IFXDebugLevel debugLevel = IFXDEBUG_DEFAULT;
 
-  if ( RegOpenKeyEx( HKEY_LOCAL_MACHINE,
-              _DEBUG_REG_KEY_PROJECT,
-              0,
-              KEY_QUERY_VALUE,
-              &hKey ) == ERROR_SUCCESS )
-  {
-    DWORD value,
-        valueSize = sizeof( value ),
-        valueType;
+    char* debugLevelValue = std::getenv("U3D_DEBUGLEVEL");
 
-    if ( RegQueryValueEx( hKey,
-                  _DEBUG_REG_VALUE_DEBUGLEVEL,
-                  NULL,
-                  &valueType,
-                  ( LPBYTE ) &value,
-                  &valueSize ) == ERROR_SUCCESS )
-    {
-      if ( valueType == REG_DWORD )
-        debugLevel = ( IFXDebugLevel ) value;
-    }
+    if (NULL != debugLevelValue)
+        debugLevel = (IFXDebugLevel)atoi(debugLevelValue);
 
-    RegCloseKey( hKey );
-  }
-
-  wchar_t debugLevelValue[2];
-  if(GetEnvironmentVariable(L"U3D_DEBUGLEVEL", debugLevelValue, 2))
-  {
-    debugLevelValue[1] = '\0';
-	debugLevel = (IFXDebugLevel)_wtoi( debugLevelValue );
-  }
-
-  return debugLevel;
+    return debugLevel;
 }
 
 //---------------------------------------------------------------------------
