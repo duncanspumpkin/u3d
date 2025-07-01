@@ -11,10 +11,6 @@ set(CMAKE_TOOLCHAIN_FILE "${vcpkg_SOURCE_DIR}/scripts/buildsystems/vcpkg.cmake"
 cmake_minimum_required(VERSION 3.31)
 project(U3D)
 
-# I do not want to support asm code, so disable it
-# there were real problems with cpuid on Ubuntu 13.04 i386
-ADD_DEFINITIONS( -DU3D_NO_ASM )
-
 if( NOT MSVC )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif( NOT MSVC )

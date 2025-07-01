@@ -77,11 +77,7 @@ U16 IFXAPI_CALLTYPE IFXOSGetSystemDefaultLangID( void )
 extern "C"
 BOOL IFXAPI_CALLTYPE IFXOSCheckCPUFeature(EIFXCPUFeature feature)
 {
-#if !defined( U3D_NO_ASM ) && defined( __GNUC__ ) && defined( __i386__ )  // ||  !defined( __x86_64__ )
-  return TRUE;
-#else
   return FALSE;
-#endif
 }
 
 //---------------------------------------------------------------------------

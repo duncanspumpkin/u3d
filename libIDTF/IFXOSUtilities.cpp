@@ -483,20 +483,6 @@ U32 g_eax=0, g_ecx=0, g_edx=0;
 //  Local functions
 //***************************************************************************
 
-static inline void cpuid(U32 op)
-{
-#if defined( __GNUC__ ) && defined( __i386__ ) && !defined( MAC32 ) && !defined( __APPLE__ )
-  asm(
-    "movl %%ebx, %%edi  \n\t"
-    "cpuid        \n\t"
-    "movl %%edi, %%ebx  \n\t"
-    : "=a" (g_eax),
-          "=c" (g_ecx),
-          "=d" (g_edx)
-        : "a" (op));
-#endif
-}
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
@@ -510,22 +496,7 @@ U16 IFXAPI_CALLTYPE IFXOSGetSystemDefaultLangID( void )
 extern "C"
 BOOL IFXAPI_CALLTYPE IFXOSCheckCPUFeature(EIFXCPUFeature feature)
 {
-#if defined( __GNUC__ ) && defined( __i386__ ) && !defined( MAC32 ) && !defined( __APPLE__ )
-  BOOL supported = FALSE;
-  switch (feature)
-  {
-    case IFXCPUFeature_MMX: supported = (g_edx>>23)&1; break;
-    case IFXCPUFeature_SSE: supported = (g_edx>>25)&1; break;
-    case IFXCPUFeature_SSE2: supported = (g_edx>>26)&1; break;
-    case IFXCPUFeature_SSE3: supported = g_ecx&1; break;
-  }
-  return supported;
-#endif
-#if defined( __GNUC__ ) && defined( __i386__ ) && ( defined( MAC32 ) || defined( __APPLE__ ) )
-  return TRUE;
-#else
   return FALSE;
-#endif
 }
 
 //---------------------------------------------------------------------------
@@ -534,8 +505,6 @@ BOOL IFXAPI_CALLTYPE IFXOSCheckCPUFeature(EIFXCPUFeature feature)
 extern "C"
 void IFXAPI_CALLTYPE IFXOSInitialize( void )
 {
-  cpuid(1);
-
 #ifdef _DEBUG
   g_bInitialized = TRUE;
 #endif

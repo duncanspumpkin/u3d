@@ -71,49 +71,9 @@
   BOOL g_bInitialized = FALSE;
 #endif
 
-#ifndef U3D_NO_ASM
-U32 g_eax=0, g_ebx=0, g_ecx=0, g_edx=0;
-#endif // U3D_NO_ASM
-
 //***************************************************************************
 //  Local functions
 //***************************************************************************
-
-#ifndef U3D_NO_ASM
-#ifdef _MSC_VER
-static void cpuid(U32 op, U32& eax, U32& ebx, U32& ecx, U32& edx)
-{
-#ifndef _WIN64
-  U32 A, B, C, D;
-  __asm {
-    mov eax, op
-    cpuid
-    mov A, eax
-    mov B, ebx
-    mov C, ecx
-    mov D, edx
-  }
-  eax = A;
-  ebx = B;
-  ecx = C;
-  edx = D;
-#endif
-}
-#endif
-#ifdef __MINGW32__
-static void cpuid(U32 op)
-{
-  asm(
-        "movl %%ebx, %%edi  \n\t"
-        "cpuid              \n\t"
-        "movl %%edi, %%ebx  \n\t"
-        : "=a" (g_eax),
-      "=c" (g_ecx),
-      "=d" (g_edx)
-    : "a" (op));
-}
-#endif
-#endif // U3D_NO_ASM
 
 //***************************************************************************
 //  Global functions
@@ -128,18 +88,7 @@ U16 IFXAPI_CALLTYPE IFXGetSystemDefaultLangID(void)
 extern "C"
 BOOL IFXAPI_CALLTYPE IFXOSCheckCPUFeature(EIFXCPUFeature feature)
 {
-#ifndef U3D_NO_ASM
-  BOOL supported = FALSE;
-  switch (feature) {
-    case IFXCPUFeature_MMX: supported = (g_edx>>23)&1; break;
-    case IFXCPUFeature_SSE: supported = (g_edx>>25)&1; break;
-    case IFXCPUFeature_SSE2: supported = (g_edx>>26)&1; break;
-    case IFXCPUFeature_SSE3: supported = g_ecx&1; break;
-  }
-  return supported;
-#else
   return FALSE;
-#endif // U3D_NO_ASM
 }
 
 //---------------------------------------------------------------------------
