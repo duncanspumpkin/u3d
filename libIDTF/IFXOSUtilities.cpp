@@ -47,10 +47,10 @@
 #define UNICODE
 #include "IFXOSUtilities.h"
 #include <windows.h>
-#include <mmsystem.h>
 #include <float.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <chrono>
 
 //***************************************************************************
 //  Defines
@@ -79,9 +79,6 @@
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
-BOOL      g_bUseQPC = FALSE;
-LARGE_INTEGER g_QPCFrequency;
 
 #ifdef _DEBUG
   BOOL g_bInitialized = FALSE;
@@ -156,12 +153,6 @@ BOOL IFXAPI_CALLTYPE IFXOSCheckCPUFeature(EIFXCPUFeature feature)
 extern "C"
 void IFXAPI_CALLTYPE IFXOSInitialize( void )
 {
-  // Determine is the QPC ( QueryPerformanceCounter ) timing service is available.
-  QueryPerformanceFrequency( &g_QPCFrequency );
-  g_bUseQPC = ( 0 != g_QPCFrequency.QuadPart ) ? TRUE : FALSE;
-  if( !g_bUseQPC )
-    timeBeginPeriod(1);
-
 #ifdef _MSC_VER
   cpuid(1, g_eax, g_ebx, g_ecx, g_edx);
 #endif
@@ -183,9 +174,6 @@ void IFXAPI_CALLTYPE IFXOSUninitialize( void )
 #ifdef _DEBUG
   g_bInitialized = FALSE;
 #endif
-
-  if( !g_bUseQPC )
-    timeEndPeriod(1);
 }
 
 //---------------------------------------------------------------------------
@@ -198,14 +186,8 @@ U32 IFXAPI_CALLTYPE IFXOSGetTime( void )
   if (!g_bInitialized) IFXOSOutputDebugString(L"IFXOSUtilities not g_bInitialized!\n");
 #endif
 
-  LARGE_INTEGER qwCounter;
-  if ( g_bUseQPC )
-    {
-    QueryPerformanceCounter( &qwCounter);
-    return ( DWORD ) ((( qwCounter.QuadPart)*1000) / g_QPCFrequency.QuadPart );
-  }
-    else
-    return timeGetTime();
+  const auto now = std::chrono::system_clock::now();
+  return static_cast<U32>(std::chrono::system_clock::to_time_t(now));
 }
 
 //---------------------------------------------------------------------------

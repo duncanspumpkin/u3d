@@ -446,8 +446,13 @@ target_link_libraries(IFXCore
 	PRIVATE
 		PNG::PNG
 		JPEG::JPEG
-		Winmm
 		FNVHash
+)
+
+target_compile_definitions(IFXCore
+	PUBLIC
+		UNICODE
+		_UNICODE
 )
 
 INCLUDE_DIRECTORIES(
@@ -524,7 +529,7 @@ SET( IFXExporting_SRCS
 
 SET( EXPORT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXExporting )
 ADD_LIBRARY( IFXExporting  SHARED ${IFXExporting_SRCS} ${IFXExporting_HDRS} ${EXPORT_DIR}/IFXExporting.rc ${EXPORT_DIR}/IFXResource.h ${EXPORT_DIR}/IFXExporting.def )
-TARGET_LINK_LIBRARIES( IFXExporting IFXCore Winmm)
+TARGET_LINK_LIBRARIES( IFXExporting IFXCore)
 
 
 INCLUDE_DIRECTORIES( RTL/Component/Include
@@ -664,8 +669,7 @@ target_compile_definitions(IDTF PRIVATE UNICODE _UNICODE)
 target_link_libraries(IDTF
 	PUBLIC
 		Kernel
-	PRIVATE
-		Winmm)
+)
 
 SET_PROPERTY(
 	TARGET IDTF
