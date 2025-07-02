@@ -118,26 +118,29 @@ IFXRESULT CIFXPluginProxy::Initialize( const IFXString* name /*U8* name*/ )
 
 	return result;
 }
+extern "C" IFXRESULT IFXAPI IFXPluginRegister(
+	U32* pComponentNumber,
+	IFXComponentDescriptor** ppComponentDescriptorList);
 
 IFXRESULT CIFXPluginProxy::RetrieveComponentDescriptors()
 {
 	IFXRESULT result = IFX_OK;
 
-	if( IFX_FALSE == IsLoaded() )
-		result = Load();
+	//if( IFX_FALSE == IsLoaded() )
+	//	result = Load();
 
 	if( IFXSUCCESS(result) )
 	{
-		IFXPluginRegisterFunction pRegister = 
-					(IFXPluginRegisterFunction)IFXGetAddress( 
-					m_handle, 
-					"IFXPluginRegister" );
-		if( NULL != pRegister )
+		//IFXPluginRegisterFunction pRegister = 
+		//			(IFXPluginRegisterFunction)IFXGetAddress( 
+		//			m_handle, 
+		//			"IFXPluginRegister" );
+		//if( NULL != pRegister )
 		{
 			U32 componentNumber = 0;
 			IFXComponentDescriptor* pComponentDescriptorList = NULL;
 
-			result = pRegister( &componentNumber, &pComponentDescriptorList );
+			result = IFXPluginRegister( &componentNumber, &pComponentDescriptorList );
 
 			if( IFXSUCCESS(result) )
 			{
@@ -148,30 +151,6 @@ IFXRESULT CIFXPluginProxy::RetrieveComponentDescriptors()
 				result = CopyComponentDescriptorList( 
 										componentNumber, 
 										pComponentDescriptorList );
-			}
-		}
-		else
-			result = IFX_E_INVALID_POINTER;
-
-		if( IFXSUCCESS( result ) )
-		{
-			IFXPluginRegisterDidsFunction pRegisterDids = 
-				(IFXPluginRegisterDidsFunction)IFXGetAddress( 
-				m_handle, 
-				"IFXPluginRegisterDids" );
-
-			// if (NULL == pRegisterDids) this is ok too - just do nothing
-			if( NULL != pRegisterDids )
-			{
-				U32 didsNumber = 0;
-				IFXDID *pDidsList = NULL;
-
-				result = pRegisterDids( &didsNumber, &pDidsList );
-
-				if( IFXSUCCESS( result ) )
-				{
-					result = CopyDidsList( didsNumber, pDidsList );
-				}
 			}
 		}
 
@@ -196,9 +175,7 @@ IFXRESULT CIFXPluginProxy::CreateComponent(
 
 	if( IFX_FALSE == IsLoaded() )
 	{
-		result = Load();
-		if( IFXSUCCESS(result) )
-			result = UpdateFactoryPointers();
+		result = UpdateFactoryPointers();
 	}
 
 	if( IFXSUCCESS(result) )
@@ -217,23 +194,6 @@ IFXRESULT CIFXPluginProxy::CreateComponent(
 IFXRESULT CIFXPluginProxy::Unload()
 {
 	IFXRESULT result = IFX_OK;
-
-	if( IFX_TRUE == IsLoaded() )
-	{
-		IFXPluginCanUnloadNowFunction pCanUnloadNow = 
-				(IFXPluginCanUnloadNowFunction)IFXGetAddress( 
-				m_handle, 
-				"IFXPluginCanUnloadNow" );
-		if( NULL != pCanUnloadNow )
-		{
-			result = pCanUnloadNow();
-
-			if( IFXSUCCESS(result) && m_handle )
-				result = IFXReleaseLibrary(m_handle);
-		}
-		else
-			result = IFX_E_INVALID_POINTER;
-	}
 
 	if( IFXSUCCESS(result) )
 	{
@@ -256,12 +216,6 @@ IFXRESULT CIFXPluginProxy::Unload()
 IFXRESULT CIFXPluginProxy::Load()
 {
 	IFXRESULT result = IFX_OK;
-
-	m_handle = IFXLoadLibrary( m_name.Raw() );
-	if( 0 == m_handle )
-	{
-		result = IFX_E_INVALID_FILE;
-	}
 
 	return result;
 }
@@ -371,16 +325,12 @@ IFXRESULT CIFXPluginProxy::UpdateFactoryPointers()
 {
 	IFXRESULT result = IFX_OK;
 
-	IFXPluginRegisterFunction pRegister = 
-		(IFXPluginRegisterFunction)IFXGetAddress( 
-		m_handle, 
-		"IFXPluginRegister" );
-	if( NULL != pRegister && NULL != m_pComponentDescriptorList )
+	if( NULL != m_pComponentDescriptorList )
 	{
 		IFXComponentDescriptor* pComponentDescriptorList = NULL;
 		U32 didsNumber = 0;
 
-		result = pRegister( &didsNumber, 
+		result = IFXPluginRegister( &didsNumber,
 			&pComponentDescriptorList );
 
 		if( IFXSUCCESS(result) )

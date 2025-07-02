@@ -38,68 +38,6 @@
 typedef IFXRESULT (*IFXOSFUNC)();
 
 /**
-	Load the dynamically linked library with path specified.
-
-	@param  pFileName	Pointer to a wide-character name of the dynamically 
-						linked library.
-
-	@return Upon success, it returns the handle for loaded library. 
-			Otherwise, it will return NULL.
-*/ 
-extern "C"
-IFXHANDLE IFXAPI IFXLoadLibrary( const IFXCHAR* pFileName );
-
-/**
-	Load the dynamically linked IFXCore library.
-
-	@return Upon success, it returns the handle for loaded IFXCore library. 
-			Otherwise, it will return NULL.
-*/ 
-extern "C"
-IFXHANDLE IFXAPI IFXLoadCoreLibrary();
-
-/**
-	Load the dynamically linked OpenGL library.
-
-	@return Upon success, it returns the handle for loaded OpenGL library. 
-			Otherwise, it will return NULL.
-*/ 
-extern "C"
-IFXHANDLE IFXAPI IFXLoadOpenGLLibrary();
-
-/**
-	Retrieve the fully qualified path for the IFXCore library.
-
-	@param  pPath Path for IFXCore.
-
-	@return Upon success, it returns the value IFX_OK. 
-			Otherwise, it will return the value IFX_E_UNDEFINED.
-*/
-extern "C"
-IFXRESULT IFXAPI IFXOSGetCoreLibraryPath( IFXString* pPath );
-
-/**
-	Obtain the address of a function from the dynamically linked library.
-
-	@param  handle Handle for loaded library.
-	@param  pFuncName Pointer to a name of the obrained function.
-
-	@return Upon success, it returns the pointer of function. 
-			Otherwise, it will return NULL.
-*/
-extern "C"
-IFXOSFUNC IFXAPI IFXGetAddress( const IFXHANDLE handle, const char* pFuncName );
-
-/**
-	Unloads the dynamically linked library.
-
-	@return Upon success, it returns the value IFX_OK. Otherwise, it will
-			return the value IFX_E_NOT_DONE.
-*/
-extern "C"
-IFXRESULT IFXAPI IFXReleaseLibrary( const IFXHANDLE handle );
-
-/**
 	Parameters
 		filename 
 			Filename. 

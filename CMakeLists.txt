@@ -62,21 +62,6 @@ set(Kernel_SRCS
 	RTL/Kernel/Common/IFXDebug.cpp
 )
 
-add_library(Kernel STATIC ${Kernel_SRCS})
-target_include_directories(Kernel
-	PUBLIC
-		"RTL/Kernel/Include"
-	PRIVATE
-		"RTL/Component/Texture"
-		"RTL/Component/Mesh"
-		"RTL/Component/SceneGraph"
-		"RTL/Component/ModifierChain"
-)
-target_link_libraries(Kernel 
-	PRIVATE
-		WildCards
-)
-
 SET( IFXCore_SRCS
 	RTL/Platform/${U3D_PLATFORM}/IFXCore/IFXCoreDllMain.cpp
 	RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
@@ -149,7 +134,7 @@ SET( IFXCore_SRCS
 	RTL/Component/Common/CIFXSimpleHash.cpp
 	RTL/Component/Common/CIFXVoidWrapper.cpp
 	RTL/Component/Common/IFXComponentDescriptorList.cpp
-	RTL/Component/Common/IFXComponentIds.cpp
+	#RTL/Component/Common/IFXComponentIds.cpp
 	RTL/Component/Common/IFXDids.cpp
 	RTL/Component/Common/IFXRenderWindow.cpp
 	RTL/Component/Generators/CLOD/CIFXAuthorCLODResource.cpp
@@ -421,35 +406,6 @@ SET( IFXCore_HDRS
 	RTL/Dependencies/Predicates/predicates.h
 )
 
-SET( CORE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXCore )
-ADD_LIBRARY( IFXCore SHARED ${IFXCore_SRCS} ${IFXCore_HDRS} ${CORE_DIR}/IFXCore.rc ${CORE_DIR}/IFXResource.h ${CORE_DIR}/IFXCore.def ${DEPENDENCIES_SRCS} )
-target_include_directories(IFXCore
-	PUBLIC 
-		"RTL/Component/Texture"
-		"RTL/Component/Mesh"
-		"RTL/Component/SceneGraph"
-		"RTL/Component/Rendering"
-		"RTL/Component/ModifierChain"
-		"RTL/Component/BoundHierarchy"
-		"RTL/Component/Generators/Glyph2D"
-	PRIVATE
-		"RTL/Dependencies/Predicates"
-)
-
-target_link_libraries(IFXCore
-	PUBLIC
-		Kernel
-	PRIVATE
-		PNG::PNG
-		JPEG::JPEG
-		FNVHash
-)
-
-target_compile_definitions(IFXCore
-	PUBLIC
-		UNICODE
-		_UNICODE
-)
 
 INCLUDE_DIRECTORIES(
 	RTL/Component/Include
@@ -486,7 +442,7 @@ SET( IFXExporting_HDRS
 	RTL/Component/Exporting/CIFXWriteManager.h
 )
 SET( IFXExporting_SRCS
-	RTL/Platform/${U3D_PLATFORM}/IFXExporting/IFXExportingDllMain.cpp
+	#RTL/Platform/${U3D_PLATFORM}/IFXExporting/IFXExportingDllMain.cpp
 	RTL/Component/Exporting/CIFXAnimationModifierEncoder.cpp
 	RTL/Component/Exporting/CIFXAuthorCLODEncoderX.cpp
 	RTL/Component/Exporting/CIFXAuthorCLODEncoderX_P.cpp
@@ -516,16 +472,12 @@ SET( IFXExporting_SRCS
 	RTL/Component/Exporting/CIFXViewResourceEncoder.cpp
 	RTL/Component/Exporting/CIFXWriteManager.cpp
 	RTL/Component/Exporting/IFXExporting.cpp
-	RTL/Component/Exporting/IFXExportingGuids.cpp
-	RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
+	#RTL/Component/Exporting/IFXExportingGuids.cpp
+	#RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSUtilities.cpp
 	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSLoader.cpp
 	RTL/Component/Base/IFXVertexMap.cpp
 )
-
-SET( EXPORT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/RTL/Platform/Win32/IFXExporting )
-ADD_LIBRARY( IFXExporting  SHARED ${IFXExporting_SRCS} ${IFXExporting_HDRS} ${EXPORT_DIR}/IFXExporting.rc ${EXPORT_DIR}/IFXResource.h ${EXPORT_DIR}/IFXExporting.def )
-TARGET_LINK_LIBRARIES( IFXExporting IFXCore)
 
 
 INCLUDE_DIRECTORIES( RTL/Component/Include
@@ -536,10 +488,13 @@ INCLUDE_DIRECTORIES( RTL/Component/Include
 	IDTF/Common 
         libIDTF )
 SET( libIDTF_SRCS
+	${Kernel_SRCS}
+	${IFXCore_SRCS}
+	${IFXExporting_SRCS}
 	libIDTF/SceneConverterLib.cpp
 	libIDTF/Writer.cpp
-	libIDTF/IFXOSLoader.cpp
-	libIDTF/IFXOSUtilities.cpp
+	#libIDTF/IFXOSLoader.cpp
+	#libIDTF/IFXOSUtilities.cpp
 	IDTF/PointSetConverter.cpp
 	IDTF/MetaDataConverter.cpp
 	IDTF/ResourceConverter.cpp
@@ -577,7 +532,7 @@ SET( libIDTF_SRCS
 	RTL/Component/Base/IFXVectorHasher.cpp
 	RTL/Component/Base/IFXVertexMapGroup.cpp
 	RTL/Component/Common/IFXDids.cpp
-	RTL/IFXCoreStatic/IFXCoreStatic.cpp
+	#RTL/IFXCoreStatic/IFXCoreStatic.cpp
 )
 SET( libIDTF_HDRS
 	${Component_HDRS}
@@ -661,15 +616,42 @@ SET( libIDTF_HDRS
 
 ADD_LIBRARY( IDTF STATIC ${libIDTF_SRCS} ${libIDTF_HDRS} )
 
-target_compile_definitions(IDTF PRIVATE UNICODE _UNICODE)
-target_link_libraries(IDTF
+target_compile_definitions(IDTF 
 	PUBLIC
-		Kernel
+		LIBIDTF
+	PRIVATE
+		UNICODE
+		_UNICODE
+)
+target_link_libraries(IDTF
+	PRIVATE
+		WildCards
+		FNVHash
+		JPEG::JPEG
+		PNG::PNG
 )
 
-SET_PROPERTY(
-	TARGET IDTF
-	PROPERTY COMPILE_DEFINITIONS LIBIDTF )
+target_include_directories(IDTF
+	PUBLIC
+		"RTL/Kernel/Include"
+		"RTL/Component/Include"
+		"RTL/Platform/Include"
+		"IDTF/Include"
+		"RTL/Component/Generators/Glyph2D"
+	PRIVATE 
+		"RTL/Component/Texture"
+		"RTL/Component/Mesh"
+		"RTL/Component/SceneGraph"
+		"RTL/Component/Rendering"
+		"RTL/Component/ModifierChain"
+		"RTL/Component/BoundHierarchy"
+		"RTL/Component/Exporting"
+		"RTL/Dependencies/Predicates"
+		"RTL/Component/Base"
+		"IDTF/Common"
+		"IDTF"
+)
+
 install(
 	TARGETS IDTF
 	ARCHIVE DESTINATION ${LIB_DESTINATION}
