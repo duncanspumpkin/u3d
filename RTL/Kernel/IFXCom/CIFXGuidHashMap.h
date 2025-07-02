@@ -24,8 +24,8 @@
 //	Includes
 //***************************************************************************
 
-#include "IFXHashMap.h"
 #include "IFXResultComponentEngine.h"
+#include <unordered_map>
 
 //***************************************************************************
 //	Classes, structures and types
@@ -36,6 +36,15 @@ struct IFXComponentDescriptor;
 //#define IFXGUIDDEBUG
 #define IFX_E_GUIDHASHMAP_ID_NOT_FOUND	MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_CORE_SERVICES, 0x00100 )
 
+template <>
+struct std::hash<IFXCID>
+{
+	std::size_t operator()(const IFXCID& k) const
+	{
+		// Who needs this to be good there are only <256 components
+		return static_cast<std::size_t>(k.A) ^ (static_cast<std::size_t>(k.B) << 1);
+	}
+};
 
 class CIFXGuidHashMap
 {
@@ -47,42 +56,13 @@ public:
 	IFXRESULT Initialize(
 				const U32 componentNumber, 
 				const IFXComponentDescriptor* pComponentDescriptorList);
-	IFXRESULT Add		(const IFXComponentDescriptor* pComponentDescriptor);
-	IFXRESULT Delete	(const IFXCID& compID);
 	IFXRESULT Find(const IFXCID& compID, 
 				   const IFXComponentDescriptor** ppComponentDescriptor) const;
 
-#ifdef IFXGUIDDEBUG
-	// For debug & hash table analysis:
-	//void Print( char *, bool );
-	void Print();
-#endif
-
-	// The hash bucket:
-	struct IFXGUIDHashBucket
-	{
-		const IFXComponentDescriptor*	pCompDesc;
-		IFXGUIDHashBucket*					pNext;
-	};
-
 private:
+	IFXRESULT Add(const IFXComponentDescriptor* pComponentDescriptor);
 
-	// A reformatting of the 128 bit GUID Structure:
-	struct IFXHashableGUID
-	{
-		U32 g1;
-		U32 g2;
-		U32 g3;
-		U32 g4;
-	};
-
-	// Implementation methods:
-	BOOL GUIDsEquivalent ( const IFXCID& compID1, const IFXCID& compID2) const;
-	U32 HashFunction	 (const IFXCID& compID) const;
-	IFXGUIDHashBucket*	FindHashBucket( const IFXGUID& rCompDesc, IFXGUIDHashBucket** ppPreviousBucket ) const;
-
-	U32					m_uHashTableSize;
-	IFXGUIDHashBucket*	m_pHashTable;		
+	std::unordered_map<IFXCID, const IFXComponentDescriptor*> m_hashTable;
 };
 
 
