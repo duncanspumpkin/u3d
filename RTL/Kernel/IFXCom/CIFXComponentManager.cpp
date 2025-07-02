@@ -149,13 +149,6 @@ IFXRESULT CIFXComponentManager::Initialize()
 		// initialize component database and register core components
 		result = m_pGuidHashMap->Initialize( g_coreComponentNumber,
 											 g_coreComponentDescriptorList);
-		// Search for Plugins. 
-		if(IFXSUCCESS(result))
-			result = FindPlugins();
-
-		// Load Plug-in Components
-		if(IFXSUCCESS(result))
-			result = RegisterPlugins();
 	}
 	else
 		result = IFX_E_OUT_OF_MEMORY;

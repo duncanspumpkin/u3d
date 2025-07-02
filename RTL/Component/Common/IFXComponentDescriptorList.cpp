@@ -30,7 +30,62 @@
 
 #include "IFXComponentFactories.h"
 #include "IFXCoreCIDs.h"
+#include "IFXExportingCIDs.h"
+#include "IFXImportingCIDs.h"
 
+extern IFXRESULT IFXAPI_CALLTYPE CIFXAuthorGeomCompiler_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXAuthorCLODEncoderX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXMaterialResourceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXMotionResourceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXGlyphGeneratorEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXShaderLitTextureEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXSubdivisionModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXShadingModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXAnimationModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXGroupNodeEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXLightNodeEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXLightResourceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXModelNodeEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXViewNodeEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXViewResourceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXFileReferenceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXBlockPriorityQueueX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXBlockWriterX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXWriteManager_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXStdioWriteBufferX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXPointSetEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXLineSetEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXBoneWeightsModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXCLODModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXDummyModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+
+extern IFXRESULT IFXAPI_CALLTYPE CIFXAuthorCLODDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXGroupDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXLightDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXLightResourceDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXMaterialDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXModelDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXAnimationModifierDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXMotionDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXGlyphGeneratorDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXShaderLitTextureDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXTextureDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXSubdivisionModifierDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXShadingModifierDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXDecoderChainX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXViewResourceDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXViewDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXBlockReaderX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXBTTHash_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXLoadManager_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXNameMap_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXStdioReadBufferX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXInternetReadBufferX_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXPointSetDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXLineSetDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXBoneWeightsModifierDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXCLODModifierDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+extern IFXRESULT IFXAPI_CALLTYPE CIFXDummyModifierDecoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 //***************************************************************************
 //  Global data
@@ -395,6 +450,276 @@ IFXComponentDescriptor g_coreComponentDescriptorList[] =
 	{
 		&CID_IFXShaderLitTexture,
 		{CIFXShaderLitTexture_Factory}, 1
+	},
+			{
+		&CID_IFXAuthorCLODEncoderX,
+		{CIFXAuthorCLODEncoderX_Factory},
+		1
+			},
+	{
+		&CID_IFXAnimationModifierEncoder,
+		{CIFXAnimationModifierEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXMaterialResourceEncoder,
+		{CIFXMaterialResourceEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXMotionResourceEncoder,
+		{CIFXMotionResourceEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXGlyphGeneratorEncoder,
+		{CIFXGlyphGeneratorEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXShaderLitTextureEncoder,
+		{CIFXShaderLitTextureEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXSubdivisionModifierEncoder,
+		{CIFXSubdivisionModifierEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXShadingModifierEncoder,
+		{CIFXShadingModifierEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXGroupNodeEncoder,
+		{CIFXGroupNodeEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXLightNodeEncoder,
+		{CIFXLightNodeEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXLightResourceEncoder,
+		{CIFXLightResourceEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXViewResourceEncoder,
+		{CIFXViewResourceEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXModelNodeEncoder,
+		{CIFXModelNodeEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXViewNodeEncoder,
+		{CIFXViewNodeEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXFileReferenceEncoder,
+		{CIFXFileReferenceEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXBlockPriorityQueueX,
+		{CIFXBlockPriorityQueueX_Factory},
+		1
+	},
+	{
+		&CID_IFXBlockWriterX,
+		{CIFXBlockWriterX_Factory},
+		1
+	},
+	{
+		&CID_IFXWriteManager,
+		{CIFXWriteManager_Factory},
+		1
+	},
+	{
+		&CID_IFXAuthorGeomCompiler,
+		{CIFXAuthorGeomCompiler_Factory},
+		1
+	},
+	{
+		&CID_IFXStdioWriteBuffer,
+		{CIFXStdioWriteBufferX_Factory},
+		1
+	},
+	{
+		&CID_IFXStdioWriteBufferX,
+		{CIFXStdioWriteBufferX_Factory},
+		1
+	},
+	{
+		&CID_IFXPointSetEncoder,
+		{CIFXPointSetEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXLineSetEncoderX,
+		{CIFXLineSetEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXBoneWeightsModifierEncoder,
+		{CIFXBoneWeightsModifierEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXCLODModifierEncoder,
+		{CIFXCLODModifierEncoder_Factory},
+		1
+	},
+	{
+		&CID_IFXDummyModifierEncoder,
+		{CIFXDummyModifierEncoder_Factory},
+		1
+	},
+			{
+		&CID_IFXAuthorCLODDecoder,
+		{CIFXAuthorCLODDecoder_Factory},
+		1
+			},
+	{
+		&CID_IFXGroupDecoder,
+		{CIFXGroupDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXLightDecoder,
+		{CIFXLightDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXLightResourceDecoder,
+		{CIFXLightResourceDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXViewResourceDecoder,
+		{CIFXViewResourceDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXMaterialDecoder,
+		{CIFXMaterialDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXModelDecoder,
+		{CIFXModelDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXAnimationModifierDecoder,
+		{CIFXAnimationModifierDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXMotionDecoder,
+		{CIFXMotionDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXGlyphGeneratorDecoder,
+		{CIFXGlyphGeneratorDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXShaderLitTextureDecoder,
+		{CIFXShaderLitTextureDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXTextureDecoder,
+		{CIFXTextureDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXSubdivisionModifierDecoder,
+		{CIFXSubdivisionModifierDecoder_Factory},
+		1
+	},
+	{
+		&CID_IFXShadingModifierDecoder,
+		{CIFXShadingModifierDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXDecoderChainX,
+		{CIFXDecoderChainX_Factory},
+			1
+	},
+	{
+		&CID_IFXViewDecoder,
+			{CIFXViewDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXBlockReaderX,
+			{CIFXBlockReaderX_Factory},
+			1
+	},
+	{
+		&CID_IFXBTTHash,
+		{CIFXBTTHash_Factory},
+			1
+	},
+	{
+		&CID_IFXLoadManager,
+		{CIFXLoadManager_Factory},
+			1
+	},
+	{
+		&CID_IFXStdioReadBuffer,
+		{CIFXStdioReadBufferX_Factory},
+			1
+	},
+	{
+		&CID_IFXStdioReadBufferX,
+		{CIFXStdioReadBufferX_Factory},
+			1
+	},
+	{
+		&CID_IFXInternetReadBuffer,
+			{CIFXInternetReadBufferX_Factory},
+			1
+	},
+	{
+		&CID_IFXInternetReadBufferX,
+			{CIFXInternetReadBufferX_Factory},
+			1
+	},
+	{
+		&CID_IFXPointSetDecoder,
+			{CIFXPointSetDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXLineSetDecoder,
+			{CIFXLineSetDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXBoneWeightsModifierDecoder,
+			{CIFXBoneWeightsModifierDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXCLODModifierDecoder,
+			{CIFXCLODModifierDecoder_Factory},
+			1
+	},
+	{
+		&CID_IFXDummyModifierDecoder,
+		{CIFXDummyModifierDecoder_Factory},
+		1
 	}
 };
 
