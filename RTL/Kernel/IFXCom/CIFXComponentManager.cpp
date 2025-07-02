@@ -41,7 +41,6 @@
 //	Constants
 //***************************************************************************
 
-const IFXCHAR IFXOSFI_DELIM[] = L":";
 
 //***************************************************************************
 //	Enumerations
@@ -78,7 +77,6 @@ CIFXComponentManager::CIFXComponentManager()
 {
 	m_refCount = 0;
 	m_pGuidHashMap = NULL;
-	m_pDidsList = NULL;
 }
 
 CIFXComponentManager::~CIFXComponentManager()
@@ -86,12 +84,6 @@ CIFXComponentManager::~CIFXComponentManager()
 	if( NULL != m_pGuidHashMap )
 		delete m_pGuidHashMap;
 	m_pGuidHashMap = NULL;
-
-	if( NULL != m_pDidsList )
-	{
-		m_pDidsList->Clear();
-		delete m_pDidsList;
-	}
 }
 
 U32 CIFXComponentManager::AddRef()
@@ -113,20 +105,6 @@ IFXRESULT CIFXComponentManager::Initialize()
 {
 	IFXRESULT result = IFX_OK;
 
-	if( IFXSUCCESS( result ) )
-	{
-		if( NULL != m_pDidsList )
-		{
-			m_pDidsList->Clear();
-			delete m_pDidsList;
-		}
-
-		m_pDidsList = new IFXArray<IFXDID*>;
-
-		if( NULL == m_pDidsList )
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-
 	if ( NULL != m_pGuidHashMap)
 	{
 		delete m_pGuidHashMap;
@@ -145,25 +123,6 @@ IFXRESULT CIFXComponentManager::Initialize()
 
 	return result;
 }
-
-IFXRESULT CIFXComponentManager::RegisterComponent ( 
-			const IFXComponentDescriptor* pComponentDescriptor)
-{
-	IFXRESULT result = IFX_OK;
-
-	IFXASSERT(m_pGuidHashMap);
-
-	if ( NULL != m_pGuidHashMap )
-		result = m_pGuidHashMap->Add( pComponentDescriptor );
-	else
-		result = IFX_E_NOT_INITIALIZED;
-
-	IFXASSERTBOX( (result == IFX_OK),
-		"CIFXComponentManager::RegisterComponent - component was not registered");
-
-	return result;
-}
-
 
 IFXRESULT CIFXComponentManager::CreateComponent( const IFXCID& rComponentId, 
 												 const IFXIID& rInterfaceId, 

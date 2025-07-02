@@ -86,25 +86,6 @@ public:
 	IFXRESULT Initialize();
 
 	/**
-		Registers component
-
-		In the case of component being registered already registered the 
-		component database registers new component only if it has newer 
-		version
-
-		@param  pComponentDescriptor Pointer to a component descriptor which
-				is registered.
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_E_NOT_INITIALIZED - component manager was not properly 
-										initialized
-				IFX_E_UNDEFINED - component database error
-	 */
-	IFXRESULT RegisterComponent ( 
-				const IFXComponentDescriptor* pComponentDescriptor);
-
-	/**
 	Creates component
 
 	@param	rComponentId	Reference to the identifier of the component to be
@@ -132,8 +113,6 @@ private:
 	U32 m_refCount;
 
 	CIFXGuidHashMap* m_pGuidHashMap;
-
-	IFXArray<IFXDID*> *m_pDidsList;
 };
 
 

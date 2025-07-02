@@ -132,29 +132,6 @@ IFXRESULT IFXAPI IFXCreateComponent( IFXREFCID  rComponentId,
 }
 
 //---------------------------------------------------------------------------
-/*
-Uses IFXComponentManager to register component.
-*/
-extern "C"
-IFXRESULT IFXAPI IFXRegisterComponent(
-									  IFXComponentDescriptor* pComponentDescriptor )
-{
-	IFXRESULT result = IFX_OK;
-
-	if( 0 != gs_pComponentManager )
-	{
-		if( 0 != pComponentDescriptor )
-			result = gs_pComponentManager->RegisterComponent( pComponentDescriptor );
-		else
-			result = IFX_E_INVALID_POINTER;
-	}
-	else
-		result = IFX_E_NOT_INITIALIZED;
-
-	return result;
-}
-
-//---------------------------------------------------------------------------
 /**
 This function should be invoked by dynamic library initialization
 function.
