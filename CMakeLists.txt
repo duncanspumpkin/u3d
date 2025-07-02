@@ -46,7 +46,6 @@ set(libIDTF_SRCS
 	RTL/Kernel/Common/IFXCheckX.cpp
 	RTL/Kernel/IFXCom/CIFXComponentManager.cpp
 	RTL/Kernel/IFXCom/CIFXGUIDHashMap.cpp
-	RTL/Kernel/IFXCom/CIFXPluginProxy.cpp
 	RTL/Kernel/IFXCom/IFXCom.cpp
 	RTL/Kernel/Memory/IFXMemory.cpp
 	RTL/Kernel/DataTypes/IFXCoreArray.cpp
@@ -240,7 +239,6 @@ set(libIDTF_SRCS
 	RTL/Component/Exporting/CIFXViewNodeEncoder.cpp
 	RTL/Component/Exporting/CIFXViewResourceEncoder.cpp
 	RTL/Component/Exporting/CIFXWriteManager.cpp
-	RTL/Component/Exporting/IFXExporting.cpp
 	"RTL/Component/Importing/CIFXAnimationModifierDecoder.cpp"
 	"RTL/Component/Importing/CIFXAuthorCLODDecoder.cpp"
 	"RTL/Component/Importing/CIFXAuthorCLODDecoder_P.cpp"
@@ -270,7 +268,6 @@ set(libIDTF_SRCS
 	"RTL/Component/Importing/CIFXTextureDecoder.cpp"
 	"RTL/Component/Importing/CIFXViewDecoder.cpp"
 	"RTL/Component/Importing/CIFXViewResourceDecoder.cpp"
-	"RTL/Component/Importing/IFXImporting.cpp"
 	"RTL/Component/Importing/IFXInternetConnectionX.cpp"
 	"RTL/Component/Importing/IFXInternetSessionX.cpp"
 	"RTL/Component/Importing/IFXModifierBaseDecoder.cpp"

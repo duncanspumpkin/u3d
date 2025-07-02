@@ -126,49 +126,10 @@ public:
 								const IFXIID& rInterfaceId, 
 								void** ppInterface);
 
-	/**
-  		Release  all plug-ins
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_W_CANNOT_UNLOAD - this warning means that not all components
-									were released and some plug-ins cannot be
-									unloaded.
-	 */
-	IFXRESULT UnloadAllPlugins();
-
-	/**
-		Return DIDs which were extracted from plugins.
-	*/
-	IFXArray<IFXDID*> *GetPluginsDids();
-
 protected:
-	/**
-		Find plug-in modules
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_E_INVALID_RANGE
-				IFX_E_OUT_OF_MEMORY
-	 */
-	IFXRESULT FindPlugins();
-
-	/**
-		Register plug-in components
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_E_NOT_INITIALIZED
-				IFX_E_UNDEFINED
-	 */
-	IFXRESULT RegisterPlugins();
 
 private:
 	U32 m_refCount;
-
-	CIFXPluginProxy* m_pPluginProxyList;
-
-	U32				 m_pluginNumber;
 
 	CIFXGuidHashMap* m_pGuidHashMap;
 
