@@ -40,7 +40,7 @@ target_include_directories(FNVHash
 		"RTL/Dependencies/FNVHash"
 )
 
-set(Kernel_SRCS
+set(libIDTF_SRCS
 	RTL/Kernel/Common/CIFXConnector.cpp
 	RTL/Kernel/Common/CIFXPerformanceTimer.cpp
 	RTL/Kernel/Common/IFXCheckX.cpp
@@ -60,13 +60,6 @@ set(Kernel_SRCS
 	RTL/Kernel/DataTypes/IFXVector3.cpp
 	RTL/Kernel/DataTypes/IFXVector4.cpp
 	RTL/Kernel/Common/IFXDebug.cpp
-)
-
-SET( IFXCore_SRCS
-	RTL/Platform/${U3D_PLATFORM}/IFXCore/IFXCoreDllMain.cpp
-	RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
-	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSLoader.cpp
-	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSUtilities.cpp
 	RTL/Component/Base/IFXCoincidentVertexMap.cpp
 	RTL/Component/Base/IFXCornerIter.cpp
 	RTL/Component/Base/IFXEuler.cpp
@@ -134,7 +127,6 @@ SET( IFXCore_SRCS
 	RTL/Component/Common/CIFXSimpleHash.cpp
 	RTL/Component/Common/CIFXVoidWrapper.cpp
 	RTL/Component/Common/IFXComponentDescriptorList.cpp
-	#RTL/Component/Common/IFXComponentIds.cpp
 	RTL/Component/Common/IFXDids.cpp
 	RTL/Component/Common/IFXRenderWindow.cpp
 	RTL/Component/Generators/CLOD/CIFXAuthorCLODResource.cpp
@@ -220,11 +212,108 @@ SET( IFXCore_SRCS
 	RTL/Component/UVGenerator/CIFXUVMapperPlanar.cpp
 	RTL/Component/UVGenerator/CIFXUVMapperReflection.cpp
 	RTL/Component/UVGenerator/CIFXUVMapperSpherical.cpp
+	RTL/Component/Exporting/CIFXAnimationModifierEncoder.cpp
+	RTL/Component/Exporting/CIFXAuthorCLODEncoderX.cpp
+	RTL/Component/Exporting/CIFXAuthorCLODEncoderX_P.cpp
+	RTL/Component/Exporting/CIFXAuthorCLODEncoderX_S.cpp
+	RTL/Component/Exporting/CIFXAuthorGeomCompiler.cpp
+	RTL/Component/Exporting/CIFXBlockPriorityQueueX.cpp
+	RTL/Component/Exporting/CIFXBlockWriterX.cpp
+	RTL/Component/Exporting/CIFXBoneWeightsModifierEncoder.cpp
+	RTL/Component/Exporting/CIFXCLODModifierEncoder.cpp
+	RTL/Component/Exporting/CIFXDummyModifierEncoder.cpp
+	RTL/Component/Exporting/CIFXFileReferenceEncoder.cpp
+	RTL/Component/Exporting/CIFXGlyphModifierEncoder.cpp
+	RTL/Component/Exporting/CIFXGroupNodeEncoder.cpp
+	RTL/Component/Exporting/CIFXLightNodeEncoder.cpp
+	RTL/Component/Exporting/CIFXLightResourceEncoder.cpp
+	RTL/Component/Exporting/CIFXLineSetEncoder.cpp
+	RTL/Component/Exporting/CIFXMaterialResourceEncoder.cpp
+	RTL/Component/Exporting/CIFXModelNodeEncoder.cpp
+	RTL/Component/Exporting/CIFXMotionResourceEncoder.cpp
+	RTL/Component/Exporting/CIFXNodeBaseEncoder.cpp
+	RTL/Component/Exporting/CIFXPointSetEncoder.cpp
+	RTL/Component/Exporting/CIFXShaderLitTextureEncoder.cpp
+	RTL/Component/Exporting/CIFXShadingModifierEncoder.cpp
+	RTL/Component/Exporting/CIFXStdioWriteBufferX.cpp
+	RTL/Component/Exporting/CIFXSubdivisionModifierEncoder.cpp
+	RTL/Component/Exporting/CIFXViewNodeEncoder.cpp
+	RTL/Component/Exporting/CIFXViewResourceEncoder.cpp
+	RTL/Component/Exporting/CIFXWriteManager.cpp
+	RTL/Component/Exporting/IFXExporting.cpp
+	"RTL/Component/Importing/CIFXAnimationModifierDecoder.cpp"
+	"RTL/Component/Importing/CIFXAuthorCLODDecoder.cpp"
+	"RTL/Component/Importing/CIFXAuthorCLODDecoder_P.cpp"
+	"RTL/Component/Importing/CIFXAuthorCLODDecoder_S.cpp"
+	"RTL/Component/Importing/CIFXBlockReaderX.cpp"
+	"RTL/Component/Importing/CIFXBoneWeightsModifierDecoder.cpp"
+	"RTL/Component/Importing/CIFXBTTHash.cpp"
+	"RTL/Component/Importing/CIFXCLODModifierDecoder.cpp"
+	"RTL/Component/Importing/CIFXDecoderChainX.cpp"
+	"RTL/Component/Importing/CIFXDummyModifierDecoder.cpp"
+	"RTL/Component/Importing/CIFXGlyphModifierDecoder.cpp"
+	"RTL/Component/Importing/CIFXGroupDecoder.cpp"
+	"RTL/Component/Importing/CIFXInternetReadBufferX.cpp"
+	"RTL/Component/Importing/CIFXLightDecoder.cpp"
+	"RTL/Component/Importing/CIFXLightResourceDecoder.cpp"
+	"RTL/Component/Importing/CIFXLineSetDecoder.cpp"
+	"RTL/Component/Importing/CIFXLoadManager.cpp"
+	"RTL/Component/Importing/CIFXMaterialDecoder.cpp"
+	"RTL/Component/Importing/CIFXModelDecoder.cpp"
+	"RTL/Component/Importing/CIFXMotionDecoder.cpp"
+	"RTL/Component/Importing/CIFXNodeDecoder.cpp"
+	"RTL/Component/Importing/CIFXPointSetDecoder.cpp"
+	"RTL/Component/Importing/CIFXShaderLitTextureDecoder.cpp"
+	"RTL/Component/Importing/CIFXShadingModifierDecoder.cpp"
+	"RTL/Component/Importing/CIFXStdioReadBufferX.cpp"
+	"RTL/Component/Importing/CIFXSubdivisionModifierDecoder.cpp"
+	"RTL/Component/Importing/CIFXTextureDecoder.cpp"
+	"RTL/Component/Importing/CIFXViewDecoder.cpp"
+	"RTL/Component/Importing/CIFXViewResourceDecoder.cpp"
+	"RTL/Component/Importing/IFXImporting.cpp"
+	"RTL/Component/Importing/IFXInternetConnectionX.cpp"
+	"RTL/Component/Importing/IFXInternetSessionX.cpp"
+	"RTL/Component/Importing/IFXModifierBaseDecoder.cpp"
+	"RTL/Component/Importing/IFXSocketStream.cpp"
 	RTL/Dependencies/Predicates/predicates.cpp
+	RTL/Platform/${U3D_PLATFORM}/IFXCore/IFXCoreDllMain.cpp
+	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSLoader.cpp
+	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSUtilities.cpp
+	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSSocket.cpp
+	RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
+	libIDTF/SceneConverterLib.cpp
+	libIDTF/Writer.cpp
+	IDTF/PointSetConverter.cpp
+	IDTF/MetaDataConverter.cpp
+	IDTF/ResourceConverter.cpp
+	IDTF/TextureConverter.cpp
+	IDTF/File.cpp
+	IDTF/LineSetConverter.cpp
+	IDTF/ModelConverter.cpp
+	IDTF/NodeConverter.cpp
+	IDTF/MeshConverter.cpp
+	IDTF/FileReferenceConverter.cpp
+	IDTF/ModifierConverter.cpp
+	IDTF/Helpers/MiscUtilities.cpp
+	IDTF/Helpers/TGAImage.cpp
+	IDTF/Helpers/ModifierUtilities.cpp
+	IDTF/Helpers/SceneUtilities.cpp
+	IDTF/Helpers/DebugInfo.cpp
+	IDTF/Helpers/Guids.cpp
+	IDTF/Common/GlyphModifier.cpp
+	IDTF/Common/ModelResource.cpp
+	IDTF/Common/ModifierList.cpp
+	IDTF/Common/NodeList.cpp
+	IDTF/Common/FileReference.cpp
+	IDTF/Common/ResourceList.cpp
+	IDTF/Common/SceneResources.cpp
+	IDTF/Common/ModelResourceList.cpp
+	IDTF/Common/MetaDataList.cpp
+	IDTF/Common/ParentList.cpp
+	IDTF/Common/GlyphCommandList.cpp
 )
-SET( IFXCore_HDRS
-	${Component_HDRS}
-	${Platform_HDRS}
+
+set(libIDTF_HDRS
 	RTL/Component/Base/IFXVectorHasher.h
 	RTL/Component/BitStream/CIFXBitStreamX.h
 	RTL/Component/BitStream/CIFXDataBlockQueueX.h
@@ -403,17 +492,6 @@ SET( IFXCore_HDRS
 	RTL/Component/UVGenerator/CIFXUVMapperPlanar.h
 	RTL/Component/UVGenerator/CIFXUVMapperReflection.h
 	RTL/Component/UVGenerator/CIFXUVMapperSpherical.h
-	RTL/Dependencies/Predicates/predicates.h
-)
-
-
-INCLUDE_DIRECTORIES(
-	RTL/Component/Include
-    RTL/Platform/Include
-	RTL/Component/Exporting )
-SET( IFXExporting_HDRS
-	${Component_HDRS}
-	${Platform_HDRS}
 	RTL/Component/Exporting/CIFXAnimationModifierEncoder.h
 	RTL/Component/Exporting/CIFXAuthorCLODEncoderX.h
 	RTL/Component/Exporting/CIFXAuthorGeomCompiler.h
@@ -440,103 +518,7 @@ SET( IFXExporting_HDRS
 	RTL/Component/Exporting/CIFXViewNodeEncoder.h
 	RTL/Component/Exporting/CIFXViewResourceEncoder.h
 	RTL/Component/Exporting/CIFXWriteManager.h
-)
-SET( IFXExporting_SRCS
-	#RTL/Platform/${U3D_PLATFORM}/IFXExporting/IFXExportingDllMain.cpp
-	RTL/Component/Exporting/CIFXAnimationModifierEncoder.cpp
-	RTL/Component/Exporting/CIFXAuthorCLODEncoderX.cpp
-	RTL/Component/Exporting/CIFXAuthorCLODEncoderX_P.cpp
-	RTL/Component/Exporting/CIFXAuthorCLODEncoderX_S.cpp
-	RTL/Component/Exporting/CIFXAuthorGeomCompiler.cpp
-	RTL/Component/Exporting/CIFXBlockPriorityQueueX.cpp
-	RTL/Component/Exporting/CIFXBlockWriterX.cpp
-	RTL/Component/Exporting/CIFXBoneWeightsModifierEncoder.cpp
-	RTL/Component/Exporting/CIFXCLODModifierEncoder.cpp
-	RTL/Component/Exporting/CIFXDummyModifierEncoder.cpp
-	RTL/Component/Exporting/CIFXFileReferenceEncoder.cpp
-	RTL/Component/Exporting/CIFXGlyphModifierEncoder.cpp
-	RTL/Component/Exporting/CIFXGroupNodeEncoder.cpp
-	RTL/Component/Exporting/CIFXLightNodeEncoder.cpp
-	RTL/Component/Exporting/CIFXLightResourceEncoder.cpp
-	RTL/Component/Exporting/CIFXLineSetEncoder.cpp
-	RTL/Component/Exporting/CIFXMaterialResourceEncoder.cpp
-	RTL/Component/Exporting/CIFXModelNodeEncoder.cpp
-	RTL/Component/Exporting/CIFXMotionResourceEncoder.cpp
-	RTL/Component/Exporting/CIFXNodeBaseEncoder.cpp
-	RTL/Component/Exporting/CIFXPointSetEncoder.cpp
-	RTL/Component/Exporting/CIFXShaderLitTextureEncoder.cpp
-	RTL/Component/Exporting/CIFXShadingModifierEncoder.cpp
-	RTL/Component/Exporting/CIFXStdioWriteBufferX.cpp
-	RTL/Component/Exporting/CIFXSubdivisionModifierEncoder.cpp
-	RTL/Component/Exporting/CIFXViewNodeEncoder.cpp
-	RTL/Component/Exporting/CIFXViewResourceEncoder.cpp
-	RTL/Component/Exporting/CIFXWriteManager.cpp
-	RTL/Component/Exporting/IFXExporting.cpp
-	#RTL/Component/Exporting/IFXExportingGuids.cpp
-	#RTL/IFXCorePluginStatic/IFXCorePluginStatic.cpp
-	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSUtilities.cpp
-	RTL/Platform/${U3D_PLATFORM}/Common/IFXOSLoader.cpp
-	RTL/Component/Base/IFXVertexMap.cpp
-)
-
-
-INCLUDE_DIRECTORIES( RTL/Component/Include
-    RTL/Platform/Include
-	RTL/Component/Base
-	IDTF
-	IDTF/Include
-	IDTF/Common 
-        libIDTF )
-SET( libIDTF_SRCS
-	${Kernel_SRCS}
-	${IFXCore_SRCS}
-	${IFXExporting_SRCS}
-	libIDTF/SceneConverterLib.cpp
-	libIDTF/Writer.cpp
-	#libIDTF/IFXOSLoader.cpp
-	#libIDTF/IFXOSUtilities.cpp
-	IDTF/PointSetConverter.cpp
-	IDTF/MetaDataConverter.cpp
-	IDTF/ResourceConverter.cpp
-	IDTF/TextureConverter.cpp
-	IDTF/File.cpp
-	IDTF/LineSetConverter.cpp
-	IDTF/ModelConverter.cpp
-	IDTF/NodeConverter.cpp
-	IDTF/MeshConverter.cpp
-	IDTF/FileReferenceConverter.cpp
-	IDTF/ModifierConverter.cpp
-	IDTF/Helpers/MiscUtilities.cpp
-	IDTF/Helpers/TGAImage.cpp
-	IDTF/Helpers/ModifierUtilities.cpp
-	IDTF/Helpers/SceneUtilities.cpp
-	IDTF/Helpers/DebugInfo.cpp
-	IDTF/Helpers/Guids.cpp
-	IDTF/Common/GlyphModifier.cpp
-	IDTF/Common/ModelResource.cpp
-	IDTF/Common/ModifierList.cpp
-	IDTF/Common/NodeList.cpp
-	IDTF/Common/FileReference.cpp
-	IDTF/Common/ResourceList.cpp
-	IDTF/Common/SceneResources.cpp
-	IDTF/Common/ModelResourceList.cpp
-	IDTF/Common/MetaDataList.cpp
-	IDTF/Common/ParentList.cpp
-	IDTF/Common/GlyphCommandList.cpp
-	RTL/Component/Base/IFXCoincidentVertexMap.cpp
-	RTL/Component/Base/IFXFatCornerIter.cpp
-	RTL/Component/Base/IFXCornerIter.cpp
-	RTL/Component/Base/IFXTransform.cpp
-	RTL/Component/Base/IFXVertexMap.cpp
-	RTL/Component/Base/IFXEuler.cpp
-	RTL/Component/Base/IFXVectorHasher.cpp
-	RTL/Component/Base/IFXVertexMapGroup.cpp
-	RTL/Component/Common/IFXDids.cpp
-	#RTL/IFXCoreStatic/IFXCoreStatic.cpp
-)
-SET( libIDTF_HDRS
-	${Component_HDRS}
-	${Platform_HDRS}
+	RTL/Dependencies/Predicates/predicates.h
 	libIDTF/SceneConverterLib.h
 	libIDTF/Writer.h
 	IDTF/DefaultSettings.h
@@ -611,10 +593,12 @@ SET( libIDTF_HDRS
 	IDTF/Common/ViewNode.h
 	IDTF/Common/ViewResource.h
 	IDTF/Common/ViewResourceList.h
-	RTL/Component/Base/IFXVectorHasher.h
 )
 
-ADD_LIBRARY( IDTF STATIC ${libIDTF_SRCS} ${libIDTF_HDRS} )
+add_library(IDTF STATIC
+	${libIDTF_SRCS}
+	${libIDTF_HDRS}
+)
 
 target_compile_definitions(IDTF 
 	PUBLIC
@@ -629,6 +613,7 @@ target_link_libraries(IDTF
 		FNVHash
 		JPEG::JPEG
 		PNG::PNG
+		Ws2_32
 )
 
 target_include_directories(IDTF
@@ -637,6 +622,9 @@ target_include_directories(IDTF
 		"RTL/Component/Include"
 		"RTL/Platform/Include"
 		"IDTF/Include"
+		"IDTF"
+		"IDTF/Common"
+		"libIDTF"
 		"RTL/Component/Generators/Glyph2D"
 	PRIVATE 
 		"RTL/Component/Texture"
@@ -646,10 +634,9 @@ target_include_directories(IDTF
 		"RTL/Component/ModifierChain"
 		"RTL/Component/BoundHierarchy"
 		"RTL/Component/Exporting"
+		"RTL/Component/Importing"
 		"RTL/Dependencies/Predicates"
 		"RTL/Component/Base"
-		"IDTF/Common"
-		"IDTF"
 )
 
 install(
@@ -657,8 +644,8 @@ install(
 	ARCHIVE DESTINATION ${LIB_DESTINATION}
 	LIBRARY DESTINATION ${LIB_DESTINATION}
 )
-ADD_EXECUTABLE( IDTFGen Samples/SampleCode/IDTFGen.cpp ${libIDTF_HDRS} )
-target_link_libraries( IDTFGen  IDTF ${CMAKE_DL_LIBS} )
+add_executable(IDTFGen Samples/SampleCode/IDTFGen.cpp)
+target_link_libraries(IDTFGen  IDTF)
 
 install(
 	TARGETS IDTFGen 

@@ -269,11 +269,11 @@ IFXRESULT CIFXComponentManager::FindPlugins()
 	m_pluginNumber = 4;
 #else
 #ifdef WIN32
-    IFXString plugins = "IFXExporting.dll:";
+    IFXString plugins = "IFXExporting.dll:IFXImporting.dll:";
 #else
     IFXString plugins = "libIFXExporting.so:libIFXImporting.so:libIFXScheduling.so:";
 #endif
-	m_pluginNumber = 1;
+	m_pluginNumber = 2;
 #endif
 
     if( 0 != m_pluginNumber )

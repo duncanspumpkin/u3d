@@ -118,7 +118,12 @@ IFXRESULT CIFXPluginProxy::Initialize( const IFXString* name /*U8* name*/ )
 
 	return result;
 }
-extern "C" IFXRESULT IFXAPI IFXPluginRegister(
+
+extern "C" IFXRESULT IFXAPI IFXExportingPluginRegister(
+	U32* pComponentNumber,
+	IFXComponentDescriptor** ppComponentDescriptorList);
+
+extern "C" IFXRESULT IFXAPI IFXImportingPluginRegister(
 	U32* pComponentNumber,
 	IFXComponentDescriptor** ppComponentDescriptorList);
 
@@ -140,7 +145,20 @@ IFXRESULT CIFXPluginProxy::RetrieveComponentDescriptors()
 			U32 componentNumber = 0;
 			IFXComponentDescriptor* pComponentDescriptorList = NULL;
 
-			result = IFXPluginRegister( &componentNumber, &pComponentDescriptorList );
+			U32 position = 0;
+			if (m_name.FindSubstring(L"IFXExporting", &position) != IFX_OK)
+			{
+				// Exporting plug-in
+				result = IFXExportingPluginRegister( &componentNumber, &pComponentDescriptorList );
+			}
+			else if (m_name.FindSubstring(L"IFXImporting", &position) != IFX_OK)
+			{
+				// Importing plug-in
+				result = IFXImportingPluginRegister( &componentNumber, &pComponentDescriptorList );
+			}
+			else {
+				result = IFX_E_BAD_PARAM;
+			}
 
 			if( IFXSUCCESS(result) )
 			{
@@ -330,8 +348,20 @@ IFXRESULT CIFXPluginProxy::UpdateFactoryPointers()
 		IFXComponentDescriptor* pComponentDescriptorList = NULL;
 		U32 didsNumber = 0;
 
-		result = IFXPluginRegister( &didsNumber,
-			&pComponentDescriptorList );
+		U32 position = 0;
+		if (m_name.FindSubstring(L"IFXExporting", &position) != IFX_OK)
+		{
+			// Exporting plug-in
+			result = IFXExportingPluginRegister(&didsNumber, &pComponentDescriptorList);
+		}
+		else if (m_name.FindSubstring(L"IFXImporting", &position) != IFX_OK)
+		{
+			// Importing plug-in
+			result = IFXImportingPluginRegister(&didsNumber, &pComponentDescriptorList);
+		}
+		else {
+			result = IFX_E_BAD_PARAM;
+		}
 
 		if( IFXSUCCESS(result) )
 		{

@@ -328,7 +328,7 @@ IFXRESULT IFXAPI_CALLTYPE IFXImportingShutdown()
 	were not defined, it will return the value IFX_E_PARAMETER_NOT_INITIALIZED.
 */
 extern "C"
-IFXRESULT IFXAPI IFXPluginRegister(
+IFXRESULT IFXAPI IFXImportingPluginRegister(
 								   U32* pComponentNumber,
 								   IFXComponentDescriptor** ppComponentDescriptorList )
 {
@@ -342,26 +342,6 @@ IFXRESULT IFXAPI IFXPluginRegister(
 	}
 	else
 		result = IFX_E_PARAMETER_NOT_INITIALIZED;
-
-	return result;
-}
-
-//---------------------------------------------------------------------------
-/**
-	This function is used to let component system know if plug-in can be
-	unloaded now or not.
-
-	@return If plug-in can be unloaded, it will return the value IFX_OK.
-	Otherwise, it will return the value IFX_E_NOT_DONE.
-*/
-extern "C"
-IFXRESULT IFXAPI IFXPluginCanUnloadNow()
-{
-	IFXRESULT result = IFX_OK;
-
-	if( 0 != g_countActiveObjects )
-//	if( 0 != g_countActiveImportingObjects )
-		result = IFX_E_NOT_DONE;
 
 	return result;
 }
