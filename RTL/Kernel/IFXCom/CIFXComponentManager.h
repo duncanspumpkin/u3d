@@ -86,25 +86,6 @@ public:
 	IFXRESULT Initialize();
 
 	/**
-		Registers component
-
-		In the case of component being registered already registered the 
-		component database registers new component only if it has newer 
-		version
-
-		@param  pComponentDescriptor Pointer to a component descriptor which
-				is registered.
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_E_NOT_INITIALIZED - component manager was not properly 
-										initialized
-				IFX_E_UNDEFINED - component database error
-	 */
-	IFXRESULT RegisterComponent ( 
-				const IFXComponentDescriptor* pComponentDescriptor);
-
-	/**
 	Creates component
 
 	@param	rComponentId	Reference to the identifier of the component to be
@@ -126,53 +107,12 @@ public:
 								const IFXIID& rInterfaceId, 
 								void** ppInterface);
 
-	/**
-  		Release  all plug-ins
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_W_CANNOT_UNLOAD - this warning means that not all components
-									were released and some plug-ins cannot be
-									unloaded.
-	 */
-	IFXRESULT UnloadAllPlugins();
-
-	/**
-		Return DIDs which were extracted from plugins.
-	*/
-	IFXArray<IFXDID*> *GetPluginsDids();
-
 protected:
-	/**
-		Find plug-in modules
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_E_INVALID_RANGE
-				IFX_E_OUT_OF_MEMORY
-	 */
-	IFXRESULT FindPlugins();
-
-	/**
-		Register plug-in components
-
-		@return Upon success, it returns the value IFX_OK. Otherwise, it will 
-				return one of the following value:
-				IFX_E_NOT_INITIALIZED
-				IFX_E_UNDEFINED
-	 */
-	IFXRESULT RegisterPlugins();
 
 private:
 	U32 m_refCount;
 
-	CIFXPluginProxy* m_pPluginProxyList;
-
-	U32				 m_pluginNumber;
-
 	CIFXGuidHashMap* m_pGuidHashMap;
-
-	IFXArray<IFXDID*> *m_pDidsList;
 };
 
 

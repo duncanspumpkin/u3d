@@ -568,21 +568,6 @@ CIFXCoreServices::CreateComponents()
 		m_pDidRegistry->AddDID(DID_IFXTexture, IFX_DID_UNKNOWN);
 	}
 
-	if( IFXSUCCESS( rc ) )
-	{
-		IFXArray<IFXDID*> *pDidsList = NULL;
-		U32 didsCount;
-
-		IFXGetPluginsDids( pDidsList );
-		didsCount = pDidsList->GetNumberElements();
-
-		U32 i;
-		for( i = 0; i < didsCount; i++ )
-		{
-			m_pDidRegistry->AddDID( *(pDidsList->GetElement(i)), IFX_DID_UNKNOWN );
-		}
-	}
-
 	m_pMetaData = NULL;
 	if (IFXSUCCESS(rc))
 		rc = IFXCreateComponent(CID_IFXMetaDataX, IID_IFXMetaDataX, (void**)&m_pMetaData);

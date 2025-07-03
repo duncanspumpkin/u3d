@@ -97,10 +97,6 @@ IFXRESULT IFXAPI IFXCOMUninitialize()
 	// release IFXComponentManager
 	if( 0 != gs_pComponentManager )
 	{
-		result = gs_pComponentManager->UnloadAllPlugins();
-		//IFXASSERTBOX( result == IFX_OK,
-		//  "IFXCOMUninitialize - some plug-in cannot be unloaded" );
-
 		if( 0 == gs_pComponentManager->Release() )
 		{
 			gs_pComponentManager = 0;
@@ -128,47 +124,6 @@ IFXRESULT IFXAPI IFXCreateComponent( IFXREFCID  rComponentId,
 		result = gs_pComponentManager->CreateComponent( rComponentId,
 			rInterfaceId,
 			ppInterface);
-	}
-	else
-		result = IFX_E_NOT_INITIALIZED;
-
-	return result;
-}
-
-//---------------------------------------------------------------------------
-/*
-Uses IFXComponentManager to register component.
-*/
-extern "C"
-IFXRESULT IFXAPI IFXRegisterComponent(
-									  IFXComponentDescriptor* pComponentDescriptor )
-{
-	IFXRESULT result = IFX_OK;
-
-	if( 0 != gs_pComponentManager )
-	{
-		if( 0 != pComponentDescriptor )
-			result = gs_pComponentManager->RegisterComponent( pComponentDescriptor );
-		else
-			result = IFX_E_INVALID_POINTER;
-	}
-	else
-		result = IFX_E_NOT_INITIALIZED;
-
-	return result;
-}
-
-/*
-Uses IFXComponentManager to register DIDs.
-*/
-extern "C"
-IFXRESULT IFXAPI IFXGetPluginsDids( IFXArray<IFXDID*> *&pDidsList )
-{
-	IFXRESULT result = IFX_OK;
-
-	if( 0 != gs_pComponentManager )
-	{
-		pDidsList = gs_pComponentManager->GetPluginsDids();
 	}
 	else
 		result = IFX_E_NOT_INITIALIZED;

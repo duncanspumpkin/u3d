@@ -48,7 +48,7 @@
 #include "IFXOSUtilities.h"
 #include <windows.h>
 #include <float.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <locale.h>
 #include <chrono>
 
@@ -60,8 +60,6 @@
     #define STRICT
 #endif
 
-#define _DEBUG_REG_KEY_PROJECT      L"SOFTWARE\\3DIF\\IFX"
-#define _DEBUG_REG_VALUE_DEBUGLEVEL   L"DebugLevel"
 #define _MESSAGE_LENGTH_MAX                 1024
 
 #ifndef WIN32_LEAN_AND_MEAN
@@ -84,45 +82,9 @@
   BOOL g_bInitialized = FALSE;
 #endif
 
-U32 g_eax=0, g_ebx=0, g_ecx=0, g_edx=0;
-
 //***************************************************************************
 //  Local functions
 //***************************************************************************
-
-#ifdef _MSC_VER
-static void cpuid(U32 op, U32& eax, U32& ebx, U32& ecx, U32& edx)
-{
-#ifndef _WIN64
-  U32 A, B, C, D;
-  __asm {
-    mov eax, op
-    cpuid
-    mov A, eax
-    mov B, ebx
-    mov C, ecx
-    mov D, edx
-  }
-  eax = A;
-  ebx = B;
-  ecx = C;
-  edx = D;
-#endif
-}
-#endif
-#ifdef __MINGW32__
-static void cpuid(U32 op)
-{
-  asm(
-        "movl %%ebx, %%edi \n\t"
-        "cpuid             \n\t"
-        "movl %%edi, %%ebx \n\t"
-        : "=a" (g_eax),
-      "=c" (g_ecx),
-      "=d" (g_edx)
-    : "a" (op));
-}
-#endif
 
 //***************************************************************************
 //  Global functions
@@ -137,14 +99,7 @@ U16 IFXAPI_CALLTYPE IFXGetSystemDefaultLangID(void)
 extern "C"
 BOOL IFXAPI_CALLTYPE IFXOSCheckCPUFeature(EIFXCPUFeature feature)
 {
-  BOOL supported = FALSE;
-  switch (feature) {
-    case IFXCPUFeature_MMX: supported = (g_edx>>23)&1; break;
-    case IFXCPUFeature_SSE: supported = (g_edx>>25)&1; break;
-    case IFXCPUFeature_SSE2: supported = (g_edx>>26)&1; break;
-    case IFXCPUFeature_SSE3: supported = g_ecx&1; break;
-  }
-  return supported;
+  return FALSE;
 }
 
 //---------------------------------------------------------------------------
@@ -153,13 +108,6 @@ BOOL IFXAPI_CALLTYPE IFXOSCheckCPUFeature(EIFXCPUFeature feature)
 extern "C"
 void IFXAPI_CALLTYPE IFXOSInitialize( void )
 {
-#ifdef _MSC_VER
-  cpuid(1, g_eax, g_ebx, g_ecx, g_edx);
-#endif
-#ifdef __MINGW32__
-  cpuid(1);
-#endif
-
 #ifdef _DEBUG
   g_bInitialized = TRUE;
 #endif
@@ -218,41 +166,14 @@ U32 IFXAPI_CALLTYPE IFXOSControlFP( U32 value, U32 mask )
 extern "C"
 IFXDebugLevel IFXAPI_CALLTYPE IFXOSGetDebugLevel( void )
 {
-  IFXDebugLevel debugLevel  = IFXDEBUG_DEFAULT;
-  HKEY      hKey;
+    IFXDebugLevel debugLevel = IFXDEBUG_DEFAULT;
 
-  if ( RegOpenKeyEx( HKEY_LOCAL_MACHINE,
-              _DEBUG_REG_KEY_PROJECT,
-              0,
-              KEY_QUERY_VALUE,
-              &hKey ) == ERROR_SUCCESS )
-  {
-    DWORD value,
-        valueSize = sizeof( value ),
-        valueType;
+    char* debugLevelValue = std::getenv("U3D_DEBUGLEVEL");
 
-    if ( RegQueryValueEx( hKey,
-                  _DEBUG_REG_VALUE_DEBUGLEVEL,
-                  NULL,
-                  &valueType,
-                  ( LPBYTE ) &value,
-                  &valueSize ) == ERROR_SUCCESS )
-    {
-      if ( valueType == REG_DWORD )
-        debugLevel = ( IFXDebugLevel ) value;
-    }
+    if (NULL != debugLevelValue)
+        debugLevel = (IFXDebugLevel)atoi(debugLevelValue);
 
-    RegCloseKey( hKey );
-  }
-
-  wchar_t debugLevelValue[2];
-  if(GetEnvironmentVariable(L"U3D_DEBUGLEVEL", debugLevelValue, 2))
-  {
-    debugLevelValue[1] = '\0';
-	debugLevel = (IFXDebugLevel)_wtoi( debugLevelValue );
-  }
-
-  return debugLevel;
+    return debugLevel;
 }
 
 //---------------------------------------------------------------------------
