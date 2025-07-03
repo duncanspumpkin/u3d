@@ -26,6 +26,8 @@
 
 #include "IFXUnknown.h"
 
+struct STextureOutputInfo;
+
 class IFXTextureImageTools : public IFXUnknown 
 {
 public:

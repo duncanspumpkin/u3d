@@ -15,66 +15,77 @@
 //  limitations under the License.
 //
 //***************************************************************************
-#include <stdio.h>
 #include "Matrix4x4.h"
+#include <stdio.h>
 
-
-void Matrix4x4::reset ()
+void Matrix4x4::reset()
 {
-	int i;
-	int j;
-	for ( i = 0; i < 4; i++)
-		for ( j = 0; j < 4; j++)
-			data[i][j] = 0;
+    int i;
+    int j;
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            data[i][j] = 0;
+        }
+    }
 }
 
-
-void Matrix4x4::operator += (Matrix4x4 &m)
+void Matrix4x4::operator+=(Matrix4x4& m)
 {
-	int i;
-	int j;
-	for ( i = 0; i < 4; i++)
-		for ( j = 0; j < 4; j++)
-			data[i][j] += m.data[i][j];
+    int i;
+    int j;
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            data[i][j] += m.data[i][j];
+        }
+    }
 }
 
-
-void Matrix4x4::operator *= (float scalar)
+void Matrix4x4::operator*=(float scalar)
 {
-	int i;
-	int j;
-	for ( i = 0; i < 4; i++)
-		for ( j = 0; j < 4; j++)
-			data[i][j] *= scalar;
+    int i;
+    int j;
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            data[i][j] *= scalar;
+        }
+    }
 }
-
 
 //                        Matrix1x4                             //
 
 Matrix1x4 result1x4;
 
 // m1x4(temp) = m1x4 * m4x4
-Matrix1x4 & Matrix1x4::operator * (Matrix4x4 &m)
+Matrix1x4& Matrix1x4::operator*(Matrix4x4& m)
 {
-	int i;
-	for ( i = 0; i < 4; i++)
-	{
-		result1x4.data[i] = 0.0f;
-		int j;
-		for ( j = 0; j < 4; j++)
-			result1x4.data[i] += data[j] * m.data[j][i];
-	}
+    int i;
+    for (i = 0; i < 4; i++)
+    {
+        result1x4.data[i] = 0.0f;
+        int j;
+        for (j = 0; j < 4; j++)
+        {
+            result1x4.data[i] += data[j] * m.data[j][i];
+        }
+    }
 
-	return result1x4;
+    return result1x4;
 }
 
-
-float Matrix1x4::operator * (Matrix4x1 &m)
+float Matrix1x4::operator*(Matrix4x1& m)
 {
-	float sum = 0.0f;
-	int i;
-	for ( i = 0; i < 4; i++)
-		sum += data[i] * m.data[i];
+    float sum = 0.0f;
+    int i;
+    for (i = 0; i < 4; i++)
+    {
+        sum += data[i] * m.data[i];
+    }
 
-	return sum;
+    return sum;
 }

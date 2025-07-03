@@ -16,7 +16,6 @@
 //
 //***************************************************************************
 
-
 #ifndef IFXTQTBaseTriangle_DOT_H
 #define IFXTQTBaseTriangle_DOT_H
 
@@ -25,99 +24,92 @@
 
 // Typedef a Breadth First Traversal (BFT) Deque:
 class IFXTQTTriangle;
-//typedef std::deque<IFXTQTTriangle *> IFXBFTDeque; // remove stl dependency.
-typedef IFXDeque<IFXTQTTriangle *> IFXBFTDeque;
-
-
+// typedef std::deque<IFXTQTTriangle *> IFXBFTDeque; // remove stl dependency.
+typedef IFXDeque<IFXTQTTriangle*> IFXBFTDeque;
 
 class IFXTQTBaseTriangle : public IFXTQTTriangle
 {
 
 private:
-
-	// Base mesh triangle neighbor data:
-	// Constructed from input such as IFXMesh/IFXMeshGroup/IFXNeighborMesh:
-	IFXTQTBaseTriangle *m_pNeighbor[3];
+    // Base mesh triangle neighbor data:
+    // Constructed from input such as IFXMesh/IFXMeshGroup/IFXNeighborMesh:
+    IFXTQTBaseTriangle* m_pNeighbor[3];
     IFXEdgeContinuityDescriptor m_pEdgeDescriptor[3];
 
     // Breadth First traversal support:
     IFXBFTDeque m_BftDeque;
 
-	// Support for multi-mesh meshgroups. Index indicates to which mesh this 
-	// triangle and all its subtriangle belong.
-	U32	m_uMeshIndex;
+    // Support for multi-mesh meshgroups. Index indicates to which mesh this
+    // triangle and all its subtriangle belong.
+    U32 m_uMeshIndex;
 
 public:
-	
-	IFXTQTBaseTriangle (){};
-	~IFXTQTBaseTriangle ()	{};
+    IFXTQTBaseTriangle() {};
+    ~IFXTQTBaseTriangle() {};
 
-	void SetBaseNeighbors (IFXTQTBaseTriangle *pLeftNeighbor, 
-		IFXTQTBaseTriangle *pBaseNeighbor, IFXTQTBaseTriangle *pRightNeighbor);
-	void GetBaseNeighbor (IFXTQTAddress::Direction usDirection, 
-		IFXTQTBaseTriangle	**ppBaseNeighbor, IFXTQTAddress::Direction *pOrientation);
+    void SetBaseNeighbors(IFXTQTBaseTriangle* pLeftNeighbor, IFXTQTBaseTriangle* pBaseNeighbor, IFXTQTBaseTriangle* pRightNeighbor);
+    void GetBaseNeighbor(IFXTQTAddress::Direction usDirection, IFXTQTBaseTriangle** ppBaseNeighbor, IFXTQTAddress::Direction* pOrientation);
 
-	void SetMeshIndex (U32 uMeshIndex);
-	void GetMeshIndex (U32 *puMeshIndex);
+    void SetMeshIndex(U32 uMeshIndex);
+    void GetMeshIndex(U32* puMeshIndex);
 
-    void BreadthFirstEvaluate (IFXSubdivisionManager *pSubdivMgr);
-    void ResetAll(IFXSubdivisionManager *pSubdivMgr);
+    void BreadthFirstEvaluate(IFXSubdivisionManager* pSubdivMgr);
+    void ResetAll(IFXSubdivisionManager* pSubdivMgr);
 
-    IFXEdgeContinuityDescriptor *GetEdgeDescriptor(IFXTQTAddress::Direction direction);
+    IFXEdgeContinuityDescriptor* GetEdgeDescriptor(IFXTQTAddress::Direction direction);
 
-
-	// For Debug:
-	U16	m_usId;
+    // For Debug:
+    U16 m_usId;
 };
 
-
-
-
-IFXINLINE void IFXTQTBaseTriangle::GetBaseNeighbor (IFXTQTAddress::Direction usDirection, 
-				IFXTQTBaseTriangle	**ppBaseNeighbor, IFXTQTAddress::Direction *pOrientation)
+IFXINLINE void IFXTQTBaseTriangle::GetBaseNeighbor(IFXTQTAddress::Direction usDirection, IFXTQTBaseTriangle** ppBaseNeighbor, IFXTQTAddress::Direction* pOrientation)
 {
-	// Grab the base neighbor pointer:
-	*ppBaseNeighbor = m_pNeighbor[usDirection];
+    // Grab the base neighbor pointer:
+    *ppBaseNeighbor = m_pNeighbor[usDirection];
 
     if (!*ppBaseNeighbor)
+    {
         return;
-        
-	
-	// Determine orientation offset, if neighbor pointer is valid:
-	if (ppBaseNeighbor)
-	{
-		if (this == (*ppBaseNeighbor)->m_pNeighbor[IFXTQTAddress::Left])
-			*pOrientation = IFXTQTAddress::Left;
-		else if (this == (*ppBaseNeighbor)->m_pNeighbor[IFXTQTAddress::Base])
-			*pOrientation = IFXTQTAddress::Base;
-		else if (this == (*ppBaseNeighbor)->m_pNeighbor[IFXTQTAddress::Right])
-			*pOrientation = IFXTQTAddress::Right;
-	}
+    }
+
+    // Determine orientation offset, if neighbor pointer is valid:
+    if (ppBaseNeighbor)
+    {
+        if (this == (*ppBaseNeighbor)->m_pNeighbor[IFXTQTAddress::Left])
+        {
+            *pOrientation = IFXTQTAddress::Left;
+        }
+        else if (this == (*ppBaseNeighbor)->m_pNeighbor[IFXTQTAddress::Base])
+        {
+            *pOrientation = IFXTQTAddress::Base;
+        }
+        else if (this == (*ppBaseNeighbor)->m_pNeighbor[IFXTQTAddress::Right])
+        {
+            *pOrientation = IFXTQTAddress::Right;
+        }
+    }
 }
 
-
-
-IFXINLINE 	void IFXTQTBaseTriangle::SetBaseNeighbors (IFXTQTBaseTriangle *pLeftNeighbor, IFXTQTBaseTriangle *pBaseNeighbor, IFXTQTBaseTriangle *pRightNeighbor)
+IFXINLINE void IFXTQTBaseTriangle::SetBaseNeighbors(IFXTQTBaseTriangle* pLeftNeighbor, IFXTQTBaseTriangle* pBaseNeighbor, IFXTQTBaseTriangle* pRightNeighbor)
 {
-	m_pNeighbor[IFXTQTAddress::Left]	= pLeftNeighbor;
-	m_pNeighbor[IFXTQTAddress::Base]	= pBaseNeighbor;
-	m_pNeighbor[IFXTQTAddress::Right]	= pRightNeighbor;
+    m_pNeighbor[IFXTQTAddress::Left] = pLeftNeighbor;
+    m_pNeighbor[IFXTQTAddress::Base] = pBaseNeighbor;
+    m_pNeighbor[IFXTQTAddress::Right] = pRightNeighbor;
 }
 
-IFXINLINE IFXEdgeContinuityDescriptor *IFXTQTBaseTriangle::GetEdgeDescriptor(IFXTQTAddress::Direction direction)
+IFXINLINE IFXEdgeContinuityDescriptor* IFXTQTBaseTriangle::GetEdgeDescriptor(IFXTQTAddress::Direction direction)
 {
     return &m_pEdgeDescriptor[direction];
 }
 
-
-IFXINLINE void IFXTQTBaseTriangle::SetMeshIndex (U32 uMeshIndex)
+IFXINLINE void IFXTQTBaseTriangle::SetMeshIndex(U32 uMeshIndex)
 {
-	m_uMeshIndex = uMeshIndex;
+    m_uMeshIndex = uMeshIndex;
 }
 
-IFXINLINE void IFXTQTBaseTriangle::GetMeshIndex (U32 *puMeshIndex)
+IFXINLINE void IFXTQTBaseTriangle::GetMeshIndex(U32* puMeshIndex)
 {
-	*puMeshIndex = m_uMeshIndex;
+    *puMeshIndex = m_uMeshIndex;
 }
 
 #endif

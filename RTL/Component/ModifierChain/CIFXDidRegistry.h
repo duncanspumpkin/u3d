@@ -20,15 +20,14 @@
 @file  CIFXDidRegistry.h
 
   The header file that defines the base implementation class of the
-  CIFXDidRegistry.                                                 
+  CIFXDidRegistry.
 */
-
 
 #ifndef __CIFXDIDREGISTRY_H__
 #define __CIFXDIDREGISTRY_H__
 
-#include "IFXDidRegistry.h"
 #include "CIFXSubject.h"
+#include "IFXDidRegistry.h"
 #include "IFXHash.h"
 
 /**
@@ -37,41 +36,38 @@
 class IFXGUIDHasher
 {
 public:
-  U32 operator()(IFXREFGUID in_rGuid)
-  {
-    const U32* gd = (U32*)&in_rGuid;
-    return gd[0] + gd[1] + gd[2] + gd[3];
-
-  };
+    U32 operator()(IFXREFGUID in_rGuid)
+    {
+        const U32* gd = (U32*)&in_rGuid;
+        return gd[0] + gd[1] + gd[2] + gd[3];
+    };
 };
 
-
 class CIFXDidRegistry : private CIFXSubject,
-                virtual public   IFXDidRegistry
+                        virtual public IFXDidRegistry
 {
-            CIFXDidRegistry();
-  virtual  ~CIFXDidRegistry();
-  friend
-  IFXRESULT IFXAPI_CALLTYPE CIFXDidRegistry_Factory( IFXREFIID iid, void** ppv );
+    CIFXDidRegistry();
+    virtual ~CIFXDidRegistry();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXDidRegistry_Factory(IFXREFIID iid, void** ppv);
 
 public:
-  // IFXUnknown
-  U32 IFXAPI        AddRef ();
-  U32 IFXAPI        Release ();
-  IFXRESULT IFXAPI  QueryInterface (   IFXREFIID  riid,
-                              void**     ppv );
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-  // IFXDidRegistry
-  IFXRESULT IFXAPI   CopyDID( IFXREFDID rInDataElement, IFXREFDID rInTemplate);
-  IFXRESULT IFXAPI   AddDID( IFXREFDID rInDataElement, U32 InDidFlags );
+    // IFXDidRegistry
+    IFXRESULT IFXAPI CopyDID(IFXREFDID rInDataElement, IFXREFDID rInTemplate);
+    IFXRESULT IFXAPI AddDID(IFXREFDID rInDataElement, U32 InDidFlags);
 
-  U32 IFXAPI   GetDidFlags( IFXREFDID rInDataElement );
+    U32 IFXAPI GetDidFlags(IFXREFDID rInDataElement);
+
 private:
-  // IFXUnknown
-  U32                     m_uRefCount;
+    // IFXUnknown
+    U32 m_uRefCount;
 
-  // IFXDidRegistry
-  IFXHash< IFXDID, U32, IFXGUIDHasher > m_Didhash;
+    // IFXDidRegistry
+    IFXHash<IFXDID, U32, IFXGUIDHasher> m_Didhash;
 };
 
 #endif

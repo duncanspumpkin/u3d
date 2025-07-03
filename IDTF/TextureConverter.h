@@ -24,10 +24,8 @@
   @note
 */
 
-
 #ifndef TextureConverter_H
 #define TextureConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -40,73 +38,67 @@ class IFXTextureObject;
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class Texture;
+    class SceneUtilities;
 
+    /**
+    This is the implementation of a class that is used to load the named TGA file,
+    and build a U3D texture from this image if we haven't already seen a texture
+    with this name before.
+    */
+    /**
+     convert texture.
+    */
+    class TextureConverter : public IConverter
+    {
+    public:
+        TextureConverter(const Texture* pTexture, SceneUtilities* pSceneUtils);
+        virtual ~TextureConverter();
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        virtual IFXRESULT Convert();
 
-class Texture;
-class SceneUtilities;
+        /**
+         */
+        void SetQuality(U32 quality, U32 limit);
 
-/**
-This is the implementation of a class that is used to load the named TGA file,
-and build a U3D texture from this image if we haven't already seen a texture 
-with this name before.
-*/
-/**
- convert texture.
-*/
-class TextureConverter : public IConverter
-{
-public:
-	TextureConverter( const Texture* pTexture, SceneUtilities* pSceneUtils );
-    virtual ~TextureConverter();
+    private:
+        TextureConverter();
 
-    virtual IFXRESULT Convert();
+        IFXRESULT SetImageProperties(IFXTextureObject* pTextureObject);
 
-	/**
-	*/
-	void SetQuality( U32 quality, U32 limit );
+        const Texture* m_pTexture;
+        SceneUtilities* m_pSceneUtils;
+        U32 m_quality;
+        U32 m_limit;
+    };
 
-private:
-    TextureConverter();
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	IFXRESULT SetImageProperties( IFXTextureObject* pTextureObject );
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	const Texture* m_pTexture;
-	SceneUtilities* m_pSceneUtils;
-	U32	m_quality;
-	U32	m_limit;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

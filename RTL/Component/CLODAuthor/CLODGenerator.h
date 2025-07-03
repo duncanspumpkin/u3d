@@ -28,78 +28,74 @@ class VertexPairContractor;
 class CLODGenerator
 {
 public:
-	typedef void (* PROGRESS_CALLBACK) (U32 pairsRemaining, void* pUserData);
+    typedef void (*PROGRESS_CALLBACK)(U32 pairsRemaining, void* pUserData);
 
-	// Basic functionality for most users	
-	IFXRESULT	SetInputMesh(IFXAuthorMesh* pMesh);  ///< pMesh will be modified in place.
-	IFXRESULT	Generate();							  ///< starts CLOD generation process,
-	IFXAuthorCLODMesh*	GetOutputMesh();              ///< returns pMesh from setinputmesh. 
-	IFXAuthorMeshMap * GetMeshMap();
+    // Basic functionality for most users
+    IFXRESULT SetInputMesh(IFXAuthorMesh* pMesh); ///< pMesh will be modified in place.
+    IFXRESULT Generate();                         ///< starts CLOD generation process,
+    IFXAuthorCLODMesh* GetOutputMesh();           ///< returns pMesh from setinputmesh.
+    IFXAuthorMeshMap* GetMeshMap();
 
-    void   SetProgressCallBack(IFXProgressCallback *pPCB) { m_pProgress = pPCB; };
+    void SetProgressCallBack(IFXProgressCallback* pPCB) { m_pProgress = pPCB; };
 
-	IFXRESULT	Kill (); ///< call this to terminate CLODGen early.
+    IFXRESULT Kill(); ///< call this to terminate CLODGen early.
 
-	/// postive values allow neighboring vetices to merge even if they are not connected by edges.
-	IFXRESULT	EnableUnconnectedVertexMerge(F32 maxDistance, 
-						BOOL acrossObjectsOnly = TRUE);  
-	IFXRESULT   DisableUnconnectedVertexMerge();
-				
-	/** The normals will be updated to reflect the actual normal of the simplified surface.
-	Hard edges will be formed when the angle between face normals exceeds the crease angle parameter.*/
-	IFXRESULT	SetNormalModeTrackSurfaceChanges(F32 creaseAngle);
-				
-	/** Normals will be correct only at highest resolution, 
-	No normal updates will be generated.
-	Normal faces will be reordered so that normals are right at full resolution.*/
-	IFXRESULT	SetNormalModeNoUpdates();
-				
-	/// Totaly ignore normals, no normals will be present in the output mesh 
-	IFXRESULT	SetNormalModeNone();
+    /// postive values allow neighboring vetices to merge even if they are not connected by edges.
+    IFXRESULT EnableUnconnectedVertexMerge(F32 maxDistance, BOOL acrossObjectsOnly = TRUE);
+    IFXRESULT DisableUnconnectedVertexMerge();
 
-	IFXRESULT	SetMaxNormalChange(F32 maxNormalChange);
-	
+    /** The normals will be updated to reflect the actual normal of the simplified surface.
+    Hard edges will be formed when the angle between face normals exceeds the crease angle parameter.*/
+    IFXRESULT SetNormalModeTrackSurfaceChanges(F32 creaseAngle);
 
-	CLODGenerator( U32 baseVert, U32* pBaseVert );
-	~CLODGenerator();
+    /** Normals will be correct only at highest resolution,
+    No normal updates will be generated.
+    Normal faces will be reordered so that normals are right at full resolution.*/
+    IFXRESULT SetNormalModeNoUpdates();
 
-	typedef enum
-	{
-		None=0,			 ///< output mesh will have no normals, even if normals are present in input.
-		NoUpdates,		 ///< normals correct at highest resolution only
-		UpdateToParent,  ///< after collapse the updated faces get the normal at the parent vertex.
-		TrackSurfaceChanges,  ///< normals will be updated so that they match the actual surface after each edge collapse.
-		NM_PAD_4BYTES=0xFFFFFFFF ///< Do not use this item. Added this in so that this data type always be 4 bytes long on both PC and Mac.
-	} NormalsMode;
+    /// Totaly ignore normals, no normals will be present in the output mesh
+    IFXRESULT SetNormalModeNone();
 
-	class Params
-	{
-	public:
-		IFXAuthorCLODMesh		*pMesh;	///< A Pointer to a copy of the input mesh
-		F32		mergeThresh;
-		BOOL	mergeWithin;
-		PROGRESS_CALLBACK progressCallback;
-		U32		progressFrequency;
-		void	*pProgressCallBackUserData;
-		U32		numBaseVertices;
-		U32		*baseVertices;
-		NormalsMode		normalsMode;
-		F32		normalsCreaseAngle;
-		F32		*meshDamage;   ///< array of floats to store mesh damge results in.
-		IFXAuthorMeshMap		*pMeshMap;
-		F32		maxNormalChange;
-	};
+    IFXRESULT SetMaxNormalChange(F32 maxNormalChange);
+
+    CLODGenerator(U32 baseVert, U32* pBaseVert);
+    ~CLODGenerator();
+
+    typedef enum
+    {
+        None = 0,                  ///< output mesh will have no normals, even if normals are present in input.
+        NoUpdates,                 ///< normals correct at highest resolution only
+        UpdateToParent,            ///< after collapse the updated faces get the normal at the parent vertex.
+        TrackSurfaceChanges,       ///< normals will be updated so that they match the actual surface after each edge collapse.
+        NM_PAD_4BYTES = 0xFFFFFFFF ///< Do not use this item. Added this in so that this data type always be 4 bytes long on both PC and Mac.
+    } NormalsMode;
+
+    class Params
+    {
+    public:
+        IFXAuthorCLODMesh* pMesh; ///< A Pointer to a copy of the input mesh
+        F32 mergeThresh;
+        BOOL mergeWithin;
+        PROGRESS_CALLBACK progressCallback;
+        U32 progressFrequency;
+        void* pProgressCallBackUserData;
+        U32 numBaseVertices;
+        U32* baseVertices;
+        NormalsMode normalsMode;
+        F32 normalsCreaseAngle;
+        F32* meshDamage; ///< array of floats to store mesh damge results in.
+        IFXAuthorMeshMap* pMeshMap;
+        F32 maxNormalChange;
+    };
 
 private:
+    CLODGenerator() {};
 
-	CLODGenerator() { };
-
-	VertexPairContractor	*m_pVPC;				///< vpc is a ptr to the backbone object of CLODGen.
-	Params					m_Params;
-	BOOL					m_GenerateRunning;		///< current state
-	BOOL					m_GenerateCompletedOK;	///< current state
-    IFXProgressCallback     *m_pProgress;
-	
+    VertexPairContractor* m_pVPC; ///< vpc is a ptr to the backbone object of CLODGen.
+    Params m_Params;
+    BOOL m_GenerateRunning;     ///< current state
+    BOOL m_GenerateCompletedOK; ///< current state
+    IFXProgressCallback* m_pProgress;
 };
 
 #endif // CLODGENERATOR_DOT_H

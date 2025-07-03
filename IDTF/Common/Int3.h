@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef Int3_H
 #define Int3_H
-
 
 //***************************************************************************
 //  Includes
@@ -37,92 +35,87 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class Int3
+    {
+    public:
+        Int3() {};
+        virtual ~Int3() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+         */
+        void SetData(const I32& rA, const I32& rB, const I32& rC);
+        const I32& GetA() const;
+        const I32& GetB() const;
+        const I32& GetC() const;
 
+        I32 m_a;
+        I32 m_b;
+        I32 m_c;
+    };
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class Int3
-	{
-	public:
-		Int3() {};
-		virtual ~Int3() {};
+    IFXFORCEINLINE void Int3::SetData(const I32& rA, const I32& rB, const I32& rC)
+    {
+        m_a = rA;
+        m_b = rB;
+        m_c = rC;
+    }
 
-		/**
-		*/
-		void SetData( const I32& rA, const I32& rB, const I32& rC );
-		const I32& GetA() const;
-		const I32& GetB() const;
-		const I32& GetC() const;
+    IFXFORCEINLINE const I32& Int3::GetA() const
+    {
+        return m_a;
+    }
 
-		I32 m_a;
-		I32 m_b;
-		I32 m_c;
-	};
+    IFXFORCEINLINE const I32& Int3::GetB() const
+    {
+        return m_b;
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE const I32& Int3::GetC() const
+    {
+        return m_c;
+    }
 
-	IFXFORCEINLINE void Int3::SetData( const I32& rA, const I32& rB, const I32& rC )
-	{
-		m_a = rA;
-		m_b = rB;
-		m_c = rC;
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE const I32& Int3::GetA() const
-	{
-		return m_a;
-	}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-	IFXFORCEINLINE const I32& Int3::GetB() const
-	{
-		return m_b;
-	}
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-	IFXFORCEINLINE const I32& Int3::GetC() const
-	{
-		return m_c;
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
-
-	//***************************************************************************
-	//  Failure return codes
-	//***************************************************************************
-
-	/**
-	@todo:  Insert module/interface specific return code description.
-	*/
-	//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

@@ -30,26 +30,21 @@
 
 #include "CIFXUVMapperNone.h"
 
-const float IFX_UV_PI=3.1415926535897932384626433832795f;
+const float IFX_UV_PI = 3.1415926535897932384626433832795f;
 
-class CIFXUVMapperCylindrical:public CIFXUVMapperNone 
+class CIFXUVMapperCylindrical : public CIFXUVMapperNone
 {
 public:
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperCylindrical_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperCylindrical_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 protected:
-	BOOL IFXAPI   NeedToMap(IFXMesh& rMesh, IFXUVMapParameters* pParams);
+    BOOL IFXAPI NeedToMap(IFXMesh& rMesh, IFXUVMapParameters* pParams);
 
 private:
-	CIFXUVMapperCylindrical();
-	~CIFXUVMapperCylindrical();
-	IFXRESULT IFXAPI   Map(	IFXMesh& rMesh, 
-							IFXUVMapParameters* pParams,
-							IFXMatrix4x4* pModelMatrix,
-							IFXMatrix4x4* pViewMatrix, 
-							const IFXLightSet* pLightSet);
-
+    CIFXUVMapperCylindrical();
+    ~CIFXUVMapperCylindrical();
+    IFXRESULT IFXAPI Map(IFXMesh& rMesh, IFXUVMapParameters* pParams, IFXMatrix4x4* pModelMatrix, IFXMatrix4x4* pViewMatrix, const IFXLightSet* pLightSet);
 };
 
 #endif

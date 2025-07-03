@@ -17,56 +17,47 @@
 //***************************************************************************
 
 /**
-	@file	CIFXUVMapperNone.h
+        @file	CIFXUVMapperNone.h
 
-			Class header file for the "none" texture coordinate mapper classes.
-			This class only applies the texturematrix to texture coordinates.
+                        Class header file for the "none" texture coordinate mapper classes.
+                        This class only applies the texturematrix to texture coordinates.
 */
 #ifndef __IFXUVMAPPERNone_CLASS_INTERFACE_H__
 #define __IFXUVMAPPERNone_CLASS_INTERFACE_H__
 
-#include "IFXUVMapper.h"
-#include "IFXMesh.h"
 #include "IFXCoreCIDs.h"
+#include "IFXMesh.h"
+#include "IFXUVMapper.h"
 
 class IFXLight;
 
-class CIFXUVMapperNone : public IFXUVMapper 
+class CIFXUVMapperNone : public IFXUVMapper
 {
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void **ppInterface);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperNone_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperNone_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXUVMapper functions
-	IFXRESULT IFXAPI   Apply(	IFXMesh& pMesh, 
-						IFXUVMapParameters* pMapParams, 
-						IFXMatrix4x4* pModelMatrix,
-						IFXMatrix4x4* pViewMatrix, 
-						const IFXLightSet* pLightSet );
+    // IFXUVMapper functions
+    IFXRESULT IFXAPI Apply(IFXMesh& pMesh, IFXUVMapParameters* pMapParams, IFXMatrix4x4* pModelMatrix, IFXMatrix4x4* pViewMatrix, const IFXLightSet* pLightSet);
 
 protected:
-	CIFXUVMapperNone(BOOL bNeedTexCoords = FALSE);
-	virtual ~CIFXUVMapperNone();
+    CIFXUVMapperNone(BOOL bNeedTexCoords = FALSE);
+    virtual ~CIFXUVMapperNone();
 
-	virtual BOOL	 IFXAPI 	NeedToMap(	IFXMesh& rMesh, 
-									IFXUVMapParameters* pParams );
+    virtual BOOL IFXAPI NeedToMap(IFXMesh& rMesh, IFXUVMapParameters* pParams);
 
-	virtual IFXRESULT IFXAPI 	Map(		IFXMesh& rMesh, 
-									IFXUVMapParameters* pParams, 
-									IFXMatrix4x4* pModelMatrix,
-									IFXMatrix4x4* pViewMatrix, 
-									const IFXLightSet* pLightSet );
+    virtual IFXRESULT IFXAPI Map(IFXMesh& rMesh, IFXUVMapParameters* pParams, IFXMatrix4x4* pModelMatrix, IFXMatrix4x4* pViewMatrix, const IFXLightSet* pLightSet);
 
-	IFXLight* GetClosestLight(const IFXLightSet* pLightSet);
+    IFXLight* GetClosestLight(const IFXLightSet* pLightSet);
 
-	U32 m_uRefCount;
+    U32 m_uRefCount;
 
-	BOOL m_bNeedTexCoords;
+    BOOL m_bNeedTexCoords;
 };
 
 #endif

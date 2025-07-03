@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef Point_H
 #define Point_H
-
 
 //***************************************************************************
 //  Includes
@@ -37,89 +35,83 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class Point
+    {
+    public:
+        Point() {};
+        virtual ~Point() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+        @todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
+        DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
+        INTERFACE HEADER HERE TO REDUCE DUPLICATION.
 
+        @param  inputValue    An input value.
+        @param  pOutputValue  A pointer to the output value that is
+        initialize upon success.
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        @return Upon success, IFX_OK is returned.  Otherwise, one of the
+        following failures are returned:  @todo: return codes.
+        */
+        void SetPoint(const IFXVector3& rPoint);
+        const IFXVector3& GetPoint() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class Point
-	{
-	public:
-		Point() {};
-		virtual ~Point() {};
+    protected:
+    private:
+        IFXVector3 m_point;
+    };
 
-		/**
-		@todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
-		DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
-		INTERFACE HEADER HERE TO REDUCE DUPLICATION.
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		@param  inputValue    An input value.
-		@param  pOutputValue  A pointer to the output value that is
-		initialize upon success.
+    IFXFORCEINLINE void Point::SetPoint(const IFXVector3& rPoint)
+    {
+        m_point = rPoint;
+    }
 
-		@return Upon success, IFX_OK is returned.  Otherwise, one of the
-		following failures are returned:  @todo: return codes.
-		*/
-		void SetPoint( const IFXVector3& rPoint );
-		const IFXVector3& GetPoint() const;
+    IFXFORCEINLINE const IFXVector3& Point::GetPoint() const
+    {
+        return m_point;
+    }
 
-	protected:
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	private:
-		IFXVector3 m_point;
-	};
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-	IFXFORCEINLINE void Point::SetPoint( const IFXVector3& rPoint )
-	{
-		m_point = rPoint;
-	}
-
-	IFXFORCEINLINE const IFXVector3& Point::GetPoint() const
-	{
-		return m_point;
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
-
-	//***************************************************************************
-	//  Failure return codes
-	//***************************************************************************
-
-	/**
-	@todo:  Insert module/interface specific return code description.
-	*/
-	//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

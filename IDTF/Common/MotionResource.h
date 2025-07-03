@@ -17,9 +17,9 @@
 //***************************************************************************
 
 /**
-	@file	MotionResource.h
+        @file	MotionResource.h
 
-			This header defines the motion resource container.
+                        This header defines the motion resource container.
 */
 
 #ifndef MotionResource_H
@@ -34,118 +34,113 @@
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+            Data structure used to keep key frame info.
+    */
+    struct KeyFrame
+    {
+        F32 m_time;
+        Point m_displacement;
+        Quat m_rotation;
+        Point m_scale;
+    };
 
+    /**
+            Data structure used to keep motion track info.
+    */
+    class MotionTrack
+    {
+    public:
+        IFXString m_name;
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        MotionTrack() {};
+        ~MotionTrack() {};
 
-/**
-	Data structure used to keep key frame info.
-*/
-struct KeyFrame
-{
-	F32 m_time;
-	Point m_displacement;
-	Quat m_rotation;
-	Point m_scale;
-};
+        void AddKeyFrame(const KeyFrame& rKeyFrame);
+        const KeyFrame& GetKeyFrame(U32 index) const;
+        U32 GetKeyFrameCount() const;
 
-/**
-	Data structure used to keep motion track info.
-*/
-class MotionTrack
-{
-public:
-	IFXString m_name;
+    private:
+        IFXArray<KeyFrame> m_keyFrames;
+    };
 
-	MotionTrack() {};
-	~MotionTrack() {};
+    /**
+            This is the implementation of a class that is used to handle model
+            resources.
+    */
+    class MotionResource : public Resource
+    {
+    public:
+        MotionResource() {};
+        ~MotionResource() {};
 
-	void AddKeyFrame( const KeyFrame& rKeyFrame );
-	const KeyFrame& GetKeyFrame( U32 index ) const ;
-	U32 GetKeyFrameCount() const;
+        void AddMotionTrack(const MotionTrack& rMotionTrack);
+        const MotionTrack& GetMotionTrack(U32 index) const;
+        U32 GetMotionTrackCount() const;
 
-private:
-	IFXArray< KeyFrame > m_keyFrames;
-};
+    private:
+        IFXArray<MotionTrack> m_motionTracks;
+    };
 
-/**
-	This is the implementation of a class that is used to handle model 
-	resources.	
-*/
-class MotionResource : public Resource
-{
-public:
-	MotionResource() {};
-	~MotionResource() {};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	void AddMotionTrack( const MotionTrack& rMotionTrack );
-	const MotionTrack& GetMotionTrack( U32 index ) const ;
-	U32 GetMotionTrackCount() const;
+    IFXFORCEINLINE void MotionTrack::AddKeyFrame(const KeyFrame& rKeyFrame)
+    {
+        KeyFrame& keyFrame = m_keyFrames.CreateNewElement();
+        keyFrame = rKeyFrame;
+    }
 
-private:
-	IFXArray< MotionTrack > m_motionTracks;
-};
+    IFXFORCEINLINE const KeyFrame& MotionTrack::GetKeyFrame(U32 index) const
+    {
+        return m_keyFrames.GetElementConst(index);
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE U32 MotionTrack::GetKeyFrameCount() const
+    {
+        return m_keyFrames.GetNumberElements();
+    }
 
-IFXFORCEINLINE void MotionTrack::AddKeyFrame( const KeyFrame& rKeyFrame )
-{
-	KeyFrame& keyFrame = m_keyFrames.CreateNewElement();
-	keyFrame = rKeyFrame;
+    IFXFORCEINLINE void MotionResource::AddMotionTrack(const MotionTrack& rMotionTrack)
+    {
+        MotionTrack& track = m_motionTracks.CreateNewElement();
+        track = rMotionTrack;
+    }
+
+    IFXFORCEINLINE const MotionTrack& MotionResource::GetMotionTrack(U32 index) const
+    {
+        return m_motionTracks.GetElementConst(index);
+    }
+
+    IFXFORCEINLINE U32 MotionResource::GetMotionTrackCount() const
+    {
+        return m_motionTracks.GetNumberElements();
+    }
+
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
+
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
-
-IFXFORCEINLINE const KeyFrame& MotionTrack::GetKeyFrame( U32 index ) const
-{
-	return m_keyFrames.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 MotionTrack::GetKeyFrameCount() const
-{
-	return m_keyFrames.GetNumberElements();
-}
-
-IFXFORCEINLINE void MotionResource::AddMotionTrack( const MotionTrack& rMotionTrack )
-{
-	MotionTrack& track = m_motionTracks.CreateNewElement();
-	track = rMotionTrack;
-}
-
-IFXFORCEINLINE const MotionTrack& MotionResource::GetMotionTrack( U32 index ) const 
-{
-	return m_motionTracks.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 MotionResource::GetMotionTrackCount() const
-{
-	return m_motionTracks.GetNumberElements();
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-}
-
 
 #endif

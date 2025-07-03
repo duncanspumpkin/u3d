@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef SubdivisionModifier_H
 #define SubdivisionModifier_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,145 +36,141 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class SubdivisionModifier : public Modifier
+    {
+    public:
+        SubdivisionModifier() {};
+        virtual ~SubdivisionModifier() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        void SetEnabled(const IFXString& rValue);
+        const IFXString& GetEnabled() const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        void SetAdaptive(const IFXString& rValue);
+        const IFXString& GetAdaptive() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class SubdivisionModifier : public Modifier
-{
-public:
-	SubdivisionModifier() {};
-	virtual ~SubdivisionModifier() {};
+        /**
+         */
+        void SetDepth(const I32& rDepth);
+        const I32& GetDepth() const;
 
-	/**
-	*/
-	void SetEnabled( const IFXString& rValue );
-	const IFXString& GetEnabled() const;
+        /**
+         */
+        void SetTension(const F32& rTension);
+        const F32& GetTension() const;
 
-	/**
-	*/
-	void SetAdaptive( const IFXString& rValue );
-	const IFXString& GetAdaptive() const;
+        /**
+         */
+        void SetError(const F32& rError);
+        const F32& GetError() const;
 
-	/**
-	*/
-	void SetDepth( const I32& rDepth );
-	const I32& GetDepth() const;
+        /**
+         */
+        void SetSubdivisionLevel(const F32& rClodLevel);
+        const F32& GetSubdivisionLevel() const;
 
-	/**
-	*/
-	void SetTension( const F32& rTension );
-	const F32& GetTension() const;
+    private:
+        IFXString m_enabled;
+        IFXString m_adaptive;
+        I32 m_depth;
+        F32 m_tension;
+        F32 m_error;
+    };
 
-	/**
-	*/
-	void SetError( const F32& rError );
-	const F32& GetError() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	void SetSubdivisionLevel( const F32& rClodLevel );
-	const F32& GetSubdivisionLevel() const;
+    IFXFORCEINLINE void SubdivisionModifier::SetEnabled(const IFXString& rValue)
+    {
+        m_enabled = rValue;
+    }
 
-private:
-	IFXString m_enabled;
-	IFXString m_adaptive;
-	I32 m_depth;
-	F32 m_tension;
-	F32 m_error;
-};
+    IFXFORCEINLINE const IFXString& SubdivisionModifier::GetEnabled() const
+    {
+        return m_enabled;
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE void SubdivisionModifier::SetAdaptive(const IFXString& rValue)
+    {
+        m_adaptive = rValue;
+    }
 
-IFXFORCEINLINE void SubdivisionModifier::SetEnabled( const IFXString& rValue )
-{
-	m_enabled = rValue;
-}
+    IFXFORCEINLINE const IFXString& SubdivisionModifier::GetAdaptive() const
+    {
+        return m_adaptive;
+    }
 
-IFXFORCEINLINE const IFXString& SubdivisionModifier::GetEnabled() const
-{
-	return m_enabled;
-}
+    IFXFORCEINLINE void SubdivisionModifier::SetDepth(const I32& rDepth)
+    {
+        m_depth = rDepth;
+    }
 
-IFXFORCEINLINE void SubdivisionModifier::SetAdaptive( const IFXString& rValue )
-{
-	m_adaptive = rValue;
-}
+    IFXFORCEINLINE const I32& SubdivisionModifier::GetDepth() const
+    {
+        return m_depth;
+    }
 
-IFXFORCEINLINE const IFXString& SubdivisionModifier::GetAdaptive() const
-{
-	return m_adaptive;
-}
+    IFXFORCEINLINE void SubdivisionModifier::SetTension(const F32& rTension)
+    {
+        m_tension = rTension;
+    }
 
-IFXFORCEINLINE void SubdivisionModifier::SetDepth( const I32& rDepth )
-{
-	m_depth = rDepth;
-}
+    IFXFORCEINLINE const F32& SubdivisionModifier::GetTension() const
+    {
+        return m_tension;
+    }
 
-IFXFORCEINLINE const I32& SubdivisionModifier::GetDepth() const
-{
-	return m_depth;
-}
+    IFXFORCEINLINE void SubdivisionModifier::SetError(const F32& rError)
+    {
+        m_error = rError;
+    }
 
-IFXFORCEINLINE void SubdivisionModifier::SetTension( const F32& rTension )
-{
-	m_tension = rTension;
-}
+    IFXFORCEINLINE const F32& SubdivisionModifier::GetError() const
+    {
+        return m_error;
+    }
 
-IFXFORCEINLINE const F32& SubdivisionModifier::GetTension() const
-{
-	return m_tension;
-}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE void SubdivisionModifier::SetError( const F32& rError )
-{
-	m_error = rError;
-}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-IFXFORCEINLINE const F32& SubdivisionModifier::GetError() const
-{
-	return m_error;
-}
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
-
-/**
-@todo:  Insert module/interface specific return code description.
-*/
-//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

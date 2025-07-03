@@ -17,8 +17,8 @@
 //***************************************************************************
 /**
 @file CIFXSetX.h
-	Declaration of CIFXSetX class.  
-	This class is used by the progressive geometry compression and decompression.
+        Declaration of CIFXSetX class.
+        This class is used by the progressive geometry compression and decompression.
 */
 //*****************************************************************************
 #ifndef CIFXSETX_H__
@@ -26,34 +26,34 @@
 
 #include "IFXSetX.h"
 
-class  CIFXSetX : public IFXSetX 
+class CIFXSetX : public IFXSetX
 {
 public:
-	// IFXUnknown methods...
-	virtual U32 IFXAPI  AddRef( void );
-	virtual U32 IFXAPI  Release( void );
-	virtual IFXRESULT IFXAPI  QueryInterface( IFXREFIID	interfaceId, void**	ppInterface );
+    // IFXUnknown methods...
+    virtual U32 IFXAPI AddRef(void);
+    virtual U32 IFXAPI Release(void);
+    virtual IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXSetX
-	virtual void IFXAPI  AddX(U32 uMember);
-	virtual void IFXAPI  RemoveX(U32 uMember);
-	virtual void IFXAPI  GetSizeX(U32& ruSize);
-	virtual void IFXAPI  GetMemberX(U32 uIndex, U32& ruMember);
-	virtual void IFXAPI  GetIndexX(U32 uMember, BOOL& rbIsMember, U32& ruIndex);
+    // IFXSetX
+    virtual void IFXAPI AddX(U32 uMember);
+    virtual void IFXAPI RemoveX(U32 uMember);
+    virtual void IFXAPI GetSizeX(U32& ruSize);
+    virtual void IFXAPI GetMemberX(U32 uIndex, U32& ruMember);
+    virtual void IFXAPI GetIndexX(U32 uMember, BOOL& rbIsMember, U32& ruIndex);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXSetX_Factory( IFXREFIID	interfaceId, 
-											void**		ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXSetX_Factory(IFXREFIID interfaceId, void** ppInterface);
+
 private:
-	CIFXSetX();
-	virtual ~CIFXSetX();
+    CIFXSetX();
+    virtual ~CIFXSetX();
 
-	U32 m_uRefCount;
-	U32* m_puMemberArray;
-	U32 m_uArraySize;
-	U32 m_uMemberCount;
+    U32 m_uRefCount;
+    U32* m_puMemberArray;
+    U32 m_uArraySize;
+    U32 m_uMemberCount;
 
-	static const U32 m_uArrayGrowthSize;
+    static const U32 m_uArrayGrowthSize;
 };
 
-#endif //#ifndef CIFXSETX_H__
+#endif // #ifndef CIFXSETX_H__

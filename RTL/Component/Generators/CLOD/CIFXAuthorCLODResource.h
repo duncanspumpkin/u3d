@@ -17,225 +17,225 @@
 //***************************************************************************
 
 /**
-	@file	CIFXAuthorCLODResource.h
+        @file	CIFXAuthorCLODResource.h
 */
 
 #ifndef CIFXAUTHORCLODRESOURCE_H
 #define CIFXAUTHORCLODRESOURCE_H
 
-#include "IFXAuthorCLODResource.h"
 #include "CIFXModifier.h"
-#include "IFXBoundSphereDataElement.h"
-#include "IFXMeshCompiler.h"
-#include "IFXCLODManagerInterface.h"
-#include "IFXNeighborResControllerIntfc.h"
+#include "IFXAuthorCLODResource.h"
 #include "IFXAutoRelease.h"
+#include "IFXBoundSphereDataElement.h"
+#include "IFXCLODManagerInterface.h"
+#include "IFXMeshCompiler.h"
+#include "IFXNeighborResControllerIntfc.h"
 
 class CIFXAuthorCLODResource : public CIFXModifier,
-                       virtual public  IFXAuthorCLODResource
+                               virtual public IFXAuthorCLODResource
 {
 public:
-	// IFXUnknown
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// IFXMarker
-	IFXRESULT   IFXAPI 	SetSceneGraph( IFXSceneGraph* pInSceneGraph );
+    // IFXMarker
+    IFXRESULT IFXAPI SetSceneGraph(IFXSceneGraph* pInSceneGraph);
 
-	// IFXMarkerX
-	void IFXAPI  GetEncoderX (IFXEncoderX*& rpEncoderX) ;
+    // IFXMarkerX
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
-	// IFXModifier
-	IFXRESULT IFXAPI  GetOutputs ( 
-							IFXGUID**& rpOutOutputs,
-							U32&       rOutNumberOfOutputs,
-							U32*&	   rpOutOutputDepAttrs );
+    // IFXModifier
+    IFXRESULT IFXAPI GetOutputs(
+        IFXGUID**& rpOutOutputs,
+        U32& rOutNumberOfOutputs,
+        U32*& rpOutOutputDepAttrs);
 
-	IFXRESULT IFXAPI  GetDependencies (    
-							IFXGUID*   pInOutputDID,
-							IFXGUID**& rppOutInputDependencies,
-							U32&       rOutNumberInputDependencies,
-							IFXGUID**& rppOutOutputDependencies,
-							U32&       rOutNumberOfOutputDependencies,
-							U32*&	   rpOutOutputDepAttrs );
+    IFXRESULT IFXAPI GetDependencies(
+        IFXGUID* pInOutputDID,
+        IFXGUID**& rppOutInputDependencies,
+        U32& rOutNumberInputDependencies,
+        IFXGUID**& rppOutOutputDependencies,
+        U32& rOutNumberOfOutputDependencies,
+        U32*& rpOutOutputDepAttrs);
 
-	IFXRESULT IFXAPI  GenerateOutput ( 
-							U32    inOutputDataElementIndex,
-							void*& rpOutData, BOOL& rNeedRelease );
+    IFXRESULT IFXAPI GenerateOutput(
+        U32 inOutputDataElementIndex,
+        void*& rpOutData, BOOL& rNeedRelease);
 
-	IFXRESULT IFXAPI  SetDataPacket ( 
-							IFXModifierDataPacket* pInInputDataPacket,
-							IFXModifierDataPacket* pInDataPacket );
+    IFXRESULT IFXAPI SetDataPacket(
+        IFXModifierDataPacket* pInInputDataPacket,
+        IFXModifierDataPacket* pInDataPacket);
 
-	IFXRESULT IFXAPI  Notify ( IFXModifierMessage eInMessage, void* pMessageContext );
+    IFXRESULT IFXAPI Notify(IFXModifierMessage eInMessage, void* pMessageContext);
 
-	IFXCLODManager* IFXAPI GetCLODController();
-	IFXNeighborResControllerInterface* IFXAPI GetNeighborResController();
+    IFXCLODManager* IFXAPI GetCLODController();
+    IFXNeighborResControllerInterface* IFXAPI GetNeighborResController();
 
-	F32      IFXAPI		GetCLODLevel() 
-	{
-		return m_fCLODLevel;
-	}
+    F32 IFXAPI GetCLODLevel()
+    {
+        return m_fCLODLevel;
+    }
 
-	IFXRESULT IFXAPI 	SetCLODLevel( F32 inCLODRatio );
+    IFXRESULT IFXAPI SetCLODLevel(F32 inCLODRatio);
 
-	virtual IFXRESULT IFXAPI  GetCLODAuto(BOOL* pbOutCLODAuto)
-	{ 
-		*pbOutCLODAuto = m_bCLODAuto; 
-		return IFX_OK;
-	}
+    virtual IFXRESULT IFXAPI GetCLODAuto(BOOL* pbOutCLODAuto)
+    {
+        *pbOutCLODAuto = m_bCLODAuto;
+        return IFX_OK;
+    }
 
-	virtual IFXRESULT IFXAPI  SetCLODAuto(BOOL bInCLODAuto) 
-	{ 
-		m_bCLODAuto = bInCLODAuto; 
-		return IFX_OK;
-	}
+    virtual IFXRESULT IFXAPI SetCLODAuto(BOOL bInCLODAuto)
+    {
+        m_bCLODAuto = bInCLODAuto;
+        return IFX_OK;
+    }
 
-	virtual IFXRESULT IFXAPI  GetCLODBias(F32* pbOutCLODBias)
-	{ 
-		*pbOutCLODBias = m_fCLODBias; 
-		return IFX_OK;
-	}
+    virtual IFXRESULT IFXAPI GetCLODBias(F32* pbOutCLODBias)
+    {
+        *pbOutCLODBias = m_fCLODBias;
+        return IFX_OK;
+    }
 
-	virtual IFXRESULT IFXAPI  SetCLODBias(F32 bInCLODBias) 
-	{ 
-		m_fCLODBias = bInCLODBias; return IFX_OK;
-	}
+    virtual IFXRESULT IFXAPI SetCLODBias(F32 bInCLODBias)
+    {
+        m_fCLODBias = bInCLODBias;
+        return IFX_OK;
+    }
 
-	const IFXVector4& IFXAPI GetBoundingSphere() 
-	{ 
-		return m_pBoundSphereDataElement->Bound(); 
-	}
+    const IFXVector4& IFXAPI GetBoundingSphere()
+    {
+        return m_pBoundSphereDataElement->Bound();
+    }
 
-	IFXRESULT IFXAPI 	SetBoundingSphere(const IFXVector4& vInBoundingSphere)
-	{ 
-		m_pBoundSphereDataElement->Bound() = vInBoundingSphere; 
-		return IFX_OK; 
-	}
+    IFXRESULT IFXAPI SetBoundingSphere(const IFXVector4& vInBoundingSphere)
+    {
+        m_pBoundSphereDataElement->Bound() = vInBoundingSphere;
+        return IFX_OK;
+    }
 
-	const IFXMatrix4x4& IFXAPI GetTransform() 
-	{ 
-		return m_transform[0]; 
-	}
+    const IFXMatrix4x4& IFXAPI GetTransform()
+    {
+        return m_transform[0];
+    }
 
-	IFXRESULT IFXAPI 	SetTransform(const IFXMatrix4x4& tInTransform);
-	IFXRESULT IFXAPI 	InvalidateTransform();
+    IFXRESULT IFXAPI SetTransform(const IFXMatrix4x4& tInTransform);
+    IFXRESULT IFXAPI InvalidateTransform();
 
-	IFXRESULT IFXAPI 	GetMeshGroup(IFXMeshGroup**);
-	IFXRESULT IFXAPI 	GetUpdatesGroup(IFXUpdatesGroup**);
-	IFXRESULT IFXAPI 	GetNeighborMesh(IFXNeighborMesh**);
+    IFXRESULT IFXAPI GetMeshGroup(IFXMeshGroup**);
+    IFXRESULT IFXAPI GetUpdatesGroup(IFXUpdatesGroup**);
+    IFXRESULT IFXAPI GetNeighborMesh(IFXNeighborMesh**);
 
-	virtual IFXRESULT IFXAPI  BuildDataBlockQueue();
-	virtual void IFXAPI  GetDataBlockQueueX(IFXDataBlockQueueX*& rpDataBlockQueueX);
+    virtual IFXRESULT IFXAPI BuildDataBlockQueue();
+    virtual void IFXAPI GetDataBlockQueueX(IFXDataBlockQueueX*& rpDataBlockQueueX);
 
-	// IFXAuthorCLODResource
-	IFXRESULT IFXAPI 	GetAuthorMesh(IFXAuthorCLODMesh*& rpAuthorCLODMesh) ;
-	IFXRESULT IFXAPI 	SetAuthorMesh(IFXAuthorCLODMesh* pAuthorCLODMesh) ;
-	IFXRESULT IFXAPI 	SetAuthorMeshFinal(IFXAuthorCLODMesh* pAuthorCLODMesh) ;
+    // IFXAuthorCLODResource
+    IFXRESULT IFXAPI GetAuthorMesh(IFXAuthorCLODMesh*& rpAuthorCLODMesh);
+    IFXRESULT IFXAPI SetAuthorMesh(IFXAuthorCLODMesh* pAuthorCLODMesh);
+    IFXRESULT IFXAPI SetAuthorMeshFinal(IFXAuthorCLODMesh* pAuthorCLODMesh);
 
-	IFXRESULT IFXAPI 	GetCreaseAngle(F32& rCreaseAngle) ;
-	IFXRESULT IFXAPI 	SetCreaseAngle(F32 creaseAngle) ;
+    IFXRESULT IFXAPI GetCreaseAngle(F32& rCreaseAngle);
+    IFXRESULT IFXAPI SetCreaseAngle(F32 creaseAngle);
 
-	void IFXAPI 	GetNormalCreaseParameter(F32& rNormalCreaseParameter);
-	void IFXAPI 	SetNormalCreaseParameter(F32 normalCreaseParameter);
-	void IFXAPI 	GetNormalUpdateParameter(F32& rNormalUpdateParameter);
-	void IFXAPI 	SetNormalUpdateParameter(F32 normalUpdateParameter);
-	void IFXAPI 	GetNormalTolerance(F32& rNormalTolerance);
-	void IFXAPI 	SetNormalTolerance(F32 normalTolerance);
+    void IFXAPI GetNormalCreaseParameter(F32& rNormalCreaseParameter);
+    void IFXAPI SetNormalCreaseParameter(F32 normalCreaseParameter);
+    void IFXAPI GetNormalUpdateParameter(F32& rNormalUpdateParameter);
+    void IFXAPI SetNormalUpdateParameter(F32 normalUpdateParameter);
+    void IFXAPI GetNormalTolerance(F32& rNormalTolerance);
+    void IFXAPI SetNormalTolerance(F32 normalTolerance);
 
-	// Bones support
-	IFXSkeleton* IFXAPI GetBones( void ) 
-	{ 
-		return m_pBones; 
-	}
+    // Bones support
+    IFXSkeleton* IFXAPI GetBones(void)
+    {
+        return m_pBones;
+    }
 
-	IFXRESULT IFXAPI 	SetBones( IFXSkeleton* pBonesGen ) 
-	{ 
-		if( pBonesGen )
-		{
-			m_pBones = pBonesGen; 
-			m_pBones->AddRef();
-		}
+    IFXRESULT IFXAPI SetBones(IFXSkeleton* pBonesGen)
+    {
+        if (pBonesGen)
+        {
+            m_pBones = pBonesGen;
+            m_pBones->AddRef();
+        }
 
-		return IFX_OK;
-	}
+        return IFX_OK;
+    }
 
-	IFXRESULT IFXAPI 	Transfer() ;
+    IFXRESULT IFXAPI Transfer();
 
-	IFXRESULT IFXAPI 	GetAuthorMeshMap(IFXMeshMap** ppAuthorMeshMap);
-	IFXRESULT IFXAPI 	SetAuthorMeshMap(IFXMeshMap* pAuthorMeshMap);
+    IFXRESULT IFXAPI GetAuthorMeshMap(IFXMeshMap** ppAuthorMeshMap);
+    IFXRESULT IFXAPI SetAuthorMeshMap(IFXMeshMap* pAuthorMeshMap);
 
-	IFXRESULT IFXAPI 	GetRenderMeshMap(IFXMeshMap** ppRenderMeshMap);
-	IFXRESULT IFXAPI 	SetRenderMeshMap(IFXMeshMap* pRenderMeshMap);
+    IFXRESULT IFXAPI GetRenderMeshMap(IFXMeshMap** ppRenderMeshMap);
+    IFXRESULT IFXAPI SetRenderMeshMap(IFXMeshMap* pRenderMeshMap);
 
-	void IFXAPI 	GetExcludeNormals(BOOL &bExcludeNormals);
-	void IFXAPI 	SetExcludeNormals(BOOL bExcludeNormals);
-
-private:
-	IFXRESULT BuildMeshGroup();
-	IFXRESULT BuildNeighborMesh();
-	IFXRESULT BuildCLODController();
-	IFXRESULT BuildNeighborResController();
-	void ClearMeshGroup();
-	void ClearCLODManager();
-	void ClearNeighborResController();
+    void IFXAPI GetExcludeNormals(BOOL& bExcludeNormals);
+    void IFXAPI SetExcludeNormals(BOOL bExcludeNormals);
 
 private:
-	CIFXAuthorCLODResource();
-	virtual ~CIFXAuthorCLODResource();
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXAuthorCLODResource_Factory( 
-										IFXREFIID interfaceId, void** ppInterface );
+    IFXRESULT BuildMeshGroup();
+    IFXRESULT BuildNeighborMesh();
+    IFXRESULT BuildCLODController();
+    IFXRESULT BuildNeighborResController();
+    void ClearMeshGroup();
+    void ClearCLODManager();
+    void ClearNeighborResController();
 
-	// IFXUnknown
-	U32 m_refCount;
+private:
+    CIFXAuthorCLODResource();
+    virtual ~CIFXAuthorCLODResource();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXAuthorCLODResource_Factory(
+        IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXAuthorCLODResource
-	U32 m_transformDataElementIndex;
-	U32 m_meshGroupDataElementIndex;
-	U32 m_CLODControllerDataElementIndex;
-	U32 m_neighborResControllerDataElementIndex;
-	U32 m_neighborMeshDataElementIndex;
-	U32 m_boundSphereDataElementIndex;
-	U32 m_bonesManagerDataElementIndex;
+    // IFXUnknown
+    U32 m_refCount;
 
-	IFXAuthorCLODMesh* m_pAuthorMesh;
-	F32 m_fCreaseAngle;
-	F32 m_normalCreaseParameter;
-	F32 m_normalUpdateParameter;
-	F32 m_normalTolerance;
+    // IFXAuthorCLODResource
+    U32 m_transformDataElementIndex;
+    U32 m_meshGroupDataElementIndex;
+    U32 m_CLODControllerDataElementIndex;
+    U32 m_neighborResControllerDataElementIndex;
+    U32 m_neighborMeshDataElementIndex;
+    U32 m_boundSphereDataElementIndex;
+    U32 m_bonesManagerDataElementIndex;
 
-	IFXMeshMap*	m_pAuthorMeshMap;
-	IFXMeshMap*	m_pRenderMeshMap;
+    IFXAuthorCLODMesh* m_pAuthorMesh;
+    F32 m_fCreaseAngle;
+    F32 m_normalCreaseParameter;
+    F32 m_normalUpdateParameter;
+    F32 m_normalTolerance;
 
-	IFXMeshCompiler* m_pMeshCompiler;
-	IFXMeshSize*     m_pMeshSizes;
-	U32				 m_NumMeshSizes;
+    IFXMeshMap* m_pAuthorMeshMap;
+    IFXMeshMap* m_pRenderMeshMap;
 
-	BOOL m_bMeshGroupDirty;
-	F32  m_fCLODLevel;
-	BOOL m_bCLODAuto;
-	F32  m_fCLODBias;
+    IFXMeshCompiler* m_pMeshCompiler;
+    IFXMeshSize* m_pMeshSizes;
+    U32 m_NumMeshSizes;
 
-	BOOL m_bExcludeNormals;
+    BOOL m_bMeshGroupDirty;
+    F32 m_fCLODLevel;
+    BOOL m_bCLODAuto;
+    F32 m_fCLODBias;
 
-	IFXMeshGroup*    m_pMeshGroup;
-	IFXNeighborMesh* m_pNeighborMesh;
+    BOOL m_bExcludeNormals;
 
-	IFXArray<IFXMatrix4x4> m_transform;
-	IFXBoundSphereDataElement* m_pBoundSphereDataElement;
+    IFXMeshGroup* m_pMeshGroup;
+    IFXNeighborMesh* m_pNeighborMesh;
 
+    IFXArray<IFXMatrix4x4> m_transform;
+    IFXBoundSphereDataElement* m_pBoundSphereDataElement;
 
-	IFXUpdatesGroup* m_pUpdatesGroup;
-	IFXCLODManager*  m_pCLODController;
+    IFXUpdatesGroup* m_pUpdatesGroup;
+    IFXCLODManager* m_pCLODController;
 
-	BOOL m_bBuiltNeighborMesh;
-	IFXNeighborResControllerInterface* m_pNeighborResController;
+    BOOL m_bBuiltNeighborMesh;
+    IFXNeighborResControllerInterface* m_pNeighborResController;
 
-	IFXDECLAREMEMBER(IFXDataBlockQueueX, m_pDataBlockQueueX);
+    IFXDECLAREMEMBER(IFXDataBlockQueueX, m_pDataBlockQueueX);
 
-	// Bones support
-	IFXSkeleton* m_pBones;
+    // Bones support
+    IFXSkeleton* m_pBones;
 };
 
 #endif

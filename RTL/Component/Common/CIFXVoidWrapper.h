@@ -24,27 +24,27 @@
 
 class CIFXVoidWrapper : virtual public IFXVoidWrapper, virtual public IFXUnknown
 {
-	U32 m_refCount;
+    U32 m_refCount;
+
 public:
-	U32 IFXAPI  AddRef ();
-	U32 IFXAPI  Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXVoidWrapper_Factory(IFXREFIID interfaceId, void** ppInterface);
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXVoidWrapper_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	void  IFXAPI SetData(void* pvData);
-	void* IFXAPI GetData() const;
+    void IFXAPI SetData(void* pvData);
+    void* IFXAPI GetData() const;
 
 protected:
-	CIFXVoidWrapper();
-	virtual ~CIFXVoidWrapper() {}
+    CIFXVoidWrapper();
+    virtual ~CIFXVoidWrapper() {}
 
-	IFXRESULT IFXAPI Construct();
+    IFXRESULT IFXAPI Construct();
 
-	void* m_pvData;
+    void* m_pvData;
 };
 
 #endif // CIFX_VOID_WRAPPER_H
 
 // END OF FILE
-

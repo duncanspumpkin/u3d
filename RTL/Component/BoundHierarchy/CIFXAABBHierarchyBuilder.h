@@ -18,7 +18,7 @@
 //
 //	CIFXAABBHierarchyBuilder.h
 //
-//	DESCRIPTION 
+//	DESCRIPTION
 //
 //		Header file for axis aligned bounding box hierarchy builder class.
 //		The builder class is responsible for constructing each axis aligned
@@ -31,22 +31,17 @@
 #ifndef __CIFXAABBHIERARCHYBUILDER_H__
 #define __CIFXAABBHIERARCHYBUILDER_H__
 
-#include "IFXBoundHierarchy.h"
-#include "CIFXBTreeNode.h"
 #include "CIFXAxisAlignedBBox.h"
+#include "CIFXBTreeNode.h"
+#include "IFXBoundHierarchy.h"
 
 class CIFXAABBHierarchyBuilder
 {
 public:
-
-	IFXRESULT Build(IFXBoundHierarchy** pBoundHierarchy, 
-					U32                 uType, 
-					IFXMeshGroup*       pMeshGroup);
+    IFXRESULT Build(IFXBoundHierarchy** pBoundHierarchy, U32 uType, IFXMeshGroup* pMeshGroup);
 
 private:
-
-	IFXRESULT CreateNode(CIFXBTreeNode *pNextNode);
+    IFXRESULT CreateNode(CIFXBTreeNode* pNextNode);
 };
 
 #endif
-

@@ -17,13 +17,13 @@
 //***************************************************************************
 
 /**
-	@file	IFXVectorHasher.h
+        @file	IFXVectorHasher.h
 
-			Hash table of IFXVector3 objects.  Hash key is created from the 
-			floating point values in the vector.
+                        Hash table of IFXVector3 objects.  Hash key is created from the
+                        floating point values in the vector.
 
-	@note	Has O(n) performance at best (widely distributed points) and 
-			O(n^2) worst case (all vertices are the same position).
+        @note	Has O(n) performance at best (widely distributed points) and
+                        O(n^2) worst case (all vertices are the same position).
 
 */
 
@@ -38,16 +38,16 @@
 
 struct IFXVectorHasherVectorNode
 {
-	U32 meshIndex;
-	U32 index;
-	IFXVectorHasherVectorNode* pNext;
+    U32 meshIndex;
+    U32 index;
+    IFXVectorHasherVectorNode* pNext;
 };
 
 struct IFXVectorHasherBinNode
 {
-	IFXVector3* pVector;
-	IFXVectorHasherVectorNode* pFront;
-	IFXVectorHasherBinNode* pNext;		// next node in this bin
+    IFXVector3* pVector;
+    IFXVectorHasherVectorNode* pFront;
+    IFXVectorHasherBinNode* pNext; // next node in this bin
 };
 
 /** Iterator used to access nodes in a bin.
@@ -56,24 +56,22 @@ to initialize the node iterator. */
 class IFXVectorHasherNodeIterator
 {
 public:
-	IFXVectorHasherNodeIterator();
-	~IFXVectorHasherNodeIterator();
+    IFXVectorHasherNodeIterator();
+    ~IFXVectorHasherNodeIterator();
 
-	/** This method called by IFXVectorHasherBinIterator::
-	GetNodeIterator to initialize iterator. */
-	void Initialize(IFXVectorHasherVectorNode* pNode);
+    /** This method called by IFXVectorHasherBinIterator::
+    GetNodeIterator to initialize iterator. */
+    void Initialize(IFXVectorHasherVectorNode* pNode);
 
-	/** Get mesh index and vertex index at current node. */
-	void Get(U32* pMeshIndex, U32* pIndex);
+    /** Get mesh index and vertex index at current node. */
+    void Get(U32* pMeshIndex, U32* pIndex);
 
-	/** Go to the next node.  Returns FALSE if no more nodes. */
-	BOOL Next();
+    /** Go to the next node.  Returns FALSE if no more nodes. */
+    BOOL Next();
 
 private:
-	IFXVectorHasherVectorNode* m_pCurrNode;
+    IFXVectorHasherVectorNode* m_pCurrNode;
 };
-
-
 
 /**  Iterator used to access bins.  A bin contains a set of nodes.
 Instantiate this class and call IFXVectorHasher::GetBinIterator()
@@ -81,91 +79,85 @@ to initialize the bin iterator. */
 class IFXVectorHasherBinIterator
 {
 public:
-	IFXVectorHasherBinIterator();
-	~IFXVectorHasherBinIterator();
+    IFXVectorHasherBinIterator();
+    ~IFXVectorHasherBinIterator();
 
-	/** This method called by IFXVectorHasher::GetBinIterator
-	to initialize iterator. */
-	void Initialize(IFXVectorHasherBinNode** ppCurrBinList,
-					IFXVectorHasherBinNode** ppEndBinList);
+    /** This method called by IFXVectorHasher::GetBinIterator
+    to initialize iterator. */
+    void Initialize(IFXVectorHasherBinNode** ppCurrBinList, IFXVectorHasherBinNode** ppEndBinList);
 
-	/** Initialize node iterator */
-	void GetNodeIterator(IFXVectorHasherNodeIterator* pIter);
-		
-	/** Go to the next bin node.  Returns FALSE is no more nodes. */
-	BOOL Next();
+    /** Initialize node iterator */
+    void GetNodeIterator(IFXVectorHasherNodeIterator* pIter);
+
+    /** Go to the next bin node.  Returns FALSE is no more nodes. */
+    BOOL Next();
 
 private:
-	IFXVectorHasherBinNode** m_ppCurrBinList;
-	IFXVectorHasherBinNode** m_ppEndBinList;
-	IFXVectorHasherBinNode*	 m_pCurrBin;
+    IFXVectorHasherBinNode** m_ppCurrBinList;
+    IFXVectorHasherBinNode** m_ppEndBinList;
+    IFXVectorHasherBinNode* m_pCurrBin;
 };
-
 
 /**  Hash table for IFXVector3 objects */
 class IFXVectorHasher
 {
 public:
-	IFXVectorHasher();
-	~IFXVectorHasher();
+    IFXVectorHasher();
+    ~IFXVectorHasher();
 
-	/** 
-		Allocate hash table based on the number of vectors
-		and the bounding box of the vectors.  Will return
-		IFX_E_OUT_OF_MEMORY if a memory alloc fails. 
-	
-		@param numVectors number of vectors.
-		@param pMin A pointer to the input value that is a min diagonal pointer.
-		@param pMax A pointer to the input value that is a max diagonal pointer.
-	*/
-	IFXRESULT Initialize(U32 numVectors,
-						 IFXVector3* pMin,
-						 IFXVector3* pMax);
+    /**
+            Allocate hash table based on the number of vectors
+            and the bounding box of the vectors.  Will return
+            IFX_E_OUT_OF_MEMORY if a memory alloc fails.
 
-	/** 
-		Add vector to hash table.  Will return
-		IFX_E_OUT_OF_MEMORY if a memory alloc fails.
-	
-		Note: Stores pointer to given vector.  Do not free 
-		the vector until this class's destructor is called. 
-		
-		@param pVector A pointer to the added 3D point.
-		@param meshIndex Mesh index.
-		@param vertexIndex Vertex index.
-	*/
-	IFXRESULT AddVector(IFXVector3* pVector, U32 meshIndex, U32 vertexIndex);
+            @param numVectors number of vectors.
+            @param pMin A pointer to the input value that is a min diagonal pointer.
+            @param pMax A pointer to the input value that is a max diagonal pointer.
+    */
+    IFXRESULT Initialize(U32 numVectors, IFXVector3* pMin, IFXVector3* pMax);
 
-	/** 
-		Initialize an iterator for accessing the bins.  Each bin
-		contains a set of nodes.  Use the node iterator
-		to access the individual nodes.  Returns FALSE if no bin nodes. 
+    /**
+            Add vector to hash table.  Will return
+            IFX_E_OUT_OF_MEMORY if a memory alloc fails.
 
-		@param pIter A pointer to the output initialized iterator.
-	*/
-	BOOL GetBinIterator(IFXVectorHasherBinIterator* pIter);
+            Note: Stores pointer to given vector.  Do not free
+            the vector until this class's destructor is called.
+
+            @param pVector A pointer to the added 3D point.
+            @param meshIndex Mesh index.
+            @param vertexIndex Vertex index.
+    */
+    IFXRESULT AddVector(IFXVector3* pVector, U32 meshIndex, U32 vertexIndex);
+
+    /**
+            Initialize an iterator for accessing the bins.  Each bin
+            contains a set of nodes.  Use the node iterator
+            to access the individual nodes.  Returns FALSE if no bin nodes.
+
+            @param pIter A pointer to the output initialized iterator.
+    */
+    BOOL GetBinIterator(IFXVectorHasherBinIterator* pIter);
 
 private:
-	// Hash the IFXVector3 into a 3D index.  Lookup the bin and
-	// return the linked list of collisions.
-	IFXVectorHasherBinNode** GetBinList(IFXVector3* pVector);
+    // Hash the IFXVector3 into a 3D index.  Lookup the bin and
+    // return the linked list of collisions.
+    IFXVectorHasherBinNode** GetBinList(IFXVector3* pVector);
 
-	// Look for a match in the linked list of collisions.  If not
-	// found, add a collision node (IFXVectorHasherBinNode) to the 
-	// collision list.  Return the collision node pointer.
-	IFXVectorHasherBinNode* GetBinNode(IFXVectorHasherBinNode** ppFront, 
-									   IFXVector3* pVector);
-	
-	// Add a reference of the hashed vector to the collision node's
-	// list of instances.
-	IFXRESULT AddVectorNode(IFXVectorHasherVectorNode** ppFront, 
-		                    U32 meshIndex, U32 index);
+    // Look for a match in the linked list of collisions.  If not
+    // found, add a collision node (IFXVectorHasherBinNode) to the
+    // collision list.  Return the collision node pointer.
+    IFXVectorHasherBinNode* GetBinNode(IFXVectorHasherBinNode** ppFront, IFXVector3* pVector);
 
-	U32 m_dim;			///< dimension N of N x N x N cube 
-	U32 m_dimSquared;	///< N * N
-	U32 m_dimCubed;		///< N * N * N
-	IFXVector3 m_origin;	///< used by hash key algorithm
-	IFXVector3 m_scale;		///< used by hash key algorithm
-	IFXVectorHasherBinNode** m_ppBins;	///< pointer to 3D array of bins
+    // Add a reference of the hashed vector to the collision node's
+    // list of instances.
+    IFXRESULT AddVectorNode(IFXVectorHasherVectorNode** ppFront, U32 meshIndex, U32 index);
+
+    U32 m_dim;                         ///< dimension N of N x N x N cube
+    U32 m_dimSquared;                  ///< N * N
+    U32 m_dimCubed;                    ///< N * N * N
+    IFXVector3 m_origin;               ///< used by hash key algorithm
+    IFXVector3 m_scale;                ///< used by hash key algorithm
+    IFXVectorHasherBinNode** m_ppBins; ///< pointer to 3D array of bins
 };
 
 //
@@ -177,106 +169,113 @@ private:
 //
 IFXINLINE IFXVectorHasherNodeIterator::IFXVectorHasherNodeIterator()
 {
-	m_pCurrNode = NULL;
+    m_pCurrNode = NULL;
 }
 
 IFXINLINE IFXVectorHasherNodeIterator::~IFXVectorHasherNodeIterator()
 {
-	// iterator is a visitor, doesn't own the data
+    // iterator is a visitor, doesn't own the data
 }
 
 IFXINLINE void IFXVectorHasherNodeIterator::Initialize(
-											IFXVectorHasherVectorNode* pNode)
+    IFXVectorHasherVectorNode* pNode)
 {
-	m_pCurrNode = pNode;
+    m_pCurrNode = pNode;
 }
 
 IFXINLINE void IFXVectorHasherNodeIterator::Get(U32* pMeshIndex, U32* pIndex)
 {
-	IFXASSERT(m_pCurrNode);
-	IFXASSERT(pMeshIndex);
-	IFXASSERT(pIndex);
+    IFXASSERT(m_pCurrNode);
+    IFXASSERT(pMeshIndex);
+    IFXASSERT(pIndex);
 
-	if ( (NULL != pMeshIndex) && (NULL != pIndex) && (NULL != m_pCurrNode) )
-	{
-		*pMeshIndex = m_pCurrNode->meshIndex;
-		*pIndex = m_pCurrNode->index;
-	}
-	else
-	{
-		if (NULL != pMeshIndex) *pMeshIndex = 0;
-		if (NULL != pIndex) *pIndex = 0;
-	}
+    if ((NULL != pMeshIndex) && (NULL != pIndex) && (NULL != m_pCurrNode))
+    {
+        *pMeshIndex = m_pCurrNode->meshIndex;
+        *pIndex = m_pCurrNode->index;
+    }
+    else
+    {
+        if (NULL != pMeshIndex)
+        {
+            *pMeshIndex = 0;
+        }
+        if (NULL != pIndex)
+        {
+            *pIndex = 0;
+        }
+    }
 }
 
 IFXINLINE BOOL IFXVectorHasherNodeIterator::Next()
 {
-	m_pCurrNode = m_pCurrNode->pNext;
-	return BOOL(NULL != m_pCurrNode);
+    m_pCurrNode = m_pCurrNode->pNext;
+    return BOOL(NULL != m_pCurrNode);
 }
-
 
 //
 // IFXVectorHasherBinIterator
 //
 IFXINLINE IFXVectorHasherBinIterator::IFXVectorHasherBinIterator()
 {
-	m_ppCurrBinList = NULL;
-	m_ppEndBinList = NULL;
-	m_pCurrBin = NULL;
+    m_ppCurrBinList = NULL;
+    m_ppEndBinList = NULL;
+    m_pCurrBin = NULL;
 }
 
 IFXINLINE IFXVectorHasherBinIterator::~IFXVectorHasherBinIterator()
 {
-	// iterator is a visitor, doesn't own the data
+    // iterator is a visitor, doesn't own the data
 }
 
 IFXINLINE void IFXVectorHasherBinIterator::Initialize(
-										IFXVectorHasherBinNode** ppCurrBinList,
-										IFXVectorHasherBinNode** ppEndBinList)
+    IFXVectorHasherBinNode** ppCurrBinList,
+    IFXVectorHasherBinNode** ppEndBinList)
 {
-	IFXASSERT(ppCurrBinList);
-	IFXASSERT(ppEndBinList);
+    IFXASSERT(ppCurrBinList);
+    IFXASSERT(ppEndBinList);
 
-	if ( (NULL != ppCurrBinList) && (NULL != ppEndBinList) )
-	{
-		IFXASSERT(*ppCurrBinList);
+    if ((NULL != ppCurrBinList) && (NULL != ppEndBinList))
+    {
+        IFXASSERT(*ppCurrBinList);
 
-		if (NULL != *ppCurrBinList)
-		{
-			m_ppCurrBinList = ppCurrBinList;
-			m_ppEndBinList = ppEndBinList;
-			m_pCurrBin = *ppCurrBinList;
-		}
-	}
+        if (NULL != *ppCurrBinList)
+        {
+            m_ppCurrBinList = ppCurrBinList;
+            m_ppEndBinList = ppEndBinList;
+            m_pCurrBin = *ppCurrBinList;
+        }
+    }
 }
 
 IFXINLINE void IFXVectorHasherBinIterator::GetNodeIterator(
-											IFXVectorHasherNodeIterator* pIter)
+    IFXVectorHasherNodeIterator* pIter)
 {
-	IFXASSERT(pIter);
+    IFXASSERT(pIter);
 
-	if (NULL != pIter)
-	{
-		pIter->Initialize(m_pCurrBin->pFront);
-	}
+    if (NULL != pIter)
+    {
+        pIter->Initialize(m_pCurrBin->pFront);
+    }
 }
-	
+
 IFXINLINE BOOL IFXVectorHasherBinIterator::Next()
 {
-	m_pCurrBin = m_pCurrBin->pNext;
+    m_pCurrBin = m_pCurrBin->pNext;
 
-	if (NULL == m_pCurrBin)
-	{
-		while(++m_ppCurrBinList < m_ppEndBinList  &&  *m_ppCurrBinList == NULL)
-		{
-		}
+    if (NULL == m_pCurrBin)
+    {
+        while (++m_ppCurrBinList < m_ppEndBinList && *m_ppCurrBinList == NULL)
+        {
+        }
 
-		if (m_ppCurrBinList < m_ppEndBinList)
-			m_pCurrBin = *m_ppCurrBinList;
-	}
+        if (m_ppCurrBinList < m_ppEndBinList)
+        {
+            m_pCurrBin = *m_ppCurrBinList;
+        }
+    }
 
-	return BOOL(NULL != m_pCurrBin);
+    return BOOL(NULL != m_pCurrBin);
 }
 
 #endif

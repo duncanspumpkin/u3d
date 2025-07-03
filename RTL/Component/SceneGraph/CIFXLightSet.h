@@ -17,47 +17,45 @@
 //***************************************************************************
 
 /**
-	@file	CIFXLightSet.h
+        @file	CIFXLightSet.h
 
-			The header file that defines the base implementation class of the
-			CIFXLightSet.
+                        The header file that defines the base implementation class of the
+                        CIFXLightSet.
 */
 
 #ifndef __CIFXLIGHTSET_H__
 #define __CIFXLIGHTSET_H__
 
-#include "IFXLightSet.h"
 #include "IFXCoreCIDs.h"
+#include "IFXLightSet.h"
 #include "IFXSpatial.h"
 
 class CIFXLightSet : virtual public IFXLightSet
 {
 
-        CIFXLightSet();
-  virtual  ~CIFXLightSet();
-  friend
-  IFXRESULT IFXAPI_CALLTYPE CIFXLightSet_Factory( IFXREFIID iid, void** ppv );
+    CIFXLightSet();
+    virtual ~CIFXLightSet();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXLightSet_Factory(IFXREFIID iid, void** ppv);
 
 public:
-  // IFXUnknown
-  U32 IFXAPI        AddRef ();
-  U32 IFXAPI        Release ();
-  IFXRESULT IFXAPI  QueryInterface (   IFXREFIID  riid,
-                              void**     ppv );
-  // IFXLightSet
-  IFXRESULT IFXAPI Set( U32 uInCount, SPATIALINSTANCE_LIST** ppInLights );
-  U32       IFXAPI GetNumLights() const {return m_uCount;}
-  IFXRESULT IFXAPI GetLight( U32 uLightIndex, IFXLight*& rpOutLight, U32& lightInstance ) const;
-  IFXRESULT IFXAPI Append(U32 uInCount, SPATIALINSTANCE_LIST** ppInLights);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
+    // IFXLightSet
+    IFXRESULT IFXAPI Set(U32 uInCount, SPATIALINSTANCE_LIST** ppInLights);
+    U32 IFXAPI GetNumLights() const { return m_uCount; }
+    IFXRESULT IFXAPI GetLight(U32 uLightIndex, IFXLight*& rpOutLight, U32& lightInstance) const;
+    IFXRESULT IFXAPI Append(U32 uInCount, SPATIALINSTANCE_LIST** ppInLights);
 
 private:
-  // IFXUnknown
-  U32                     m_uRefCount;
+    // IFXUnknown
+    U32 m_uRefCount;
 
-  // IFXLightSet
-  IFXSpatialInstance*    m_pLights;
-  U32                     m_uCount;
-  U32                     m_uAllocated;
+    // IFXLightSet
+    IFXSpatialInstance* m_pLights;
+    U32 m_uCount;
+    U32 m_uAllocated;
 };
 
 #endif

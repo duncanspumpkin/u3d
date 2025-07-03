@@ -21,16 +21,17 @@
 class GeometryObject
 {
 private:
-	unsigned long timeStamp;
+    unsigned long timeStamp;
 
 public:
-	static unsigned long currentTime;
-	GeometryObject () :  timeStamp (0) {};
+    static unsigned long currentTime;
+    GeometryObject()
+        : timeStamp(0) {};
 
-	static void incrementCurrent()  { currentTime++; };
-	static void advanceTime()       { currentTime++; };
-	int  isCurrent()                { return (currentTime <= timeStamp); };
-	void makeCurrent()              { timeStamp = currentTime; };
+    static void incrementCurrent() { currentTime++; };
+    static void advanceTime() { currentTime++; };
+    int isCurrent() { return (currentTime <= timeStamp); };
+    void makeCurrent() { timeStamp = currentTime; };
 };
 
 #endif // GEOMETRYOBJECT_DOT_H

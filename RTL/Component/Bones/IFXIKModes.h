@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file IFXIKModes.h
+        @file IFXIKModes.h
 */
 
 #ifndef IFXIKMODES_H
@@ -26,34 +26,36 @@
 class IFXIKModes
 {
 public:
-	IFXIKModes(void)
-	{ Reset(); };
+    IFXIKModes(void)
+    {
+        Reset();
+    };
 
-	void Reset(void)
-	{
-		m_limitangvelocity=FALSE;
-		m_maxangvelocity=0.0f;
-		m_incremental=TRUE;
-		m_iterations=1;
-	};
+    void Reset(void)
+    {
+        m_limitangvelocity = FALSE;
+        m_maxangvelocity = 0.0f;
+        m_incremental = TRUE;
+        m_iterations = 1;
+    };
 
-	bool    GetLimitAngVelocity(void)       { return m_limitangvelocity; };
-	void    SetLimitAngVelocity(bool set)   { m_limitangvelocity=set; };
+    bool GetLimitAngVelocity(void) { return m_limitangvelocity; };
+    void SetLimitAngVelocity(bool set) { m_limitangvelocity = set; };
 
-	F32     GetMaxAngVelocity(void)         { return m_maxangvelocity; };
-	void    SetMaxAngVelocity(F32 set)      { m_maxangvelocity=set; };
+    F32 GetMaxAngVelocity(void) { return m_maxangvelocity; };
+    void SetMaxAngVelocity(F32 set) { m_maxangvelocity = set; };
 
-	bool    GetIncremental(void)            { return m_incremental; };
-	void    SetIncremental(bool set)        { m_incremental=set; };
+    bool GetIncremental(void) { return m_incremental; };
+    void SetIncremental(bool set) { m_incremental = set; };
 
-	U32     GetIterations(void)             { return m_iterations; };
-	void    SetIterations(U32 set)          { m_iterations=set; };
+    U32 GetIterations(void) { return m_iterations; };
+    void SetIterations(U32 set) { m_iterations = set; };
 
 private:
-	bool    m_limitangvelocity;
-	F32     m_maxangvelocity;
-	bool    m_incremental;
-	U32     m_iterations;
+    bool m_limitangvelocity;
+    F32 m_maxangvelocity;
+    bool m_incremental;
+    U32 m_iterations;
 };
 
 #endif

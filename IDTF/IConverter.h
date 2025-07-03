@@ -24,11 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef IConverter_H
 #define IConverter_H
-
-
 
 //***************************************************************************
 //  Includes
@@ -38,58 +35,53 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class IConverter
+    {
+    public:
+        virtual ~IConverter() {}
+        /**
+        @todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
+        DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
+        INTERFACE HEADER HERE TO REDUCE DUPLICATION.
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        @return Upon success, IFX_OK is returned.  Otherwise, one of the
+        following failures are returned:  @todo: return codes.
+        */
+        virtual IFXRESULT Convert() = 0;
+    };
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class IConverter
-	{
-	public:
-		virtual ~IConverter() {}
-		/**
-		@todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
-		DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
-		INTERFACE HEADER HERE TO REDUCE DUPLICATION.
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		@return Upon success, IFX_OK is returned.  Otherwise, one of the
-		following failures are returned:  @todo: return codes.
-		*/
-		virtual IFXRESULT Convert() = 0;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	};
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

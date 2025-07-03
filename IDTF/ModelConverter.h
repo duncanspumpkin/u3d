@@ -17,15 +17,13 @@
 //***************************************************************************
 
 /**
-	@file	ModelConverter.h
+        @file	ModelConverter.h
 
-			This header defines the common functionality for models conversion.
+                        This header defines the common functionality for models conversion.
 */
-
 
 #ifndef ModelConverter_H
 #define ModelConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -39,174 +37,168 @@ class IFXSkeleton;
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class ModelNode;
+    class ModelSkeleton;
+    struct BoneInfo;
 
+    /**
+    This is the implementation of a class that is used to convert models.
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    It supports the following interfaces:  IConverter.
+    */
+    class ModelConverter : public IConverter
+    {
+    public:
+        ModelConverter(SceneUtilities* pSceneUtils);
+        virtual ~ModelConverter();
 
-class ModelNode;
-class ModelSkeleton;
-struct BoneInfo;
+        /**
+        Convert model
+        */
+        IFXRESULT Convert();
 
-/**
-This is the implementation of a class that is used to convert models.
+        /**
+        Set default geometry quality factor
+        */
+        void SetDefaultQuality(U32 defaultGeoQuality);
 
-It supports the following interfaces:  IConverter.
-*/
-class ModelConverter : public IConverter
-{
-public:
-	ModelConverter( SceneUtilities* pSceneUtils );
-	virtual ~ModelConverter();
+        /**
+        Set position quality factor
+        */
+        void SetPositionQuality(U32 positionQuality);
 
-	/**
-	Convert model
-	*/
-	IFXRESULT Convert();
+        /**
+        Set texture coordinate quality factor
+        */
+        void SetTexCoordQuality(U32 texCoordQuality);
 
-	/**
-	Set default geometry quality factor
-	*/
-	void SetDefaultQuality( U32 defaultGeoQuality );
+        /**
+        Set normal quality factor
+        */
+        void SetNormalQuality(U32 normalQuality);
 
-	/**
-	Set position quality factor
-	*/
-	void SetPositionQuality( U32 positionQuality );
+        /**
+        Set diffuse color quality factor
+        */
+        void SetDiffuseColorQuality(U32 diffuseQuality);
 
-	/**
-	Set texture coordinate quality factor
-	*/
-	void SetTexCoordQuality( U32 texCoordQuality );
+        /**
+        Set specular color quality factor
+        */
+        void SetSpecularColorQuality(U32 specularQuality);
 
-	/**
-	Set normal quality factor
-	*/
-	void SetNormalQuality( U32 normalQuality );
+        /**
+        Set zero area faces removal
+        */
+        void SetZeroAreaFacesRemoval(BOOL isRemove);
 
-	/**
-	Set diffuse color quality factor
-	*/
-	void SetDiffuseColorQuality( U32 diffuseQuality );
+        /**
+        Set zero area face tolerance
+        */
+        void SetZeroAreaFaceTolerance(F32 tolerance);
 
-	/**
-	Set specular color quality factor
-	*/
-	void SetSpecularColorQuality( U32 specularQuality );
+        /**
+        Set exclude normals mode
+        */
+        void SetNormalsExclusion(BOOL isExcludeNormals);
 
-	/**
-	Set zero area faces removal
-	*/
-	void SetZeroAreaFacesRemoval( BOOL isRemove );
+    protected:
+        /**
+        @return IFXRESULT Return status of this method.
+        */
+        IFXRESULT ConvertShadingDescriptions(
+            const ShadingDescriptionList& rShadingDescriptions,
+            const U32 numberOfShaders,
+            IFXAuthorMaterial* pShaders);
 
-	/**
-	Set zero area face tolerance
-	*/
-	void SetZeroAreaFaceTolerance( F32 tolerance );
+        /**
+        Read bone information from the IDTF file, using this to create
+        the connectivity and reference-orientation representation of
+        the skeleton. The IDTF file also specifies the animation of
+        each bone. After collecting these motions for all bones, we
+        create an IFXMotionResource for the that specifies the animation
+        of the entire skeletal figure over the period defined by the keyframes.
 
-	/**
-	Set exclude normals mode
-	*/
-	void SetNormalsExclusion( BOOL isExcludeNormals );
+        @param  ModelSkeleton& rIDTFSkeleton
+        @param  IFXSkeleton** ppSkeleton  The populated skeletal bone data
 
-protected:
+        @return IFXRESULT Return status of this method.
+        */
+        IFXRESULT ConvertSkeleton(
+            const ModelSkeleton& rIDTFSkeleton,
+            IFXSkeleton** ppSkeleton);
 
-	/**
-	@return IFXRESULT Return status of this method.
-	*/
-	IFXRESULT ConvertShadingDescriptions(
-					const ShadingDescriptionList& rShadingDescriptions,
-					const U32 numberOfShaders,
-					IFXAuthorMaterial* pShaders );
+        /**
+        Load in the reference orientation and keyframes for the
+        specified bone.
 
-	/**
-	Read bone information from the IDTF file, using this to create
-	the connectivity and reference-orientation representation of
-	the skeleton. The IDTF file also specifies the animation of
-	each bone. After collecting these motions for all bones, we
-	create an IFXMotionResource for the that specifies the animation
-	of the entire skeletal figure over the period defined by the keyframes.
+        @param  IFXSkeleton* pSkeleton  The container holding information
+                                                                        about all bones in this skeleton.
+        @param  U32 boneIndex     The index of the bone being
+                                                          converted.
 
-	@param  ModelSkeleton& rIDTFSkeleton
-	@param  IFXSkeleton** ppSkeleton  The populated skeletal bone data
+        @return IFXRESULT       Return status of this method.
+        */
+        IFXRESULT ConvertBone(
+            IFXSkeleton* pSkeleton,
+            U32 boneIndex,
+            const BoneInfo& rIDTFBoneInfo);
 
-	@return IFXRESULT Return status of this method.
-	*/
-	IFXRESULT ConvertSkeleton(
-					const ModelSkeleton& rIDTFSkeleton,
-					IFXSkeleton** ppSkeleton );
+        /**
+        Return the ID of the bone that has the specified name
 
-	/**
-	Load in the reference orientation and keyframes for the
-	specified bone.
+        @param   IFXSkeleton *pSkeleton The data structure containing information
+                                                                        about all bones in the skeleton.
+        @param   const IFXString& rName The name of the bone to search for
 
-	@param  IFXSkeleton* pSkeleton  The container holding information
-									about all bones in this skeleton.
-	@param  U32 boneIndex     The index of the bone being
-							  converted.
+        @return  U32 -1 if there is an error or the named bone cannot be found.
+                                 0...N if we find the named bone in the skeleton.
+        */
+        I32 GetBoneIdx(IFXSkeleton* pSkeleton, const IFXString& rName);
 
-	@return IFXRESULT       Return status of this method.
-	*/
-	IFXRESULT ConvertBone(
-					IFXSkeleton* pSkeleton,
-					U32 boneIndex,
-					const BoneInfo& rIDTFBoneInfo );
+        SceneUtilities* m_pSceneUtils;
 
-	/**
-	Return the ID of the bone that has the specified name
+        U32 m_defaultGeoQuality;
+        U32 m_positionQuality;
+        U32 m_texCoordQuality;
+        U32 m_normalQuality;
+        U32 m_diffuseQuality;
+        U32 m_specularQuality;
+        BOOL m_removeZeroAreaFaces;
+        F32 m_zeroAreaFaceTolerance;
+        BOOL m_excludeNormals;
 
-	@param   IFXSkeleton *pSkeleton The data structure containing information
-									about all bones in the skeleton.
-	@param   const IFXString& rName The name of the bone to search for
+    private:
+        ModelConverter();
+    };
 
-	@return  U32 -1 if there is an error or the named bone cannot be found.
-				 0...N if we find the named bone in the skeleton.
-	*/
-	I32 GetBoneIdx( IFXSkeleton* pSkeleton, const IFXString& rName );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	SceneUtilities* m_pSceneUtils;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	U32 m_defaultGeoQuality;
-	U32 m_positionQuality;
-	U32 m_texCoordQuality;
-	U32 m_normalQuality;
-	U32 m_diffuseQuality;
-	U32 m_specularQuality;
-	BOOL m_removeZeroAreaFaces;
-	F32 m_zeroAreaFaceTolerance;
-	BOOL m_excludeNormals;
-
-private:
-	ModelConverter();
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

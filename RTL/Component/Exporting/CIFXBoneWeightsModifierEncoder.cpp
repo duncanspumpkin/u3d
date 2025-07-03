@@ -17,472 +17,472 @@
 //***************************************************************************
 
 /**
-	@file	CIFXBoneWeightsModifierEncoder.cpp
+        @file	CIFXBoneWeightsModifierEncoder.cpp
 
-			Implementation of the CIFXBoneWeightsModifierEncoder.
-			The CIFXBoneWeightsModifierEncoder contains Bone Weight Modifier 
-			modifier encoding functionality that is used by the write manager.
+                        Implementation of the CIFXBoneWeightsModifierEncoder.
+                        The CIFXBoneWeightsModifierEncoder contains Bone Weight Modifier
+                        modifier encoding functionality that is used by the write manager.
 */
-
 
 #include "CIFXBoneWeightsModifierEncoder.h"
 #include "IFXACContext.h"
-#include "IFXBlockTypes.h"
-#include "IFXCheckX.h"
-#include "IFXCoreCIDs.h"
-#include "IFXBoneWeightsModifier.h"
-#include "IFXModifierChain.h"
-#include "IFXSceneGraph.h"
 #include "IFXAuthorCLODResource.h"
 #include "IFXAuthorLineSetResource.h"
 #include "IFXAuthorPointSetResource.h"
+#include "IFXBlockTypes.h"
+#include "IFXBoneWeightsModifier.h"
+#include "IFXCheckX.h"
+#include "IFXCoreCIDs.h"
 #include "IFXModel.h"
+#include "IFXModifierChain.h"
+#include "IFXSceneGraph.h"
 
-#include "IFXVertexMap.h"
 #include "IFXMeshGroup.h"
 #include "IFXMeshMap.h"
+#include "IFXVertexMap.h"
 
-void GetVertexMapContainerX( 
-						IFXMeshMap *pMeshDesc, 
-   						U32* pMeshIdx, 
-   						U32* pVertIdx,
-   						U32 uPosCnt );
+void GetVertexMapContainerX(
+    IFXMeshMap* pMeshDesc,
+    U32* pMeshIdx,
+    U32* pVertIdx,
+    U32 uPosCnt);
 
 // constructor
-CIFXBoneWeightsModifierEncoder::CIFXBoneWeightsModifierEncoder() :
-IFXDEFINEMEMBER(m_pModifier)
+CIFXBoneWeightsModifierEncoder::CIFXBoneWeightsModifierEncoder()
+    : IFXDEFINEMEMBER(m_pModifier)
 {
-	m_bInitialized = FALSE;
-	m_pBitStream = NULL;
-	m_pCoreServices = NULL;
-	m_pObject = NULL;
-	m_uRefCount = 0;
+    m_bInitialized = FALSE;
+    m_pBitStream = NULL;
+    m_pCoreServices = NULL;
+    m_pObject = NULL;
+    m_uRefCount = 0;
 }
 
 // destructor
 CIFXBoneWeightsModifierEncoder::~CIFXBoneWeightsModifierEncoder()
 {
-	IFXRELEASE( m_pBitStream );
-	IFXRELEASE( m_pCoreServices );
-	IFXRELEASE( m_pObject );
+    IFXRELEASE(m_pBitStream);
+    IFXRELEASE(m_pCoreServices);
+    IFXRELEASE(m_pObject);
 }
-
 
 // IFXUnknown
 U32 CIFXBoneWeightsModifierEncoder::AddRef()
 {
-	return ++m_uRefCount;
+    return ++m_uRefCount;
 }
 
 U32 CIFXBoneWeightsModifierEncoder::Release()
 {
-	if ( !( --m_uRefCount ) )
-	{
-		delete this;
+    if (!(--m_uRefCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_uRefCount;
+    return m_uRefCount;
 }
 
-IFXRESULT CIFXBoneWeightsModifierEncoder::QueryInterface( IFXREFIID interfaceId,
-														 void**  ppInterface )
+IFXRESULT CIFXBoneWeightsModifierEncoder::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXEncoderX )
-		{
-			*ppInterface = ( IFXEncoderX* ) this;
-			this->AddRef();
-		}
-		else if ( interfaceId == IID_IFXUnknown )
-		{
-			*ppInterface = ( IFXUnknown* ) this;
-			this->AddRef();
-		}
-		else
-		{
-			*ppInterface = NULL;
-			rc = IFX_E_UNSUPPORTED;
-		}
-	}
-	else
-		rc = IFX_E_INVALID_POINTER;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXEncoderX)
+        {
+            *ppInterface = (IFXEncoderX*)this;
+            this->AddRef();
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+            this->AddRef();
+        }
+        else
+        {
+            *ppInterface = NULL;
+            rc = IFX_E_UNSUPPORTED;
+        }
+    }
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(rc);
+    IFXRETURN(rc);
 }
-
 
 // IFXEncoderX
-void CIFXBoneWeightsModifierEncoder::EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units )
+void CIFXBoneWeightsModifierEncoder::EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units)
 {
-	IFXBoneWeightsModifier* pBoneWeightsModifier = NULL;
-	U32 *pMeshIdx = NULL;
-	U32 *pVertIdx = NULL;
-	U32 *puBoneIDs = NULL;
-	F32 *pfWeights = NULL;
+    IFXBoneWeightsModifier* pBoneWeightsModifier = NULL;
+    U32* pMeshIdx = NULL;
+    U32* pVertIdx = NULL;
+    U32* puBoneIDs = NULL;
+    F32* pfWeights = NULL;
 
-	try
-	{
-		// check for initialization
-		if ( FALSE == m_bInitialized )
-			throw IFXException( IFX_E_NOT_INITIALIZED );
-		if ( NULL == m_pObject )
-			throw IFXException( IFX_E_CANNOT_FIND );
+    try
+    {
+        // check for initialization
+        if (FALSE == m_bInitialized)
+        {
+            throw IFXException(IFX_E_NOT_INITIALIZED);
+        }
+        if (NULL == m_pObject)
+        {
+            throw IFXException(IFX_E_CANNOT_FIND);
+        }
 
-		IFXCHECKX( m_pObject->QueryInterface( IID_IFXBoneWeightsModifier, (void**)&pBoneWeightsModifier ) );
+        IFXCHECKX(m_pObject->QueryInterface(IID_IFXBoneWeightsModifier, (void**)&pBoneWeightsModifier));
 
-		// The following elements are common to all Modifier blocks
-		// and are encoded in EncodeCommonElements():
-		// 1. ModelGenerator Name
-		// 2. Index for modifier chain
+        // The following elements are common to all Modifier blocks
+        // and are encoded in EncodeCommonElements():
+        // 1. ModelGenerator Name
+        // 2. Index for modifier chain
 
-		m_pBitStream->WriteIFXStringX( rName );
+        m_pBitStream->WriteIFXStringX(rName);
 
-		U32 uTemp = 0;
-		IFXCHECKX( m_pModifier->GetModifierChainIndex( uTemp ) );
-		m_pBitStream->WriteU32X( uTemp );
+        U32 uTemp = 0;
+        IFXCHECKX(m_pModifier->GetModifierChainIndex(uTemp));
+        m_pBitStream->WriteU32X(uTemp);
 
-		
+        IFXDECLARELOCAL(IFXAuthorCLODResource, pCLOD);
+        IFXDECLARELOCAL(IFXAuthorLineSetResource, pLines);
+        IFXDECLARELOCAL(IFXAuthorPointSetResource, pPoints);
+        IFXDECLARELOCAL(IFXAuthorCLODMesh, pMesh);
+        IFXDECLARELOCAL(IFXAuthorLineSet, pAuthorLineSet);
+        IFXDECLARELOCAL(IFXAuthorPointSet, pAuthorPointSet);
+        IFXDECLARELOCAL(IFXPalette, pSGPalette);
+        IFXDECLARELOCAL(IFXSceneGraph, pSG);
+        IFXDECLARELOCAL(IFXModifierChain, pMC);
+        IFXDECLARELOCAL(IFXModifier, pMod);
+        IFXDECLARELOCAL(IFXModel, pModel);
 
-		IFXDECLARELOCAL( IFXAuthorCLODResource, pCLOD);
-		IFXDECLARELOCAL( IFXAuthorLineSetResource, pLines );
-		IFXDECLARELOCAL( IFXAuthorPointSetResource, pPoints );
-		IFXDECLARELOCAL( IFXAuthorCLODMesh, pMesh );
-		IFXDECLARELOCAL( IFXAuthorLineSet, pAuthorLineSet );
-		IFXDECLARELOCAL( IFXAuthorPointSet, pAuthorPointSet );
-		IFXDECLARELOCAL( IFXPalette, pSGPalette );
-		IFXDECLARELOCAL( IFXSceneGraph, pSG );
-		IFXDECLARELOCAL( IFXModifierChain, pMC );
-		IFXDECLARELOCAL( IFXModifier, pMod );
-		IFXDECLARELOCAL( IFXModel, pModel );
+        IFXCHECKX(m_pCoreServices->GetSceneGraph(IID_IFXSceneGraph, (void**)&pSG));
+        IFXCHECKX(pSG->GetPalette(IFXSceneGraph::GENERATOR, &pSGPalette));
 
-		IFXCHECKX( m_pCoreServices->GetSceneGraph( IID_IFXSceneGraph, (void**)&pSG ) );
-		IFXCHECKX( pSG->GetPalette( IFXSceneGraph::GENERATOR, &pSGPalette ) );
+        IFXCHECKX(m_pModifier->GetModifierChain(&pMC));
+        IFXCHECKX(pMC->GetModifier(0, pMod));
 
-		IFXCHECKX( m_pModifier->GetModifierChain( &pMC ) );
-		IFXCHECKX( pMC->GetModifier( 0, pMod ) );
+        /// @todo: It's better to get Render Mesh Map thru Modifier Chain
+        if (IFXSUCCESS(pMod->QueryInterface(IID_IFXModel, (void**)&pModel)))
+        {
+            U32 uResourceID = 0;
+            // this means that we are in Node Mod Chain
+            uResourceID = pModel->GetResourceIndex();
+            IFXRELEASE(pMod);
+            IFXCHECKX(pSGPalette->GetResourcePtr(uResourceID, IID_IFXModifier, (void**)&pMod));
+        }
 
-		/// @todo: It's better to get Render Mesh Map thru Modifier Chain
-		if( IFXSUCCESS( pMod->QueryInterface( IID_IFXModel, (void**)&pModel ) ) )
-		{
-			U32 uResourceID = 0;
-			// this means that we are in Node Mod Chain
-			uResourceID = pModel->GetResourceIndex();
-			IFXRELEASE( pMod );
-			IFXCHECKX( pSGPalette->GetResourcePtr( uResourceID, IID_IFXModifier, (void**)&pMod ) );
-		}
+        if (IFXFAILURE(pMod->QueryInterface(IID_IFXAuthorCLODResource, (void**)&pCLOD)))
+        {
+            if (IFXFAILURE(pMod->QueryInterface(IID_IFXAuthorLineSetResource, (void**)&pLines)))
+            {
+                if (IFXSUCCESS(pMod->QueryInterface(IID_IFXAuthorPointSetResource, (void**)&pPoints)))
+                {
+                    uTemp = 0x00000004; // PointSet Attribute
+                }
+                else
+                {
+                    throw IFXException(IFX_E_CANNOT_FIND);
+                }
+            }
+            else
+            {
+                uTemp = 0x00000002; // LineSet Attribute
+            }
+        }
+        else
+        {
+            uTemp = 0x00000001; // CLOD Attribute
+        }
 
-		if( IFXFAILURE( pMod->QueryInterface( IID_IFXAuthorCLODResource, (void**)&pCLOD ) ) )
-		{			     
-			if( IFXFAILURE( pMod->QueryInterface(IID_IFXAuthorLineSetResource,(void**)&pLines) ) )
-			{
-				if( IFXSUCCESS( pMod->QueryInterface(IID_IFXAuthorPointSetResource,(void**)&pPoints) ) )
-				{
-					uTemp = 0x00000004; // PointSet Attribute
-				}
-				else 
-				{
-					throw IFXException( IFX_E_CANNOT_FIND );
-				}
-			}
-			else
-			{
-				uTemp = 0x00000002; // LineSet Attribute
-			}
-		}
-		else
-		{
-			uTemp = 0x00000001; // CLOD Attribute
-		}
+        IFXDECLARELOCAL(IFXMeshMap, pRMM);
+        IFXDECLARELOCAL(IFXMeshGroup, pMG);
+        U32 uPosCnt = 0;
 
-		IFXDECLARELOCAL( IFXMeshMap, pRMM );
-		IFXDECLARELOCAL( IFXMeshGroup, pMG );
-		U32 uPosCnt = 0;
+        if (uTemp == 0x00000001) // AuthorCLODRes
+        {
+            IFXASSERT(pCLOD);
+            IFXCHECKX(pCLOD->GetAuthorMesh(pMesh));
 
-		if( uTemp == 0x00000001 ) // AuthorCLODRes
-		{
-			IFXASSERT( pCLOD );
-			IFXCHECKX( pCLOD->GetAuthorMesh( pMesh ) );
+            const IFXAuthorMeshDesc* pMeshDesc = pMesh->GetMeshDesc();
+            IFXASSERT(pMeshDesc);
 
-			const IFXAuthorMeshDesc *pMeshDesc = pMesh->GetMeshDesc();
-			IFXASSERT( pMeshDesc );
-		
-			IFXCHECKX( pCLOD->GetRenderMeshMap( &pRMM ) );
-			IFXCHECKX( pCLOD->GetMeshGroup( &pMG ) );
-			
-			uPosCnt = pMeshDesc->NumPositions;
-		}
-		else if ( uTemp == 0x00000002 ) // LineSet
-		{
-			IFXASSERT( pLines );
-			
-			IFXCHECKX(pLines->GetAuthorLineSet(pAuthorLineSet));
-			const IFXAuthorLineSetDesc *pLineSetDesc = pAuthorLineSet->GetLineSetDesc();
-			IFXASSERT( pLineSetDesc );
-            			
-			IFXCHECKX( pLines->GetRenderMeshMap( &pRMM ) );
-			IFXCHECKX( pLines->GetMeshGroup( &pMG ) );
+            IFXCHECKX(pCLOD->GetRenderMeshMap(&pRMM));
+            IFXCHECKX(pCLOD->GetMeshGroup(&pMG));
 
-			uPosCnt = pLineSetDesc->m_numPositions;
-		}
-		else if( uTemp == 0x00000004 ) // PointSet
-		{
-			IFXASSERT( pPoints );
-			IFXCHECKX(pPoints->GetAuthorPointSet(pAuthorPointSet));
-			const IFXAuthorPointSetDesc *pPointSetDesc = pAuthorPointSet->GetPointSetDesc();
-			IFXASSERT( pPointSetDesc );
+            uPosCnt = pMeshDesc->NumPositions;
+        }
+        else if (uTemp == 0x00000002) // LineSet
+        {
+            IFXASSERT(pLines);
 
-			IFXCHECKX( pPoints->GetRenderMeshMap( &pRMM ) );
-			IFXCHECKX( pPoints->GetMeshGroup( &pMG ) );
+            IFXCHECKX(pLines->GetAuthorLineSet(pAuthorLineSet));
+            const IFXAuthorLineSetDesc* pLineSetDesc = pAuthorLineSet->GetLineSetDesc();
+            IFXASSERT(pLineSetDesc);
 
-			uPosCnt = pPointSetDesc->m_numPositions;
-		}
-		else
-		{
-			IFXASSERT(FALSE);
-		}
+            IFXCHECKX(pLines->GetRenderMeshMap(&pRMM));
+            IFXCHECKX(pLines->GetMeshGroup(&pMG));
 
-		IFXASSERT( pMG->GetNumMeshes() );
+            uPosCnt = pLineSetDesc->m_numPositions;
+        }
+        else if (uTemp == 0x00000004) // PointSet
+        {
+            IFXASSERT(pPoints);
+            IFXCHECKX(pPoints->GetAuthorPointSet(pAuthorPointSet));
+            const IFXAuthorPointSetDesc* pPointSetDesc = pAuthorPointSet->GetPointSetDesc();
+            IFXASSERT(pPointSetDesc);
 
-		pMeshIdx = new U32[ uPosCnt ];
-		pVertIdx = new U32[ uPosCnt ];
+            IFXCHECKX(pPoints->GetRenderMeshMap(&pRMM));
+            IFXCHECKX(pPoints->GetMeshGroup(&pMG));
 
-		if( pMeshIdx == NULL || pVertIdx == NULL )
-		{
-			throw IFXException( IFX_E_OUT_OF_MEMORY );
-		}
+            uPosCnt = pPointSetDesc->m_numPositions;
+        }
+        else
+        {
+            IFXASSERT(FALSE);
+        }
 
-		GetVertexMapContainerX( pRMM, pMeshIdx, pVertIdx, uPosCnt );
+        IFXASSERT(pMG->GetNumMeshes());
 
-		
+        pMeshIdx = new U32[uPosCnt];
+        pVertIdx = new U32[uPosCnt];
 
-		// 3. Attributes
-		m_pBitStream->WriteU32X( uTemp );
+        if (pMeshIdx == NULL || pVertIdx == NULL)
+        {
+            throw IFXException(IFX_E_OUT_OF_MEMORY);
+        }
 
-		U32 uQualityFactor = 1000;
-		F32 fQuantBoneWeight = (F32)pow( 1.0022294514890519310704865897552, uQualityFactor + 1741.0 );
-		F32 fInvQuant= 1.0f/fQuantBoneWeight;
+        GetVertexMapContainerX(pRMM, pMeshIdx, pVertIdx, uPosCnt);
 
-		// 4. Inverse Quant
-		m_pBitStream->WriteF32X( fInvQuant );
+        // 3. Attributes
+        m_pBitStream->WriteU32X(uTemp);
 
-		U32 uNumWeightsTotal = 0;
-		IFXCHECKX( pBoneWeightsModifier->GetTotalBoneWeightCount( 0, &uNumWeightsTotal ) );
+        U32 uQualityFactor = 1000;
+        F32 fQuantBoneWeight = (F32)pow(1.0022294514890519310704865897552, uQualityFactor + 1741.0);
+        F32 fInvQuant = 1.0f / fQuantBoneWeight;
 
-		// 5. Position Count
-		m_pBitStream->WriteU32X( uPosCnt );
+        // 4. Inverse Quant
+        m_pBitStream->WriteF32X(fInvQuant);
 
-		U32 i, j, uWeightCnt;
+        U32 uNumWeightsTotal = 0;
+        IFXCHECKX(pBoneWeightsModifier->GetTotalBoneWeightCount(0, &uNumWeightsTotal));
 
-		// 6. Position Bone Weight List
-		for( i = 0; i < uPosCnt; i++ )
-		{
-			IFXCHECKX( pBoneWeightsModifier->GetBoneWeightCount( pVertIdx[i], pMeshIdx[i], &uWeightCnt ) );
+        // 5. Position Count
+        m_pBitStream->WriteU32X(uPosCnt);
 
-			// 6.1. Bone Weight Count (U32)
-			m_pBitStream->WriteCompressedU32X( uACContextBoneWeightCount, uWeightCnt );
+        U32 i, j, uWeightCnt;
 
-			if( uWeightCnt > 0 )
-			{
-				puBoneIDs = new U32[ uWeightCnt ];
-				pfWeights = new F32[ uWeightCnt ];
-				if( puBoneIDs == NULL || pfWeights == NULL )
-				{
-					throw IFXException( IFX_E_OUT_OF_MEMORY );
-				}
+        // 6. Position Bone Weight List
+        for (i = 0; i < uPosCnt; i++)
+        {
+            IFXCHECKX(pBoneWeightsModifier->GetBoneWeightCount(pVertIdx[i], pMeshIdx[i], &uWeightCnt));
 
-				IFXCHECKX( pBoneWeightsModifier->GetBoneWeights( pVertIdx[i], pMeshIdx[i], uWeightCnt, puBoneIDs, pfWeights ) );
+            // 6.1. Bone Weight Count (U32)
+            m_pBitStream->WriteCompressedU32X(uACContextBoneWeightCount, uWeightCnt);
 
-				// 6.2. Bone Indices
-				for( j = 0; j < uWeightCnt; j++ )
-				{
-					m_pBitStream->WriteCompressedU32X( uACContextBoneWeightBoneID, puBoneIDs[j] );
-				}
+            if (uWeightCnt > 0)
+            {
+                puBoneIDs = new U32[uWeightCnt];
+                pfWeights = new F32[uWeightCnt];
+                if (puBoneIDs == NULL || pfWeights == NULL)
+                {
+                    throw IFXException(IFX_E_OUT_OF_MEMORY);
+                }
 
-				// 6.3. Quantized Bone Weights
-				// NOTE: Assumed that sum of all weights is 1.0f. Last weight won't be written
-				// into a file basing on this assumption
-				for( j = 0; j < (uWeightCnt - 1); j++ )
-				{
-					m_pBitStream->WriteCompressedU32X( uACContextBoneWeightBoneWeight, (U32)(pfWeights[j] / fInvQuant) );
-				}
+                IFXCHECKX(pBoneWeightsModifier->GetBoneWeights(pVertIdx[i], pMeshIdx[i], uWeightCnt, puBoneIDs, pfWeights));
 
-				delete [] puBoneIDs;
-				delete [] pfWeights;
-			}
-		}
+                // 6.2. Bone Indices
+                for (j = 0; j < uWeightCnt; j++)
+                {
+                    m_pBitStream->WriteCompressedU32X(uACContextBoneWeightBoneID, puBoneIDs[j]);
+                }
 
-		delete [] pMeshIdx;
-		delete [] pVertIdx;
+                // 6.3. Quantized Bone Weights
+                // NOTE: Assumed that sum of all weights is 1.0f. Last weight won't be written
+                // into a file basing on this assumption
+                for (j = 0; j < (uWeightCnt - 1); j++)
+                {
+                    m_pBitStream->WriteCompressedU32X(uACContextBoneWeightBoneWeight, (U32)(pfWeights[j] / fInvQuant));
+                }
 
-		//-------------------------------------------------------------------------
-		// Done with BoneWeights specific parameters.
-		//-------------------------------------------------------------------------
-		IFXDECLARELOCAL(IFXDataBlockX, pDataBlock);
+                delete[] puBoneIDs;
+                delete[] pfWeights;
+            }
+        }
 
-		// Get a data block from the bitstream
-		m_pBitStream->GetDataBlockX(pDataBlock);
+        delete[] pMeshIdx;
+        delete[] pVertIdx;
 
-		// Set the data block type
-		pDataBlock->SetBlockTypeX(BlockType_ModifierBoneWeightsU3D);
+        //-------------------------------------------------------------------------
+        // Done with BoneWeights specific parameters.
+        //-------------------------------------------------------------------------
+        IFXDECLARELOCAL(IFXDataBlockX, pDataBlock);
 
-		// Set the data block priority
-		pDataBlock->SetPriorityX(0);
+        // Get a data block from the bitstream
+        m_pBitStream->GetDataBlockX(pDataBlock);
 
-		// set metadata
-		IFXDECLARELOCAL(IFXMetaDataX, pBlockMD);
-		IFXDECLARELOCAL(IFXMetaDataX, pObjectMD);
-		pDataBlock->QueryInterface(IID_IFXMetaDataX, (void**)&pBlockMD);
-		m_pModifier->QueryInterface(IID_IFXMetaDataX, (void**)&pObjectMD);
-		pBlockMD->AppendX(pObjectMD);
+        // Set the data block type
+        pDataBlock->SetBlockTypeX(BlockType_ModifierBoneWeightsU3D);
 
-		// Put the data block on the list
-		rDataBlockQueue.AppendBlockX(*pDataBlock);
+        // Set the data block priority
+        pDataBlock->SetPriorityX(0);
 
-		// clean up
-		IFXRELEASE( pBoneWeightsModifier );
-	}
-	catch ( ... )
-	{
-		IFXRELEASE( pBoneWeightsModifier );
+        // set metadata
+        IFXDECLARELOCAL(IFXMetaDataX, pBlockMD);
+        IFXDECLARELOCAL(IFXMetaDataX, pObjectMD);
+        pDataBlock->QueryInterface(IID_IFXMetaDataX, (void**)&pBlockMD);
+        m_pModifier->QueryInterface(IID_IFXMetaDataX, (void**)&pObjectMD);
+        pBlockMD->AppendX(pObjectMD);
 
-		delete [] pMeshIdx;
-		delete [] pVertIdx;
-		delete [] puBoneIDs;
-		delete [] pfWeights;
+        // Put the data block on the list
+        rDataBlockQueue.AppendBlockX(*pDataBlock);
 
-		throw;
-	}
+        // clean up
+        IFXRELEASE(pBoneWeightsModifier);
+    }
+    catch (...)
+    {
+        IFXRELEASE(pBoneWeightsModifier);
+
+        delete[] pMeshIdx;
+        delete[] pVertIdx;
+        delete[] puBoneIDs;
+        delete[] pfWeights;
+
+        throw;
+    }
 }
 
-void CIFXBoneWeightsModifierEncoder::InitializeX( IFXCoreServices& rCoreServices )
+void CIFXBoneWeightsModifierEncoder::InitializeX(IFXCoreServices& rCoreServices)
 {
-	try
-	{
-		// latch onto the core services object passed in
-		IFXRELEASE( m_pCoreServices )
-			m_pCoreServices = &rCoreServices;
-		m_pCoreServices->AddRef();
+    try
+    {
+        // latch onto the core services object passed in
+        IFXRELEASE(m_pCoreServices)
+        m_pCoreServices = &rCoreServices;
+        m_pCoreServices->AddRef();
 
-		// create a bitstream
-		IFXRELEASE( m_pBitStream );
-		IFXCHECKX( IFXCreateComponent( CID_IFXBitStreamX, IID_IFXBitStreamCompressedX,(void**)&m_pBitStream ) );
-		U32 uProfile;
-		m_pCoreServices->GetProfile(uProfile);
-		m_pBitStream->SetNoCompressionMode((uProfile & IFXPROFILE_NOCOMPRESSION) ? TRUE : FALSE);
+        // create a bitstream
+        IFXRELEASE(m_pBitStream);
+        IFXCHECKX(IFXCreateComponent(CID_IFXBitStreamX, IID_IFXBitStreamCompressedX, (void**)&m_pBitStream));
+        U32 uProfile;
+        m_pCoreServices->GetProfile(uProfile);
+        m_pBitStream->SetNoCompressionMode((uProfile & IFXPROFILE_NOCOMPRESSION) ? TRUE : FALSE);
 
-		m_bInitialized = TRUE;
-	}
-	catch ( ... )
-	{
-		IFXRELEASE( m_pCoreServices );
-		IFXRELEASE( m_pBitStream );
+        m_bInitialized = TRUE;
+    }
+    catch (...)
+    {
+        IFXRELEASE(m_pCoreServices);
+        IFXRELEASE(m_pBitStream);
 
-		throw;
-	}
+        throw;
+    }
 }
 
-void CIFXBoneWeightsModifierEncoder::SetObjectX( IFXUnknown& rObject )
+void CIFXBoneWeightsModifierEncoder::SetObjectX(IFXUnknown& rObject)
 {
-	IFXModifier* pModifier= NULL;
+    IFXModifier* pModifier = NULL;
 
-	try
-	{
-		// set the object
-		IFXRELEASE( m_pObject );
-		m_pObject = &rObject;
-		m_pObject->AddRef();
+    try
+    {
+        // set the object
+        IFXRELEASE(m_pObject);
+        m_pObject = &rObject;
+        m_pObject->AddRef();
 
-		m_pObject->QueryInterface( IID_IFXModifier, (void**)&pModifier );
+        m_pObject->QueryInterface(IID_IFXModifier, (void**)&pModifier);
 
-		pModifier->AddRef();
-		IFXRELEASE( m_pModifier );
-		m_pModifier = pModifier;
+        pModifier->AddRef();
+        IFXRELEASE(m_pModifier);
+        m_pModifier = pModifier;
 
-		IFXRELEASE( pModifier );
-	}
-	catch (...)
-	{
-		IFXRELEASE( m_pObject ); // release the member variable, not the input parameter
-		IFXRELEASE( pModifier );
+        IFXRELEASE(pModifier);
+    }
+    catch (...)
+    {
+        IFXRELEASE(m_pObject); // release the member variable, not the input parameter
+        IFXRELEASE(pModifier);
 
-		throw;
-	}
+        throw;
+    }
 }
-
 
 // Factory friend
-IFXRESULT IFXAPI_CALLTYPE CIFXBoneWeightsModifierEncoder_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXBoneWeightsModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXLoadManager component.
-		CIFXBoneWeightsModifierEncoder *pComponent = new CIFXBoneWeightsModifierEncoder;
+    if (ppInterface)
+    {
+        // Create the CIFXLoadManager component.
+        CIFXBoneWeightsModifierEncoder* pComponent = new CIFXBoneWeightsModifierEncoder;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			rc = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            rc = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			rc = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		rc = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN( rc );
+    IFXRETURN(rc);
 }
-
 
 // local function
 void GetVertexMapContainerX(
-							IFXMeshMap* pRMM, 
-							U32* pMeshIdx, 
-							U32* pVertIdx,
-							U32 uPosCnt )
+    IFXMeshMap* pRMM,
+    U32* pMeshIdx,
+    U32* pVertIdx,
+    U32 uPosCnt)
 {
-	U32 uNum2 = 0;
-	IFXVertexMap* pRVM = pRMM->GetPositionMap();
+    U32 uNum2 = 0;
+    IFXVertexMap* pRVM = pRMM->GetPositionMap();
 
-	if( pRVM )
-	{
-		uNum2 = pRVM->GetNumMapEntries();
+    if (pRVM)
+    {
+        uNum2 = pRVM->GetNumMapEntries();
 
-		IFXASSERT( uPosCnt == uNum2 );
+        IFXASSERT(uPosCnt == uNum2);
 
-		if (uNum2 <= 0) 
-		{
-			IFXCHECKX( IFX_E_NOT_INITIALIZED );
-		}
+        if (uNum2 <= 0)
+        {
+            IFXCHECKX(IFX_E_NOT_INITIALIZED);
+        }
 
-		U32 f, uMeshIdx = 0, uVertIdx = 0;
-		for( f = 0; f < uPosCnt; f++ )
-		{
-			// Get Mesh Index and Vertex Index for first copy of this author mesh
-			// (since all copies should have the same weight)
-			IFXCHECKX( pRVM->GetVertexCopy( f, 0, &uMeshIdx, &uVertIdx ) );
-			pMeshIdx[f] = uMeshIdx;
-			pVertIdx[f] = uVertIdx;
-		}
-	}
-	else
-	{
-		IFXCHECKX( IFX_E_NOT_INITIALIZED );
-	}
+        U32 f, uMeshIdx = 0, uVertIdx = 0;
+        for (f = 0; f < uPosCnt; f++)
+        {
+            // Get Mesh Index and Vertex Index for first copy of this author mesh
+            // (since all copies should have the same weight)
+            IFXCHECKX(pRVM->GetVertexCopy(f, 0, &uMeshIdx, &uVertIdx));
+            pMeshIdx[f] = uMeshIdx;
+            pVertIdx[f] = uVertIdx;
+        }
+    }
+    else
+    {
+        IFXCHECKX(IFX_E_NOT_INITIALIZED);
+    }
 }

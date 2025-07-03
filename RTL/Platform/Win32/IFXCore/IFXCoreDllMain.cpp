@@ -23,39 +23,32 @@
     should be placed in the Platform/IFXCore/Win32 folder.
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-
 #ifndef STRICT
-#define STRICT  1
+#define STRICT 1
 #endif
 #include <windows.h>
 
 #include "IFXAPI.h"
 #include "IFXResult.h"
 
-
 //***************************************************************************
 //	Global data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global function prototypes (not exposed to the client)
 //***************************************************************************
 
-
 extern IFXRESULT IFXAPI_CALLTYPE IFXCoreStartup();
 extern IFXRESULT IFXAPI_CALLTYPE IFXCoreShutdown();
-
 
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //---------------------------------------------------------------------------
 /**
@@ -66,23 +59,20 @@ extern IFXRESULT IFXAPI_CALLTYPE IFXCoreShutdown();
       The Win32 OS only acts upon the return value if the reason is
       DLL_PROCESS_ATTACH.
 */
-extern "C"
-BOOL WINAPI DllMain(  HINSTANCE hInstance,
-                        DWORD   reason,
-                        LPVOID    pReserved )
+extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD reason, LPVOID pReserved)
 {
-	IFXRESULT result  = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-    if ( reason == DLL_PROCESS_ATTACH )
+    if (reason == DLL_PROCESS_ATTACH)
     {
-		DisableThreadLibraryCalls( hInstance );
+        DisableThreadLibraryCalls(hInstance);
 
-		result = IFXCoreStartup();
+        result = IFXCoreStartup();
     }
-    else if ( reason == DLL_PROCESS_DETACH )
+    else if (reason == DLL_PROCESS_DETACH)
     {
-	    result = IFXCoreShutdown();
+        result = IFXCoreShutdown();
     }
 
-	return ( IFXSUCCESS( result ) ? TRUE : FALSE );
+    return (IFXSUCCESS(result) ? TRUE : FALSE);
 }

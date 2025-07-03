@@ -20,54 +20,65 @@
 
 IFXCoreArray::IFXCoreArray(U32 preallocation)
 {
-	m_pDeallocate=NULL;
-	m_elementsUsed=0;
-	m_elementsAllocated=0;
-	m_array=NULL;
-	m_prealloc=0;
-	m_contiguous=NULL;
+    m_pDeallocate = NULL;
+    m_elementsUsed = 0;
+    m_elementsAllocated = 0;
+    m_array = NULL;
+    m_prealloc = 0;
+    m_contiguous = NULL;
 }
-
 
 void IFXCoreArray::Clear(U32 m_preallocation)
 {
-	DestructAll();
-	Preallocate(m_preallocation);
-	if(m_preallocation>0)
-		Resize((m_preallocation>IFXARRAY_MIN)? m_preallocation: IFXARRAY_MIN);
+    DestructAll();
+    Preallocate(m_preallocation);
+    if (m_preallocation > 0)
+    {
+        Resize((m_preallocation > IFXARRAY_MIN) ? m_preallocation : IFXARRAY_MIN);
+    }
 }
-
 
 void IFXCoreArray::ResizeToExactly(U32 set)
 {
-	if(m_elementsAllocated<set)
-		ResizeToAtLeast(set);
-	else
-	{
-		U32 m;
-		// if m_elementsUsed < set
-		for(m=m_elementsUsed;m<set;m++)
-			Construct(m);
-		// if set < m_elementsUsed
-		for(m=set;m<m_elementsUsed;m++)
-			Destruct(m);
+    if (m_elementsAllocated < set)
+    {
+        ResizeToAtLeast(set);
+    }
+    else
+    {
+        U32 m;
+        // if m_elementsUsed < set
+        for (m = m_elementsUsed; m < set; m++)
+        {
+            Construct(m);
+        }
+        // if set < m_elementsUsed
+        for (m = set; m < m_elementsUsed; m++)
+        {
+            Destruct(m);
+        }
 
-		m_elementsUsed=set;
+        m_elementsUsed = set;
 
-		/// @todo: deallocate space for pointers
-	}
+        /// @todo: deallocate space for pointers
+    }
 }
-
 
 void IFXCoreArray::ResizeToAtLeast(U32 required)
 {
-	if(m_elementsAllocated<required)
-		Resize(required);
+    if (m_elementsAllocated < required)
+    {
+        Resize(required);
+    }
 
-	U32 m;
-	for(m=m_elementsUsed;m<required;m++)
-		Construct(m);
+    U32 m;
+    for (m = m_elementsUsed; m < required; m++)
+    {
+        Construct(m);
+    }
 
-	if(m_elementsUsed<required)
-		m_elementsUsed=required;
+    if (m_elementsUsed < required)
+    {
+        m_elementsUsed = required;
+    }
 }

@@ -17,53 +17,57 @@
 //***************************************************************************
 #include "PairHeap.h"
 
-void PairHeap::insert (Pair *pair)
+void PairHeap::insert(Pair* pair)
 {
-	// We have to maintain a sorted list:
-	Pair *p;	
-	PairList::iterator listPtr;
-	listPtr = pairList.begin();
-	while ((listPtr != pairList.end()) 
-		&& (p = *listPtr) 
-		&& (p->getCost() < pair->getCost()))
-	{
-		listPtr++;
-	}
+    // We have to maintain a sorted list:
+    Pair* p;
+    PairList::iterator listPtr;
+    listPtr = pairList.begin();
+    while ((listPtr != pairList.end())
+           && (p = *listPtr)
+           && (p->getCost() < pair->getCost()))
+    {
+        listPtr++;
+    }
 
-	pairList.insert (listPtr, pair);
+    pairList.insert(listPtr, pair);
 }
 
-
-Pair *PairHeap::remove ()
+Pair* PairHeap::remove()
 {
-	if (pairList.empty())
-		return (NULL);
+    if (pairList.empty())
+    {
+        return (NULL);
+    }
 
-	Pair *p = *(pairList.begin());
-	pairList.erase (pairList.begin());
+    Pair* p = *(pairList.begin());
+    pairList.erase(pairList.begin());
 
-	return p;
+    return p;
 }
 
-
-Pair *PairHeap::remove (Pair *pair)
+Pair* PairHeap::remove(Pair* pair)
 {
-	if (pairList.empty())
-		return NULL;
+    if (pairList.empty())
+    {
+        return NULL;
+    }
 
-	PairList::iterator listPtr;
-	listPtr = pairList.begin();
-	Pair *p = NULL;
-	
-	while ((listPtr != pairList.end()) && (p = *listPtr) && (p != pair))
-	{
-		listPtr++;
-	}
+    PairList::iterator listPtr;
+    listPtr = pairList.begin();
+    Pair* p = NULL;
 
-	if (listPtr == pairList.end())
-		return NULL;
+    while ((listPtr != pairList.end()) && (p = *listPtr) && (p != pair))
+    {
+        listPtr++;
+    }
 
-	pairList.erase (listPtr);
+    if (listPtr == pairList.end())
+    {
+        return NULL;
+    }
 
-	return p;
+    pairList.erase(listPtr);
+
+    return p;
 }

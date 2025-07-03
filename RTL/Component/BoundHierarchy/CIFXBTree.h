@@ -19,7 +19,7 @@
 //	CIFXBTree.h
 //
 //	DESCRIPTION
-//		
+//
 //		Header file for class CIFXBTree.  Contains declarations for the
 //		explicit tree traversal methods.
 //
@@ -38,26 +38,13 @@
 class CIFXBTree
 {
 public:
+    IFXRESULT IntersectRayTraverse(CIFXBTreeNode* pNode, IFXVector3& vOrigin, IFXVector3& vDirection, U32 uPickType);
 
-	IFXRESULT IntersectRayTraverse(CIFXBTreeNode* pNode, 
-								   IFXVector3&    vOrigin, 
-								   IFXVector3&    vDirection,
-								   U32            uPickType);
+    IFXRESULT IntersectTraverse(CIFXBTreeNode* pNodeA, CIFXBTreeNode* pNodeB);
 
-	IFXRESULT IntersectTraverse(CIFXBTreeNode* pNodeA, 
-								CIFXBTreeNode* pNodeB);
+    IFXRESULT IntersectTraverseQuick(CIFXBTreeNode* pNodeA, CIFXBTreeNode* pNodeB, IFXVector3 vMin[2], IFXVector3 vMax[2]);
 
-	IFXRESULT IntersectTraverseQuick(CIFXBTreeNode* pNodeA, 
-									 CIFXBTreeNode* pNodeB,
-									 IFXVector3     vMin[2], 
-									 IFXVector3     vMax[2]);
-
-	IFXRESULT IntersectBoxSphere(CIFXBTreeNode* pNodeA, 
-								 CIFXBTreeNode* pNodeB, 
-								 F32            fRadiusSquared,
-								 IFXVector3&    vSphereCentroid, 
-								 IFXVector3&    vContactPoint, 
-								 IFXVector3     vContactNormal[2]);
+    IFXRESULT IntersectBoxSphere(CIFXBTreeNode* pNodeA, CIFXBTreeNode* pNodeB, F32 fRadiusSquared, IFXVector3& vSphereCentroid, IFXVector3& vContactPoint, IFXVector3 vContactNormal[2]);
 };
 
 #endif

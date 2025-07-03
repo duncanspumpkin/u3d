@@ -33,68 +33,60 @@
 
 #include "IFXDataTypes.h"
 
-#include "ModelResource.h"
 #include "Int2.h"
+#include "ModelResource.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    struct LineTexCoords
+    {
+        IFXArray<Int2> m_texCoords; // number of texture layers for this face
+    };
 
+    /**
+     */
+    class LineSetResource : public ModelResource
+    {
+    public:
+        LineSetResource() {};
+        ~LineSetResource() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        I32 lineCount;
+        IFXArray<Int2> m_linePositions;              // number of lines
+        IFXArray<Int2> m_lineNormals;                // number of lines
+        IFXArray<I32> m_lineShaders;                 // number of lines
+        IFXArray<Int2> m_lineDiffuseColors;          // number of lines
+        IFXArray<Int2> m_lineSpecularColors;         // number of lines
+        IFXArray<LineTexCoords> m_lineTextureCoords; // number of lines
+    };
 
-struct LineTexCoords
-{
-	IFXArray< Int2 > m_texCoords; // number of texture layers for this face
-};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-/**
-*/
-class LineSetResource : public ModelResource
-{
-public:
-	LineSetResource() {};
-	~LineSetResource() {};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	I32 lineCount;
-	IFXArray< Int2 > m_linePositions; // number of lines
-	IFXArray< Int2 > m_lineNormals; // number of lines
-	IFXArray< I32 >  m_lineShaders; // number of lines
-	IFXArray< Int2 > m_lineDiffuseColors; // number of lines
-	IFXArray< Int2 > m_lineSpecularColors; // number of lines
-	IFXArray< LineTexCoords > m_lineTextureCoords; // number of lines
-};
-
-
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
-
 
 #endif

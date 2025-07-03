@@ -17,86 +17,86 @@
 //***************************************************************************
 #ifndef VERTEXPAIRCONTRACTOR_DOT_H
 #define VERTEXPAIRCONTRACTOR_DOT_H
-#include "Primitives.h"
-#include "Vertex.h" 
-#include "Face.h" 
-#include "Pair.h" 
+#include "CLODGenerator.h"
 #include "ContractionRecorder.h"
-#include "PairHash.h"
+#include "Face.h"
 #include "IFXFastHeap.h"
-#include "CLODGenerator.h" 
 #include "IFXProgressCallback.h"
+#include "Pair.h"
+#include "PairHash.h"
+#include "Primitives.h"
+#include "Vertex.h"
 
 typedef IFXFastHeap<float, Pair*> PairHeap;
 
 class VertexPairContractor
 {
 public:
-	int metric2Start;
-	int vertsRemoved; //number of vertices removed so far.
+    int metric2Start;
+    int vertsRemoved; // number of vertices removed so far.
 
-	VertexPairContractor();
-	virtual ~VertexPairContractor();
-	
-	virtual IFXRESULT IFXAPI  init( CLODGenerator::Params *p, BOOL& res ); ///< must call this after creating VPC subclass instance.
-	inline U32 size() { return m_pPairHeap->Size(); };
-	
-	inline void kill() { killMe = TRUE; }; ///< should be called from progress call back if you want to terminate.
-	inline BOOL getKill() { return killMe; };
-	
-	// Contraction operators:
-	BOOL contractNextPair();
-    BOOL contractAll( IFXProgressCallback *pPCB );
+    VertexPairContractor();
+    virtual ~VertexPairContractor();
 
-	Vertex* getVertices() {  return m_pVertices; };
-	int getNumVerts() { return m_NumVerts; };
+    virtual IFXRESULT IFXAPI init(CLODGenerator::Params* p, BOOL& res); ///< must call this after creating VPC subclass instance.
+    inline U32 size() { return m_pPairHeap->Size(); };
 
-	// for use by the PairFinder
-	void AddPair(Vertex* v1, Vertex* v2)
-	{
-		m_pPairHash->AddPair(v1, v2);
-	};
-	
+    inline void kill() { killMe = TRUE; }; ///< should be called from progress call back if you want to terminate.
+    inline BOOL getKill() { return killMe; };
+
+    // Contraction operators:
+    BOOL contractNextPair();
+    BOOL contractAll(IFXProgressCallback* pPCB);
+
+    Vertex* getVertices() { return m_pVertices; };
+    int getNumVerts() { return m_NumVerts; };
+
+    // for use by the PairFinder
+    void AddPair(Vertex* v1, Vertex* v2)
+    {
+        m_pPairHash->AddPair(v1, v2);
+    };
+
 protected:
-	// The source mesh
-	IFXAuthorCLODMesh*		mesh;
+    // The source mesh
+    IFXAuthorCLODMesh* mesh;
 
-	// Pair info
-	PairHeap*   m_pPairHeap; ///< pair container sorted by contraction cost.
-	PairHash*	m_pPairHash; ///< pair hash bucket table
+    // Pair info
+    PairHeap* m_pPairHeap; ///< pair container sorted by contraction cost.
+    PairHash* m_pPairHash; ///< pair hash bucket table
 
-	// Vertex Info
-	Vertex*	m_pVertices;
-	U32		m_NumVerts;
+    // Vertex Info
+    Vertex* m_pVertices;
+    U32 m_NumVerts;
 
-	// Face Info
-	Face*	m_pFaces;	///< ptr to array of face pointers.
-	int		m_NumFaces;	///< some face get thrown away, this is how many real faces
+    // Face Info
+    Face* m_pFaces; ///< ptr to array of face pointers.
+    int m_NumFaces; ///< some face get thrown away, this is how many real faces
 
 private:
-	CLODGenerator::Params *m_pParams;
-	ContractionRecorder *recorder;
+    CLODGenerator::Params* m_pParams;
+    ContractionRecorder* recorder;
 
-	BOOL  killMe;
+    BOOL killMe;
 
-	U32	  numBaseVerts;
-	int   *baseVerts;
-	U32		m_NumFacesIn;   ///< num face in orginal input mesh
+    U32 numBaseVerts;
+    int* baseVerts;
+    U32 m_NumFacesIn; ///< num face in orginal input mesh
 
-	CLODGenerator::NormalsMode		normalsMode;	///< Indicates how normals should be maintained and updated.
-	float			normalsCreaseAngle; ///< If PerFacePerVertex normals are used, normalCreaseAngle indicates
-										///< a angle (deg) threshold for sharing a vertex normal b/t two faces.            
+    CLODGenerator::NormalsMode normalsMode; ///< Indicates how normals should be maintained and updated.
+    float normalsCreaseAngle;               ///< If PerFacePerVertex normals are used, normalCreaseAngle indicates
+                                            ///< a angle (deg) threshold for sharing a vertex normal b/t two faces.
 
-	float *meshDamage; ///< array of floats passed in by user, CLODgen will record mesh damage in.
-	void findUnconnectedPairs(float withinDistance);
+    float* meshDamage; ///< array of floats passed in by user, CLODgen will record mesh damage in.
+    void findUnconnectedPairs(float withinDistance);
 
-	// Computational variable to replace old static, so each instance has it's own state. 
-	SmallPtrSet m_UpdateFaces;
-	SmallPtrSet m_rvFaces;
+    // Computational variable to replace old static, so each instance has it's own state.
+    SmallPtrSet m_UpdateFaces;
+    SmallPtrSet m_rvFaces;
 
-	U32 m_rejectionCount;
-	Vertex* m_keptVertex;  
-	int m_removeCount;
+    U32 m_rejectionCount;
+    Vertex* m_keptVertex;
+    int m_removeCount;
 };
 
 #endif // VERTEXPAIRCONTRACTOR_DOT_H

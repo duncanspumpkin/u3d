@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef PointSetConverter_H
 #define PointSetConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -35,83 +33,76 @@ This header defines the ... functionality.
 
 #include "ConverterResult.h"
 #include "ModelConverter.h"
-#include "ShaderResource.h"
 #include "SceneUtilities.h"
+#include "ShaderResource.h"
 
 #include "IFXAuthorPointSet.h"
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    class PointSetResource;
+    class ShaderResourceList;
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class PointSetConverter : public ModelConverter
+    {
+    public:
+        PointSetConverter(
+            const PointSetResource* pPointSetResource,
+            SceneUtilities* pSceneUtils);
+        virtual ~PointSetConverter();
 
-	class PointSetResource;
-	class ShaderResourceList;
+        /**
+         */
+        IFXRESULT Convert();
 
+    protected:
+        /**
+         */
+        IFXRESULT ConvertPointSetFormat(
+            IFXAuthorPointSetDesc* pAllocationDescriptor);
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        IFXRESULT ConvertPointSet(IFXAuthorPointSet** ppPointSet);
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class PointSetConverter : public ModelConverter
-	{
-	public:
-		PointSetConverter(
-			const PointSetResource* pPointSetResource,
-			SceneUtilities* pSceneUtils );
-		virtual ~PointSetConverter();
+    private:
+        PointSetConverter();
 
-		/**
-		*/
-		IFXRESULT Convert();
+        const PointSetResource* m_pIDTFResource;
+    };
 
-	protected:
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		*/
-		IFXRESULT ConvertPointSetFormat(
-			IFXAuthorPointSetDesc* pAllocationDescriptor );
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-		/**
-		*/
-		IFXRESULT ConvertPointSet( IFXAuthorPointSet** ppPointSet );
-
-	private:
-		PointSetConverter();
-
-		const PointSetResource* m_pIDTFResource;
-	};
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

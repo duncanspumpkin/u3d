@@ -27,7 +27,7 @@
 //
 //		Although each object hierarchy is initially constructed as an axis
 //		aligned bounding box hierarchy, at runtime each is treated as an
-//		oriented bounding box.  This overcomes the problem of recomputing 
+//		oriented bounding box.  This overcomes the problem of recomputing
 //		the box extents when the underlying object is rotated.
 //
 //***************************************************************************
@@ -35,67 +35,56 @@
 #ifndef __CIFXAXISALIGNEDBBOX_H__
 #define __CIFXAXISALIGNEDBBOX_H__
 
-#include "IFXBoundVolume.h"
-#include "IFXMatrix4x4.h"
 #include "CIFXBoundFace.h"
 #include "IFXBoundHierarchy.h"
+#include "IFXBoundVolume.h"
+#include "IFXMatrix4x4.h"
 
 class CIFXAxisAlignedBBox : public IFXBoundVolume
 {
 public:
+    CIFXAxisAlignedBBox();
+    virtual ~CIFXAxisAlignedBBox();
 
-	CIFXAxisAlignedBBox();
-	virtual  ~CIFXAxisAlignedBBox();
+    IFXRESULT Build();
+    IFXRESULT GetCentroid(IFXVector3* pvCentroid);
+    IFXRESULT GetHalfWidth(IFXVector3* pHalfWidth);
+    IFXRESULT GetMaxPosition(IFXVector3* pvPosition);
+    IFXRESULT GetMinPosition(IFXVector3* pvPosition);
 
-	IFXRESULT Build();
-	IFXRESULT GetCentroid(IFXVector3 *pvCentroid);
-	IFXRESULT GetHalfWidth(IFXVector3 *pHalfWidth);
-	IFXRESULT GetMaxPosition(IFXVector3 *pvPosition);
-	IFXRESULT GetMinPosition(IFXVector3 *pvPosition);
+    IFXRESULT Initialize(IFXBoundHierarchy* pHierarchy);
 
-	IFXRESULT Initialize(IFXBoundHierarchy *pHierarchy);
+    IFXRESULT IFXAPI IntersectBound(IFXBoundVolume* pBound);
 
-	IFXRESULT IFXAPI 	IntersectBound(IFXBoundVolume *pBound);
-	
-	IFXRESULT IFXAPI 	IntersectBoxSphere(IFXBoundVolume* pBound, 
-								 F32             fSphereRadiusSquared,	
-								 IFXVector3&     vSphereCentroid,
-								 IFXVector3&     vContactPoint, 
-								 IFXVector3      vContactNormal[2]);
+    IFXRESULT IFXAPI IntersectBoxSphere(IFXBoundVolume* pBound, F32 fSphereRadiusSquared, IFXVector3& vSphereCentroid, IFXVector3& vContactPoint, IFXVector3 vContactNormal[2]);
 
-	IFXRESULT IFXAPI 	IntersectRay(IFXVector3 vOrigin, 
-						   IFXVector3 vDirection, 
-						   U32        uPickType);
+    IFXRESULT IFXAPI IntersectRay(IFXVector3 vOrigin, IFXVector3 vDirection, U32 uPickType);
 
-	IFXRESULT IFXAPI 	IntersectRayTriangle(IFXVector3 vOrigin, 
-								   IFXVector3 vDirection, 
-								   U32        uPickType);
-	
-	IFXRESULT IFXAPI 	IntersectTriangle(IFXBoundVolume *pBound);
+    IFXRESULT IFXAPI IntersectRayTriangle(IFXVector3 vOrigin, IFXVector3 vDirection, U32 uPickType);
 
-	IFXRESULT SetFaceList(CIFXBoundFace **pFaceList);
+    IFXRESULT IFXAPI IntersectTriangle(IFXBoundVolume* pBound);
 
-	void      SetNumFaces(U32 uNumFaces);
+    IFXRESULT SetFaceList(CIFXBoundFace** pFaceList);
 
-	IFXRESULT SplitBound(CIFXAxisAlignedBBox** ppLeftBound,
-						 CIFXAxisAlignedBBox** ppRightBound);
+    void SetNumFaces(U32 uNumFaces);
 
-	// Inlines
-	IFXBoundHierarchy* GetBoundHierarchy() { return m_pBoundHierarchy; }
-	CIFXBoundFace*     GetFaceList()       { return m_pFaceList;       }
+    IFXRESULT SplitBound(CIFXAxisAlignedBBox** ppLeftBound, CIFXAxisAlignedBBox** ppRightBound);
 
-	U32 GetNumFaces() { return m_uNumFaces; }
+    // Inlines
+    IFXBoundHierarchy* GetBoundHierarchy() { return m_pBoundHierarchy; }
+    CIFXBoundFace* GetFaceList() { return m_pFaceList; }
+
+    U32 GetNumFaces() { return m_uNumFaces; }
 
 private:
-
-	IFXBoundHierarchy* m_pBoundHierarchy;
-	CIFXBoundFace*     m_pFaceList;
-	IFXVector3         m_vMin;          // Minimum {x,y,z} vertex values
-	IFXVector3	       m_vMax;          // Maximum {x,y,z} vertex values
-	IFXVector3		   m_vHalfWidth;    // Positive {x,y,z} half widths
-	IFXVector3		   m_vCentroid;     // Box centroid
-//	BOOL               m_bModelIndex;
-	U32                m_uNumFaces;
+    IFXBoundHierarchy* m_pBoundHierarchy;
+    CIFXBoundFace* m_pFaceList;
+    IFXVector3 m_vMin;       // Minimum {x,y,z} vertex values
+    IFXVector3 m_vMax;       // Maximum {x,y,z} vertex values
+    IFXVector3 m_vHalfWidth; // Positive {x,y,z} half widths
+    IFXVector3 m_vCentroid;  // Box centroid
+                             //	BOOL               m_bModelIndex;
+    U32 m_uNumFaces;
 };
 
 #endif

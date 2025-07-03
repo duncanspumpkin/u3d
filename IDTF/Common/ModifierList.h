@@ -24,87 +24,79 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ModifierList_H
 #define ModifierList_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXResult.h"
-#include "Modifier.h"
-#include "ShadingModifier.h"
 #include "AnimationModifier.h"
 #include "BoneWeightModifier.h"
 #include "CLODModifier.h"
-#include "SubdivisionModifier.h"
 #include "GlyphModifier.h"
+#include "IFXResult.h"
+#include "Modifier.h"
+#include "ShadingModifier.h"
+#include "SubdivisionModifier.h"
 
-#include "IFXString.h" // needed for IFXArray.h
 #include "IFXArray.h"
+#include "IFXString.h" // needed for IFXArray.h
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ModifierList
+    {
+    public:
+        ModifierList();
+        virtual ~ModifierList();
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        IFXRESULT AddModifier(const Modifier* pModifier);
+        const Modifier* GetModifier(U32 index) const;
+        U32 GetModifierCount() const;
 
+    private:
+        IFXArray<Modifier*> m_modifierPointerList;
+        IFXArray<ShadingModifier> m_shadingModifierList;
+        IFXArray<AnimationModifier> m_animationModifierList;
+        IFXArray<BoneWeightModifier> m_boneWeightModifierList;
+        IFXArray<CLODModifier> m_clodModifierList;
+        IFXArray<SubdivisionModifier> m_subdivModifierList;
+        IFXArray<GlyphModifier> m_glyphModifierList;
+    };
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class ModifierList
-{
-public:
-	ModifierList();
-	virtual ~ModifierList();
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXRESULT AddModifier( const Modifier* pModifier );
-	const Modifier* GetModifier( U32 index ) const;
-	U32   GetModifierCount() const;
-
-private:
-	IFXArray< Modifier* > m_modifierPointerList;
-	IFXArray< ShadingModifier > m_shadingModifierList;
-	IFXArray< AnimationModifier > m_animationModifierList;
-	IFXArray< BoneWeightModifier > m_boneWeightModifierList;
-	IFXArray< CLODModifier > m_clodModifierList;
-	IFXArray< SubdivisionModifier > m_subdivModifierList;
-	IFXArray< GlyphModifier > m_glyphModifierList;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

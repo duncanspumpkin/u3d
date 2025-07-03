@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef Color_H
 #define Color_H
-
 
 //***************************************************************************
 //  Includes
@@ -37,81 +35,74 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class Color
+    {
+    public:
+        Color() {};
+        virtual ~Color() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+        @todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
+        DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
+        INTERFACE HEADER HERE TO REDUCE DUPLICATION.
 
+        @param  inputValue    An input value.
+        @param  pOutputValue  A pointer to the output value that is
+        initialize upon success.
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        @return Upon success, IFX_OK is returned.  Otherwise, one of the
+        following failures are returned:  @todo return codes.
+        */
+        void SetColor(const IFXVector4& rColor);
+        const IFXVector4& GetColor() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class Color
-	{
-	public:
-		Color() {};
-		virtual ~Color() {};
+    protected:
+    private:
+        IFXVector4 m_color;
+    };
 
-		/**
-		@todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
-		DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
-		INTERFACE HEADER HERE TO REDUCE DUPLICATION.
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		@param  inputValue    An input value.
-		@param  pOutputValue  A pointer to the output value that is
-		initialize upon success.
+    IFXFORCEINLINE void Color::SetColor(const IFXVector4& rColor)
+    {
+        m_color = rColor;
+    }
 
-		@return Upon success, IFX_OK is returned.  Otherwise, one of the
-		following failures are returned:  @todo return codes.
-		*/
-		void SetColor( const IFXVector4& rColor );
-		const IFXVector4& GetColor() const;
+    IFXFORCEINLINE const IFXVector4& Color::GetColor() const
+    {
+        return m_color;
+    }
 
-	protected:
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	private:
-		IFXVector4 m_color;
-	};
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-	IFXFORCEINLINE void Color::SetColor( const IFXVector4& rColor )
-	{
-		m_color = rColor;
-	}
-
-	IFXFORCEINLINE const IFXVector4& Color::GetColor() const
-	{
-		return m_color;
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
-
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef GlyphCommands_H
 #define GlyphCommands_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,109 +36,104 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class GlyphCommand
+    {
+    public:
+        GlyphCommand() {};
+        virtual ~GlyphCommand() {};
 
+        void SetType(const IFXString& rType);
+        const IFXString& GetType() const;
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    private:
+        IFXString m_type;
+    };
 
-class GlyphCommand
-{
-public:
-	GlyphCommand() {};
-	virtual ~GlyphCommand() {};
+    class EndGlyph : public GlyphCommand
+    {
+    public:
+        EndGlyph() {};
+        virtual ~EndGlyph() {};
 
-	void SetType( const IFXString& rType );
-	const IFXString& GetType() const;
+        F32 m_offset_x;
+        F32 m_offset_y;
+    };
 
-private:
-	IFXString m_type;
-};
+    class MoveTo : public GlyphCommand
+    {
+    public:
+        MoveTo() {};
+        virtual ~MoveTo() {};
 
-class EndGlyph : public GlyphCommand
-{
-public:
-	EndGlyph() {};
-	virtual ~EndGlyph() {};
+        F32 m_moveto_x;
+        F32 m_moveto_y;
+    };
 
-	F32 m_offset_x;
-	F32 m_offset_y;
-};
+    class LineTo : public GlyphCommand
+    {
+    public:
+        LineTo() {};
+        virtual ~LineTo() {};
 
-class MoveTo : public GlyphCommand
-{
-public:
-	MoveTo() {};
-	virtual ~MoveTo() {};
+        F32 m_lineto_x;
+        F32 m_lineto_y;
+    };
 
-	F32 m_moveto_x;
-	F32 m_moveto_y;
-};
+    class CurveTo : public GlyphCommand
+    {
+    public:
+        CurveTo() {};
+        virtual ~CurveTo() {};
 
-class LineTo : public GlyphCommand
-{
-public:
-	LineTo() {};
-	virtual ~LineTo() {};
+        F32 m_control1_x;
+        F32 m_control1_y;
+        F32 m_control2_x;
+        F32 m_control2_y;
+        F32 m_endpoint_x;
+        F32 m_endpoint_y;
+    };
 
-	F32 m_lineto_x;
-	F32 m_lineto_y;
-};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-class CurveTo : public GlyphCommand
-{
-public:
-	CurveTo() {};
-	virtual ~CurveTo() {};
+    IFXFORCEINLINE void GlyphCommand::SetType(const IFXString& rType)
+    {
+        m_type = rType;
+    }
 
-	F32 m_control1_x;
-	F32 m_control1_y;
-	F32 m_control2_x;
-	F32 m_control2_y;
-	F32 m_endpoint_x;
-	F32 m_endpoint_y;
-};
+    IFXFORCEINLINE const IFXString& GlyphCommand::GetType() const
+    {
+        return m_type;
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE void GlyphCommand::SetType( const IFXString& rType )
-{
-	m_type = rType;
-}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-IFXFORCEINLINE const IFXString& GlyphCommand::GetType() const
-{
-	return m_type;
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
 }
 

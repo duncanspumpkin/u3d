@@ -21,9 +21,14 @@
 #ifndef IFX_RENDER_CLEAR_H
 #define IFX_RENDER_CLEAR_H
 
+#include "IFXGUID.h"
+#include "IFXResult.h"
+#include "IFXVector3.h"
+
 // {BDF04286-3FC3-4fcd-8B4D-2C45CA4DE81C}
 IFXDEFINE_GUID(IID_IFXRenderClear,
 0xbdf04286, 0x3fc3, 0x4fcd, 0x8b, 0x4d, 0x2c, 0x45, 0xca, 0x4d, 0xe8, 0x1c);
+
 
 //==============================
 // IFXRenderClear

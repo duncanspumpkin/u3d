@@ -17,19 +17,19 @@
 //***************************************************************************
 
 /**
-	@file IFXBoneCacheArray.cpp 
+        @file IFXBoneCacheArray.cpp
 */
 
 #include "IFXBoneCacheArray.h"
 
 void IFXBoneCacheArray::Dump(void)
 {
-	/*I32 m,length=GetNumberElements();
+    /*I32 m,length=GetNumberElements();
 
-	for(m=0;m<length;m++)
-	{
-	IFXMatrix3x4 &matrix=GetElement(m).GetGlobalMatrix();
+    for(m=0;m<length;m++)
+    {
+    IFXMatrix3x4 &matrix=GetElement(m).GetGlobalMatrix();
 
-	//IFXTRACE_GENERIC(L"\nMatrix %d\n%ls\n",m,matrix.Out().Raw());
-	}*/
+    //IFXTRACE_GENERIC(L"\nMatrix %d\n%ls\n",m,matrix.Out().Raw());
+    }*/
 }

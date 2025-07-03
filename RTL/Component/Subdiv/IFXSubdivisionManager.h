@@ -17,122 +17,113 @@
 //
 //***************************************************************************
 
-
 /**
-	@file	IFXSubdivisionManager.h
+        @file	IFXSubdivisionManager.h
 
-			Class IFXSubdivisionManager implements the interface defined by class
-			IFXSubdivisionManagerInterface.
+                        Class IFXSubdivisionManager implements the interface defined by class
+                        IFXSubdivisionManagerInterface.
 */
-
 
 #ifndef IFXSUBDIVISIONMANAGER_DOT_H
 #define IFXSUBDIVISIONMANAGER_DOT_H
 
 // Subdivision specific includes:
-#include "IFXSubdivManagerInterface.h"
-#include "IFXTQTTriangleAllocator.h"
-#include "IFXVertexAllocator.h"
-#include "IFXTQTBaseTriangle.h"
 #include "IFXAdaptiveMetric.h"
 #include "IFXButterflyScheme.h"
-
+#include "IFXSubdivManagerInterface.h"
+#include "IFXTQTBaseTriangle.h"
+#include "IFXTQTTriangleAllocator.h"
+#include "IFXVertexAllocator.h"
 
 class IFXSubdivisionManager : public IFXSubdivisionManagerInterface
 {
 
 public:
-
     // Constructors and destructors:
     IFXSubdivisionManager();
     virtual ~IFXSubdivisionManager();
 
     // Property accessors:
-    IFXRESULT  IFXAPI 	 SetBool       (BooleanProperty,   BOOL bValue);
-    IFXRESULT  IFXAPI 	 GetBool       (BooleanProperty,   BOOL *pbValue);
-    IFXRESULT  IFXAPI 	 SetInteger    (IntegerProperty,   U32 uValue);
-    IFXRESULT  IFXAPI 	 GetInteger    (IntegerProperty,   U32 *puValue);
-    IFXRESULT  IFXAPI 	 SetFloat      (FloatProperty,   F32 fValue);
-    IFXRESULT  IFXAPI 	 GetFloat      (FloatProperty,   F32 *pfValue);
+    IFXRESULT IFXAPI SetBool(BooleanProperty, BOOL bValue);
+    IFXRESULT IFXAPI GetBool(BooleanProperty, BOOL* pbValue);
+    IFXRESULT IFXAPI SetInteger(IntegerProperty, U32 uValue);
+    IFXRESULT IFXAPI GetInteger(IntegerProperty, U32* puValue);
+    IFXRESULT IFXAPI SetFloat(FloatProperty, F32 fValue);
+    IFXRESULT IFXAPI GetFloat(FloatProperty, F32* pfValue);
 
     // Subdivision interface methods:
-    IFXRESULT  IFXAPI 	 ConsolidateLevel (U32 uLevel);
-    IFXRESULT  IFXAPI 	 ResetAll();
-    IFXRESULT  IFXAPI 	 SetAdaptiveMetric (IFXAdaptiveMetric *pInterface);
-    IFXRESULT  IFXAPI 	 GetAdaptiveMetric (IFXAdaptiveMetric **ppMetric);
-    IFXRESULT  IFXAPI 	 InitMesh      (IFXMeshGroup   *pMeshGrp,
-                               IFXNeighborMesh* pNeighborMesh );
+    IFXRESULT IFXAPI ConsolidateLevel(U32 uLevel);
+    IFXRESULT IFXAPI ResetAll();
+    IFXRESULT IFXAPI SetAdaptiveMetric(IFXAdaptiveMetric* pInterface);
+    IFXRESULT IFXAPI GetAdaptiveMetric(IFXAdaptiveMetric** ppMetric);
+    IFXRESULT IFXAPI InitMesh(IFXMeshGroup* pMeshGrp, IFXNeighborMesh* pNeighborMesh);
 
-  // copy some or all of the vertex data with a vertexIter
-  void      CopyVertexData  (IFXMeshGroup *pMeshGroup);
+    // copy some or all of the vertex data with a vertexIter
+    void CopyVertexData(IFXMeshGroup* pMeshGroup);
 
-  IFXRESULT  IFXAPI 	 UpdateMesh    (IFXMeshGroup **pOutMeshGrp, BOOL *pUpdated);
+    IFXRESULT IFXAPI UpdateMesh(IFXMeshGroup** pOutMeshGrp, BOOL* pUpdated);
 
-    static const U32  m_uMaxBaseMeshSize;
+    static const U32 m_uMaxBaseMeshSize;
 
 private:
-
     friend class IFXTQTTriangle;
 
     // Exposed/user settable properties:
-    U32     m_puInteger  [MAX_NUM_INTEGER_PROPERTIES];
-    F32     m_pfFloat    [MAX_NUM_FLOAT_PROPERTIES];
-    BOOL    m_pbBoolean  [MAX_NUM_BOOLEAN_PROPERTIES];
+    U32 m_puInteger[MAX_NUM_INTEGER_PROPERTIES];
+    F32 m_pfFloat[MAX_NUM_FLOAT_PROPERTIES];
+    BOOL m_pbBoolean[MAX_NUM_BOOLEAN_PROPERTIES];
 
     // Constants:
-    static const F32  m_fMaxSurfaceTensionParam;
-    static const F32  m_fMinSurfaceTensionParam;
+    static const F32 m_fMaxSurfaceTensionParam;
+    static const F32 m_fMinSurfaceTensionParam;
 
-    IFXAdaptiveMetric *m_pAdaptiveMetric;
+    IFXAdaptiveMetric* m_pAdaptiveMetric;
 
     // The output mesh:
-    IFXMeshGroup    *m_pOutputMeshGrp;
+    IFXMeshGroup* m_pOutputMeshGrp;
 
     // Unexposed/private properties:
-    IFXTQTBaseTriangle  *m_pBaseTriangle;
-  IFXTQTVertex      **m_ppBaseVertex;
-    U32           m_uNumBaseTriangles;
-  U32           m_uNumBaseVertices;
+    IFXTQTBaseTriangle* m_pBaseTriangle;
+    IFXTQTVertex** m_ppBaseVertex;
+    U32 m_uNumBaseTriangles;
+    U32 m_uNumBaseVertices;
 
     // Free Lists:
-    IFXTQTTriangleAllocator     *m_pTriangleAllocator;
-    IFXVertexAllocator          *m_pVertexAllocator;
+    IFXTQTTriangleAllocator* m_pTriangleAllocator;
+    IFXVertexAllocator* m_pVertexAllocator;
 
-  // OutputMesh allocation mgt:
-  F32 m_uOutMshInitial_ratio;
-  U32 m_numOutVertsIncr;
-  U32 m_numOutFacesIncr;
-  U32 m_uNumOutMeshes;
-  U32*m_pOutMshVtxCnt;
+    // OutputMesh allocation mgt:
+    F32 m_uOutMshInitial_ratio;
+    U32 m_numOutVertsIncr;
+    U32 m_numOutFacesIncr;
+    U32 m_uNumOutMeshes;
+    U32* m_pOutMshVtxCnt;
 
     // The subdivision scheme implementation:
-    IFXButterflyScheme          *m_pButterflyScheme;
+    IFXButterflyScheme* m_pButterflyScheme;
 
     // Internal flags:
-    BOOL                        m_bDontUpdate;
-  BOOL            m_bUpdateRequired;
-  BOOL            m_bReallocateOutputMesh;
+    BOOL m_bDontUpdate;
+    BOOL m_bUpdateRequired;
+    BOOL m_bReallocateOutputMesh;
 
-  // Implementation methods:
+    // Implementation methods:
     void SetDefaultProperties();
-    BOOL CheckRangeAndScaling (FloatProperty property,  F32 *pfValue);
+    BOOL CheckRangeAndScaling(FloatProperty property, F32* pfValue);
     void Update();
-  IFXRESULT AllocateFreeLists();
-  IFXRESULT DeallocateFreeLists();
-    IFXRESULT AllocateOutputMesh(IFXMeshGroup *pInputMeshGrp);
-  IFXRESULT ReallocateOutputMesh ();
+    IFXRESULT AllocateFreeLists();
+    IFXRESULT DeallocateFreeLists();
+    IFXRESULT AllocateOutputMesh(IFXMeshGroup* pInputMeshGrp);
+    IFXRESULT ReallocateOutputMesh();
     IFXRESULT DeallocateOutputMesh();
-    IFXRESULT AddRenderTriangle(IFXTQTTriangle *pTriangle);
-    IFXRESULT AddRenderCrackFillTriangle(IFXTQTTriangle *pTriangle,
-    IFXTQTVertex *pCorner[3],
-    IFXTQTTriangle::SametOrientation bSametOrientation);
-    IFXButterflyScheme *GetSubdivisionScheme();
-  void AllocateBaseMesh (IFXMeshGroup *pMeshGrp, U32 *pFaceOffsetTable);
-  void ResetOutputMeshGroup (IFXMeshGroup   *pMeshGrp);
+    IFXRESULT AddRenderTriangle(IFXTQTTriangle* pTriangle);
+    IFXRESULT AddRenderCrackFillTriangle(IFXTQTTriangle* pTriangle, IFXTQTVertex* pCorner[3], IFXTQTTriangle::SametOrientation bSametOrientation);
+    IFXButterflyScheme* GetSubdivisionScheme();
+    void AllocateBaseMesh(IFXMeshGroup* pMeshGrp, U32* pFaceOffsetTable);
+    void ResetOutputMeshGroup(IFXMeshGroup* pMeshGrp);
 };
 
-
-IFXINLINE IFXRESULT IFXSubdivisionManager::GetAdaptiveMetric (IFXAdaptiveMetric **ppMetric)
+IFXINLINE IFXRESULT IFXSubdivisionManager::GetAdaptiveMetric(IFXAdaptiveMetric** ppMetric)
 {
     *ppMetric = this->m_pAdaptiveMetric;
 

@@ -21,43 +21,36 @@
 #include "IFXSharedUnitAllocator.h"
 #include "IFXTQTVertex.h"
 
-
-
 class IFXVertexAllocator : public IFXSharedUnitAllocator
 {
 
 public:
+    IFXVertexAllocator(U32 uNumInitialUnits, U32 uGrowByNumUnits);
+    virtual ~IFXVertexAllocator();
 
-    IFXVertexAllocator (U32 uNumInitialUnits, U32 uGrowByNumUnits);
-    virtual ~IFXVertexAllocator ();
-
-    IFXTQTVertex *  Allocate ();
-    void            Deallocate (IFXTQTVertex *);
-    U32             IncRefCount (IFXTQTVertex *);
+    IFXTQTVertex* Allocate();
+    void Deallocate(IFXTQTVertex*);
+    U32 IncRefCount(IFXTQTVertex*);
 };
 
-
-
-
-IFXINLINE IFXTQTVertex * IFXVertexAllocator::Allocate()
+IFXINLINE IFXTQTVertex* IFXVertexAllocator::Allocate()
 {
-    U8 *pu8 = NULL;
+    U8* pu8 = NULL;
 
     pu8 = IFXSharedUnitAllocator::Allocate();
 
-    return ((IFXTQTVertex *) pu8);
+    return ((IFXTQTVertex*)pu8);
 }
 
-IFXINLINE void IFXVertexAllocator::Deallocate(IFXTQTVertex *pVertex)
+IFXINLINE void IFXVertexAllocator::Deallocate(IFXTQTVertex* pVertex)
 {
-    U8 *pu8 = (U8 *) pVertex;
+    U8* pu8 = (U8*)pVertex;
     IFXSharedUnitAllocator::Deallocate(pu8);
 }
 
-
-IFXINLINE U32 IFXVertexAllocator::IncRefCount (IFXTQTVertex *pVertex)
+IFXINLINE U32 IFXVertexAllocator::IncRefCount(IFXTQTVertex* pVertex)
 {
-    U8 *pu8 = (U8 *) pVertex;
+    U8* pu8 = (U8*)pVertex;
 
     U32 refCount = IFXSharedUnitAllocator::IncRefCount(pu8);
 

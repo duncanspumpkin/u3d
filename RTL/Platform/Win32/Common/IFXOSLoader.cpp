@@ -17,10 +17,10 @@
 //***************************************************************************
 
 /**
-	@file	IFXOSLoader.cpp
+        @file	IFXOSLoader.cpp
 
-			This module contains the Windows specific functions required to
-			work with dynamically liked library.
+                        This module contains the Windows specific functions required to
+                        work with dynamically liked library.
 */
 
 //***************************************************************************
@@ -44,23 +44,27 @@ const U32 MAXPATHLEN = 512;
 //	Global functions
 //***************************************************************************
 
-extern "C"
-FILE* IFXAPI IFXOSFileOpen(const wchar_t *filename, const wchar_t *mode)
+extern "C" FILE* IFXAPI IFXOSFileOpen(const wchar_t* filename, const wchar_t* mode)
 {
-	FILE *pFile = NULL;
+    FILE* pFile = NULL;
 
 #ifdef STDIO_HACK
-	if (!wcscmp(filename,"stdin") || (!wcscmp(filename,"-")  && *mode=='r')) {
-		pFile = stdin;
-	} else if (!wcscmp(filename,"stdout") || (!wcscmp(filename,"-")  && *mode=='w')) {
-		pFile = stdout;
-		_setmode(_fileno(stdout),_O_BINARY);
-	} else {
-		pFile = _wfopen(filename, mode);
-	}
+    if (!wcscmp(filename, "stdin") || (!wcscmp(filename, "-") && *mode == 'r'))
+    {
+        pFile = stdin;
+    }
+    else if (!wcscmp(filename, "stdout") || (!wcscmp(filename, "-") && *mode == 'w'))
+    {
+        pFile = stdout;
+        _setmode(_fileno(stdout), _O_BINARY);
+    }
+    else
+    {
+        pFile = _wfopen(filename, mode);
+    }
 #else
-	pFile = _wfopen(filename, mode);
+    pFile = _wfopen(filename, mode);
 #endif
 
-	return pFile;
+    return pFile;
 }

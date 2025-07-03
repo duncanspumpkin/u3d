@@ -25,72 +25,70 @@
 //***************************************************************************
 #ifndef __CIFXSCENEGRAPH_H__
 #define __CIFXSCENEGRAPH_H__
-#include "IFXSceneGraph.h"
+#include "CIFXMarker.h"
+#include "CIFXSubject.h"
+#include "IFXCoreCIDs.h"
 #include "IFXPalette.h"
 #include "IFXRenderContext.h"
-#include "CIFXSubject.h"
-#include "CIFXMarker.h"
-#include "IFXCoreCIDs.h"
+#include "IFXSceneGraph.h"
 
 class CIFXSceneGraph : public CIFXSubject,
-               virtual public IFXSceneGraph
+                       virtual public IFXSceneGraph
 {
-	CIFXSceneGraph();
-	virtual ~CIFXSceneGraph();
-	friend 
-	IFXRESULT IFXAPI_CALLTYPE CIFXSceneGraph_Factory(IFXREFIID iid, void** ppv);
+    CIFXSceneGraph();
+    virtual ~CIFXSceneGraph();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXSceneGraph_Factory(IFXREFIID iid, void** ppv);
 
 public:
-	// IFXUnknown
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void** ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	IFXRESULT  IFXAPI 	 Mark(void);
-	IFXRESULT  IFXAPI 	 Marked(BOOL* pbOutMarked);
-	void      IFXAPI SetPriority( U32 uInPriority, BOOL bRecursive, BOOL bPromotionOnly );
+    IFXRESULT IFXAPI Mark(void);
+    IFXRESULT IFXAPI Marked(BOOL* pbOutMarked);
+    void IFXAPI SetPriority(U32 uInPriority, BOOL bRecursive, BOOL bPromotionOnly);
 
-	// IFXSceneGraph
-	IFXRESULT  IFXAPI 	 GetPalette(EIFXPalette eInPalette, IFXPalette** ppOutPalette);
+    // IFXSceneGraph
+    IFXRESULT IFXAPI GetPalette(EIFXPalette eInPalette, IFXPalette** ppOutPalette);
 
-	IFXRESULT  IFXAPI 	 GetDebugFlags(U32* puOutDebugFlags);
-	IFXRESULT  IFXAPI 	 SetDebugFlags(U32 uInDebugFlags);
+    IFXRESULT IFXAPI GetDebugFlags(U32* puOutDebugFlags);
+    IFXRESULT IFXAPI SetDebugFlags(U32 uInDebugFlags);
 
-	U32 IFXAPI CurrentMark(void);
-	IFXRESULT  IFXAPI 	 UnmarkAll(void);
-	IFXRESULT  IFXAPI 	 Initialize(IFXCoreServices *pCS);
+    U32 IFXAPI CurrentMark(void);
+    IFXRESULT IFXAPI UnmarkAll(void);
+    IFXRESULT IFXAPI Initialize(IFXCoreServices* pCS);
 
-	IFXRESULT  IFXAPI 	 GetCoreServices(IFXCoreServices **ppCS);
+    IFXRESULT IFXAPI GetCoreServices(IFXCoreServices** ppCS);
 
-	IFXRESULT  IFXAPI 	 GetAnimationEnabledState( BOOL* pState );
-    IFXRESULT  IFXAPI 	 SetAnimationEnabledState( BOOL state );
+    IFXRESULT IFXAPI GetAnimationEnabledState(BOOL* pState);
+    IFXRESULT IFXAPI SetAnimationEnabledState(BOOL state);
 
-	IFXRESULT  IFXAPI 	 GetSimClockSubject(IFXSubject** ppOutClockSubject);
+    IFXRESULT IFXAPI GetSimClockSubject(IFXSubject** ppOutClockSubject);
 #if 0
 	IFXRESULT SetSimClockSubject(IFXSubject* pInClockSubject);
 #endif
 
 private:
-	// IFXUnknown
-	U32 m_uRefCount;
+    // IFXUnknown
+    U32 m_uRefCount;
 
-	// IFXMarker
-	U32 m_uRunningMarker;
-	U32 m_uMark;
-	U32 m_uPriority;
-	U32 m_uUserData;
+    // IFXMarker
+    U32 m_uRunningMarker;
+    U32 m_uMark;
+    U32 m_uPriority;
+    U32 m_uUserData;
 
-	// IFXSceneGraph
-	BOOL m_bInitialized;
-	IFXPalette* m_pPalettes[NUMBER_OF_PALETTES];
-	U32 m_uDebugFlags;
+    // IFXSceneGraph
+    BOOL m_bInitialized;
+    IFXPalette* m_pPalettes[NUMBER_OF_PALETTES];
+    U32 m_uDebugFlags;
 
-	IFXSubject		*m_pClockSubject;
+    IFXSubject* m_pClockSubject;
 
-	IFXCoreServices *m_pCS;
+    IFXCoreServices* m_pCS;
 
-	BOOL m_bAnimationEnabledState; // BOOL that if TRUE indicates that animation is globally enabled.  If FALSE, animation is globally disabled regardless of local settings.
+    BOOL m_bAnimationEnabledState; // BOOL that if TRUE indicates that animation is globally enabled.  If FALSE, animation is globally disabled regardless of local settings.
 };
 
-
-#endif 
+#endif

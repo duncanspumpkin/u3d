@@ -24,112 +24,105 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef UrlList_H
 #define UrlList_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXString.h"
 #include "IFXArray.h"
+#include "IFXString.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class UrlList
+    {
+    public:
+        UrlList();
+        virtual ~UrlList();
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        void AddUrl(const IFXString& rUrl);
 
+        /**
+         */
+        const IFXString& GetUrl(U32 index) const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const U32& GetUrlCount() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class UrlList
-{
-public:
-	UrlList();
-	virtual ~UrlList();
+        /**
+         */
+        const IFXArray<IFXString>& GetUrlList() const;
 
-	/**
-	*/
-	void AddUrl( const IFXString& rUrl );
+    private:
+        IFXArray<IFXString> m_urlList;
+    };
 
-	/**
-	*/
-	const IFXString& GetUrl( U32 index ) const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	const U32& GetUrlCount() const;
+    IFXFORCEINLINE UrlList::UrlList()
+    {
+    }
 
-	/**
-	*/
-	const IFXArray<IFXString>& GetUrlList() const;
+    IFXFORCEINLINE UrlList::~UrlList()
+    {
+    }
 
-private:
-	IFXArray<IFXString> m_urlList;
-};
+    IFXFORCEINLINE void UrlList::AddUrl(const IFXString& rUrl)
+    {
+        IFXString& url = m_urlList.CreateNewElement();
+        url = rUrl;
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE const IFXString& UrlList::GetUrl(U32 index) const
+    {
+        return m_urlList.GetElementConst(index);
+    }
 
-IFXFORCEINLINE UrlList::UrlList()
-{
-}
+    IFXFORCEINLINE const U32& UrlList::GetUrlCount() const
+    {
+        return m_urlList.GetNumberElements();
+    }
 
-IFXFORCEINLINE UrlList::~UrlList()
-{
-}
+    IFXFORCEINLINE const IFXArray<IFXString>& UrlList::GetUrlList() const
+    {
+        return m_urlList;
+    }
 
-IFXFORCEINLINE void UrlList::AddUrl( const IFXString& rUrl )
-{
-	IFXString& url = m_urlList.CreateNewElement();
-	url = rUrl;
-}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE const IFXString& UrlList::GetUrl( U32 index ) const
-{
-	return m_urlList.GetElementConst( index );
-}
-
-IFXFORCEINLINE const U32& UrlList::GetUrlCount() const
-{
-	return m_urlList.GetNumberElements();
-}
-
-IFXFORCEINLINE const IFXArray<IFXString>& UrlList::GetUrlList() const
-{
-	return m_urlList;
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

@@ -17,16 +17,15 @@
 //***************************************************************************
 
 /**
-	@file CIFXMotionResource.cpp
+        @file CIFXMotionResource.cpp
 */
 
-#include "IFXSceneGraphPCH.h"
 #include "CIFXMotionResource.h"
-#include "IFXMotion.h"
 #include "IFXCheckX.h"
 #include "IFXEncoderX.h"
 #include "IFXException.h"
-
+#include "IFXMotion.h"
+#include "IFXSceneGraphPCH.h"
 
 #include "IFXExportingCIDs.h"
 
@@ -36,13 +35,12 @@
 //	This is the constructor.  It sets up the object's initial state.
 //---------------------------------------------------------------------------
 
-CIFXMotionResource::CIFXMotionResource() :
-	m_refCount( 0 )
+CIFXMotionResource::CIFXMotionResource()
+    : m_refCount(0)
 {
-	// IFXMotionResource attributtes...
-	m_pMotion = NULL;
+    // IFXMotionResource attributtes...
+    m_pMotion = NULL;
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMotionResource::~CIFXMotionResource
@@ -52,10 +50,11 @@ CIFXMotionResource::CIFXMotionResource() :
 
 CIFXMotionResource::~CIFXMotionResource()
 {
-	if (m_pMotion)
-		delete m_pMotion;
+    if (m_pMotion)
+    {
+        delete m_pMotion;
+    }
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMotionResource_Factory
@@ -64,37 +63,40 @@ CIFXMotionResource::~CIFXMotionResource()
 //	CIFXMotionResource component can be instaniated multiple times.
 //---------------------------------------------------------------------------
 
-IFXRESULT IFXAPI_CALLTYPE CIFXMotionResource_Factory( IFXREFIID	interfaceId, void**	ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXMotionResource_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT	result;
+    IFXRESULT result;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXMotionResource component.
-		CIFXMotionResource	*pComponent	= new CIFXMotionResource;
+    if (ppInterface)
+    {
+        // Create the CIFXMotionResource component.
+        CIFXMotionResource* pComponent = new CIFXMotionResource;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(result);
+    IFXRETURN(result);
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMotionResource::AddRef
@@ -108,9 +110,8 @@ IFXRESULT IFXAPI_CALLTYPE CIFXMotionResource_Factory( IFXREFIID	interfaceId, voi
 
 U32 CIFXMotionResource::AddRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMotionResource::Release
@@ -124,18 +125,17 @@ U32 CIFXMotionResource::AddRef()
 
 U32 CIFXMotionResource::Release()
 {
-	if ( !( --m_refCount ) )
-	{
-		delete this;
+    if (!(--m_refCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_refCount;
+    return m_refCount;
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMotionResource::QueryInterface
@@ -150,233 +150,250 @@ U32 CIFXMotionResource::Release()
 //	description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
 
-IFXRESULT CIFXMotionResource::QueryInterface( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXMotionResource::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXMotionResource )
-			*ppInterface = ( IFXMotionResource* ) this;
-		else if ( interfaceId == IID_IFXUnknown )
-			*ppInterface = ( IFXUnknown* ) this;
-		else if ( interfaceId == IID_IFXSubject )
-			*ppInterface = ( IFXSubject* ) this;
-		else if ( interfaceId == IID_IFXMarker )
-			*ppInterface = (IFXMarker*)this;
-		else if ( interfaceId == IID_IFXMarkerX )
-			*ppInterface = (IFXMarkerX*)this;
-		else if ( interfaceId == IID_IFXMetaDataX ) 
-			*ppInterface = ( IFXMetaDataX* ) this;
-		else
-		{
-			*ppInterface = NULL;
-			result = IFX_E_UNSUPPORTED;
-		}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXMotionResource)
+        {
+            *ppInterface = (IFXMotionResource*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else if (interfaceId == IID_IFXSubject)
+        {
+            *ppInterface = (IFXSubject*)this;
+        }
+        else if (interfaceId == IID_IFXMarker)
+        {
+            *ppInterface = (IFXMarker*)this;
+        }
+        else if (interfaceId == IID_IFXMarkerX)
+        {
+            *ppInterface = (IFXMarkerX*)this;
+        }
+        else if (interfaceId == IID_IFXMetaDataX)
+        {
+            *ppInterface = (IFXMetaDataX*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(result);
+    IFXRETURN(result);
 }
-
 
 // IFXMarker
-IFXRESULT CIFXMotionResource::SetSceneGraph( IFXSceneGraph* pInSceneGraph )
+IFXRESULT CIFXMotionResource::SetSceneGraph(IFXSceneGraph* pInSceneGraph)
 {
-	IFXRESULT rc = IFX_OK ;
+    IFXRESULT rc = IFX_OK;
 
-	rc = CIFXMarker::SetSceneGraph( pInSceneGraph );
+    rc = CIFXMarker::SetSceneGraph(pInSceneGraph);
 
-	if (IFXSUCCESS(rc))
-	{
-		IFXDELETE( m_pMotion );
-			
-		m_pMotion = new IFXMotion ;
+    if (IFXSUCCESS(rc))
+    {
+        IFXDELETE(m_pMotion);
 
-		if (m_pMotion == NULL)
-			rc = IFX_E_OUT_OF_MEMORY;
-	}
+        m_pMotion = new IFXMotion;
 
-	IFXRETURN(rc);
+        if (m_pMotion == NULL)
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+
+    IFXRETURN(rc);
 }
-
-
 
 // IFXMarkerX interface...
 void CIFXMotionResource::GetEncoderX(IFXEncoderX*& rpEncoderX)
 {
-	CIFXMarker::GetEncoderX(CID_IFXMotionResourceEncoder, rpEncoderX);
+    CIFXMarker::GetEncoderX(CID_IFXMotionResourceEncoder, rpEncoderX);
 }
-
-
 
 // IFXMotionResource interface...
-IFXRESULT CIFXMotionResource::GetTrackCount(U32 *puTrackCount)
+IFXRESULT CIFXMotionResource::GetTrackCount(U32* puTrackCount)
 {
-	*puTrackCount=m_pMotion->GetTracks().GetNumberElements();
-	IFXRETURN(IFX_OK);
+    *puTrackCount = m_pMotion->GetTracks().GetNumberElements();
+    IFXRETURN(IFX_OK);
 }
 
-IFXRESULT CIFXMotionResource::FindTrack(IFXString *pTrackName,U32 *puTrackID)
+IFXRESULT CIFXMotionResource::FindTrack(IFXString* pTrackName, U32* puTrackID)
 {
-	long trackid=m_pMotion->GetTrackIndexByName(pTrackName->Raw());
+    long trackid = m_pMotion->GetTrackIndexByName(pTrackName->Raw());
 
-	if(trackid>=0)
-	{
-		*puTrackID=trackid;
-		return IFX_OK;
-	}
+    if (trackid >= 0)
+    {
+        *puTrackID = trackid;
+        return IFX_OK;
+    }
 
-	*puTrackID=0;
-	IFXRETURN(IFX_E_INVALID_HANDLE);
+    *puTrackID = 0;
+    IFXRETURN(IFX_E_INVALID_HANDLE);
 }
 
-
-
-IFXRESULT CIFXMotionResource::AddTrack(IFXString *pTrackName, U32 *puTrackID)
+IFXRESULT CIFXMotionResource::AddTrack(IFXString* pTrackName, U32* puTrackID)
 {
-	IFXKeyTrack& track = m_pMotion->GetTracks().CreateNewElement();
+    IFXKeyTrack& track = m_pMotion->GetTracks().CreateNewElement();
 
-	track.SetName(pTrackName->Raw());
+    track.SetName(pTrackName->Raw());
 
-	*puTrackID=m_pMotion->GetTracks().GetNumberElements()-1;
-	return IFX_OK;
+    *puTrackID = m_pMotion->GetTracks().GetNumberElements() - 1;
+    return IFX_OK;
 }
 
-
-IFXRESULT CIFXMotionResource::GetTrackName(U32 uTrackID, IFXString *pTrackName)
+IFXRESULT CIFXMotionResource::GetTrackName(U32 uTrackID, IFXString* pTrackName)
 {
-	IFXKeyTrack& keyTrack = m_pMotion->GetTrack(uTrackID);
-	// changed to U8 from u16
-	pTrackName->Assign( &( keyTrack.GetNameConst() ) );
-	return IFX_OK;
+    IFXKeyTrack& keyTrack = m_pMotion->GetTrack(uTrackID);
+    // changed to U8 from u16
+    pTrackName->Assign(&(keyTrack.GetNameConst()));
+    return IFX_OK;
 }
-
 
 IFXRESULT CIFXMotionResource::ClearTrack(U32 uTrackID)
 {
-	m_pMotion->GetTrack(uTrackID).DeleteAll();
-	return IFX_OK;
+    m_pMotion->GetTrack(uTrackID).DeleteAll();
+    return IFX_OK;
 }
 
-
-IFXRESULT CIFXMotionResource::FilterAndCompress(F32 deltatime,
-						F32 deltalocation,F32 deltarotation,F32 deltascale)
+IFXRESULT CIFXMotionResource::FilterAndCompress(F32 deltatime, F32 deltalocation, F32 deltarotation, F32 deltascale)
 {
-	m_pMotion->FilterAllTracks(deltatime);
-	m_pMotion->CompressAllTracks(deltalocation,deltarotation,deltascale);
-	return IFX_OK;
+    m_pMotion->FilterAllTracks(deltatime);
+    m_pMotion->CompressAllTracks(deltalocation, deltarotation, deltascale);
+    return IFX_OK;
 }
 
-
-IFXRESULT CIFXMotionResource::InsertKeyFrames(U32 uTrackID,U32 uKeyFrameCount,
-												IFXKeyFrame *pKeyFrameArray)
+IFXRESULT CIFXMotionResource::InsertKeyFrames(U32 uTrackID, U32 uKeyFrameCount, IFXKeyFrame* pKeyFrameArray)
 {
-	IFXKeyTrack &track=m_pMotion->GetTrack(uTrackID);
+    IFXKeyTrack& track = m_pMotion->GetTrack(uTrackID);
 
-	U32 m;
-	for(m=0;m<uKeyFrameCount;m++)
-		{
-		//* using one context for multiple lists will thrash
-//		track.InsertNewKeyFrame(pKeyFrameArray[m].Time(),
-//										pKeyFrameArray[m],&m_insertContext);
-		track.InsertNewKeyFrame(pKeyFrameArray[m].Time(),pKeyFrameArray[m]);
-		}
+    U32 m;
+    for (m = 0; m < uKeyFrameCount; m++)
+    {
+        //* using one context for multiple lists will thrash
+        //		track.InsertNewKeyFrame(pKeyFrameArray[m].Time(),
+        //										pKeyFrameArray[m],&m_insertContext);
+        track.InsertNewKeyFrame(pKeyFrameArray[m].Time(), pKeyFrameArray[m]);
+    }
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
-
-IFXRESULT CIFXMotionResource::GetKeyFrameCount(U32 uTrackID,
-												U32 *puKeyFrameCount)
+IFXRESULT CIFXMotionResource::GetKeyFrameCount(U32 uTrackID, U32* puKeyFrameCount)
 {
-	*puKeyFrameCount=m_pMotion->GetTrack(uTrackID).GetNumberElements();
-	return IFX_OK;
+    *puKeyFrameCount = m_pMotion->GetTrack(uTrackID).GetNumberElements();
+    return IFX_OK;
 }
 
-IFXRESULT CIFXMotionResource::GetKeyFrames(U32 uTrackID,U32 uKeyFrameStart,
-							U32 uKeyFrameCount,IFXKeyFrame *pKeyFrameArray)
+IFXRESULT CIFXMotionResource::GetKeyFrames(U32 uTrackID, U32 uKeyFrameStart, U32 uKeyFrameCount, IFXKeyFrame* pKeyFrameArray)
 {
-	IFXKeyTrack &track=m_pMotion->GetTrack(uTrackID);
-	IFXListContext context;
+    IFXKeyTrack& track = m_pMotion->GetTrack(uTrackID);
+    IFXListContext context;
 
-	track.ToHead(context);
+    track.ToHead(context);
 
-	U32 m;
-	for(m=0;m<uKeyFrameStart;m++)
-		track.PostIncrement(context);
+    U32 m;
+    for (m = 0; m < uKeyFrameStart; m++)
+    {
+        track.PostIncrement(context);
+    }
 
-	for(m=0;m<uKeyFrameCount;m++)
-		pKeyFrameArray[m]=*track.PostIncrement(context);
+    for (m = 0; m < uKeyFrameCount; m++)
+    {
+        pKeyFrameArray[m] = *track.PostIncrement(context);
+    }
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
-
-IFXRESULT CIFXMotionResource::GetInterpolatedFrame(U32 uTrackID,F32 fTime,
-												IFXKeyFrame *pKeyFrame)
+IFXRESULT CIFXMotionResource::GetInterpolatedFrame(U32 uTrackID, F32 fTime, IFXKeyFrame* pKeyFrame)
 {
-	//* using one context for multiple lists will thrash
-//	m_pMotion->CalcInstantConst(fTime,uTrackID,pKeyFrame,&m_interpolateContext);
-	m_pMotion->CalcInstantConst(fTime,uTrackID,pKeyFrame);
+    //* using one context for multiple lists will thrash
+    //	m_pMotion->CalcInstantConst(fTime,uTrackID,pKeyFrame,&m_interpolateContext);
+    m_pMotion->CalcInstantConst(fTime, uTrackID, pKeyFrame);
 
-	pKeyFrame->SetTime(fTime);
+    pKeyFrame->SetTime(fTime);
 
-	return IFX_OK;
+    return IFX_OK;
 }
-
 
 IFXRESULT CIFXMotionResource::GetDuration(U32 uTrackID, F32* pfOutDuration)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( pfOutDuration )
-		if (m_pMotion)
-			{
-			F32 min,max;
-			m_pMotion->GetTimeLimits(&min,&max);
-			*pfOutDuration=max-min;
-/*
-			*pfOutDuration =
-				m_pMotion->GetTrackConst(uTrackID).GetTail()->Time() -
-				m_pMotion->GetTrackConst(uTrackID).GetHead()->Time();
-*/
-			}
-		else
-			result = IFX_E_NOT_INITIALIZED;
-	else
-		result = IFX_E_INVALID_POINTER;
+    if (pfOutDuration)
+    {
+        if (m_pMotion)
+        {
+            F32 min, max;
+            m_pMotion->GetTimeLimits(&min, &max);
+            *pfOutDuration = max - min;
+            /*
+                                    *pfOutDuration =
+                                            m_pMotion->GetTrackConst(uTrackID).GetTail()->Time() -
+                                            m_pMotion->GetTrackConst(uTrackID).GetHead()->Time();
+            */
+        }
+        else
+        {
+            result = IFX_E_NOT_INITIALIZED;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(result); // was: return IFX_OK;
+    IFXRETURN(result); // was: return IFX_OK;
 }
-
 
 IFXRESULT CIFXMotionResource::GetDuration(F32* pfOutDuration)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( pfOutDuration )
-		if (m_pMotion)
-			if (m_pMotion->GetTracks().GetNumberElements())
-				*pfOutDuration =
-					m_pMotion->GetTrackConst(0).GetTail()->Time() -
-					m_pMotion->GetTrackConst(0).GetHead()->Time();
-			else
-				*pfOutDuration = 0;
-		else
-			result = IFX_E_NOT_INITIALIZED;
-	else
-		result = IFX_E_INVALID_POINTER;
+    if (pfOutDuration)
+    {
+        if (m_pMotion)
+        {
+            if (m_pMotion->GetTracks().GetNumberElements())
+            {
+                *pfOutDuration = m_pMotion->GetTrackConst(0).GetTail()->Time() - m_pMotion->GetTrackConst(0).GetHead()->Time();
+            }
+            else
+            {
+                *pfOutDuration = 0;
+            }
+        }
+        else
+        {
+            result = IFX_E_NOT_INITIALIZED;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(result);
+    IFXRETURN(result);
 }
 
-
-IFXMotion* CIFXMotionResource::GetMotionRef( void )
+IFXMotion* CIFXMotionResource::GetMotionRef(void)
 {
-	return m_pMotion;
+    return m_pMotion;
 }

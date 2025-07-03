@@ -17,149 +17,145 @@
 //***************************************************************************
 
 /*
-	@file	CIFXModifier.cpp
+        @file	CIFXModifier.cpp
 
-			The implementation file of the base CIFXModifier component.
+                        The implementation file of the base CIFXModifier component.
 */
 
 #include "CIFXModifier.h"
-#include "IFXSceneGraph.h"
 #include "IFXModifierChain.h"
 #include "IFXModifierDataPacket.h"
-
+#include "IFXSceneGraph.h"
 
 CIFXModifier::CIFXModifier()
 {
-	m_pModChainNR			= NULL;
-	m_pModChainSubNR		= NULL;
-	m_pModifierDataPacket	= NULL;
-	m_pInputDataPacket		= NULL;
-	m_uModifierChainIndex	= (U32)-1;
+    m_pModChainNR = NULL;
+    m_pModChainSubNR = NULL;
+    m_pModifierDataPacket = NULL;
+    m_pInputDataPacket = NULL;
+    m_uModifierChainIndex = (U32)-1;
 }
-
 
 CIFXModifier::~CIFXModifier()
 {
-	IFXASSERT( NULL == m_pModifierDataPacket );
-	IFXASSERT( NULL == m_pInputDataPacket );
+    IFXASSERT(NULL == m_pModifierDataPacket);
+    IFXASSERT(NULL == m_pInputDataPacket);
 
-/*
-	HINT:
-		If the Release() method of the inherited modifier
-	Looks like the example below, these asserts will go away.
+    /*
+            HINT:
+                    If the Release() method of the inherited modifier
+            Looks like the example below, these asserts will go away.
 
-U32 MyModifier::Release()
-{
-	if( m_uRefCount == 1 )
-	{
-	  	CIFXModifier::PreDestruct();
-		delete this;
-		return 0;
-	}
-	else
-		return --m_uRefCount;
-}
+    U32 MyModifier::Release()
+    {
+            if( m_uRefCount == 1 )
+            {
+                    CIFXModifier::PreDestruct();
+                    delete this;
+                    return 0;
+            }
+            else
+                    return --m_uRefCount;
+    }
 
-*/
+    */
 
-	IFXRELEASE( m_pModifierDataPacket );
-	IFXRELEASE( m_pInputDataPacket );
+    IFXRELEASE(m_pModifierDataPacket);
+    IFXRELEASE(m_pInputDataPacket);
 }
 
 void CIFXModifier::PreDestruct()
 {
-	CIFXSubject::PreDestruct();
-	IFXRELEASE( m_pModifierDataPacket );
-	IFXRELEASE( m_pInputDataPacket );
-	SetModifierChain( NULL, 0 );
+    CIFXSubject::PreDestruct();
+    IFXRELEASE(m_pModifierDataPacket);
+    IFXRELEASE(m_pInputDataPacket);
+    SetModifierChain(NULL, 0);
 }
 
-
-IFXRESULT CIFXModifier::GetDataPacket( IFXModifierDataPacket*& rpOutDataPacket )
+IFXRESULT CIFXModifier::GetDataPacket(IFXModifierDataPacket*& rpOutDataPacket)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pModifierDataPacket )
-	{
-		rpOutDataPacket = m_pModifierDataPacket;
-		rpOutDataPacket->AddRef();
-	}
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pModifierDataPacket)
+    {
+        rpOutDataPacket = m_pModifierDataPacket;
+        rpOutDataPacket->AddRef();
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	return result;
+    return result;
 }
 
-
-IFXRESULT CIFXModifier::SetModifierChain( IFXModifierChain* pInModifierChain,
-										  U32 in_ChainIndex )
+IFXRESULT CIFXModifier::SetModifierChain(IFXModifierChain* pInModifierChain, U32 in_ChainIndex)
 {
-	IFXRESULT ir = IFX_OK;
+    IFXRESULT ir = IFX_OK;
 
-	if( m_pModChainNR )
-	{
-		m_pModChainSubNR->Detach( (IFXObserver*)this );
-		m_pModChainSubNR = NULL;
-		m_pModChainNR = NULL;
-	}
+    if (m_pModChainNR)
+    {
+        m_pModChainSubNR->Detach((IFXObserver*)this);
+        m_pModChainSubNR = NULL;
+        m_pModChainNR = NULL;
+    }
 
-	SetDataPacket( NULL, NULL );
+    SetDataPacket(NULL, NULL);
 
-	m_pModChainNR = pInModifierChain;
+    m_pModChainNR = pInModifierChain;
 
-	if( m_pModChainNR )
-	{
-		m_pModChainNR->QueryInterface(IID_IFXSubject, (void**)&m_pModChainSubNR);
-		m_pModChainSubNR->Release();
-		m_pModChainSubNR->Attach( (IFXObserver*)this, 0 );
-	}
+    if (m_pModChainNR)
+    {
+        m_pModChainNR->QueryInterface(IID_IFXSubject, (void**)&m_pModChainSubNR);
+        m_pModChainSubNR->Release();
+        m_pModChainSubNR->Attach((IFXObserver*)this, 0);
+    }
 
-	m_uModifierChainIndex = in_ChainIndex;
+    m_uModifierChainIndex = in_ChainIndex;
 
-	return ir;
+    return ir;
 }
 
-
-IFXRESULT CIFXModifier::Notify( IFXModifierMessage eInMessage,
-									void* pMessageContext )
+IFXRESULT CIFXModifier::Notify(IFXModifierMessage eInMessage, void* pMessageContext)
 {
-	return IFX_OK;
+    return IFX_OK;
 }
 
-
-IFXRESULT CIFXModifier::GetModifierChain( IFXModifierChain** ppOutModifierChain )
+IFXRESULT CIFXModifier::GetModifierChain(IFXModifierChain** ppOutModifierChain)
 {
-	if( !m_pModChainNR )
-	{
-		return IFX_E_NOT_INITIALIZED;
-	}
-	m_pModChainNR->AddRef();
-	*ppOutModifierChain = m_pModChainNR;
-	return IFX_OK;
+    if (!m_pModChainNR)
+    {
+        return IFX_E_NOT_INITIALIZED;
+    }
+    m_pModChainNR->AddRef();
+    *ppOutModifierChain = m_pModChainNR;
+    return IFX_OK;
 }
 
-
-IFXRESULT CIFXModifier::GetModifierChainIndex( U32& rOutModifierChainIndex )
+IFXRESULT CIFXModifier::GetModifierChainIndex(U32& rOutModifierChainIndex)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pModChainNR && m_uModifierChainIndex != (U32)-1 )
-		rOutModifierChainIndex = m_uModifierChainIndex;
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pModChainNR && m_uModifierChainIndex != (U32)-1)
+    {
+        rOutModifierChainIndex = m_uModifierChainIndex;
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	return result;
+    return result;
 }
-
 
 // IFXObserver
-IFXRESULT CIFXModifier::Update(IFXSubject* pInSubject, U32 uInChangeBits,IFXREFIID rIType)
+IFXRESULT CIFXModifier::Update(IFXSubject* pInSubject, U32 uInChangeBits, IFXREFIID rIType)
 {
-	if( (pInSubject == m_pModChainSubNR) && !uInChangeBits )
-	{
-		m_pModChainSubNR->Detach( (IFXObserver*)this );
-		m_pModChainSubNR = NULL;
-		m_pModChainNR = NULL;
-	}
-	return IFX_OK;
+    if ((pInSubject == m_pModChainSubNR) && !uInChangeBits)
+    {
+        m_pModChainSubNR->Detach((IFXObserver*)this);
+        m_pModChainSubNR = NULL;
+        m_pModChainNR = NULL;
+    }
+    return IFX_OK;
 }

@@ -31,142 +31,138 @@
 //  Includes
 //***************************************************************************
 
-#include "Resource.h"
-#include "IFXString.h"
 #include "IFXArray.h"
+#include "IFXString.h"
+#include "Resource.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    // default texture layer parameters
+    static const F32 DEFAULT_INTENSITY = 1.0f;
+    static const F32 DEFAULT_BLEND_CONSTANT = 0.5f;
+    static const IFXCHAR DEFAULT_BLEND_FUNCTION[] = L"MULTIPLY";
+    static const IFXCHAR DEFAULT_BLEND_SOURCE[] = L"CONSTANT";
+    static const IFXCHAR DEFAULT_TEXTURE_MODE[] = L"TM_NONE";
+    static const IFXCHAR DEFAULT_TEXTURE_REPEAT[] = L"UV";
 
-// default texture layer parameters
-static const F32 DEFAULT_INTENSITY = 1.0f;
-static const F32 DEFAULT_BLEND_CONSTANT = 0.5f;
-static const IFXCHAR DEFAULT_BLEND_FUNCTION[] = L"MULTIPLY";
-static const IFXCHAR DEFAULT_BLEND_SOURCE[] = L"CONSTANT";
-static const IFXCHAR DEFAULT_TEXTURE_MODE[] = L"TM_NONE";
-static const IFXCHAR DEFAULT_TEXTURE_REPEAT[] = L"UV";
+    // default shader parameters
+    static const IFXCHAR DEFAULT_COLOR_BLEND_FUNCTION[] = L"ALPHA_BLEND";
+    static const IFXCHAR DEFAULT_COLOR_ALPHA_TEST_FUNCTION[] = L"ALWAYS";
+    static const F32 DEFAULT_ALPHA_TEST_REFERENCE = 0.0f;
 
-// default shader parameters
-static const IFXCHAR DEFAULT_COLOR_BLEND_FUNCTION[] = L"ALPHA_BLEND";
-static const IFXCHAR DEFAULT_COLOR_ALPHA_TEST_FUNCTION[] = L"ALWAYS";
-static const F32 DEFAULT_ALPHA_TEST_REFERENCE = 0.0f;
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
+    /**
+     */
+    class TextureLayer
+    {
+    public:
+        TextureLayer();
+        virtual ~TextureLayer() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        I32 m_channel;
+        F32 m_intensity;
+        IFXString m_blendFunction;
+        IFXString m_blendSource;
+        F32 m_blendConstant;
+        IFXString m_mode;
+        IFXString m_alphaEnabled;
+        IFXString m_repeat;
+        IFXString m_textureName; // name of texture resource
+    };
 
-/**
-*/
-class TextureLayer
-{
-public:
-	TextureLayer();
-	virtual ~TextureLayer() {};
+    /**
+     */
+    class Shader : public Resource
+    {
+    public:
+        Shader();
+        ~Shader() {};
 
-	I32 m_channel;
-	F32 m_intensity;
-	IFXString m_blendFunction;
-	IFXString m_blendSource;
-	F32 m_blendConstant;
-	IFXString m_mode;
-	IFXString m_alphaEnabled;
-	IFXString m_repeat;
-	IFXString m_textureName; // name of texture resource
-};
+        void AddTextureLayer(const TextureLayer& rTextureLayer);
+        const TextureLayer& GetTextureLayer(U32 index) const;
 
-/**
-*/
-class Shader : public Resource
-{
-public:
-	Shader();
-	~Shader() {};
+        /**
+        Returns the number of active texture layers
+        */
+        U32 GetTextureLayerCount() const;
 
-	void AddTextureLayer( const TextureLayer& rTextureLayer );
-	const TextureLayer& GetTextureLayer( U32 index ) const ;
+        IFXString m_materialName; // name of material resource
 
-	/**
-	Returns the number of active texture layers
-	*/
-	U32 GetTextureLayerCount() const;
+        IFXString m_lightingEnabled;
+        IFXString m_alphaTestEnabled;
+        IFXString m_useVertexColor;
 
-	IFXString m_materialName; // name of material resource
+        F32 m_alphaTestReference;
+        IFXString m_alphaTestFunction;
+        IFXString m_colorBlendFunction;
 
-	IFXString m_lightingEnabled;
-	IFXString m_alphaTestEnabled;
-	IFXString m_useVertexColor;
+    private:
+        IFXArray<TextureLayer> m_textureLayerList;
+    };
 
-	F32 m_alphaTestReference;
-	IFXString m_alphaTestFunction;
-	IFXString m_colorBlendFunction;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-private:
-	IFXArray< TextureLayer > m_textureLayerList;
-};
+    IFXFORCEINLINE TextureLayer::TextureLayer()
+        : m_intensity(DEFAULT_INTENSITY)
+        , m_blendFunction(DEFAULT_BLEND_FUNCTION)
+        , m_blendSource(DEFAULT_BLEND_SOURCE)
+        , m_blendConstant(DEFAULT_BLEND_CONSTANT)
+        , m_mode(DEFAULT_TEXTURE_MODE)
+        , m_alphaEnabled(L"FALSE")
+        , m_repeat(DEFAULT_TEXTURE_REPEAT)
+    {
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE Shader::Shader()
+        : m_lightingEnabled(L"TRUE")
+        , m_alphaTestEnabled(L"FALSE")
+        , m_useVertexColor(L"FALSE")
+        , m_alphaTestReference(DEFAULT_ALPHA_TEST_REFERENCE)
+        , m_alphaTestFunction(DEFAULT_COLOR_ALPHA_TEST_FUNCTION)
+        , m_colorBlendFunction(DEFAULT_COLOR_BLEND_FUNCTION)
+    {
+    }
 
-IFXFORCEINLINE TextureLayer::TextureLayer() :
-	m_intensity( DEFAULT_INTENSITY ),
-	m_blendFunction( DEFAULT_BLEND_FUNCTION ),
-	m_blendSource( DEFAULT_BLEND_SOURCE ),
-	m_blendConstant( DEFAULT_BLEND_CONSTANT ),
-	m_mode( DEFAULT_TEXTURE_MODE ),
-	m_alphaEnabled( L"FALSE" ),
-	m_repeat( DEFAULT_TEXTURE_REPEAT )
-{
+    IFXFORCEINLINE void Shader::AddTextureLayer(const TextureLayer& rTextureLayer)
+    {
+        TextureLayer& textureLayer = m_textureLayerList.CreateNewElement();
+        textureLayer = rTextureLayer;
+    }
+
+    IFXFORCEINLINE const TextureLayer& Shader::GetTextureLayer(U32 index) const
+    {
+        return m_textureLayerList.GetElementConst(index);
+    }
+
+    IFXFORCEINLINE U32 Shader::GetTextureLayerCount() const
+    {
+        return m_textureLayerList.GetNumberElements();
+    }
+
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
+
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
-
-IFXFORCEINLINE Shader::Shader()
-:	m_lightingEnabled( L"TRUE" ),
-	m_alphaTestEnabled( L"FALSE" ),
-	m_useVertexColor( L"FALSE" ),
-	m_alphaTestReference( DEFAULT_ALPHA_TEST_REFERENCE ),
-	m_alphaTestFunction( DEFAULT_COLOR_ALPHA_TEST_FUNCTION ),
-	m_colorBlendFunction( DEFAULT_COLOR_BLEND_FUNCTION )
-{
-}
-
-IFXFORCEINLINE void Shader::AddTextureLayer( const TextureLayer& rTextureLayer )
-{
-	TextureLayer& textureLayer = m_textureLayerList.CreateNewElement();
-	textureLayer = rTextureLayer;
-}
-
-IFXFORCEINLINE const TextureLayer& Shader::GetTextureLayer( U32 index ) const
-{
-	return m_textureLayerList.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 Shader::GetTextureLayerCount() const
-{
-	return m_textureLayerList.GetNumberElements();
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-}
-
 
 #endif

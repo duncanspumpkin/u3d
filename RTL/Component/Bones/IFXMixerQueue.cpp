@@ -17,18 +17,18 @@
 //***************************************************************************
 
 /**
-	@file IFXMixerQueue.cpp
+        @file IFXMixerQueue.cpp
 */
 
 #include "IFXMixerQueueImpl.h"
 
 IFXMixerQueue* IFXCreateMixerQueue(void)
 {
-	return new IFXMixerQueueImpl;
+    return new IFXMixerQueueImpl;
 }
 
 void IFXDeleteMixerQueue(IFXMixerQueue* mixerQueue)
 {
-	IFXTRACE_GENERIC(L"IFXDeleteMixerQueue() deimplemented\n");
-	IFXASSERT(0);
+    IFXTRACE_GENERIC(L"IFXDeleteMixerQueue() deimplemented\n");
+    IFXASSERT(0);
 }

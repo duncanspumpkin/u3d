@@ -18,96 +18,104 @@
 /*
 @file  CIFXBoundSphereDataElement.cpp                                                         */
 
-
 #include "CIFXBoundSphereDataElement.h"
-
 
 CIFXBoundSphereDataElement::CIFXBoundSphereDataElement()
 {
-	m_uRefCount = 0;
-  	m_vBoundingSphere.Set(0.0f,0.0f,0.0f,0.0f);
-  	m_uRenderableDataElementIndex = (U32)-1;
+    m_uRefCount = 0;
+    m_vBoundingSphere.Set(0.0f, 0.0f, 0.0f, 0.0f);
+    m_uRenderableDataElementIndex = (U32)-1;
 }
-
 
 CIFXBoundSphereDataElement::~CIFXBoundSphereDataElement()
 {
 }
 
-
-IFXRESULT IFXAPI_CALLTYPE CIFXBoundSphereDataElement_Factory(IFXREFIID riid, void **ppv)
+IFXRESULT IFXAPI_CALLTYPE CIFXBoundSphereDataElement_Factory(IFXREFIID riid, void** ppv)
 {
-	IFXRESULT result;
+    IFXRESULT result;
 
-	if ( ppv )
-	{
-		// Create the CIFXClassName component.
-		CIFXBoundSphereDataElement *pBS = new CIFXBoundSphereDataElement;
+    if (ppv)
+    {
+        // Create the CIFXClassName component.
+        CIFXBoundSphereDataElement* pBS = new CIFXBoundSphereDataElement;
 
-		if ( pBS )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pBS->AddRef();
+        if (pBS)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pBS->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pBS->QueryInterface( riid, ppv );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pBS->QueryInterface(riid, ppv);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pBS->Release();
-		}
-		else result = IFX_E_OUT_OF_MEMORY;
-	}
-	else result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pBS->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
 
 // IFXUnknown
 U32 CIFXBoundSphereDataElement::AddRef()
 {
-	
-	return ++m_uRefCount;
-}
 
+    return ++m_uRefCount;
+}
 
 U32 CIFXBoundSphereDataElement::Release()
 {
-	
-	if (m_uRefCount == 1)
-	{
-		delete this ;
-		return 0 ;
-	}
-	else return (--m_uRefCount);
-}
 
+    if (m_uRefCount == 1)
+    {
+        delete this;
+        return 0;
+    }
+    else
+    {
+        return (--m_uRefCount);
+    }
+}
 
 IFXRESULT CIFXBoundSphereDataElement::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXBoundSphereDataElement )
-			*ppInterface = ( IFXBoundSphereDataElement* ) this;			
-		else if ( interfaceId == IID_IFXUnknown )
-			*ppInterface = ( IFXUnknown* ) this;
-		else
-		{
-			*ppInterface = NULL;
-			result = IFX_E_UNSUPPORTED;
-		}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXBoundSphereDataElement)
+        {
+            *ppInterface = (IFXBoundSphereDataElement*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
-

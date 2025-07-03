@@ -24,7 +24,6 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ModelResourceList_H
 #define ModelResourceList_H
 
@@ -33,76 +32,69 @@ This header defines the ... functionality.
 //***************************************************************************
 
 #include "IFXArray.h"
-#include "ResourceList.h"
-#include "ModelResource.h"
-#include "MeshResource.h"
 #include "LineSetResource.h"
+#include "MeshResource.h"
+#include "ModelResource.h"
 #include "PointSetResource.h"
+#include "ResourceList.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+            This is the implementation of a class that is used to @todo: usage.
 
+            It supports the following interfaces:  @todo: interfaces.
+    */
+    class ModelResourceList : public ResourceList
+    {
+    public:
+        ModelResourceList();
+        virtual ~ModelResourceList();
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        IFXRESULT AddResource(const ModelResource* pModelResource);
 
-/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const ModelResource* GetResource(U32 index) const;
+        U32 GetResourceCount() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-*/
-class ModelResourceList : public ResourceList
-{
-public:
-	ModelResourceList();
-	virtual ~ModelResourceList();
+    protected:
+    private:
+        IFXArray<ModelResource*> m_resourcePointerList;
+        IFXArray<MeshResource> m_meshResourceList;
+        IFXArray<LineSetResource> m_lineSetResourceList;
+        IFXArray<PointSetResource> m_pointSetResourceList;
+    };
 
-	/**
-	*/
-	IFXRESULT AddResource( const ModelResource* pModelResource );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	const ModelResource* GetResource( U32 index ) const;
-	U32 GetResourceCount() const;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-protected:
-
-private:
-	IFXArray< ModelResource* >    m_resourcePointerList;
-	IFXArray< MeshResource >    m_meshResourceList;
-	IFXArray< LineSetResource >   m_lineSetResourceList;
-	IFXArray< PointSetResource >  m_pointSetResourceList;
-};
-
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

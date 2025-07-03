@@ -17,74 +17,74 @@
 //***************************************************************************
 
 /**
-	@file	CIFXAuthorLineSetAnalyzer.h
+        @file	CIFXAuthorLineSetAnalyzer.h
 
-			Declaration of helper class to analyze connectivity of 
-			IFXAuthorLineSet
+                        Declaration of helper class to analyze connectivity of
+                        IFXAuthorLineSet
 */
 
 #ifndef __CIFXAUTHORLINESETANALYZER_H__
 #define __CIFXAUTHORLINESETANALYZER_H__
 
-#include "IFXAuthorLineSet.h"
-#include "IFXLine.h"
 #include "IFXArray.h"
+#include "IFXAuthorLineSet.h"
 #include "IFXAuthorLineSetAnalyzer.h"
+#include "IFXLine.h"
 
-struct IFXPositionConnectivity 
+struct IFXPositionConnectivity
 {
-	IFXPositionConnectivity () 
-	{
-		m_uLineCount	= 0;
-		m_LineIndex.Clear();
-		m_EndPosIndex.Clear();
-	};
+    IFXPositionConnectivity()
+    {
+        m_uLineCount = 0;
+        m_LineIndex.Clear();
+        m_EndPosIndex.Clear();
+    };
 
-	U32		m_uLineCount;
-	IFXArray <U32> m_LineIndex;
-	IFXArray <U32> m_EndPosIndex;
+    U32 m_uLineCount;
+    IFXArray<U32> m_LineIndex;
+    IFXArray<U32> m_EndPosIndex;
 };
 
 class CIFXAuthorLineSetAnalyzer : virtual public IFXAuthorLineSetAnalyzer
 {
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef ();
-	U32 IFXAPI  Release ();
-	IFXRESULT IFXAPI QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    // IFXUnknown methods
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	IFXRESULT IFXAPI Initialize(IFXAuthorLineSet* pLineSet);
-	BOOL IFXAPI   IsInitialized() {  return m_initialized; };
+    IFXRESULT IFXAPI Initialize(IFXAuthorLineSet* pLineSet);
+    BOOL IFXAPI IsInitialized() { return m_initialized; };
 
-	IFXRESULT IFXAPI Update();
+    IFXRESULT IFXAPI Update();
 
-	/// returns line indexes and their end positions connected with specified positions
-	IFXRESULT IFXAPI GetLines(
-						U32 pointInd, 
-						IFXArray <U32>& lines, 
-						IFXArray <U32>& endPoints );
+    /// returns line indexes and their end positions connected with specified positions
+    IFXRESULT IFXAPI GetLines(
+        U32 pointInd,
+        IFXArray<U32>& lines,
+        IFXArray<U32>& endPoints);
 
-	void IFXAPI DumpAuthorLineSet();
+    void IFXAPI DumpAuthorLineSet();
 
 private:
-	CIFXAuthorLineSetAnalyzer();
-	virtual ~CIFXAuthorLineSetAnalyzer();
+    CIFXAuthorLineSetAnalyzer();
+    virtual ~CIFXAuthorLineSetAnalyzer();
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXAuthorLineSetAnalyzer_Factory( 
-													IFXREFIID	interfaceId, 
-													void**		ppInterface );
-	IFXRESULT GenerateConnectivity();
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXAuthorLineSetAnalyzer_Factory(
+        IFXREFIID interfaceId,
+        void** ppInterface);
+    IFXRESULT GenerateConnectivity();
 
-	// Reference count for IFXUnknown
-	U32				m_uRefCount;		
+    // Reference count for IFXUnknown
+    U32 m_uRefCount;
 
-	IFXAuthorLineSet*			m_pLineSet;
-	IFXAuthorLineSetDesc		m_LineSetDesc;
-	U32							m_uMaxPositionCount;
-	BOOL						m_initialized;
+    IFXAuthorLineSet* m_pLineSet;
+    IFXAuthorLineSetDesc m_LineSetDesc;
+    U32 m_uMaxPositionCount;
+    BOOL m_initialized;
 
-	IFXPositionConnectivity* m_pPosInfo;
+    IFXPositionConnectivity* m_pPosInfo;
 };
 
 #endif

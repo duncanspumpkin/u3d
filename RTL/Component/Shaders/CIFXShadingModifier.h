@@ -22,40 +22,34 @@
       This module defines the CIFXShadingModifier component.
 */
 
-
 #ifndef CIFXSHADINGMODIFIER_H
 #define CIFXSHADINGMODIFIER_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXShadingModifier.h"
 #include "CIFXModifier.h"
 #include "IFXCoreCIDs.h"
-#include "IFXSceneGraph.h"
 #include "IFXMaterialResource.h"
+#include "IFXSceneGraph.h"
+#include "IFXShadingModifier.h"
 
 //***************************************************************************
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //---------------------------------------------------------------------------
 /**
@@ -70,83 +64,72 @@
   @note This component can be instantiated multiple times.
 */
 class CIFXShadingModifier : private CIFXModifier,
-                   virtual public   IFXShadingModifier
+                            virtual public IFXShadingModifier
 {
-  // Member functions:  IFXUnknown.
+    // Member functions:  IFXUnknown.
 
-  U32 IFXAPI      AddRef ();
-  U32 IFXAPI      Release ();
-  IFXRESULT IFXAPI  QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-  // Member functions:  IFXShadingModifier.
+    // Member functions:  IFXShadingModifier.
 
-  // IFXMarkerX
-  void IFXAPI  GetEncoderX (IFXEncoderX*& rpEncoderX) ;
+    // IFXMarkerX
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
     // IFXModifier
-  IFXRESULT IFXAPI  GetOutputs ( IFXGUID**& rpOutOutputs,
-    U32&       rOutNumberOfOutputs,
-    U32*&    rpOutOutputDepAttrs );
+    IFXRESULT IFXAPI GetOutputs(IFXGUID**& rpOutOutputs, U32& rOutNumberOfOutputs, U32*& rpOutOutputDepAttrs);
 
-  IFXRESULT IFXAPI  GetDependencies (    IFXGUID*   pInOutputDID,
-    IFXGUID**& rppOutInputDependencies,
-    U32&       rOutNumberInputDependencies,
-    IFXGUID**& rppOutOutputDependencies,
-    U32&       rOutNumberOfOutputDependencies,
-    U32*&    rpOutOutputDepAttrs );
+    IFXRESULT IFXAPI GetDependencies(IFXGUID* pInOutputDID, IFXGUID**& rppOutInputDependencies, U32& rOutNumberInputDependencies, IFXGUID**& rppOutOutputDependencies, U32& rOutNumberOfOutputDependencies, U32*& rpOutOutputDepAttrs);
 
-  IFXRESULT IFXAPI  GenerateOutput ( U32    inOutputDataElementIndex,
-    void*& rpOutData, BOOL& rNeedRelease );
+    IFXRESULT IFXAPI GenerateOutput(U32 inOutputDataElementIndex, void*& rpOutData, BOOL& rNeedRelease);
 
-  IFXRESULT IFXAPI  SetDataPacket ( IFXModifierDataPacket* pInInputDataPacket,
-    IFXModifierDataPacket* pInDataPacket );
+    IFXRESULT IFXAPI SetDataPacket(IFXModifierDataPacket* pInInputDataPacket, IFXModifierDataPacket* pInDataPacket);
 
-  IFXRESULT IFXAPI  Notify ( IFXModifierMessage eInMessage,
-    void*               pMessageContext );
+    IFXRESULT IFXAPI Notify(IFXModifierMessage eInMessage, void* pMessageContext);
 
-  // IFXShadingModifier
+    // IFXShadingModifier
 
-  virtual IFXRESULT IFXAPI  GetEnable     (BOOL* pbEnable);
-  virtual IFXRESULT IFXAPI  SetEnable     (BOOL  bEnable);
+    virtual IFXRESULT IFXAPI GetEnable(BOOL* pbEnable);
+    virtual IFXRESULT IFXAPI SetEnable(BOOL bEnable);
 
-  IFXRESULT  IFXAPI 	 GetElementShaderList( U32 uInElement, IFXShaderList** out_ppShaderList );
-  IFXRESULT  IFXAPI 	 SetElementShaderList( U32 uInElement, IFXShaderList* in_pShaderList, BOOL isValid = TRUE );
+    IFXRESULT IFXAPI GetElementShaderList(U32 uInElement, IFXShaderList** out_ppShaderList);
+    IFXRESULT IFXAPI SetElementShaderList(U32 uInElement, IFXShaderList* in_pShaderList, BOOL isValid = TRUE);
 
-  IFXRESULT  IFXAPI 	 GetShaderDataArray(IFXShaderList*** pShaderArray);
-  IFXRESULT  IFXAPI 	 GetAttributes(U32* pShadingAttributes);
-  IFXRESULT  IFXAPI 	 SetAttributes(U32 shadingAttributes);
-  IFXRESULT  IFXAPI 	 GetSize(U32* size);
+    IFXRESULT IFXAPI GetShaderDataArray(IFXShaderList*** pShaderArray);
+    IFXRESULT IFXAPI GetAttributes(U32* pShadingAttributes);
+    IFXRESULT IFXAPI SetAttributes(U32 shadingAttributes);
+    IFXRESULT IFXAPI GetSize(U32* size);
 
     // Factory function.
 
-    friend IFXRESULT IFXAPI_CALLTYPE CIFXShadingModifier_Factory( IFXREFIID interfaceId, void** ppInterface );
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXShadingModifier_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 private:
+    // Member functions.
 
-  // Member functions.
+    CIFXShadingModifier();
+    virtual ~CIFXShadingModifier();
 
-  CIFXShadingModifier();
-  virtual ~CIFXShadingModifier();
+    IFXRESULT RobustConstructor();
 
-  IFXRESULT RobustConstructor();
+    IFXRESULT AllocateShaders(IFXShaderList** in_ppData = NULL, BOOL in_bCopy = TRUE, U32 numCopy = 0);
+    void Deallocate(U32 num);
 
-  IFXRESULT AllocateShaders(IFXShaderList** in_ppData = NULL, BOOL in_bCopy = TRUE, U32 numCopy = 0);
-  void Deallocate(U32 num);
+    // Member data.
 
-  // Member data.
+    U32 m_refCount; ///< Number of outstanding references to the component.
 
-  U32 m_refCount; ///< Number of outstanding references to the component.
+    // IFXModifier
+    static const IFXDID* m_scpOutputDIDs[];
+    static const IFXDID* m_scpInputDIDs[];
+    U32 m_uMeshGroupDataElementIndex;
 
-  // IFXModifier
-  static const IFXDID* m_scpOutputDIDs[];
-  static const IFXDID* m_scpInputDIDs[];
-  U32 m_uMeshGroupDataElementIndex;
-
-  // IFXShadingModifier
-  BOOL          m_bEnabled;
-  IFXShaderList**    m_ppShaders;
-  U32 m_uNumElements;
-  U32 m_attributes;
+    // IFXShadingModifier
+    BOOL m_bEnabled;
+    IFXShaderList** m_ppShaders;
+    U32 m_uNumElements;
+    U32 m_attributes;
 };
 
 #endif

@@ -17,50 +17,50 @@
 //***************************************************************************
 
 /**
-	@file CIFXSkeleton.h
+        @file CIFXSkeleton.h
 */
 
 #ifndef CIFX_BONES_GENERATOR_H
 #define CIFX_BONES_GENERATOR_H
 
-#include "IFXSkeleton.h"
 #include "IFXPackWeights.h"
+#include "IFXSkeleton.h"
 
 class CIFXSkeleton : virtual public IFXSkeleton
 {
 public:
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXSkeleton_Factory(IFXREFIID interfaceId, void** ppInterface);
-	
-	// IFXUnknown
-	U32 IFXAPI          AddRef (void);
-	U32 IFXAPI          Release (void);
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXSkeleton_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	IFXRESULT IFXAPI    QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
 
-	// IFXSkeleton interface...
-	IFXRESULT  IFXAPI   SetBoneInfo( U32 uBoneID, IFXBoneInfo *pBoneInfo );
-	IFXRESULT  IFXAPI   GetBoneInfo( U32 uBoneID, IFXBoneInfo *pBoneInfo );
-	IFXRESULT  IFXAPI   GetNumBones( U32& uNumBones );
-	IFXBonesManager* IFXAPI GetBonesManagerNR(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// blocktype base determination methods
-	IFXRESULT  IFXAPI   SetBlockTypeBase( U32 BlockType );
-	IFXRESULT  IFXAPI   GetBlockTypeBase( U32* pBlockType );
+    // IFXSkeleton interface...
+    IFXRESULT IFXAPI SetBoneInfo(U32 uBoneID, IFXBoneInfo* pBoneInfo);
+    IFXRESULT IFXAPI GetBoneInfo(U32 uBoneID, IFXBoneInfo* pBoneInfo);
+    IFXRESULT IFXAPI GetNumBones(U32& uNumBones);
+    IFXBonesManager* IFXAPI GetBonesManagerNR(void);
+
+    // blocktype base determination methods
+    IFXRESULT IFXAPI SetBlockTypeBase(U32 BlockType);
+    IFXRESULT IFXAPI GetBlockTypeBase(U32* pBlockType);
 
 protected:
-	CIFXSkeleton();
-	virtual ~CIFXSkeleton();
+    CIFXSkeleton();
+    virtual ~CIFXSkeleton();
 
-	virtual IFXRESULT IFXAPI  Construct();
+    virtual IFXRESULT IFXAPI Construct();
 
-	U32 m_uBonesManagerIndex;
+    U32 m_uBonesManagerIndex;
 
-	IFXBonesManager *m_pBonesMgr;
+    IFXBonesManager* m_pBonesMgr;
 
 private:
-	U32 m_uRefCount;
+    U32 m_uRefCount;
 
-	U32 m_uBlockTypeBase;
+    U32 m_uBlockTypeBase;
 };
 
 #endif

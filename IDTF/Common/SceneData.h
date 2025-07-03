@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef SceneData_H
 #define SceneData_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,74 +36,69 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class SceneData : public MetaDataList
+    {
+    public:
+        SceneData() {};
+        virtual ~SceneData() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+        @todo: SetAmbientLight
+        */
+        void SetAmbientLight(const Color& rColor);
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+        @todo: GetAmbientLight
+        */
+        const Color* GetAmbientLight() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class SceneData : public MetaDataList
-	{
-	public:
-		SceneData() {};
-		virtual ~SceneData() {};
+    protected:
+    private:
+        Color m_ambientLight;
+    };
 
-		/**
-		@todo: SetAmbientLight
-		*/
-		void SetAmbientLight( const Color& rColor );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		@todo: GetAmbientLight
-		*/
-		const Color* GetAmbientLight() const;
+    IFXFORCEINLINE void SceneData::SetAmbientLight(const Color& rColor)
+    {
+        m_ambientLight = rColor;
+    }
 
-	protected:
+    IFXFORCEINLINE const Color* SceneData::GetAmbientLight() const
+    {
+        return &m_ambientLight;
+    }
 
-	private:
-		Color m_ambientLight;
-	};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-	IFXFORCEINLINE void SceneData::SetAmbientLight( const Color& rColor )
-	{
-		m_ambientLight = rColor;
-	}
-
-	IFXFORCEINLINE const Color* SceneData::GetAmbientLight() const
-	{
-		return &m_ambientLight;
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

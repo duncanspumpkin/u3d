@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file IFXMotionManagerImpl.h
+        @file IFXMotionManagerImpl.h
 */
 
 #ifndef IFXMOTIONMANAGERIMPL_H
@@ -28,24 +28,25 @@
 class IFXMotionManagerImpl : public IFXMotionManager
 {
 public:
-		IFXMotionManagerImpl(void);
-virtual ~IFXMotionManagerImpl(void);
+    IFXMotionManagerImpl(void);
+    virtual ~IFXMotionManagerImpl(void);
 
-virtual IFXRESULT IFXAPI    Reset(void);
+    virtual IFXRESULT IFXAPI Reset(void);
 
-virtual IFXRESULT IFXAPI    FindMotion(const IFXString& rName,U32 *motionid);
-virtual IFXRESULT IFXAPI    GetMotion(
-									  I32 motionid,
-									  IFXMotion **motion,
-									  IFXString *sourcename);
+    virtual IFXRESULT IFXAPI FindMotion(const IFXString& rName, U32* motionid);
+    virtual IFXRESULT IFXAPI GetMotion(
+        I32 motionid,
+        IFXMotion** motion,
+        IFXString* sourcename);
+
 private:
-	struct IFXMotionEntry
-	{
-		IFXMotion m_motion;
-		IFXString m_filename;
-	};
+    struct IFXMotionEntry
+    {
+        IFXMotion m_motion;
+        IFXString m_filename;
+    };
 
-	IFXArray<IFXMotionEntry>    m_motionarray;
+    IFXArray<IFXMotionEntry> m_motionarray;
 };
 
 #endif

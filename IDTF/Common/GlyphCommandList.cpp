@@ -22,7 +22,6 @@
       This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -36,126 +35,116 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
 
-IFXRESULT GlyphCommandList::AddCommand( const GlyphCommand* pCommand )
+IFXRESULT GlyphCommandList::AddCommand(const GlyphCommand* pCommand)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	GlyphCommand* pTmpCommand = NULL;
+    GlyphCommand* pTmpCommand = NULL;
 
-	if( NULL != pCommand )
-	{
-		const IFXString& rType = pCommand->GetType();
+    if (NULL != pCommand)
+    {
+        const IFXString& rType = pCommand->GetType();
 
-		if( rType == IDTF_START_GLYPH_STRING ||
-			rType == IDTF_END_GLYPH_STRING ||
-			rType == IDTF_START_GLYPH ||
-			rType == IDTF_START_PATH ||
-			rType == IDTF_END_PATH )
-		{
-			GlyphCommand& command = m_commandList.CreateNewElement();
-			command = *pCommand;
-			pTmpCommand = &command;
-		}
-		else if( rType == IDTF_END_GLYPH )
-		{
-			EndGlyph& endGlyph = m_endGlyphList.CreateNewElement();
-			endGlyph = *static_cast<const EndGlyph*>(pCommand);
-			pTmpCommand = &endGlyph;
-		}
-		else if( rType == IDTF_LINE_TO )
-		{
-			LineTo& lineTo = m_lineToList.CreateNewElement();
-			lineTo = *static_cast<const LineTo*>(pCommand);
-			pTmpCommand = &lineTo;
-		}
-		else if( rType == IDTF_MOVE_TO )
-		{
-			MoveTo& moveTo = m_moveToList.CreateNewElement();
-			moveTo = *static_cast<const MoveTo*>(pCommand);
-			pTmpCommand = &moveTo;
-		}
-		else if( rType == IDTF_CURVE_TO )
-		{
-			CurveTo& curveTo = m_curveToList.CreateNewElement();
-			curveTo = *static_cast<const CurveTo*>(pCommand);
-			pTmpCommand = &curveTo;
-		}
-		else
-			result = IFX_E_UNDEFINED;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (rType == IDTF_START_GLYPH_STRING || rType == IDTF_END_GLYPH_STRING || rType == IDTF_START_GLYPH || rType == IDTF_START_PATH || rType == IDTF_END_PATH)
+        {
+            GlyphCommand& command = m_commandList.CreateNewElement();
+            command = *pCommand;
+            pTmpCommand = &command;
+        }
+        else if (rType == IDTF_END_GLYPH)
+        {
+            EndGlyph& endGlyph = m_endGlyphList.CreateNewElement();
+            endGlyph = *static_cast<const EndGlyph*>(pCommand);
+            pTmpCommand = &endGlyph;
+        }
+        else if (rType == IDTF_LINE_TO)
+        {
+            LineTo& lineTo = m_lineToList.CreateNewElement();
+            lineTo = *static_cast<const LineTo*>(pCommand);
+            pTmpCommand = &lineTo;
+        }
+        else if (rType == IDTF_MOVE_TO)
+        {
+            MoveTo& moveTo = m_moveToList.CreateNewElement();
+            moveTo = *static_cast<const MoveTo*>(pCommand);
+            pTmpCommand = &moveTo;
+        }
+        else if (rType == IDTF_CURVE_TO)
+        {
+            CurveTo& curveTo = m_curveToList.CreateNewElement();
+            curveTo = *static_cast<const CurveTo*>(pCommand);
+            pTmpCommand = &curveTo;
+        }
+        else
+        {
+            result = IFX_E_UNDEFINED;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	if( IFXSUCCESS( result ) )
-	{
-		// add new command pointer to the command pointer list 
-		// only if it has known type
-		GlyphCommand*& rpCommand = m_commandPointerList.CreateNewElement();
-		rpCommand = pTmpCommand;
-	}
+    if (IFXSUCCESS(result))
+    {
+        // add new command pointer to the command pointer list
+        // only if it has known type
+        GlyphCommand*& rpCommand = m_commandPointerList.CreateNewElement();
+        rpCommand = pTmpCommand;
+    }
 
-	return result;
+    return result;
 }
 
-const GlyphCommand* GlyphCommandList::GetCommand( U32 index ) const
+const GlyphCommand* GlyphCommandList::GetCommand(U32 index) const
 {
-	return m_commandPointerList.GetElementConst( index );
+    return m_commandPointerList.GetElementConst(index);
 }
 
 U32 GlyphCommandList::GetCommandCount() const
 {
-	return m_commandPointerList.GetNumberElements();
+    return m_commandPointerList.GetNumberElements();
 }
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions

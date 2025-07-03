@@ -17,74 +17,77 @@
 //***************************************************************************
 
 /**
-	@file	CIFXModifier.h
+        @file	CIFXModifier.h
 
-			The header file that defines the base implementation class of the
-			CIFXModifier. 
+                        The header file that defines the base implementation class of the
+                        CIFXModifier.
 */
 
 #ifndef CIFXModifier_H
 #define CIFXModifier_H
 
-#include "IFXModifier.h"
-#include "CIFXSubject.h"
 #include "CIFXMarker.h"
+#include "CIFXSubject.h"
+#include "IFXModifier.h"
 
-
-class CIFXModifier : virtual public    CIFXMarker,
-							 protected CIFXSubject,
-					 virtual protected IFXObserver,
-					 virtual public    IFXModifier
+class CIFXModifier : virtual public CIFXMarker,
+                     protected CIFXSubject,
+                     virtual protected IFXObserver,
+                     virtual public IFXModifier
 {
 protected:
-			CIFXModifier();
-  virtual  ~CIFXModifier();
+    CIFXModifier();
+    virtual ~CIFXModifier();
 
-  // IFXModifier
-  virtual IFXRESULT IFXAPI  SetDataPacket( 
-								IFXModifierDataPacket* pInInputDataPacket,
-								IFXModifierDataPacket* pInDataPacket ) = 0;
+    // IFXModifier
+    virtual IFXRESULT IFXAPI SetDataPacket(
+        IFXModifierDataPacket* pInInputDataPacket,
+        IFXModifierDataPacket* pInDataPacket)
+        = 0;
 
-  IFXRESULT  IFXAPI 	GetDataPacket( 
-								IFXModifierDataPacket*& rpOutDataPacket );
+    IFXRESULT IFXAPI GetDataPacket(
+        IFXModifierDataPacket*& rpOutDataPacket);
 
-  virtual IFXRESULT IFXAPI  GetOutputs( 
-								IFXGUID**& rpOutOutputs,
-								U32&       rOutNumberOfOutputs,
-								U32*&      rpOutUnchangedOutputAttrs ) = 0;
+    virtual IFXRESULT IFXAPI GetOutputs(
+        IFXGUID**& rpOutOutputs,
+        U32& rOutNumberOfOutputs,
+        U32*& rpOutUnchangedOutputAttrs)
+        = 0;
 
-  virtual IFXRESULT IFXAPI  GetDependencies(
-								IFXGUID*   pInOutputDID,
-								IFXGUID**& rppOutInputDependencies,
-								U32&       rOutNumberInputDependencies,
-								IFXGUID**& rppOutOutputDependencies,
-								U32&       rOutNumberOfOutputDependencies,
-								U32*&      rpOutOutputDepAttrs )=0;
+    virtual IFXRESULT IFXAPI GetDependencies(
+        IFXGUID* pInOutputDID,
+        IFXGUID**& rppOutInputDependencies,
+        U32& rOutNumberInputDependencies,
+        IFXGUID**& rppOutOutputDependencies,
+        U32& rOutNumberOfOutputDependencies,
+        U32*& rpOutOutputDepAttrs)
+        = 0;
 
-  virtual IFXRESULT IFXAPI  GenerateOutput( 
-								U32  inOutputDataElementIndex,
-								void*& rpOutData, BOOL& rNeedRelease ) = 0;
+    virtual IFXRESULT IFXAPI GenerateOutput(
+        U32 inOutputDataElementIndex,
+        void*& rpOutData, BOOL& rNeedRelease)
+        = 0;
 
-  virtual IFXRESULT IFXAPI  Notify( 
-								IFXModifierMessage eInMessage,
-								void*         pMessageContext );
+    virtual IFXRESULT IFXAPI Notify(
+        IFXModifierMessage eInMessage,
+        void* pMessageContext);
 
-  IFXModifierChain*   m_pModChainNR;
-  IFXSubject*       m_pModChainSubNR;
+    IFXModifierChain* m_pModChainNR;
+    IFXSubject* m_pModChainSubNR;
 
-  IFXModifierDataPacket*  m_pModifierDataPacket;
-  IFXModifierDataPacket*  m_pInputDataPacket;
+    IFXModifierDataPacket* m_pModifierDataPacket;
+    IFXModifierDataPacket* m_pInputDataPacket;
 
-  U32           m_uModifierChainIndex;
+    U32 m_uModifierChainIndex;
 
-  IFXRESULT  IFXAPI 	SetModifierChain( IFXModifierChain* pInModifierChain, U32 inModifierChainIndex );
-  IFXRESULT  IFXAPI 	GetModifierChain( IFXModifierChain** ppOutModifierChain );
-  IFXRESULT  IFXAPI 	GetModifierChainIndex( U32& rOutModifierChainIndex );
+    IFXRESULT IFXAPI SetModifierChain(IFXModifierChain* pInModifierChain, U32 inModifierChainIndex);
+    IFXRESULT IFXAPI GetModifierChain(IFXModifierChain** ppOutModifierChain);
+    IFXRESULT IFXAPI GetModifierChainIndex(U32& rOutModifierChainIndex);
 
-  // IFXObserver
-  virtual IFXRESULT IFXAPI  Update(IFXSubject* pInSubject, U32 uInChangeBits,IFXREFIID rIType = IID_IFXUnknown);
+    // IFXObserver
+    virtual IFXRESULT IFXAPI Update(IFXSubject* pInSubject, U32 uInChangeBits, IFXREFIID rIType = IID_IFXUnknown);
 
-  void  IFXAPI 	PreDestruct();
+    void IFXAPI PreDestruct();
 };
 
 #endif

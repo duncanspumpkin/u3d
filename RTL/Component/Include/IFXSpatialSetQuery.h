@@ -26,6 +26,8 @@
 #define __IFXSPATIALSETQUERY_H__
 
 #include "IFXUnknown.h"
+#include "IFXSpatial.h"
+
 class IFXFrustum;
 class IFXCollection;
 

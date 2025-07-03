@@ -25,23 +25,20 @@ also provides common cross-platform startup and shutdown
 functionality for the DL.
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-
 #include "CIFXComponentManager.h"
+#include "CIFXInterleavedData.h"
+#include "CIFXModel.h"
+#include "CIFXTextureObject.h"
 #include "IFXDebug.h"
 #include "IFXOSUtilities.h"
-#include "CIFXInterleavedData.h"
-#include "CIFXTextureObject.h"
-#include "CIFXModel.h"
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
-
 
 static CIFXComponentManager* gs_pComponentManager = 0;
 extern U32 g_countActiveObjects;
@@ -49,39 +46,38 @@ extern U32 g_countActiveObjects;
 // extern size_t numObjects;
 // extern void* objects[];
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //---------------------------------------------------------------------------
 /*
 Creates IFXComponentManager, which manages all actions with components.
 */
-extern "C"
-IFXRESULT IFXAPI IFXCOMInitialize()
+extern "C" IFXRESULT IFXAPI IFXCOMInitialize()
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( 0 == gs_pComponentManager )
-	{
-		gs_pComponentManager = new CIFXComponentManager;
-		if( 0 != gs_pComponentManager )
-		{
-			gs_pComponentManager->AddRef();
-			result = gs_pComponentManager->Initialize();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-	{
-		// this is not the first call, so AddRef and return false
-		gs_pComponentManager->AddRef();
-	}
+    if (0 == gs_pComponentManager)
+    {
+        gs_pComponentManager = new CIFXComponentManager;
+        if (0 != gs_pComponentManager)
+        {
+            gs_pComponentManager->AddRef();
+            result = gs_pComponentManager->Initialize();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        // this is not the first call, so AddRef and return false
+        gs_pComponentManager->AddRef();
+    }
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -89,46 +85,44 @@ IFXRESULT IFXAPI IFXCOMInitialize()
 Releases IFXComponentManager, which release all active plug-in components,
 unloads all plug-ins, frees any other resources
 */
-extern "C"
-IFXRESULT IFXAPI IFXCOMUninitialize()
+extern "C" IFXRESULT IFXAPI IFXCOMUninitialize()
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	// release IFXComponentManager
-	if( 0 != gs_pComponentManager )
-	{
-		if( 0 == gs_pComponentManager->Release() )
-		{
-			gs_pComponentManager = 0;
-		}
-	}
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    // release IFXComponentManager
+    if (0 != gs_pComponentManager)
+    {
+        if (0 == gs_pComponentManager->Release())
+        {
+            gs_pComponentManager = 0;
+        }
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
 /*
 Uses IFXComponentManager to create component.
 */
-extern "C"
-IFXRESULT IFXAPI IFXCreateComponent( IFXREFCID  rComponentId,
-									IFXREFIID  rInterfaceId,
-									void**   ppInterface )
+extern "C" IFXRESULT IFXAPI IFXCreateComponent(IFXREFCID rComponentId, IFXREFIID rInterfaceId, void** ppInterface)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( 0 != gs_pComponentManager && 0 != ppInterface )
-	{
-		result = gs_pComponentManager->CreateComponent( rComponentId,
-			rInterfaceId,
-			ppInterface);
-	}
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (0 != gs_pComponentManager && 0 != ppInterface)
+    {
+        result = gs_pComponentManager->CreateComponent(rComponentId, rInterfaceId, ppInterface);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -140,17 +134,17 @@ function.
 */
 IFXRESULT IFXAPI_CALLTYPE IFXCoreStartup()
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	IFXOSInitialize();
+    IFXOSInitialize();
 
-	IFXDEBUG_STARTUP();
+    IFXDEBUG_STARTUP();
 
-	// Initialize persistent global data.
+    // Initialize persistent global data.
 
-	// TODO: put your code for initialization here
+    // TODO: put your code for initialization here
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -162,25 +156,27 @@ function.
 */
 IFXRESULT IFXAPI_CALLTYPE IFXCoreShutdown()
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( 0 != g_countActiveObjects )
-		result = IFX_E_NOT_DONE;
+    if (0 != g_countActiveObjects)
+    {
+        result = IFX_E_NOT_DONE;
+    }
 
-//	for(size_t i=0; i<numObjects; i++)
-//		if (objects[i])
-//			fprintf(stderr,"%zu %p\n",i, objects[i]);
+    //	for(size_t i=0; i<numObjects; i++)
+    //		if (objects[i])
+    //			fprintf(stderr,"%zu %p\n",i, objects[i]);
 
-	// Dispose of persistent global data
+    // Dispose of persistent global data
 
-	// TODO: put your code for uninitialization here
-	CIFXInterleavedData::Shutdown();
-	CIFXTextureObject::Shutdown();
-	CIFXModel::Shutdown();
+    // TODO: put your code for uninitialization here
+    CIFXInterleavedData::Shutdown();
+    CIFXTextureObject::Shutdown();
+    CIFXModel::Shutdown();
 
-	IFXDEBUG_SHUTDOWN();
+    IFXDEBUG_SHUTDOWN();
 
-	IFXOSUninitialize();
+    IFXOSUninitialize();
 
-	return result;
+    return result;
 }

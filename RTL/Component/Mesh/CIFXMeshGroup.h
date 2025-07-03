@@ -19,61 +19,60 @@
 #ifndef CIFX_MESHGROUP_H
 #define CIFX_MESHGROUP_H
 
-#include "IFXMesh.h"
-#include "IFXBoundHierarchyMgr.h"
-#include "CIFXSubject.h"
 #include "CIFXRenderable.h"
+#include "CIFXSubject.h"
+#include "IFXBoundHierarchyMgr.h"
 #include "IFXCoreCIDs.h"
+#include "IFXMesh.h"
 
 class CIFXMeshGroup : private CIFXSubject,
-              virtual public  IFXMeshGroup,
-              virtual public  CIFXRenderable,
-			  virtual public  IFXBoundHierarchyMgr
+                      virtual public IFXMeshGroup,
+                      virtual public CIFXRenderable,
+                      virtual public IFXBoundHierarchyMgr
 {
 public:
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXMeshGroupFactory(IFXREFIID intId, void** ppUnk);
-	
-	// IFXUnknown  
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface (     IFXREFIID           riid, 
-	                              void**              ppv );
-	// IFXRenderable
-	IFXRESULT IFXAPI   TransferData(IFXRenderable&, BOOL, BOOL);
-	IFXREFIID IFXAPI   GetElementType() { return IID_IFXMesh; }
-	void**    GetElementList() { return (void**)m_ppMeshes; }
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXMeshGroupFactory(IFXREFIID intId, void** ppUnk);
 
-	// IFXMeshGroup
-	IFXRESULT IFXAPI Allocate(U32 uNumMeshes);
-	IFXRESULT IFXAPI TransferData(IFXMeshGroup&, IFXMeshAttributes, IFXMeshAttributes, BOOL);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
+    // IFXRenderable
+    IFXRESULT IFXAPI TransferData(IFXRenderable&, BOOL, BOOL);
+    IFXREFIID IFXAPI GetElementType() { return IID_IFXMesh; }
+    void** GetElementList() { return (void**)m_ppMeshes; }
 
-	U32 IFXAPI GetNumMeshes() { return m_uNumElements; };
-	
-	IFXRESULT IFXAPI GetMesh(U32 uMeshNum, IFXMesh*& pMesh);
-	IFXRESULT IFXAPI SetMesh(U32 uMeshNum, IFXMesh* pMesh);
-	
-	IFXRESULT IFXAPI ReverseNormals();
+    // IFXMeshGroup
+    IFXRESULT IFXAPI Allocate(U32 uNumMeshes);
+    IFXRESULT IFXAPI TransferData(IFXMeshGroup&, IFXMeshAttributes, IFXMeshAttributes, BOOL);
 
-	const IFXVector4& IFXAPI CalcBoundingSphere();
+    U32 IFXAPI GetNumMeshes() { return m_uNumElements; };
 
-	// IFXBoundHierarchyMgr
-	IFXRESULT IFXAPI   GetBoundHierarchy(  IFXBoundHierarchy** ppOutBH );
+    IFXRESULT IFXAPI GetMesh(U32 uMeshNum, IFXMesh*& pMesh);
+    IFXRESULT IFXAPI SetMesh(U32 uMeshNum, IFXMesh* pMesh);
+
+    IFXRESULT IFXAPI ReverseNormals();
+
+    const IFXVector4& IFXAPI CalcBoundingSphere();
+
+    // IFXBoundHierarchyMgr
+    IFXRESULT IFXAPI GetBoundHierarchy(IFXBoundHierarchy** ppOutBH);
 
 private:
-	CIFXMeshGroup();
-	virtual ~CIFXMeshGroup();
+    CIFXMeshGroup();
+    virtual ~CIFXMeshGroup();
 
-	virtual void IFXAPI  DeallocateObject();
+    virtual void IFXAPI DeallocateObject();
+
 private:
-	
-	U32 m_uRefCount;
+    U32 m_uRefCount;
 
-	IFXMesh** m_ppMeshes;
+    IFXMesh** m_ppMeshes;
 
-	// IFXBoundHierarchyMgr
-	IFXBoundHierarchy* m_pBoundHierarchy;
+    // IFXBoundHierarchyMgr
+    IFXBoundHierarchy* m_pBoundHierarchy;
 
-	IFXVector4 m_bound;
+    IFXVector4 m_bound;
 };
 
 #endif

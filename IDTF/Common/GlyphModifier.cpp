@@ -22,7 +22,6 @@
       This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -38,137 +37,128 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
 
-GlyphModifier& GlyphModifier::operator= (const GlyphModifier& rModifier)
+GlyphModifier& GlyphModifier::operator=(const GlyphModifier& rModifier)
 {
-	if( this != &rModifier )
-	{
-		IFXRESULT result = IFX_OK;
+    if (this != &rModifier)
+    {
+        IFXRESULT result = IFX_OK;
 
-		U32 i;
-		for( i = 0; 
-			 i < rModifier.GetCommandCount() && IFXSUCCESS( result ); 
-			 ++i )
-		{
-			const GlyphCommand* pCommand = rModifier.GetCommand( i );
-			result = AddCommand( pCommand );
-			IFXCHECKX( IFX_OK == result );
-		}
+        U32 i;
+        for (i = 0;
+             i < rModifier.GetCommandCount() && IFXSUCCESS(result);
+             ++i)
+        {
+            const GlyphCommand* pCommand = rModifier.GetCommand(i);
+            result = AddCommand(pCommand);
+            IFXCHECKX(IFX_OK == result);
+        }
 
-		m_billboard = rModifier.m_billboard;
-		m_tm = rModifier.m_tm;
+        m_billboard = rModifier.m_billboard;
+        m_tm = rModifier.m_tm;
 
-		SetType( rModifier.GetType() );
-		SetName( rModifier.GetName() );
-		SetChainType( rModifier.GetChainType() );
-	}
+        SetType(rModifier.GetType());
+        SetName(rModifier.GetName());
+        SetChainType(rModifier.GetChainType());
+    }
 
-	return *this;
+    return *this;
 }
 
-void GlyphModifier::SetBillboard( const IFXString& rValue )
+void GlyphModifier::SetBillboard(const IFXString& rValue)
 {
-	m_billboard = rValue;
+    m_billboard = rValue;
 }
 
-void GlyphModifier::SetSingleShader( const IFXString& rValue )
+void GlyphModifier::SetSingleShader(const IFXString& rValue)
 {
-	m_singleShader = rValue;
+    m_singleShader = rValue;
 }
 
 const IFXString& GlyphModifier::GetBillboard() const
 {
-	return m_billboard;
+    return m_billboard;
 }
 
 const IFXString& GlyphModifier::GetSingleShader() const
 {
-	return m_singleShader;
+    return m_singleShader;
 }
 
-void GlyphModifier::SetTM( const IFXMatrix4x4& rMatrix )
+void GlyphModifier::SetTM(const IFXMatrix4x4& rMatrix)
 {
-	m_tm = rMatrix;
+    m_tm = rMatrix;
 }
 
 const IFXMatrix4x4& GlyphModifier::GetTM() const
 {
-	return m_tm;
+    return m_tm;
 }
 
-IFXRESULT GlyphModifier::AddCommand( const GlyphCommand* pCommand )
+IFXRESULT GlyphModifier::AddCommand(const GlyphCommand* pCommand)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( NULL != pCommand )
-	{
-		result = m_commandList.AddCommand( pCommand );
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+    if (NULL != pCommand)
+    {
+        result = m_commandList.AddCommand(pCommand);
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
-const GlyphCommand* GlyphModifier::GetCommand( U32 index ) const
+const GlyphCommand* GlyphModifier::GetCommand(U32 index) const
 {
-	return m_commandList.GetCommand( index );
+    return m_commandList.GetCommand(index);
 }
 
 U32 GlyphModifier::GetCommandCount() const
 {
-	return m_commandList.GetCommandCount();
+    return m_commandList.GetCommandCount();
 }
-
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions

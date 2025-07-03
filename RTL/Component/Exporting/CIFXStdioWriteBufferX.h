@@ -19,7 +19,7 @@
 // CIFXStdioWriteBuffer.h
 //
 // DESCRIPTION:
-// Declaration of the CIFXStdioWriteBuffer class which implements the 
+// Declaration of the CIFXStdioWriteBuffer class which implements the
 // IFXWriteBuffer and IFXStdio interfaces.
 //
 // NOTES:
@@ -28,40 +28,40 @@
 #ifndef CIFXSTDIOWRITEBUFFERX_H__
 #define CIFXSTDIOWRITEBUFFERX_H__
 
-#include <stdio.h>
+#include "IFXStdio.h"
 #include "IFXWriteBuffer.h"
 #include "IFXWriteBufferX.h"
-#include "IFXStdio.h"
+#include <stdio.h>
 
 class CIFXStdioWriteBufferX : public IFXWriteBuffer, public IFXWriteBufferX, public IFXStdio
 {
 public:
-	// IFXWriteBuffer
-	virtual IFXRESULT IFXAPI  Write( U8* pBytes, U64 position, U32 count );
+    // IFXWriteBuffer
+    virtual IFXRESULT IFXAPI Write(U8* pBytes, U64 position, U32 count);
 
-	// IFXWriteBufferX
-	virtual void IFXAPI  WriteX( U8* pBytes, U64 position, U32 count );
+    // IFXWriteBufferX
+    virtual void IFXAPI WriteX(U8* pBytes, U64 position, U32 count);
 
-	// IFXStdio
-	virtual IFXRESULT IFXAPI  Open(const IFXCHAR *pFilename);
-	virtual IFXRESULT IFXAPI  Close();
+    // IFXStdio
+    virtual IFXRESULT IFXAPI Open(const IFXCHAR* pFilename);
+    virtual IFXRESULT IFXAPI Close();
 
-	// IFXUnknown
-	virtual U32 IFXAPI  AddRef( void );
-	virtual U32 IFXAPI  Release( void );
-	virtual IFXRESULT IFXAPI  QueryInterface( IFXREFIID riid, void** ppv );
+    // IFXUnknown
+    virtual U32 IFXAPI AddRef(void);
+    virtual U32 IFXAPI Release(void);
+    virtual IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXStdioWriteBufferX_Factory( IFXREFIID	interfaceId, 
-											  void**	ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXStdioWriteBufferX_Factory(IFXREFIID interfaceId, void** ppInterface);
+
 private:
-	// Private to enforce the use of the create instance method
-	CIFXStdioWriteBufferX();
-	virtual ~CIFXStdioWriteBufferX();
+    // Private to enforce the use of the create instance method
+    CIFXStdioWriteBufferX();
+    virtual ~CIFXStdioWriteBufferX();
 
-	// PRIVATE MEMBER VARIABLES
-	U32		m_uRefCount;		// Reference counter
-	FILE*	m_pFile;
+    // PRIVATE MEMBER VARIABLES
+    U32 m_uRefCount; // Reference counter
+    FILE* m_pFile;
 };
 
 #endif

@@ -16,130 +16,125 @@
 //
 //***************************************************************************
 
-/** 
-	@file	CIFXPointSetEncoder.h
-		
-			Declaration of CIFXPointSetEncoder class implementation                           
+/**
+        @file	CIFXPointSetEncoder.h
+
+                        Declaration of CIFXPointSetEncoder class implementation
 */
 
 #ifndef CIFXPointSetEncoder_H__
 #define CIFXPointSetEncoder_H__
 
-#include "IFXCoreServices.h"
-#include "IFXEncoderX.h"
+#include "IFXArray.h"
+#include "IFXAuthorPointSetResource.h"
 #include "IFXAutoRelease.h"
 #include "IFXBitStreamCompressedX.h"
-#include "IFXAuthorPointSetResource.h"
-#include "IFXArray.h"
+#include "IFXCoreServices.h"
+#include "IFXEncoderX.h"
 
 class CIFXPointSetEncoder : virtual public IFXEncoderX
 {
 public:
-	
-	// IFXUnknown
-	U32 IFXAPI  AddRef ( void );
-	U32 IFXAPI  Release ( void );
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	/// Provide the encoder with a pointer to the object which is to be encoded.
-	void IFXAPI	SetObjectX(IFXUnknown &rObject);
-	/// Initialize and get a reference to the core services
-	void IFXAPI	InitializeX(IFXCoreServices &rCoreServices);
-	/// Encode data into data blocks and place these blocks in a queue
-	void IFXAPI	EncodeX(IFXString &rName, IFXDataBlockQueueX &rDataBlockQueue, F64 units = 1.0f );
+    // IFXEncoderX
+    /// Provide the encoder with a pointer to the object which is to be encoded.
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
+    /// Initialize and get a reference to the core services
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    /// Encode data into data blocks and place these blocks in a queue
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
 
-	// Factory function
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXPointSetEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+    // Factory function
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXPointSetEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 private:
+    enum AttribType
+    {
+        NORMAL,
+        DIFFUSECOLOR,
+        SPECULARCOLOR
+    };
 
-	enum AttribType 
-	{
-		NORMAL,
-		DIFFUSECOLOR,
-		SPECULARCOLOR
-	};
+    CIFXPointSetEncoder();
+    virtual ~CIFXPointSetEncoder();
 
-	CIFXPointSetEncoder();
-	virtual ~CIFXPointSetEncoder();
-	
-	// Writes the model resource declaration block
-	void MakeDeclarationBlockX(	IFXString &rName, IFXDataBlockQueueX &rDataBlockQueue	);
+    // Writes the model resource declaration block
+    void MakeDeclarationBlockX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue);
 
-	// Write the contiuation block
-	void MakeContinuationBlockX(IFXString &rName, IFXDataBlockQueueX &rDataBlockQueue	);
-	
-	/// returns number of Points encoded with written update assoiated with Poistion at currPosInd
-	U32 WritePointUpdateX(U32 currPosInd, IFXBitStreamCompressedX* pBitStreamX);
+    // Write the contiuation block
+    void MakeContinuationBlockX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue);
 
-	void GetPointsAtPosition(U32 splitPos, IFXArray<U32>& Points) ;
+    /// returns number of Points encoded with written update assoiated with Poistion at currPosInd
+    U32 WritePointUpdateX(U32 currPosInd, IFXBitStreamCompressedX* pBitStreamX);
 
-	void CalculateQuantizationFactorsX();
+    void GetPointsAtPosition(U32 splitPos, IFXArray<U32>& Points);
 
-	void CalculatePredictedNormalAtSplitPosX(U32 currPosInd, U32 splitPosInd, IFXVector3& vPredictedNormal);
-	
-	void CalculatePredictedColorAtSplitPosX(BOOL bDiffuseColor, U32 currPosInd, U32 splitPosInd,
-											IFXVector4& v4PredictedVertColor);
-	
-	void CalculatePredictedTexCoordAtSplitPosX(U32 texInd, U32 currPosInd, U32 splitPosInd, IFXVector4& v4PredictedTexCoord);
+    void CalculateQuantizationFactorsX();
 
-	void QuantizePositionForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
+    void CalculatePredictedNormalAtSplitPosX(U32 currPosInd, U32 splitPosInd, IFXVector3& vPredictedNormal);
 
-	void QuantizeNormalForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
+    void CalculatePredictedColorAtSplitPosX(BOOL bDiffuseColor, U32 currPosInd, U32 splitPosInd, IFXVector4& v4PredictedVertColor);
 
-	void QuantizeColorForWrite(BOOL bDiffuseColor, IFXVector4& color, 
-								U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
-	
-	void QuantizeTexCoordForWrite(IFXVector4& texCoord, 
-								U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
+    void CalculatePredictedTexCoordAtSplitPosX(U32 texInd, U32 currPosInd, U32 splitPosInd, IFXVector4& v4PredictedTexCoord);
 
-	void GetPointAttribIndexes(U32 PointInd, CIFXPointSetEncoder::AttribType attrib, U32& attrInd);
+    void QuantizePositionForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
 
-	void PrepareForWriting();
+    void QuantizeNormalForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
 
-	U32		m_uRefCount;
+    void QuantizeColorForWrite(BOOL bDiffuseColor, IFXVector4& color, U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
 
-	IFXDECLAREMEMBER(IFXCoreServices, m_pCoreServices);
-	IFXDECLAREMEMBER(IFXAuthorPointSetResource, m_pPointSetResource);
-	IFXDECLAREMEMBER(IFXAuthorPointSet,m_pAuthorPointSet);
+    void QuantizeTexCoordForWrite(IFXVector4& texCoord, U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
 
-	// Quantization Factors
-	F32 m_fQuantPosition;
-	F32 m_fQuantNormal;
-	F32 m_fQuantTexCoord;
-	F32 m_fQuantDiffuseColor;
-	F32 m_fQuantSpecularColor;
+    void GetPointAttribIndexes(U32 PointInd, CIFXPointSetEncoder::AttribType attrib, U32& attrInd);
 
-	F32 m_fInverseQuantPosition;
-	F32 m_fInverseQuantNormal;
-	F32 m_fInverseQuantTexCoord;
-	F32 m_fInverseQuantDiffuseColor;
-	F32 m_fInverseQuantSpecularColor;
+    void PrepareForWriting();
 
-	// Resource Parameters 
-	// these are reserved PointSet resourse parametrs for the future definition
-	U32 m_uReservedPointSetParameter0;
-	U32 m_uReservedPointSetParameter1;
-	U32 m_uReservedPointSetParameter2;
-	U32 m_uReservedPointSetParameter3;		
+    U32 m_uRefCount;
 
-	BOOL	m_bBaseBlockPresent;
-	U32		m_uPositionsWritten;
-	IFXAuthorPointSetDesc*	m_pPointSetDescription;
+    IFXDECLAREMEMBER(IFXCoreServices, m_pCoreServices);
+    IFXDECLAREMEMBER(IFXAuthorPointSetResource, m_pPointSetResource);
+    IFXDECLAREMEMBER(IFXAuthorPointSet, m_pAuthorPointSet);
 
-	U32		m_uCurrentTexCoordCount;
-	U32		m_uCurrentNumDiffuseColors;
-	U32		m_uCurrentNumSpecularColors;
-	U32     m_uCurrentNumTexCoord;
-	U32		m_uLastDiffuseColorInd;
-	U32		m_uLastSpecularColorInd;
-	U32		m_uLastTexCoordInd;
+    // Quantization Factors
+    F32 m_fQuantPosition;
+    F32 m_fQuantNormal;
+    F32 m_fQuantTexCoord;
+    F32 m_fQuantDiffuseColor;
+    F32 m_fQuantSpecularColor;
 
-	U32		m_uPriorityIncrement;
-	U32		m_uPriorityCurrent;
+    F32 m_fInverseQuantPosition;
+    F32 m_fInverseQuantNormal;
+    F32 m_fInverseQuantTexCoord;
+    F32 m_fInverseQuantDiffuseColor;
+    F32 m_fInverseQuantSpecularColor;
 
-	F64 m_unitScale;
+    // Resource Parameters
+    // these are reserved PointSet resourse parametrs for the future definition
+    U32 m_uReservedPointSetParameter0;
+    U32 m_uReservedPointSetParameter1;
+    U32 m_uReservedPointSetParameter2;
+    U32 m_uReservedPointSetParameter3;
+
+    BOOL m_bBaseBlockPresent;
+    U32 m_uPositionsWritten;
+    IFXAuthorPointSetDesc* m_pPointSetDescription;
+
+    U32 m_uCurrentTexCoordCount;
+    U32 m_uCurrentNumDiffuseColors;
+    U32 m_uCurrentNumSpecularColors;
+    U32 m_uCurrentNumTexCoord;
+    U32 m_uLastDiffuseColorInd;
+    U32 m_uLastSpecularColorInd;
+    U32 m_uLastTexCoordInd;
+
+    U32 m_uPriorityIncrement;
+    U32 m_uPriorityCurrent;
+
+    F64 m_unitScale;
 };
 
 #endif

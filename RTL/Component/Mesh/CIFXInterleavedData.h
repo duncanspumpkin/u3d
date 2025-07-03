@@ -19,82 +19,76 @@
 #ifndef CIFX_INTERLEAVED_DATA_H
 #define CIFX_INTERLEAVED_DATA_H
 
-#include "IFXMesh.h"
 #include "IFXIDManager.h"
+#include "IFXMesh.h"
 
 class CIFXInterleavedData : virtual public IFXInterleavedData, virtual public IFXUnknown
 {
-	U32 m_refCount;
+    U32 m_refCount;
+
 public:
-	U32 IFXAPI  AddRef ();
-	U32 IFXAPI  Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXInterleavedDataFactory(IFXREFIID intId, void** ppUnk);
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXInterleavedDataFactory(IFXREFIID intId, void** ppUnk);
 
-	//============================
-	// IFXInterleavedData Methods
-	//============================
-	virtual IFXRESULT IFXAPI Allocate(	U32 uNumVectors, 
-								U32* puVectorSizes, 
-								U32 uNumVertices);
-	
-	virtual IFXRESULT IFXAPI GetVectorIter(U32 uVectorNum, IFXIterator& iter);
-	virtual IFXRESULT IFXAPI GetVertexIter(IFXIterator& iter);
-	
-	virtual U32 IFXAPI GetVersionWord(U32 uVectorNum);
-	virtual U32 IFXAPI UpdateVersionWord(U32 uVectorNum);
+    //============================
+    // IFXInterleavedData Methods
+    //============================
+    virtual IFXRESULT IFXAPI Allocate(U32 uNumVectors, U32* puVectorSizes, U32 uNumVertices);
 
-	// WARNING!  This is dangerous to do without knowing 
-	// what format the data is in!
-	virtual U8* IFXAPI GetDataPtr();
-	
-	virtual U32 IFXAPI GetNumVertices() const;
-	// Get array info to parse the data directly
-	virtual IFXRESULT IFXAPI GetInfo(	U32& uNumVectors, 
-								U32* puVectorSizes, 
-								U32& uNumVertices);
+    virtual IFXRESULT IFXAPI GetVectorIter(U32 uVectorNum, IFXIterator& iter);
+    virtual IFXRESULT IFXAPI GetVertexIter(IFXIterator& iter);
 
-	U32	IFXAPI GetStride() const;
+    virtual U32 IFXAPI GetVersionWord(U32 uVectorNum);
+    virtual U32 IFXAPI UpdateVersionWord(U32 uVectorNum);
 
-	IFXRESULT IFXAPI CopyData(	IFXInterleavedData &rSrcData, 
-								U32 uStartVertex, U32 uNumVertices);
+    // WARNING!  This is dangerous to do without knowing
+    // what format the data is in!
+    virtual U8* IFXAPI GetDataPtr();
 
-	U32 IFXAPI GetId() const { return m_uId; }
+    virtual U32 IFXAPI GetNumVertices() const;
+    // Get array info to parse the data directly
+    virtual IFXRESULT IFXAPI GetInfo(U32& uNumVectors, U32* puVectorSizes, U32& uNumVertices);
 
-	U32 IFXAPI GetTimeStamp() const;
-	U32 IFXAPI SetTimeStamp(U32 uTimeStamp);
+    U32 IFXAPI GetStride() const;
 
-	static IFXRESULT IFXAPI Shutdown();
-	
+    IFXRESULT IFXAPI CopyData(IFXInterleavedData& rSrcData, U32 uStartVertex, U32 uNumVertices);
+
+    U32 IFXAPI GetId() const { return m_uId; }
+
+    U32 IFXAPI GetTimeStamp() const;
+    U32 IFXAPI SetTimeStamp(U32 uTimeStamp);
+
+    static IFXRESULT IFXAPI Shutdown();
+
 protected:
-	CIFXInterleavedData();
-	virtual ~CIFXInterleavedData();
-	
-	virtual IFXRESULT IFXAPI Construct();
-	virtual IFXRESULT IFXAPI Destroy();
-	virtual U32 IFXAPI GetOffset(U32 uVectorNum);
+    CIFXInterleavedData();
+    virtual ~CIFXInterleavedData();
 
-	U8* m_pBaseData;
-	U8*	m_pData;
-	U32	m_uNumVectors;
-	U32* m_puVectorSizes;
-	U32	m_uNumVertices;
-	U32	m_uDataSize;
-	U32 m_uVertexSize;
+    virtual IFXRESULT IFXAPI Construct();
+    virtual IFXRESULT IFXAPI Destroy();
+    virtual U32 IFXAPI GetOffset(U32 uVectorNum);
 
-	U32*	m_puVersionWord;
-	U32 m_uId;
+    U8* m_pBaseData;
+    U8* m_pData;
+    U32 m_uNumVectors;
+    U32* m_puVectorSizes;
+    U32 m_uNumVertices;
+    U32 m_uDataSize;
+    U32 m_uVertexSize;
 
-	U32 m_uTimeStamp;
+    U32* m_puVersionWord;
+    U32 m_uId;
 
-	static IFXIDManagerPtr ms_spIDManager;
+    U32 m_uTimeStamp;
+
+    static IFXIDManagerPtr ms_spIDManager;
 };
 typedef IFXSmartPtr<CIFXInterleavedData> CIFXInterleavedDataPtr;
 
-#define IFX_IDM_NUM_VERSION_BITS	10
-#define IFX_IDM_VERSION_MASK		((1 << IFX_IDM_NUM_VERSION_BITS)-1)
-
+#define IFX_IDM_NUM_VERSION_BITS 10
+#define IFX_IDM_VERSION_MASK ((1 << IFX_IDM_NUM_VERSION_BITS) - 1)
 
 #endif // CIFX_INTERLEAVED_DATA_H
-

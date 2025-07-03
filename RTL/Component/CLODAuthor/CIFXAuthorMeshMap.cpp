@@ -19,7 +19,7 @@
 #include "IFXAuthorMesh.h"
 #include "IFXCoreCIDs.h"
 
-/** 
+/**
 This map will be modified in place so that it performs both mappings
 with a single map.
 Before: inputMesh --> thisMap --> IntermediateMesh --> MapB --> resultMesh
@@ -27,23 +27,25 @@ After : inputMesh --> thisMap --> resultMesh
 */
 IFXRESULT CIFXAuthorMeshMap::Concatenate(IFXAuthorMeshMap* pMapB)
 {
-	U32 i, j, stop, *mapA, *mapB;
+    U32 i, j, stop, *mapA, *mapB;
 
-	for(i = 0; i < 6; i++)
-	{
-		// a one to one or a many to one mapping can not have more entries on the ouput.
-		IFXASSERT(pMapB->GetMapSize(i) <= GetMapSize(i));
-		stop = GetMapSize(i);
-		mapA = GetMap(i);
-		mapB = pMapB->GetMap(i);
-		for(j = 0; j<stop; j++)
-		{
-			if(mapA[j] != IFX_BAD_INDEX32)
-				mapA[j] = mapB[ mapA[j] ];
-		}
-	}
+    for (i = 0; i < 6; i++)
+    {
+        // a one to one or a many to one mapping can not have more entries on the ouput.
+        IFXASSERT(pMapB->GetMapSize(i) <= GetMapSize(i));
+        stop = GetMapSize(i);
+        mapA = GetMap(i);
+        mapB = pMapB->GetMap(i);
+        for (j = 0; j < stop; j++)
+        {
+            if (mapA[j] != IFX_BAD_INDEX32)
+            {
+                mapA[j] = mapB[mapA[j]];
+            }
+        }
+    }
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
 /**
@@ -52,131 +54,141 @@ changed to use IFXCreateComponent.
 */
 IFXAuthorMeshMap* CIFXAuthorMeshMap::Clone()
 {
-	U32 i;
-	IFXRESULT result;
-	IFXAuthorMeshMap* pClone = NULL;
-	result = IFXCreateComponent(CID_IFXAuthorMeshMap, IID_IFXAuthorMeshMap, (void**)&pClone);
-	if (IFXFAILURE(result))
-		return NULL;
+    U32 i;
+    IFXRESULT result;
+    IFXAuthorMeshMap* pClone = NULL;
+    result = IFXCreateComponent(CID_IFXAuthorMeshMap, IID_IFXAuthorMeshMap, (void**)&pClone);
+    if (IFXFAILURE(result))
+    {
+        return NULL;
+    }
 
-	for(i = 0; i < 6; i++)
-		pClone->SetMapSize(i, GetMapSize(i));
+    for (i = 0; i < 6; i++)
+    {
+        pClone->SetMapSize(i, GetMapSize(i));
+    }
 
-	result = pClone->AllocateMaps();
-	if (result != IFX_OK) 
-	{
-		pClone->Release();
-		return NULL;
-	}
+    result = pClone->AllocateMaps();
+    if (result != IFX_OK)
+    {
+        pClone->Release();
+        return NULL;
+    }
 
-	// copy map data.
-	for(i = 0; i < 6; i++)
-		memcpy(pClone->GetMap(i), GetMap(i), sizeof(U32)*GetMapSize(i));
+    // copy map data.
+    for (i = 0; i < 6; i++)
+    {
+        memcpy(pClone->GetMap(i), GetMap(i), sizeof(U32) * GetMapSize(i));
+    }
 
-	return pClone;
+    return pClone;
 }
 
 CIFXAuthorMeshMap::CIFXAuthorMeshMap()
 {
-	m_refCount = 0;
-	U32 i;
-	for( i = 0; i < 6; i++)
-	{
-		m_pMaps[i] = NULL;
-		m_MapSizes[i] = 0;
-	}
+    m_refCount = 0;
+    U32 i;
+    for (i = 0; i < 6; i++)
+    {
+        m_pMaps[i] = NULL;
+        m_MapSizes[i] = 0;
+    }
 }
 
 CIFXAuthorMeshMap::~CIFXAuthorMeshMap()
 {
-	U32 i;
-	for( i = 0; i < 6; i++)
-	{
-		IFXDELETE_ARRAY(m_pMaps[i]);
-		m_MapSizes[i] = 0;
-	}
+    U32 i;
+    for (i = 0; i < 6; i++)
+    {
+        IFXDELETE_ARRAY(m_pMaps[i]);
+        m_MapSizes[i] = 0;
+    }
 }
 
 IFXRESULT CIFXAuthorMeshMap::Allocate(IFXAuthorMesh* pMesh)
 {
-	m_MapSizes[0] = pMesh->GetMaxMeshDesc()->NumFaces;
-	m_MapSizes[1] = pMesh->GetMaxMeshDesc()->NumPositions;
-	m_MapSizes[2] = pMesh->GetMaxMeshDesc()->NumNormals;
-	m_MapSizes[3] = pMesh->GetMaxMeshDesc()->NumTexCoords;
-	m_MapSizes[4] = pMesh->GetMaxMeshDesc()->NumDiffuseColors;
-	m_MapSizes[5] = pMesh->GetMaxMeshDesc()->NumSpecularColors;
+    m_MapSizes[0] = pMesh->GetMaxMeshDesc()->NumFaces;
+    m_MapSizes[1] = pMesh->GetMaxMeshDesc()->NumPositions;
+    m_MapSizes[2] = pMesh->GetMaxMeshDesc()->NumNormals;
+    m_MapSizes[3] = pMesh->GetMaxMeshDesc()->NumTexCoords;
+    m_MapSizes[4] = pMesh->GetMaxMeshDesc()->NumDiffuseColors;
+    m_MapSizes[5] = pMesh->GetMaxMeshDesc()->NumSpecularColors;
 
-	return AllocateMaps();
+    return AllocateMaps();
 }
 
 IFXRESULT CIFXAuthorMeshMap::AllocateMaps()
 {
-	U32 i;
-	for( i = 0; i < 6; i++)
-	{
-		IFXDELETE_ARRAY(m_pMaps[i]);
+    U32 i;
+    for (i = 0; i < 6; i++)
+    {
+        IFXDELETE_ARRAY(m_pMaps[i]);
 
-		if( 0 != m_MapSizes[i] )
-		{
-			m_pMaps[i] = new U32[m_MapSizes[i]];
-			if(m_pMaps[i] == NULL)
-			{
-				// clean up and exit with error
-				U32 j;
-				for ( j = 0; j < i; j++)
-					IFXDELETE_ARRAY(m_pMaps[j]);
+        if (0 != m_MapSizes[i])
+        {
+            m_pMaps[i] = new U32[m_MapSizes[i]];
+            if (m_pMaps[i] == NULL)
+            {
+                // clean up and exit with error
+                U32 j;
+                for (j = 0; j < i; j++)
+                {
+                    IFXDELETE_ARRAY(m_pMaps[j]);
+                }
 
-				return IFX_E_OUT_OF_MEMORY;
-			}
+                return IFX_E_OUT_OF_MEMORY;
+            }
 
-			// init with identity mapping.
-			U32 j;
-			for( j=0; j < m_MapSizes[i]; j++)
-				m_pMaps[i][j] = j;
-		}
-	}
+            // init with identity mapping.
+            U32 j;
+            for (j = 0; j < m_MapSizes[i]; j++)
+            {
+                m_pMaps[i][j] = j;
+            }
+        }
+    }
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
 U32* CIFXAuthorMeshMap::GetFaceMap()
 {
-	return m_pMaps[0];
+    return m_pMaps[0];
 }
 U32* CIFXAuthorMeshMap::GetPositionMap()
 {
-	return m_pMaps[1];
+    return m_pMaps[1];
 }
 U32* CIFXAuthorMeshMap::GetNormalMap()
 {
-	return m_pMaps[2];
+    return m_pMaps[2];
 }
 U32* CIFXAuthorMeshMap::GetTextureMap()
 {
-	return m_pMaps[3];
+    return m_pMaps[3];
 }
 U32* CIFXAuthorMeshMap::GetDiffuseMap()
 {
-	return m_pMaps[4];
+    return m_pMaps[4];
 }
 U32* CIFXAuthorMeshMap::GetSpecularMap()
 {
-	return m_pMaps[5];
+    return m_pMaps[5];
 }
 U32* CIFXAuthorMeshMap::GetMap(U32 mapIndex)
 {
-	IFXASSERT(mapIndex < 6);
-	return m_pMaps[mapIndex];
+    IFXASSERT(mapIndex < 6);
+    return m_pMaps[mapIndex];
 }
 U32 CIFXAuthorMeshMap::GetMapSize(U32 mapIndex)
 {
-	IFXASSERT(mapIndex < 6);
-	return m_MapSizes[mapIndex];
+    IFXASSERT(mapIndex < 6);
+    return m_MapSizes[mapIndex];
 }
 void CIFXAuthorMeshMap::SetMapSize(U32 mapIndex, U32 value)
 {
-	IFXASSERT(mapIndex < 6);
-	m_MapSizes[mapIndex] = value;
+    IFXASSERT(mapIndex < 6);
+    m_MapSizes[mapIndex] = value;
 }
 
 //---------------------------------------------------------------------------
@@ -191,7 +203,7 @@ void CIFXAuthorMeshMap::SetMapSize(U32 mapIndex, U32 value)
 
 U32 CIFXAuthorMeshMap::AddRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
 
 //---------------------------------------------------------------------------
@@ -206,16 +218,16 @@ U32 CIFXAuthorMeshMap::AddRef()
 
 U32 CIFXAuthorMeshMap::Release()
 {
-	if ( !( --m_refCount ) )
-	{
+    if (!(--m_refCount))
+    {
 
-		delete this;
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        delete this;
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_refCount;
+    return m_refCount;
 }
 
 //---------------------------------------------------------------------------
@@ -231,35 +243,37 @@ U32 CIFXAuthorMeshMap::Release()
 //  description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
 
-IFXRESULT CIFXAuthorMeshMap::QueryInterface( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXAuthorMeshMap::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result  = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if(interfaceId == IID_IFXUnknown)
-		{
-			*ppInterface = ( IFXUnknown* ) this;
-		}
-		if ( interfaceId == IID_IFXAuthorMeshMap )
-		{
-			*ppInterface = ( IFXAuthorMeshMap* ) this;
-		}
-		else
-		{
-			*ppInterface = NULL;
-			result = IFX_E_UNSUPPORTED;
-		}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        if (interfaceId == IID_IFXAuthorMeshMap)
+        {
+            *ppInterface = (IFXAuthorMeshMap*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			AddRef();
-	}
-	else
-	{
-		result = IFX_E_INVALID_POINTER;
-	}
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -269,34 +283,37 @@ IFXRESULT CIFXAuthorMeshMap::QueryInterface( IFXREFIID interfaceId, void** ppInt
 //  CIFXClassName component can be instaniated multiple times.
 //---------------------------------------------------------------------------
 
-IFXRESULT IFXAPI_CALLTYPE CIFXAuthorMeshMap_Factory( IFXREFIID  interfaceId,
-									void**   ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXAuthorMeshMap_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result;
+    IFXRESULT result;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXAuthorMeshGroup component.
-		CIFXAuthorMeshMap *pComponent = new CIFXAuthorMeshMap;
+    if (ppInterface)
+    {
+        // Create the CIFXAuthorMeshGroup component.
+        CIFXAuthorMeshMap* pComponent = new CIFXAuthorMeshMap;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }

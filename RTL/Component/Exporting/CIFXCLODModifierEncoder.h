@@ -28,44 +28,43 @@
 #ifndef CIFXCLODModifierENCODER_H
 #define CIFXCLODModifierENCODER_H
 
-
 // no ordering requirements for include files
+#include "IFXAutoRelease.h"
 #include "IFXBitStreamX.h"
 #include "IFXCoreServices.h"
 #include "IFXDataBlockQueueX.h"
 #include "IFXEncoderX.h"
-#include "IFXString.h"
 #include "IFXModifier.h"
-#include "IFXAutoRelease.h"
+#include "IFXString.h"
 
-class  CIFXCLODModifierEncoder : virtual public IFXEncoderX
+class CIFXCLODModifierEncoder : virtual public IFXEncoderX
 {
 public:
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXCLODModifierEncoder_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXCLODModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXUnknown
-	U32 IFXAPI 			AddRef ( void );
-	U32 IFXAPI 			Release ( void );
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	void	IFXAPI		EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f );
-	void	IFXAPI		InitializeX( IFXCoreServices& rCoreServices );
-	void	IFXAPI		SetObjectX( IFXUnknown& rObject );
+    // IFXEncoderX
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
 
 private:
-	// methods
-	CIFXCLODModifierEncoder();
-	virtual ~CIFXCLODModifierEncoder();
+    // methods
+    CIFXCLODModifierEncoder();
+    virtual ~CIFXCLODModifierEncoder();
 
-	// members
-	BOOL				m_bInitialized;
-	IFXBitStreamX*		m_pBitStream;
-	IFXCoreServices*	m_pCoreServices;
-	IFXUnknown*			m_pObject;
-	U32					m_uRefCount;
-	IFXDECLAREMEMBER(IFXModifier,m_pModifier);
+    // members
+    BOOL m_bInitialized;
+    IFXBitStreamX* m_pBitStream;
+    IFXCoreServices* m_pCoreServices;
+    IFXUnknown* m_pObject;
+    U32 m_uRefCount;
+    IFXDECLAREMEMBER(IFXModifier, m_pModifier);
 };
 
 #endif

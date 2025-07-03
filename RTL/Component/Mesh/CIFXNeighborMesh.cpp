@@ -17,82 +17,83 @@
 //***************************************************************************
 // CIFXNeighborMesh.cpp
 
-#include <memory.h>
-#include "IFXMesh.h"
 #include "CIFXNeighborMesh.h"
-#include "IFXFaceLists.h"
 #include "IFXCoincidentVertexMap.h"
+#include "IFXFaceLists.h"
+#include "IFXMesh.h"
+#include <memory.h>
 
 IFXRESULT IFXAPI_CALLTYPE CIFXNeighborMeshFactory(IFXREFIID intId, void** ppPtr)
 {
-	IFXRESULT rc = IFX_E_INVALID_POINTER;
-	if(ppPtr)
-	{
-		CIFXNeighborMesh* pPtr = new CIFXNeighborMesh;
-		if(pPtr)
-		{
-			rc = pPtr->Construct();
-			
-			if(IFXSUCCESS(rc))
-			{
-				rc = pPtr->QueryInterface(intId, ppPtr);
-			}
-			
-			if(IFXFAILURE(rc))
-			{
-				delete pPtr;
-			}
-		}
-		else
-		{
-			rc = IFX_E_OUT_OF_MEMORY;
-		}
-	}
-	return rc;
+    IFXRESULT rc = IFX_E_INVALID_POINTER;
+    if (ppPtr)
+    {
+        CIFXNeighborMesh* pPtr = new CIFXNeighborMesh;
+        if (pPtr)
+        {
+            rc = pPtr->Construct();
+
+            if (IFXSUCCESS(rc))
+            {
+                rc = pPtr->QueryInterface(intId, ppPtr);
+            }
+
+            if (IFXFAILURE(rc))
+            {
+                delete pPtr;
+            }
+        }
+        else
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    return rc;
 }
 
 U32 CIFXNeighborMesh::AddRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
 
 U32 CIFXNeighborMesh::Release()
 {
-	if (!(--m_refCount))
-	{
-		delete this;
-		return 0;
-	}
-	return m_refCount;
+    if (!(--m_refCount))
+    {
+        delete this;
+        return 0;
+    }
+    return m_refCount;
 }
 
 IFXRESULT CIFXNeighborMesh::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result = IFX_OK;
-	if (ppInterface)
-	{
-		if (interfaceId == IID_IFXNeighborMesh)
-		{
-			*(IFXNeighborMesh**)ppInterface = (IFXNeighborMesh*) this;
-		}
-		else
-		if (interfaceId == IID_IFXUnknown)
-		{
-			*(IFXUnknown**)ppInterface = (IFXUnknown*) this;
-		}
-		else
-		{
-			*ppInterface = NULL;
-			result = IFX_E_UNSUPPORTED;
-		}
-		if (IFXSUCCESS(result))
-			AddRef();
-	}
-	else
-	{
-		result = IFX_E_INVALID_POINTER;
-	}
-	return result;
+    IFXRESULT result = IFX_OK;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXNeighborMesh)
+        {
+            *(IFXNeighborMesh**)ppInterface = (IFXNeighborMesh*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *(IFXUnknown**)ppInterface = (IFXUnknown*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+            result = IFX_E_UNSUPPORTED;
+        }
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
+    return result;
 }
 
 //================================
@@ -100,286 +101,292 @@ IFXRESULT CIFXNeighborMesh::QueryInterface(IFXREFIID interfaceId, void** ppInter
 //================================
 CIFXNeighborMesh::CIFXNeighborMesh()
 {
-	m_refCount = 0;
+    m_refCount = 0;
 }
 
 CIFXNeighborMesh::~CIFXNeighborMesh()
 {
-	Deallocate();
+    Deallocate();
 }
-
-
-
-
 
 //===============================
 // Protected Methods
 //===============================
 IFXRESULT CIFXNeighborMesh::Construct()
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if(IFXSUCCESS(rc))
-	{
-		m_validState = FALSE;
-		m_pMeshGroup = NULL;
-		m_ppNeighborFaces = NULL;
-		m_numMeshes = 0;
-		m_pVertexMapGroup = 0;
-	}
-	
-	return rc;
+    if (IFXSUCCESS(rc))
+    {
+        m_validState = FALSE;
+        m_pMeshGroup = NULL;
+        m_ppNeighborFaces = NULL;
+        m_numMeshes = 0;
+        m_pVertexMapGroup = 0;
+    }
+
+    return rc;
 }
 
 void CIFXNeighborMesh::Deallocate()
 {
-	if (m_ppNeighborFaces)
-	{
-		U32 i;
-		for ( i = 0; i < m_numMeshes; ++i)
-		{
-			if (m_ppNeighborFaces[i])
-			{
-				delete [] m_ppNeighborFaces[i];
-			}
-		}
-		delete [] m_ppNeighborFaces;
-		m_ppNeighborFaces = NULL;
-	}
-	m_validState = FALSE;
-	m_numMeshes = 0;
-}	
-
+    if (m_ppNeighborFaces)
+    {
+        U32 i;
+        for (i = 0; i < m_numMeshes; ++i)
+        {
+            if (m_ppNeighborFaces[i])
+            {
+                delete[] m_ppNeighborFaces[i];
+            }
+        }
+        delete[] m_ppNeighborFaces;
+        m_ppNeighborFaces = NULL;
+    }
+    m_validState = FALSE;
+    m_numMeshes = 0;
+}
 
 // Allocate memory for neighbor mesh in a parallel array
 // fashion, according to the sizes in IFXMeshGroup.
 IFXRESULT CIFXNeighborMesh::Allocate(IFXMeshGroup& rMeshGroup)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	m_pMeshGroup = &rMeshGroup;
+    m_pMeshGroup = &rMeshGroup;
 
-	m_numMeshes = rMeshGroup.GetNumMeshes();
-	if (m_numMeshes)
-	{
-		m_ppNeighborFaces = new IFXNeighborFace* [m_numMeshes];
+    m_numMeshes = rMeshGroup.GetNumMeshes();
+    if (m_numMeshes)
+    {
+        m_ppNeighborFaces = new IFXNeighborFace*[m_numMeshes];
 
-		if (m_ppNeighborFaces)
-			result = IFX_OK;
-		else
-			result = IFX_E_OUT_OF_MEMORY;
+        if (m_ppNeighborFaces)
+        {
+            result = IFX_OK;
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
 
-		U32 i;
-		for ( i = 0; result == IFX_OK  &&  i < m_numMeshes; ++i)
-		{
-			// Allocated array of neighbor faces for mesh i
-			IFXMesh* pMesh = 0;
-			rMeshGroup.GetMesh(i, pMesh);
-			U32 maxNumFaces = pMesh->GetMaxNumFaces();
-			m_ppNeighborFaces[i] = new IFXNeighborFace[maxNumFaces];
-			if (m_ppNeighborFaces[i] == NULL)
-			{
-				result = IFX_E_OUT_OF_MEMORY;
-			}
-			else
-			{
-				memset(m_ppNeighborFaces[i], 0, sizeof(IFXNeighborFace)*maxNumFaces);
-			}
+        U32 i;
+        for (i = 0; result == IFX_OK && i < m_numMeshes; ++i)
+        {
+            // Allocated array of neighbor faces for mesh i
+            IFXMesh* pMesh = 0;
+            rMeshGroup.GetMesh(i, pMesh);
+            U32 maxNumFaces = pMesh->GetMaxNumFaces();
+            m_ppNeighborFaces[i] = new IFXNeighborFace[maxNumFaces];
+            if (m_ppNeighborFaces[i] == NULL)
+            {
+                result = IFX_E_OUT_OF_MEMORY;
+            }
+            else
+            {
+                memset(m_ppNeighborFaces[i], 0, sizeof(IFXNeighborFace) * maxNumFaces);
+            }
 
-			IFXRELEASE(pMesh);
-		}
-	}
-		
-	return result;
+            IFXRELEASE(pMesh);
+        }
+    }
+
+    return result;
 }
 
-IFXRESULT CIFXNeighborMesh::Build(	/*in*/		IFXMeshGroup& rMeshGroup,
-									/*in*/		IFXVertexMapGroup* pVertexMapGroup)
+IFXRESULT CIFXNeighborMesh::Build(/*in*/ IFXMeshGroup& rMeshGroup,
+                                  /*in*/ IFXVertexMapGroup* pVertexMapGroup)
 {
-	//IFXRESULT result = IFX_OK;
+    // IFXRESULT result = IFX_OK;
 
-	// Verify that Allocated has been called on pNeighborMesh
-	IFXASSERT(IsAllocated());
+    // Verify that Allocated has been called on pNeighborMesh
+    IFXASSERT(IsAllocated());
 
-	// Make sure the mesh indices are not too large for the
-	// neighbor mesh indices.
-	U32 meshIndex;
-	for (meshIndex = 0; meshIndex < rMeshGroup.GetNumMeshes(); ++meshIndex)
-	{
-		IFXMesh* pMesh = 0;
-		rMeshGroup.GetMesh(meshIndex, pMesh);
+    // Make sure the mesh indices are not too large for the
+    // neighbor mesh indices.
+    U32 meshIndex;
+    for (meshIndex = 0; meshIndex < rMeshGroup.GetNumMeshes(); ++meshIndex)
+    {
+        IFXMesh* pMesh = 0;
+        rMeshGroup.GetMesh(meshIndex, pMesh);
 
-		if( pMesh )
-		{
-			U32 numFaces = pMesh->GetNumFaces();
-			U32 numVertices = pMesh->GetNumVertices();
-			if (numFaces > MAX_NBR_MESH_INDEX || numVertices > MAX_NBR_MESH_INDEX)
-				return IFX_E_MESH_TOO_LARGE;
-		}
+        if (pMesh)
+        {
+            U32 numFaces = pMesh->GetNumFaces();
+            U32 numVertices = pMesh->GetNumVertices();
+            if (numFaces > MAX_NBR_MESH_INDEX || numVertices > MAX_NBR_MESH_INDEX)
+            {
+                return IFX_E_MESH_TOO_LARGE;
+            }
+        }
 
-		IFXRELEASE(pMesh);
-	}
+        IFXRELEASE(pMesh);
+    }
 
-	m_pMeshGroup = &rMeshGroup;
-	m_pVertexMapGroup = pVertexMapGroup;
+    m_pMeshGroup = &rMeshGroup;
+    m_pVertexMapGroup = pVertexMapGroup;
 
-	return BuildLinks();
+    return BuildLinks();
 }
-
 
 // The first step is to walk through all faces and
-// build a set of edge lists containing all the edges in 
-// the mesh.  Duplicate vertices (vertices with same 
-// position but different attributes) are resolved 
+// build a set of edge lists containing all the edges in
+// the mesh.  Duplicate vertices (vertices with same
+// position but different attributes) are resolved
 // to a representative vertex used in the edge list.
-// 
+//
 // An edge list contains the two vertices that form
 // the edge and a list of faces incident on the edge.
-// 
+//
 // Each face in an edge list has a neighbor pointer linked
 // to the next face in the list.  This forms a circular linked
 // list around the edge using the neighbor pointers.
 IFXRESULT CIFXNeighborMesh::BuildLinks()
 {
-	IFXRESULT result = IFX_OK;
-	
-	//
-	// Build "mesh vertex index" to "coincident vertex ID" map
-	//
+    IFXRESULT result = IFX_OK;
 
-	IFXCoincidentVertexMap vertexMap;
+    //
+    // Build "mesh vertex index" to "coincident vertex ID" map
+    //
 
-	if (m_pVertexMapGroup)
-		result = vertexMap.Initialize(m_pMeshGroup, m_pVertexMapGroup);
-	else
-		result = vertexMap.Initialize(m_pMeshGroup);
+    IFXCoincidentVertexMap vertexMap;
 
-	//
-	// Walk through all faces for each mesh and add edges
-	//
+    if (m_pVertexMapGroup)
+    {
+        result = vertexMap.Initialize(m_pMeshGroup, m_pVertexMapGroup);
+    }
+    else
+    {
+        result = vertexMap.Initialize(m_pMeshGroup);
+    }
 
-	IFXFaceLists faceLists;
-	if (result == IFX_OK)
-	{
-		result = faceLists.Initialize(vertexMap.GetNumVertexID());
-	}
+    //
+    // Walk through all faces for each mesh and add edges
+    //
 
-	U32 faceIndex, meshIndex;
-	if (result == IFX_OK)
-	{
-		IFXFaceIter faceIter;
-		U32 numMeshes = m_pMeshGroup->GetNumMeshes();
-		for (meshIndex = 0; (result == IFX_OK) && (meshIndex < numMeshes); ++meshIndex)
-		{
-			IFXMesh* pMesh = 0;
-			m_pMeshGroup->GetMesh(meshIndex, pMesh);
-			pMesh->GetFaceIter(faceIter);
+    IFXFaceLists faceLists;
+    if (result == IFX_OK)
+    {
+        result = faceLists.Initialize(vertexMap.GetNumVertexID());
+    }
 
-			U32 numFaces = pMesh->GetNumFaces();
-			for (faceIndex = 0; (result == IFX_OK) && (faceIndex < numFaces); ++faceIndex)
-			{
-				IFXFace* pFace = faceIter.Next();
+    U32 faceIndex, meshIndex;
+    if (result == IFX_OK)
+    {
+        IFXFaceIter faceIter;
+        U32 numMeshes = m_pMeshGroup->GetNumMeshes();
+        for (meshIndex = 0; (result == IFX_OK) && (meshIndex < numMeshes); ++meshIndex)
+        {
+            IFXMesh* pMesh = 0;
+            m_pMeshGroup->GetMesh(meshIndex, pMesh);
+            pMesh->GetFaceIter(faceIter);
 
-				//U32 ta = pFace->VertexA();
-				//U32 tb = pFace->VertexB();
-				//U32 tc = pFace->VertexC();
+            U32 numFaces = pMesh->GetNumFaces();
+            for (faceIndex = 0; (result == IFX_OK) && (faceIndex < numFaces); ++faceIndex)
+            {
+                IFXFace* pFace = faceIter.Next();
 
-				U32 a = vertexMap.Convert(meshIndex, pFace->VertexA());
-				U32 b = vertexMap.Convert(meshIndex, pFace->VertexB());
-				U32 c = vertexMap.Convert(meshIndex, pFace->VertexC());
+                // U32 ta = pFace->VertexA();
+                // U32 tb = pFace->VertexB();
+                // U32 tc = pFace->VertexC();
 
-				/* 
-				   a
-				   |\ 
-				   |0 \
-				   |    \ 
-				   |   1/ b
-				   |2 /
-				   |/
-				   c
-				*/
-				//  Corner 2 is across from edge ab.
-				//  Corner 0 is across from edge bc.
-				//  Corner 1 is across from edge ca
-				result = faceLists.AddFace(meshIndex, faceIndex, 2, a, b);
-				if (result == IFX_OK)
-				{
-					result = faceLists.AddFace(meshIndex, faceIndex, 0, b, c);
-				}
-				if (result == IFX_OK)
-				{
-					result = faceLists.AddFace(meshIndex, faceIndex, 1, c, a);
-				}
-			}
+                U32 a = vertexMap.Convert(meshIndex, pFace->VertexA());
+                U32 b = vertexMap.Convert(meshIndex, pFace->VertexB());
+                U32 c = vertexMap.Convert(meshIndex, pFace->VertexC());
 
-			IFXRELEASE(pMesh);
-		}
-	}
+                /*
+                   a
+                   |\
+                   |0 \
+                   |    \
+                   |   1/ b
+                   |2 /
+                   |/
+                   c
+                */
+                //  Corner 2 is across from edge ab.
+                //  Corner 0 is across from edge bc.
+                //  Corner 1 is across from edge ca
+                result = faceLists.AddFace(meshIndex, faceIndex, 2, a, b);
+                if (result == IFX_OK)
+                {
+                    result = faceLists.AddFace(meshIndex, faceIndex, 0, b, c);
+                }
+                if (result == IFX_OK)
+                {
+                    result = faceLists.AddFace(meshIndex, faceIndex, 1, c, a);
+                }
+            }
 
-	if (result != IFX_OK)
-		return result;
+            IFXRELEASE(pMesh);
+        }
+    }
 
-	// Walk through all face lists and build circular linked
-	// lists in the neighbor mesh.
+    if (result != IFX_OK)
+    {
+        return result;
+    }
 
-	IFXNeighborFace* pNFace;
-	BOOL hasEdges = faceLists.FirstEdge();
-	if (hasEdges == FALSE)
-		return IFX_OK;		// empty neighbor mesh is valid
+    // Walk through all face lists and build circular linked
+    // lists in the neighbor mesh.
 
-	U32 startMeshIndex, startFaceIndex, startCornerInfo;
-	U32 prevMeshIndex, prevFaceIndex, prevCornerInfo;
-	U32 cornerInfo;
-	do
-	{
-		faceLists.GetFace(&startMeshIndex, &startFaceIndex, &startCornerInfo);
-		prevMeshIndex = startMeshIndex;
-		prevFaceIndex = startFaceIndex;
-		prevCornerInfo = startCornerInfo;
-		
-		while (faceLists.NextFace())
-		{
-			//
-			// Set the neighbor record for the previous face to point to
-			//  the current face and corner.
-			//
+    IFXNeighborFace* pNFace;
+    BOOL hasEdges = faceLists.FirstEdge();
+    if (hasEdges == FALSE)
+    {
+        return IFX_OK; // empty neighbor mesh is valid
+    }
 
-			faceLists.GetFace(&meshIndex, &faceIndex, &cornerInfo);
+    U32 startMeshIndex, startFaceIndex, startCornerInfo;
+    U32 prevMeshIndex, prevFaceIndex, prevCornerInfo;
+    U32 cornerInfo;
+    do
+    {
+        faceLists.GetFace(&startMeshIndex, &startFaceIndex, &startCornerInfo);
+        prevMeshIndex = startMeshIndex;
+        prevFaceIndex = startFaceIndex;
+        prevCornerInfo = startCornerInfo;
 
-			// Build flags (for prevFaceIndex)
-			IFXCornerFlags flags = {0, 0, 0, 0, 0, 0, 0};
-			flags.cornerIndex = cornerInfo & IFX_CORNER_INDEX_MASK;
-			flags.flippedFlag = (prevCornerInfo & IFX_EDGE_ORDER_FLIPPED_MASK) != 0;
+        while (faceLists.NextFace())
+        {
+            //
+            // Set the neighbor record for the previous face to point to
+            //  the current face and corner.
+            //
 
-			// Get the neighbor record and set it.
-			U32 prevCornerIndex = prevCornerInfo & IFX_CORNER_INDEX_MASK;
-			pNFace = GetNeighborFaceArray(prevMeshIndex) + prevFaceIndex;
-			pNFace->SetNeighbor(prevCornerIndex, meshIndex, faceIndex, flags);
+            faceLists.GetFace(&meshIndex, &faceIndex, &cornerInfo);
 
-			prevMeshIndex = meshIndex;
-			prevFaceIndex = faceIndex;
-			prevCornerInfo = cornerInfo;
-		}
+            // Build flags (for prevFaceIndex)
+            IFXCornerFlags flags = { 0, 0, 0, 0, 0, 0, 0 };
+            flags.cornerIndex = cornerInfo & IFX_CORNER_INDEX_MASK;
+            flags.flippedFlag = (prevCornerInfo & IFX_EDGE_ORDER_FLIPPED_MASK) != 0;
 
-		// Build corner flags (for prevFaceIndex)
-		IFXCornerFlags flags = {0, 0, 0, 0, 0, 0, 0};
-		flags.cornerIndex = startCornerInfo & IFX_CORNER_INDEX_MASK;
-		flags.flippedFlag = (prevCornerInfo & IFX_EDGE_ORDER_FLIPPED_MASK) != 0;
+            // Get the neighbor record and set it.
+            U32 prevCornerIndex = prevCornerInfo & IFX_CORNER_INDEX_MASK;
+            pNFace = GetNeighborFaceArray(prevMeshIndex) + prevFaceIndex;
+            pNFace->SetNeighbor(prevCornerIndex, meshIndex, faceIndex, flags);
 
-		// Get the neighbor record and set it.
-		U32 prevCornerIndex = prevCornerInfo & IFX_CORNER_INDEX_MASK;
-		pNFace = GetNeighborFaceArray(prevMeshIndex) + prevFaceIndex;
-		pNFace->SetNeighbor(prevCornerIndex, startMeshIndex, startFaceIndex, flags);
-		
-	} while (faceLists.NextEdge());
+            prevMeshIndex = meshIndex;
+            prevFaceIndex = faceIndex;
+            prevCornerInfo = cornerInfo;
+        }
 
-	return IFX_OK;
+        // Build corner flags (for prevFaceIndex)
+        IFXCornerFlags flags = { 0, 0, 0, 0, 0, 0, 0 };
+        flags.cornerIndex = startCornerInfo & IFX_CORNER_INDEX_MASK;
+        flags.flippedFlag = (prevCornerInfo & IFX_EDGE_ORDER_FLIPPED_MASK) != 0;
+
+        // Get the neighbor record and set it.
+        U32 prevCornerIndex = prevCornerInfo & IFX_CORNER_INDEX_MASK;
+        pNFace = GetNeighborFaceArray(prevMeshIndex) + prevFaceIndex;
+        pNFace->SetNeighbor(prevCornerIndex, startMeshIndex, startFaceIndex, flags);
+
+    } while (faceLists.NextEdge());
+
+    return IFX_OK;
 }
 
-
-
-#define IFXTEXCOORD_EPSILON                     0.000000000001f
-#define IFXNORMAL_EPSILON                       0.000000000001f
+#define IFXTEXCOORD_EPSILON 0.000000000001f
+#define IFXNORMAL_EPSILON 0.000000000001f
 
 IFXRESULT CIFXNeighborMesh::MarkAttributeDiscontinuities(IFXMeshGroup& rMeshGrp)
 {
@@ -388,10 +395,10 @@ IFXRESULT CIFXNeighborMesh::MarkAttributeDiscontinuities(IFXMeshGroup& rMeshGrp)
 
     // Iterate over each mesh:
     U32 m;
-    for ( m = 0; m < uNumMeshes; m++)
+    for (m = 0; m < uNumMeshes; m++)
     {
-        IFXMesh *pMesh = 0;
-		rMeshGrp.GetMesh(m, pMesh);
+        IFXMesh* pMesh = 0;
+        rMeshGrp.GetMesh(m, pMesh);
         U32 uNumFaces = pMesh->GetNumFaces();
 
         // Look to see what attributes are present:
@@ -399,18 +406,17 @@ IFXRESULT CIFXNeighborMesh::MarkAttributeDiscontinuities(IFXMeshGroup& rMeshGrp)
 
         // Iterate over each face:
         U32 f;
-        for ( f = 0; f < uNumFaces; f++)
+        for (f = 0; f < uNumFaces; f++)
         {
             // Iterate over each corner:
             U32 c;
-            for ( c = 0; c < 3; c++)
+            for (c = 0; c < 3; c++)
             {
-                IFXFatCornerIter    cornerIter;
-                IFXCornerFlags      *pCornerFlags; //, *pCornerFlags2;
-                
-                GetFatCornerIter(0,m,f,c, cornerIter);
+                IFXFatCornerIter cornerIter;
+                IFXCornerFlags* pCornerFlags; //, *pCornerFlags2;
+
+                GetFatCornerIter(0, m, f, c, cornerIter);
                 pCornerFlags = cornerIter.GetCornerFlags();
-               
 
                 if (!pCornerFlags->CORNER_FLAG_DISCONTINUOUS_FINISHED)
                 {
@@ -425,17 +431,17 @@ IFXRESULT CIFXNeighborMesh::MarkAttributeDiscontinuities(IFXMeshGroup& rMeshGrp)
                     pF1TC1 = cornerIter.GetTexCoord();
                     cornerIter.MoveClockwise();
                     pF1N2 = cornerIter.GetNormal();
-                    pF1TC2 = cornerIter.GetTexCoord();   
-                    
+                    pF1TC2 = cornerIter.GetTexCoord();
+
                     // Now reset the iterator and jump to the neighbor face's far corner:
                     cornerIter.MoveClockwise();
                     cornerIter.JumpAcross();
                     // pCornerFlags2 = cornerIter.GetCornerFlags();
 
                     // Look for surface flips, (non-manifold surface disconitnuities)
-                    //if (pCornerFlags->flippedFlag == pCornerFlags2->flippedFlag)
+                    // if (pCornerFlags->flippedFlag == pCornerFlags2->flippedFlag)
                     //    pCornerFlags->CORNER_FLAG_DISCONTINUOUS_SURFACE = 1;
-                    //else
+                    // else
                     {
                         pCornerFlags->CORNER_FLAG_DISCONTINUOUS_SURFACE = 0;
 
@@ -452,31 +458,39 @@ IFXRESULT CIFXNeighborMesh::MarkAttributeDiscontinuities(IFXMeshGroup& rMeshGrp)
                         pF2TC1 = cornerIter.GetTexCoord();
                         cornerIter.MoveCounterClockwise();
                         pF2N2 = cornerIter.GetNormal();
-                        pF2TC2 = cornerIter.GetTexCoord();               
+                        pF2TC2 = cornerIter.GetTexCoord();
 
                         if (vertexAttribs.m_uData.m_bHasNormals)
                         {
                             // Now compare attribute values and set the appropriate flags:
                             if (pF1N1->IsApproximately(*pF2N1, IFXNORMAL_EPSILON) && pF1N2->IsApproximately(*pF2N2, IFXNORMAL_EPSILON))
+                            {
                                 pCornerFlags->CORNER_FLAG_DISCONTINUOUS_NORMAL = 0;
+                            }
                             else
+                            {
                                 pCornerFlags->CORNER_FLAG_DISCONTINUOUS_NORMAL = 1;
+                            }
                         }
-                    
+
                         if (vertexAttribs.m_uData.m_uNumTexCoordLayers)
                         {
                             if ((pF2TC1 && pF1TC2) && pF1TC1->IsApproximately(*pF2TC1, IFXTEXCOORD_EPSILON) && pF1TC2->IsApproximately(*pF2TC2, IFXTEXCOORD_EPSILON))
+                            {
                                 pCornerFlags->CORNER_FLAG_DISCONTINUOUS_TEXCOORD = 0;
+                            }
                             else
+                            {
                                 pCornerFlags->CORNER_FLAG_DISCONTINUOUS_TEXCOORD = 1;
+                            }
                         }
                     }
                 }
             }
         }
 
-		IFXRELEASE(pMesh);
-    }  
+        IFXRELEASE(pMesh);
+    }
 
     return IFX_OK;
 }
@@ -674,4 +688,3 @@ void CIFXNeighborMesh::VerifyVertexMap(IFXMeshGroup& rMeshGroup, IFXVertexMapGro
 
 #endif // #if 0
 // END OF FILE
-

@@ -17,13 +17,13 @@
 //***************************************************************************
 
 /**
-	@file CIFXMixerConstruct.cpp
+        @file CIFXMixerConstruct.cpp
 */
 
-#include "IFXSceneGraphPCH.h"
 #include "CIFXMixerConstruct.h"
-#include "IFXMotionResource.h"
 #include "IFXException.h"
+#include "IFXMotionResource.h"
+#include "IFXSceneGraphPCH.h"
 
 //---------------------------------------------------------------------------
 //	CIFXMixerConstruct::CIFXMixerConstruct
@@ -31,16 +31,16 @@
 //	This is the constructor.  It sets up the object's initial state.
 //---------------------------------------------------------------------------
 
-CIFXMixerConstruct::CIFXMixerConstruct() :
-	m_refCount( 0 )
+CIFXMixerConstruct::CIFXMixerConstruct()
+    : m_refCount(0)
 {
-	// IFXMixerConstruct attributtes...
-	m_pIFXMotionResource = 0;
-	m_EntryList.SetAutoDestruct(true);
-	m_Duration = 0;
+    // IFXMixerConstruct attributtes...
+    m_pIFXMotionResource = 0;
+    m_EntryList.SetAutoDestruct(true);
+    m_Duration = 0;
 
-	m_type = NONE;
-	m_pSceneGraph = NULL;
+    m_type = NONE;
+    m_pSceneGraph = NULL;
 }
 
 //---------------------------------------------------------------------------
@@ -51,9 +51,8 @@ CIFXMixerConstruct::CIFXMixerConstruct() :
 
 CIFXMixerConstruct::~CIFXMixerConstruct()
 {
-	IFXRELEASE(m_pIFXMotionResource);
+    IFXRELEASE(m_pIFXMotionResource);
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMixerConstruct_Factory
@@ -62,37 +61,40 @@ CIFXMixerConstruct::~CIFXMixerConstruct()
 //	CIFXMixerConstruct component can be instaniated multiple times.
 //---------------------------------------------------------------------------
 
-IFXRESULT IFXAPI_CALLTYPE CIFXMixerConstruct_Factory( IFXREFIID	interfaceId, void**	ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXMixerConstruct_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT	result;
+    IFXRESULT result;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXMixerConstruct component.
-		CIFXMixerConstruct	*pComponent	= new CIFXMixerConstruct;
+    if (ppInterface)
+    {
+        // Create the CIFXMixerConstruct component.
+        CIFXMixerConstruct* pComponent = new CIFXMixerConstruct;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(result);
+    IFXRETURN(result);
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMixerConstruct::AddRef
@@ -106,9 +108,8 @@ IFXRESULT IFXAPI_CALLTYPE CIFXMixerConstruct_Factory( IFXREFIID	interfaceId, voi
 
 U32 CIFXMixerConstruct::AddRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMixerConstruct::Release
@@ -122,18 +123,17 @@ U32 CIFXMixerConstruct::AddRef()
 
 U32 CIFXMixerConstruct::Release()
 {
-	if ( !( --m_refCount ) )
-	{
-		delete this;
+    if (!(--m_refCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_refCount;
+    return m_refCount;
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXMixerConstruct::QueryInterface
@@ -148,121 +148,148 @@ U32 CIFXMixerConstruct::Release()
 //	description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
 
-IFXRESULT CIFXMixerConstruct::QueryInterface( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXMixerConstruct::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT	result	= IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXUnknown )
-			*ppInterface = ( IFXUnknown* ) this;
-		else if ( interfaceId == IID_IFXMixerConstruct )
-			*ppInterface = ( IFXMixerConstruct* ) this;
-		else if ( interfaceId == IID_IFXMarker )
-			*ppInterface = ( IFXMarker* ) this;
-		else if ( interfaceId == IID_IFXMarkerX )
-			*ppInterface = ( IFXMarkerX* ) this;
-		else if ( interfaceId == IID_IFXSubject )
-			*ppInterface = ( IFXSubject* ) this;
-		else if ( interfaceId == IID_IFXMetaDataX ) 
-			*ppInterface = ( IFXMetaDataX* ) this;
-		else
-		{
-			*ppInterface = NULL;
-			result = IFX_E_UNSUPPORTED;
-		}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else if (interfaceId == IID_IFXMixerConstruct)
+        {
+            *ppInterface = (IFXMixerConstruct*)this;
+        }
+        else if (interfaceId == IID_IFXMarker)
+        {
+            *ppInterface = (IFXMarker*)this;
+        }
+        else if (interfaceId == IID_IFXMarkerX)
+        {
+            *ppInterface = (IFXMarkerX*)this;
+        }
+        else if (interfaceId == IID_IFXSubject)
+        {
+            *ppInterface = (IFXSubject*)this;
+        }
+        else if (interfaceId == IID_IFXMetaDataX)
+        {
+            *ppInterface = (IFXMetaDataX*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(result);
+    IFXRETURN(result);
 }
 
 // IFXMarkerX
-void		CIFXMixerConstruct::GetEncoderX(IFXEncoderX*& rpEncoderX)
+void CIFXMixerConstruct::GetEncoderX(IFXEncoderX*& rpEncoderX)
 {
-	throw IFXException(IFX_E_UNSUPPORTED);
-//	CIFXMarker::GetEncoderX(CID_IFXMotionResourceEncoder, rpEncoderX);
+    throw IFXException(IFX_E_UNSUPPORTED);
+    //	CIFXMarker::GetEncoderX(CID_IFXMotionResourceEncoder, rpEncoderX);
 }
 
 void CIFXMixerConstruct::SetMotionResource(IFXMotionResource* pIFXMotionResource)
 {
-	IFXRELEASE(m_pIFXMotionResource);
-	m_pIFXMotionResource = pIFXMotionResource;
-	if (m_pIFXMotionResource)
-	{
-		m_pIFXMotionResource->AddRef();
-		m_pIFXMotionResource->GetDuration(&m_Duration);
+    IFXRELEASE(m_pIFXMotionResource);
+    m_pIFXMotionResource = pIFXMotionResource;
+    if (m_pIFXMotionResource)
+    {
+        m_pIFXMotionResource->AddRef();
+        m_pIFXMotionResource->GetDuration(&m_Duration);
 
-		U32 numTracks = 0;
-		m_pIFXMotionResource->GetTrackCount(&numTracks);
-		if (0==numTracks)
-			m_type = NONE;
-		else if (1==numTracks)
-			m_type = SINGLETRACK;
-		else
-			m_type = MULTITRACK;
-	}
-	else
-	{
-		m_Duration = 0;
-	}
+        U32 numTracks = 0;
+        m_pIFXMotionResource->GetTrackCount(&numTracks);
+        if (0 == numTracks)
+        {
+            m_type = NONE;
+        }
+        else if (1 == numTracks)
+        {
+            m_type = SINGLETRACK;
+        }
+        else
+        {
+            m_type = MULTITRACK;
+        }
+    }
+    else
+    {
+        m_Duration = 0;
+    }
 }
 
 IFXMotionResource* CIFXMixerConstruct::GetMotionResource()
 {
-	IFXMotionResource* rval = 0;
-	if (m_pIFXMotionResource)
-	{
-		m_pIFXMotionResource->AddRef();
-		rval = m_pIFXMotionResource;
-	}
-	return rval;
+    IFXMotionResource* rval = 0;
+    if (m_pIFXMotionResource)
+    {
+        m_pIFXMotionResource->AddRef();
+        rval = m_pIFXMotionResource;
+    }
+    return rval;
 }
 
-void CIFXMixerConstruct::AddMapping( IFXMixerConstruct* pMixer, IFXString* pBoneName)
+void CIFXMixerConstruct::AddMapping(IFXMixerConstruct* pMixer, IFXString* pBoneName)
 {
-	IFXASSERT(pMixer && pBoneName);
+    IFXASSERT(pMixer && pBoneName);
 
-	// special case: an empty bone name means full mapping
-	// so, clear the list and set the motion resource
-	if (pBoneName->IsEmpty())
-	{
-		m_EntryList.Clear();
-		IFXMotionResource* pResource = NULL;
-		pResource = GetMotionResource();
-		SetMotionResource(pResource);
-		IFXRELEASE( pResource );
-	}
+    // special case: an empty bone name means full mapping
+    // so, clear the list and set the motion resource
+    if (pBoneName->IsEmpty())
+    {
+        m_EntryList.Clear();
+        IFXMotionResource* pResource = NULL;
+        pResource = GetMotionResource();
+        SetMotionResource(pResource);
+        IFXRELEASE(pResource);
+    }
 
-	// first, find the larger duration between this mixer and the added mixer
-	// this will prevent circular references when calculating duration
-	F32 duration = pMixer->GetDuration();
-	if (duration > m_Duration) m_Duration = duration;
+    // first, find the larger duration between this mixer and the added mixer
+    // this will prevent circular references when calculating duration
+    F32 duration = pMixer->GetDuration();
+    if (duration > m_Duration)
+    {
+        m_Duration = duration;
+    }
 
-	// now, add the mixer to the list
-//	IFXMapEntry *pEntry = m_EntryList.CreateAndAppend();
-	IFXMapEntry *pEntry=*(m_EntryList.Append(new IFXMapEntry));
+    // now, add the mixer to the list
+    //	IFXMapEntry *pEntry = m_EntryList.CreateAndAppend();
+    IFXMapEntry* pEntry = *(m_EntryList.Append(new IFXMapEntry));
 
-	pEntry->m_pMixerConstruct = pMixer;
-	pMixer->AddRef();
-	pEntry->m_boneName = *pBoneName;
+    pEntry->m_pMixerConstruct = pMixer;
+    pMixer->AddRef();
+    pEntry->m_boneName = *pBoneName;
 
-	// correct the local type
-	MotionType type = pMixer->GetType();
-	if ( (MULTITRACK == type) || ((SINGLETRACK == type) && (NONE == m_type)) )
-		m_type = type;
+    // correct the local type
+    MotionType type = pMixer->GetType();
+    if ((MULTITRACK == type) || ((SINGLETRACK == type) && (NONE == m_type)))
+    {
+        m_type = type;
+    }
 }
 
 F32 CIFXMixerConstruct::GetDuration()
 {
-	return m_Duration;
+    return m_Duration;
 }
 
 IFXMixerConstruct::MotionType CIFXMixerConstruct::GetType()
 {
-	return m_type;
+    return m_type;
 }

@@ -17,55 +17,55 @@
 //***************************************************************************
 
 /**
-	@file	CIFXFileReference.h
+        @file	CIFXFileReference.h
 
-			This class implements common FileReference functionality. It is not
-			ment to be instantiated.
+                        This class implements common FileReference functionality. It is not
+                        ment to be instantiated.
 
-	@note	The intent is to simplify the development of new FileReferences by
-			inheriting and forwarding calls to this implementation.
+        @note	The intent is to simplify the development of new FileReferences by
+                        inheriting and forwarding calls to this implementation.
 
 */
 #ifndef __CIFXFILEREFERENCE_H__
 #define __CIFXFILEREFERENCE_H__
 
-#include "IFXSceneGraph.h"
 #include "CIFXMarker.h"
 #include "IFXFileReference.h"
+#include "IFXSceneGraph.h"
 
 class CIFXFileReference : private CIFXMarker, public IFXFileReference
 {
 public:
-	// IFXUnknown
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void** ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// IFXMarkerX
-	void IFXAPI  GetEncoderX (IFXEncoderX*& rpEncoderX);
+    // IFXMarkerX
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
-	// IFXFileReference
-	virtual void IFXAPI  SetScopeName(const IFXString& ScopeName);
-	virtual void IFXAPI  GetScopeName(IFXString& rScopeName);
-	virtual void IFXAPI  SetFileURLs(const IFXFileURLs& FileURLs);
-	virtual void IFXAPI  GetFileURLs(IFXFileURLs& rFileURLs);
-	virtual void IFXAPI  SetObjectFilters(const IFXObjectFilters& ObjectFilters);
-	virtual void IFXAPI  GetObjectFilters(IFXObjectFilters& rObjectFilters);
-	virtual void IFXAPI  SetCollisionPolicy(const IFXCollisionPolicy& CollisionPolicy);
-	virtual void IFXAPI  GetCollisionPolicy(IFXCollisionPolicy& rCollisionPolicy);
-	virtual void IFXAPI  SetWorldAlias(const IFXString& WorldAlias);
-	virtual void IFXAPI  GetWorldAlias(IFXString& rWorldAlias);
+    // IFXFileReference
+    virtual void IFXAPI SetScopeName(const IFXString& ScopeName);
+    virtual void IFXAPI GetScopeName(IFXString& rScopeName);
+    virtual void IFXAPI SetFileURLs(const IFXFileURLs& FileURLs);
+    virtual void IFXAPI GetFileURLs(IFXFileURLs& rFileURLs);
+    virtual void IFXAPI SetObjectFilters(const IFXObjectFilters& ObjectFilters);
+    virtual void IFXAPI GetObjectFilters(IFXObjectFilters& rObjectFilters);
+    virtual void IFXAPI SetCollisionPolicy(const IFXCollisionPolicy& CollisionPolicy);
+    virtual void IFXAPI GetCollisionPolicy(IFXCollisionPolicy& rCollisionPolicy);
+    virtual void IFXAPI SetWorldAlias(const IFXString& WorldAlias);
+    virtual void IFXAPI GetWorldAlias(IFXString& rWorldAlias);
 
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXFileReference_Factory(IFXREFIID iid, void** ppv);
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXFileReference_Factory(IFXREFIID iid, void** ppv);
 
 protected:
-	CIFXFileReference();
-	virtual ~CIFXFileReference();
+    CIFXFileReference();
+    virtual ~CIFXFileReference();
 
-	IFXFileReferenceParams m_FileReferenceParams;
+    IFXFileReferenceParams m_FileReferenceParams;
 
-	// IFXUnknown
-	U32 m_uRefCount; 
+    // IFXUnknown
+    U32 m_uRefCount;
 };
 
 #endif

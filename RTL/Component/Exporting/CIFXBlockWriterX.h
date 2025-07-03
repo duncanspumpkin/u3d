@@ -17,47 +17,47 @@
 //***************************************************************************
 
 /**
-	@file	CIFXBlockWriterX.h
+        @file	CIFXBlockWriterX.h
 
-			Declaration of the CIFXBlockWriterX class which implements the 
-			IFXBlockWriterX and IFXBlockWriter interface.
+                        Declaration of the CIFXBlockWriterX class which implements the
+                        IFXBlockWriterX and IFXBlockWriter interface.
 
-	@note	InitializeX - Sets up the Block Writer with a WriteBuffer
-			WriteBlockX - Writes a block of data from the DataBlock into the
-						  WriteBuffer
+        @note	InitializeX - Sets up the Block Writer with a WriteBuffer
+                        WriteBlockX - Writes a block of data from the DataBlock into the
+                                                  WriteBuffer
 */
 #ifndef CIFXBLOCKWRITERX_H__
 #define CIFXBLOCKWRITERX_H__
 
-#include "IFXBlockWriterX.h"
 #include "IFXAutoRelease.h"
+#include "IFXBlockWriterX.h"
 
 class CIFXBlockWriterX : public IFXBlockWriterX
 {
 public:
-	// IFXUnknown methods...
-	virtual U32 IFXAPI  AddRef( void );
-	virtual U32 IFXAPI  Release( void );
-	virtual IFXRESULT IFXAPI  QueryInterface( IFXREFIID riid, void** ppv );
+    // IFXUnknown methods...
+    virtual U32 IFXAPI AddRef(void);
+    virtual U32 IFXAPI Release(void);
+    virtual IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// IFXBlockWriterX methods
-	virtual void IFXAPI  InitializeX(IFXCoreServices& rCoreServices, IFXWriteBufferX& rWriteBufferX, U32 uWritePosition);
-	virtual void IFXAPI  WriteBlockX(IFXDataBlockX& rDataBlockX);
+    // IFXBlockWriterX methods
+    virtual void IFXAPI InitializeX(IFXCoreServices& rCoreServices, IFXWriteBufferX& rWriteBufferX, U32 uWritePosition);
+    virtual void IFXAPI WriteBlockX(IFXDataBlockX& rDataBlockX);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXBlockWriterX_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXBlockWriterX_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 private:
-	// Private to enforce the use of the create instance method
-	CIFXBlockWriterX();
-	virtual ~CIFXBlockWriterX();
+    // Private to enforce the use of the create instance method
+    CIFXBlockWriterX();
+    virtual ~CIFXBlockWriterX();
 
-	// PRIVATE MEMBER VARIABLES
-	U32	m_uRefCount;		///< Reference counter
-	U64	m_uWritePosition;	///< Current position in the WriteBuffer
-	U32 m_uMaxPriority;
-	BOOL m_bWithoutFileHeader;
-	IFXDECLAREMEMBER(IFXWriteBufferX,m_pWriteBufferX); ///< Local pointer to the passed in WriteBuffer
+    // PRIVATE MEMBER VARIABLES
+    U32 m_uRefCount;      ///< Reference counter
+    U64 m_uWritePosition; ///< Current position in the WriteBuffer
+    U32 m_uMaxPriority;
+    BOOL m_bWithoutFileHeader;
+    IFXDECLAREMEMBER(IFXWriteBufferX, m_pWriteBufferX); ///< Local pointer to the passed in WriteBuffer
 };
 
 #endif

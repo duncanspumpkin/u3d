@@ -17,126 +17,133 @@
 //***************************************************************************
 
 /**
-	@file IFXKeyTrack.cpp
+        @file IFXKeyTrack.cpp
 */
 
 #include "IFXKeyTrack.h"
 
-#define IFXKT_REPLACE_SAMETIME  TRUE    //* replace near keyframe on insert
-#define IFXKT_REPLACE_DELTA     0.01f   //* how near in time to replace
+#define IFXKT_REPLACE_SAMETIME TRUE //* replace near keyframe on insert
+#define IFXKT_REPLACE_DELTA 0.01f   //* how near in time to replace
 
 /******************************************************************************
 void IFXKeyTrack::CalcInstantConst(F32 time,IFXInstant *instant,
-											IFXListContext *context) const
+                                                                                        IFXListContext *context) const
 
-	FUTURE perhaps something better than linear interpolation on locations
+        FUTURE perhaps something better than linear interpolation on locations
 
 ******************************************************************************/
 void IFXKeyTrack::CalcInstantConst(
-								   F32 time,
-								   IFXInstant *instant,
-								   IFXListContext *context) const
+    F32 time,
+    IFXInstant* instant,
+    IFXListContext* context) const
 {
-	if(context==NULL)
-		context=(IFXListContext *)&m_current;
+    if (context == NULL)
+    {
+        context = (IFXListContext*)&m_current;
+    }
 
-	Sync(time,context);
+    Sync(time, context);
 
-	IFXKeyFrame *after=GetCurrent(*context);
-	IFXKeyFrame *before=PreDecrement(*context);
+    IFXKeyFrame* after = GetCurrent(*context);
+    IFXKeyFrame* before = PreDecrement(*context);
 
-	PreIncrement(*context); // put back
+    PreIncrement(*context); // put back
 
-	if(!before && !after)
-	{
-		if(GetHead())
-		{
-			*instant= *GetHead();
-			return;
-		}
-		else
-			instant->Reset();
-	}
-	else if(!before)
-	{
-		*instant= *after;
-		return;
-	}
-	else if(!after)
-	{
-		*instant= *before;
-		return;
-	}
-	else
-	{
-		F32 fraction= (time-before->Time()) /
-			(after->Time()-before->Time());
+    if (!before && !after)
+    {
+        if (GetHead())
+        {
+            *instant = *GetHead();
+            return;
+        }
+        else
+        {
+            instant->Reset();
+        }
+    }
+    else if (!before)
+    {
+        *instant = *after;
+        return;
+    }
+    else if (!after)
+    {
+        *instant = *before;
+        return;
+    }
+    else
+    {
+        F32 fraction = (time - before->Time()) / (after->Time() - before->Time());
 
-		instant->Location().Interpolate(fraction,
-			before->LocationConst(),after->LocationConst());
-		instant->Rotation().Interpolate(fraction,
-			before->RotationConst(),after->RotationConst());
-		instant->Scale().Interpolate(fraction,
-			before->ScaleConst(),after->ScaleConst());
-	}
+        instant->Location().Interpolate(fraction, before->LocationConst(), after->LocationConst());
+        instant->Rotation().Interpolate(fraction, before->RotationConst(), after->RotationConst());
+        instant->Scale().Interpolate(fraction, before->ScaleConst(), after->ScaleConst());
+    }
 }
 
-void IFXKeyTrack::InsertNewKeyFrame(F32 time,const IFXInstant &instant,
-									IFXListContext *context)
+void IFXKeyTrack::InsertNewKeyFrame(F32 time, const IFXInstant& instant, IFXListContext* context)
 {
-	IFXKeyFrame *newframe=NULL;
+    IFXKeyFrame* newframe = NULL;
 
-	if(context==NULL)
-		context=&m_current;
+    if (context == NULL)
+    {
+        context = &m_current;
+    }
 
-	Sync(time,context);
+    Sync(time, context);
 
 #if IFXKT_REPLACE_SAMETIME
-	IFXListContext  *context2=context;
-	IFXKeyFrame *prior=PreDecrement(*context2);
-	context2=context;
-	IFXKeyFrame *next=PreIncrement(*context2);
+    IFXListContext* context2 = context;
+    IFXKeyFrame* prior = PreDecrement(*context2);
+    context2 = context;
+    IFXKeyFrame* next = PreIncrement(*context2);
 
-	if(prior && (time-prior->Time() < IFXKT_REPLACE_DELTA) )
-	{
-		IFXTRACE_GENERIC(L"InsertNewKeyFrame(time=%.6G) replacing adjacent time %.6G\n",
-			time,prior->Time());
-		newframe=prior;
-	}
-	else if(next && (next->Time()-time < IFXKT_REPLACE_DELTA) )
-	{
-		IFXTRACE_GENERIC(L"InsertNewKeyFrame(time=%.6G) replacing adjacent time %.6G\n",
-			time,next->Time());
-		newframe=next;
-	}
-	else
+    if (prior && (time - prior->Time() < IFXKT_REPLACE_DELTA))
+    {
+        IFXTRACE_GENERIC(L"InsertNewKeyFrame(time=%.6G) replacing adjacent time %.6G\n", time, prior->Time());
+        newframe = prior;
+    }
+    else if (next && (next->Time() - time < IFXKT_REPLACE_DELTA))
+    {
+        IFXTRACE_GENERIC(L"InsertNewKeyFrame(time=%.6G) replacing adjacent time %.6G\n", time, next->Time());
+        newframe = next;
+    }
+    else
 #endif
-		InsertBefore(*context,newframe=new IFXKeyFrame);
+        InsertBefore(*context, newframe = new IFXKeyFrame);
 
-	newframe->IFXInstant::operator=(instant);
-	newframe->SetTime(time);
+    newframe->IFXInstant::operator=(instant);
+    newframe->SetTime(time);
 }
 
 /**
-	move context to node just after time
+        move context to node just after time
 */
 void IFXKeyTrack::Sync(F32 time, IFXListContext* context) const
 {
-	IFXKeyFrame *frame=GetCurrent(*context);
+    IFXKeyFrame* frame = GetCurrent(*context);
 
-	if(!frame)
-	{
-		if(IsAtTail(*context))
-			frame=ToTail(*context);
-		else
-			frame=ToHead(*context);
-	}
+    if (!frame)
+    {
+        if (IsAtTail(*context))
+        {
+            frame = ToTail(*context);
+        }
+        else
+        {
+            frame = ToHead(*context);
+        }
+    }
 
-	while(frame && frame->Time()>time)
-		frame=PreDecrement(*context);
+    while (frame && frame->Time() > time)
+    {
+        frame = PreDecrement(*context);
+    }
 
-	while(frame && frame->Time()<time)
-		frame=PreIncrement(*context);
+    while (frame && frame->Time() < time)
+    {
+        frame = PreIncrement(*context);
+    }
 }
 
 /******************************************************************************
@@ -147,89 +154,90 @@ remove track entries too close in time
 ******************************************************************************/
 void IFXKeyTrack::Filter(F32 deltatime)
 {
-	//I32 original=GetNumberElements();
+    // I32 original=GetNumberElements();
 
-	IFXListContext basecontext,nextcontext;
-	IFXKeyFrame *base,*next;
+    IFXListContext basecontext, nextcontext;
+    IFXKeyFrame *base, *next;
 
-	ToHead(basecontext);
-	while((base=GetCurrent(basecontext)) != NULL)
-	{
-		nextcontext=basecontext;
-		PostIncrement(nextcontext);
+    ToHead(basecontext);
+    while ((base = GetCurrent(basecontext)) != NULL)
+    {
+        nextcontext = basecontext;
+        PostIncrement(nextcontext);
 
-		if(IsAtTail(nextcontext))
-			break;
+        if (IsAtTail(nextcontext))
+        {
+            break;
+        }
 
-		next=GetCurrent(nextcontext);
+        next = GetCurrent(nextcontext);
 
-		if( (next->Time()-base->Time()) < deltatime )
-		{
-			Delete(next);
-		}
-		else
-		{
-			PostIncrement(basecontext);
-		}
-	}
+        if ((next->Time() - base->Time()) < deltatime)
+        {
+            Delete(next);
+        }
+        else
+        {
+            PostIncrement(basecontext);
+        }
+    }
 }
 
-void IFXKeyTrack::Compress(F32 deltaposition,F32 deltarotation,F32 deltascale)
+void IFXKeyTrack::Compress(F32 deltaposition, F32 deltarotation, F32 deltascale)
 {
-	//I32 original=GetNumberElements();
+    // I32 original=GetNumberElements();
 
-	IFXListContext basecontext,midcontext,leapcontext;
-	IFXKeyFrame *base,*mid,*leap;
+    IFXListContext basecontext, midcontext, leapcontext;
+    IFXKeyFrame *base, *mid, *leap;
 
-	ToHead(basecontext);
-	while((base=GetCurrent(basecontext)) != NULL)
-	{
-		midcontext=basecontext;
-		PostIncrement(midcontext);
-		leapcontext=midcontext;
-		PostIncrement(leapcontext);
+    ToHead(basecontext);
+    while ((base = GetCurrent(basecontext)) != NULL)
+    {
+        midcontext = basecontext;
+        PostIncrement(midcontext);
+        leapcontext = midcontext;
+        PostIncrement(leapcontext);
 
-		if(IsAtTail(leapcontext))
-			break;
+        if (IsAtTail(leapcontext))
+        {
+            break;
+        }
 
-		mid=GetCurrent(midcontext);
-		leap=GetCurrent(leapcontext);
+        mid = GetCurrent(midcontext);
+        leap = GetCurrent(leapcontext);
 
-		F32 fraction=(mid->Time()-base->Time())/(leap->Time()-base->Time());
+        F32 fraction = (mid->Time() - base->Time()) / (leap->Time() - base->Time());
 
-		IFXVector3 intervector;
-		intervector.Interpolate(fraction,base->LocationConst(),
-			leap->LocationConst());
+        IFXVector3 intervector;
+        intervector.Interpolate(fraction, base->LocationConst(), leap->LocationConst());
 
-		IFXQuaternion interquat;
-		interquat.Interpolate(fraction,base->RotationConst(),
-			leap->RotationConst());
-		IFXVector3 interscale;
-		interscale.Interpolate(fraction,base->ScaleConst(),
-			leap->ScaleConst());
+        IFXQuaternion interquat;
+        interquat.Interpolate(fraction, base->RotationConst(), leap->RotationConst());
+        IFXVector3 interscale;
+        interscale.Interpolate(fraction, base->ScaleConst(), leap->ScaleConst());
 
+        if (mid->LocationConst().IsApproximately(intervector, deltaposition) && mid->RotationConst().IsApproximately(interquat, deltarotation) && mid->ScaleConst().IsApproximately(interscale, deltascale))
+        {
+            //* watch out for spans close to 180 degrees
+            F32 radians;
+            IFXVector3 axis;
+            IFXQuaternion inverse, span;
+            inverse.Invert(base->RotationConst());
+            span.Multiply(inverse, leap->RotationConst());
+            span.ComputeAngleAxis(radians, axis);
 
-
-		if(mid->LocationConst().IsApproximately(intervector,deltaposition) &&
-			mid->RotationConst().IsApproximately(interquat,deltarotation) &&
-			mid->ScaleConst().IsApproximately(interscale,deltascale) )
-		{
-			//* watch out for spans close to 180 degrees
-			F32 radians;
-			IFXVector3 axis;
-			IFXQuaternion inverse,span;
-			inverse.Invert(base->RotationConst());
-			span.Multiply(inverse,leap->RotationConst());
-			span.ComputeAngleAxis(radians,axis);
-
-			if(radians<170.0*IFXTO_RAD)
-				Delete(mid);
-			else
-				PostIncrement(basecontext);
-		}
-		else
-		{
-			PostIncrement(basecontext);
-		}
-	}
+            if (radians < 170.0 * IFXTO_RAD)
+            {
+                Delete(mid);
+            }
+            else
+            {
+                PostIncrement(basecontext);
+            }
+        }
+        else
+        {
+            PostIncrement(basecontext);
+        }
+    }
 }

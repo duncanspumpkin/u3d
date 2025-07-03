@@ -17,9 +17,9 @@
 //***************************************************************************
 
 /**
-	@file	IFXFatCornerIter.cpp
+        @file	IFXFatCornerIter.cpp
 
-			This module defines the IFXFatCornerIter interface.
+                        This module defines the IFXFatCornerIter interface.
 */
 
 //***************************************************************************
@@ -27,53 +27,49 @@
 //***************************************************************************
 
 #include "IFXFatCornerIter.h"
-#include "IFXNeighborMesh.h"
-#include "IFXMeshGroup.h"
 #include "IFXMesh.h"
+#include "IFXMeshGroup.h"
+#include "IFXNeighborMesh.h"
 
 // Can only be initialized by IFXNeighborMesh
-void IFXFatCornerIter::Initialize(IFXNeighborMesh* pNeighborMesh,
-								  U32 mesh, U32 face, 
-								  U32 corner,
-								  IFXMeshGroup* pMeshGroup,
-								  U32 textureLayer)
+void IFXFatCornerIter::Initialize(IFXNeighborMesh* pNeighborMesh, U32 mesh, U32 face, U32 corner, IFXMeshGroup* pMeshGroup, U32 textureLayer)
 {
-	IFXCornerIter::Initialize(pNeighborMesh, mesh, face, corner);
-	m_pMeshGroup = pMeshGroup;
-	m_textureLayer = textureLayer;
+    IFXCornerIter::Initialize(pNeighborMesh, mesh, face, corner);
+    m_pMeshGroup = pMeshGroup;
+    m_textureLayer = textureLayer;
 
-	LoadMesh();	// load iterators for mesh
+    LoadMesh(); // load iterators for mesh
 
-	m_pCurrFace = m_faceIter.Index(GetFaceIndex());
-	m_currVertexIndex = m_pCurrFace->Vertex(GetCornerIndex());
+    m_pCurrFace = m_faceIter.Index(GetFaceIndex());
+    m_currVertexIndex = m_pCurrFace->Vertex(GetCornerIndex());
 }
-
 
 void IFXFatCornerIter::LoadMesh()
 {
-	IFXMesh* pMesh = 0;
-	m_pMeshGroup->GetMesh(GetMeshIndex(), pMesh);
-	IFXASSERT(pMesh);  // no external conditions would cause this to fail
+    IFXMesh* pMesh = 0;
+    m_pMeshGroup->GetMesh(GetMeshIndex(), pMesh);
+    IFXASSERT(pMesh); // no external conditions would cause this to fail
 
-	IFXVertexAttributes attrs = pMesh->GetAttributes();
-	m_hasNormal = attrs.m_uData.m_bHasNormals;
-	m_hasTexCoord = m_textureLayer < attrs.m_uData.m_uNumTexCoordLayers;
+    IFXVertexAttributes attrs = pMesh->GetAttributes();
+    m_hasNormal = attrs.m_uData.m_bHasNormals;
+    m_hasTexCoord = m_textureLayer < attrs.m_uData.m_uNumTexCoordLayers;
 
-	pMesh->GetFaceIter(m_faceIter);
+    pMesh->GetFaceIter(m_faceIter);
 
-	// We assume that all useful meshes will have 
-	// vertex positions.
-	IFXASSERT(attrs.m_uData.m_bHasPositions);
-	pMesh->GetPositionIter(m_positionIter);
+    // We assume that all useful meshes will have
+    // vertex positions.
+    IFXASSERT(attrs.m_uData.m_bHasPositions);
+    pMesh->GetPositionIter(m_positionIter);
 
-	if (m_hasNormal)
-		pMesh->GetNormalIter(m_normalIter);
+    if (m_hasNormal)
+    {
+        pMesh->GetNormalIter(m_normalIter);
+    }
 
-	if (m_hasTexCoord)
-		pMesh->GetTexCoordIter(m_texCoordIter, m_textureLayer);
+    if (m_hasTexCoord)
+    {
+        pMesh->GetTexCoordIter(m_texCoordIter, m_textureLayer);
+    }
 
-
-	IFXRELEASE(pMesh);
+    IFXRELEASE(pMesh);
 }
-
-

@@ -26,20 +26,20 @@
 //
 //***************************************************************************
 #include "CIFXUVGenerator.h"
-#include "IFXUVMapper.h"
-#include "IFXCoreCIDs.h"
 #include "IFXCOM.h"
+#include "IFXCoreCIDs.h"
+#include "IFXUVMapper.h"
 
 CIFXUVGenerator::CIFXUVGenerator()
 {
-  m_uRefCount=0;
-  m_LastWrapMode = IFX_UV_NONE;
-  m_pMapper = 0;
+    m_uRefCount = 0;
+    m_LastWrapMode = IFX_UV_NONE;
+    m_pMapper = 0;
 }
 
 CIFXUVGenerator::~CIFXUVGenerator()
 {
-  IFXRELEASE(m_pMapper);
+    IFXRELEASE(m_pMapper);
 }
 
 //---------------------------------------------------------------------------
@@ -53,7 +53,7 @@ CIFXUVGenerator::~CIFXUVGenerator()
 //---------------------------------------------------------------------------
 U32 CIFXUVGenerator::AddRef()
 {
-  return ++m_uRefCount;
+    return ++m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -67,13 +67,13 @@ U32 CIFXUVGenerator::AddRef()
 //---------------------------------------------------------------------------
 U32 CIFXUVGenerator::Release()
 {
-  if( 1 == m_uRefCount )
-  {
-    delete this;
-    return 0;
-  }
+    if (1 == m_uRefCount)
+    {
+        delete this;
+        return 0;
+    }
 
-  return --m_uRefCount;
+    return --m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -88,118 +88,129 @@ U32 CIFXUVGenerator::Release()
 //  QueryInterface.  For a list of such rules, refer to the Microsoft COM
 //  description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
-IFXRESULT CIFXUVGenerator::QueryInterface( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXUVGenerator::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-  IFXRESULT result  = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-  if ( ppInterface )
-  {
-    if ( interfaceId == IID_IFXUVGenerator ||
-       interfaceId == IID_IFXUnknown )
-      *ppInterface = ( CIFXUVGenerator* ) this;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXUVGenerator || interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (CIFXUVGenerator*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+
+            result = IFX_E_UNSUPPORTED;
+        }
+
+        if (IFXSUCCESS(result))
+        {
+            ((IFXUnknown*)*ppInterface)->AddRef();
+        }
+    }
     else
     {
-      *ppInterface = NULL;
-
-      result = IFX_E_UNSUPPORTED;
+        result = IFX_E_INVALID_POINTER;
     }
 
-    if ( IFXSUCCESS( result ) )
-      ( ( IFXUnknown* ) *ppInterface )->AddRef();
-  }
-  else
-    result = IFX_E_INVALID_POINTER;
-
-  return result;
+    return result;
 }
 
-IFXRESULT IFXAPI_CALLTYPE CIFXUVGenerator_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXUVGenerator_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-  IFXRESULT result;
+    IFXRESULT result;
 
-  if ( ppInterface )
-  {
-    // It doesn't exist, so try to create it.  Note:  The component
-    // class sets up gs_pSingleton upon construction and NULLs it
-    // upon destruction.
-    CIFXUVGenerator *pComponent = new CIFXUVGenerator;
-
-    if ( pComponent )
+    if (ppInterface)
     {
-      // Perform a temporary AddRef for our usage of the component.
-      pComponent->AddRef();
+        // It doesn't exist, so try to create it.  Note:  The component
+        // class sets up gs_pSingleton upon construction and NULLs it
+        // upon destruction.
+        CIFXUVGenerator* pComponent = new CIFXUVGenerator;
 
-      // Attempt to obtain a pointer to the requested interface.
-      result = pComponent->QueryInterface( interfaceId, ppInterface );
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-      // Perform a Release since our usage of the component is now
-      // complete.  Note:  If the QI fails, this will cause the
-      // component to be destroyed.
-      pComponent->Release();
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
+
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
     }
     else
-      result = IFX_E_OUT_OF_MEMORY;
-  }
-  else
-    result = IFX_E_INVALID_POINTER;
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-  return result;
+    return result;
 }
 
-
-IFXRESULT CIFXUVGenerator::Generate(IFXMesh& pMesh,
-                  IFXUVMapParameters* pMapParams,
-                  IFXMatrix4x4* pModelMatrix,
-                  IFXMatrix4x4* pViewMatrix,
-                  const IFXLightSet* pLightSet)
+IFXRESULT CIFXUVGenerator::Generate(IFXMesh& pMesh, IFXUVMapParameters* pMapParams, IFXMatrix4x4* pModelMatrix, IFXMatrix4x4* pViewMatrix, const IFXLightSet* pLightSet)
 {
-  IFXRESULT iResult=IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-  if(NULL == pViewMatrix)
-    iResult=IFX_E_INVALID_POINTER;
-  if(NULL == pLightSet)
-    iResult=IFX_E_INVALID_POINTER;
-  if(NULL == pMapParams)
-    iResult=IFX_E_INVALID_POINTER;
-  if(NULL == pModelMatrix)
-    iResult=IFX_E_INVALID_POINTER;
-
-
-  if(IFXSUCCESS(iResult))
-  {
-    // build the right UV mapper class
-    if ((pMapParams->eWrapMode != m_LastWrapMode) || (!m_pMapper))
+    if (NULL == pViewMatrix)
     {
-      IFXRELEASE(m_pMapper);
-
-      switch(pMapParams->eWrapMode)
-      {
-        case IFX_UV_NONE:
-          iResult=IFXCreateComponent( CID_IFXUVMapperNone, IID_IFXUVMapper, ( void** ) &m_pMapper );
-          break;
-        case IFX_UV_PLANAR:
-          iResult=IFXCreateComponent( CID_IFXUVMapperPlanar, IID_IFXUVMapper, ( void** ) &m_pMapper );
-          break;
-        case IFX_UV_CYLINDRICAL:
-          iResult=IFXCreateComponent( CID_IFXUVMapperCylindrical, IID_IFXUVMapper, ( void** ) &m_pMapper );
-          break;
-        case IFX_UV_SPHERICAL:
-          iResult=IFXCreateComponent( CID_IFXUVMapperSpherical, IID_IFXUVMapper, ( void** ) &m_pMapper );
-          break;
-        case IFX_UV_REFLECTION:
-          iResult=IFXCreateComponent( CID_IFXUVMapperReflection, IID_IFXUVMapper, ( void** ) &m_pMapper );
-          break;
-        default:
-          iResult=IFX_E_UNSUPPORTED;
-      }
+        iResult = IFX_E_INVALID_POINTER;
+    }
+    if (NULL == pLightSet)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
+    if (NULL == pMapParams)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
+    if (NULL == pModelMatrix)
+    {
+        iResult = IFX_E_INVALID_POINTER;
     }
 
-    if ( IFXSUCCESS(iResult) && m_pMapper )
+    if (IFXSUCCESS(iResult))
     {
-      m_LastWrapMode = pMapParams->eWrapMode;
-      iResult=m_pMapper->Apply(pMesh, pMapParams, pModelMatrix, pViewMatrix, pLightSet);
-    }
-  }
+        // build the right UV mapper class
+        if ((pMapParams->eWrapMode != m_LastWrapMode) || (!m_pMapper))
+        {
+            IFXRELEASE(m_pMapper);
 
-  return iResult;
+            switch (pMapParams->eWrapMode)
+            {
+                case IFX_UV_NONE:
+                    iResult = IFXCreateComponent(CID_IFXUVMapperNone, IID_IFXUVMapper, (void**)&m_pMapper);
+                    break;
+                case IFX_UV_PLANAR:
+                    iResult = IFXCreateComponent(CID_IFXUVMapperPlanar, IID_IFXUVMapper, (void**)&m_pMapper);
+                    break;
+                case IFX_UV_CYLINDRICAL:
+                    iResult = IFXCreateComponent(CID_IFXUVMapperCylindrical, IID_IFXUVMapper, (void**)&m_pMapper);
+                    break;
+                case IFX_UV_SPHERICAL:
+                    iResult = IFXCreateComponent(CID_IFXUVMapperSpherical, IID_IFXUVMapper, (void**)&m_pMapper);
+                    break;
+                case IFX_UV_REFLECTION:
+                    iResult = IFXCreateComponent(CID_IFXUVMapperReflection, IID_IFXUVMapper, (void**)&m_pMapper);
+                    break;
+                default:
+                    iResult = IFX_E_UNSUPPORTED;
+            }
+        }
+
+        if (IFXSUCCESS(iResult) && m_pMapper)
+        {
+            m_LastWrapMode = pMapParams->eWrapMode;
+            iResult = m_pMapper->Apply(pMesh, pMapParams, pModelMatrix, pViewMatrix, pLightSet);
+        }
+    }
+
+    return iResult;
 }

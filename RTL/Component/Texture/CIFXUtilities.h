@@ -20,44 +20,52 @@
 
 // here are a few utility functions for dealing with
 // OpenGL texture pixels (texels)...
-// Texture manager uses RGBA texels which in IA are 
+// Texture manager uses RGBA texels which in IA are
 // stored as (MSB)--> A B G R <--(LSB)...
 
 // WINDOWS version
-//inline U32 MakeTexel( U32 red, U32 green, U32 blue, U32 alpha) {
+// inline U32 MakeTexel( U32 red, U32 green, U32 blue, U32 alpha) {
 //	return red | (green << 8) | (blue << 16) | (alpha << 24);
 //}
 
-inline U32 MakeTexel( U32 red, U32 green, U32 blue, U32 alpha) {
-	return red | (green << 8) | (blue << 16) | (alpha << 24);
+inline U32 MakeTexel(U32 red, U32 green, U32 blue, U32 alpha)
+{
+    return red | (green << 8) | (blue << 16) | (alpha << 24);
 }
 
-inline U32 MakeTexelNoShiftAlpha( U32 red, U32 green, U32 blue, U32 alpha) {
-	return red | (green << 8) | (blue << 16) | alpha;
+inline U32 MakeTexelNoShiftAlpha(U32 red, U32 green, U32 blue, U32 alpha)
+{
+    return red | (green << 8) | (blue << 16) | alpha;
 }
 
-inline U32 TexelGetRed( U32 texel) {
-	return (texel & 0x000000FF);
+inline U32 TexelGetRed(U32 texel)
+{
+    return (texel & 0x000000FF);
 }
 
-inline U32 TexelGetGreen( U32 texel) {
-	return ((texel & 0x0000FF00) >> 8);
+inline U32 TexelGetGreen(U32 texel)
+{
+    return ((texel & 0x0000FF00) >> 8);
 }
 
-inline U32 TexelGetBlue( U32 texel) {
-	return ((texel & 0x00FF0000) >> 16);
+inline U32 TexelGetBlue(U32 texel)
+{
+    return ((texel & 0x00FF0000) >> 16);
 }
 
-inline U32 TexelGetAlpha( U32 texel) {
-	return ((texel & 0xFF000000) >> 24);
+inline U32 TexelGetAlpha(U32 texel)
+{
+    return ((texel & 0xFF000000) >> 24);
 }
 
-inline U32 TexelGetAlphaNoShift( U32 texel) {
-	return (texel & 0xFF000000);
+inline U32 TexelGetAlphaNoShift(U32 texel)
+{
+    return (texel & 0xFF000000);
 }
 
-inline U32 TexelSaturateChannel( U32 value) {
-	return (value > 255) ? 255 : value;
+inline U32 TexelSaturateChannel(U32 value)
+{
+    return (value > 255) ? 255 : value;
 }
 
 #endif // !__CIFXUTILITIES_H__

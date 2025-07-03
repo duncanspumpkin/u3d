@@ -28,44 +28,43 @@
 #ifndef CIFXBONEWEIGHTSMODIFIEREENCODER_H__
 #define CIFXBONEWEIGHTSMODIFIEREENCODER_H__
 
-
 // no ordering requirements for include files
+#include "IFXAutoRelease.h"
 #include "IFXBitStreamCompressedX.h"
 #include "IFXCoreServices.h"
 #include "IFXDataBlockQueueX.h"
 #include "IFXEncoderX.h"
-#include "IFXString.h"
 #include "IFXModifier.h"
-#include "IFXAutoRelease.h"
+#include "IFXString.h"
 
-class  CIFXBoneWeightsModifierEncoder : virtual public IFXEncoderX
+class CIFXBoneWeightsModifierEncoder : virtual public IFXEncoderX
 {
 public:
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXBoneWeightsModifierEncoder_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXBoneWeightsModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXUnknown
-	U32 IFXAPI 			AddRef ( void );
-	U32 IFXAPI 			Release ( void );
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	void	IFXAPI		EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f );
-	void	IFXAPI		InitializeX( IFXCoreServices& rCoreServices );
-	void	IFXAPI		SetObjectX( IFXUnknown& rObject );
+    // IFXEncoderX
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
 
 private:
-	// methods
-	CIFXBoneWeightsModifierEncoder();
-	virtual ~CIFXBoneWeightsModifierEncoder();
+    // methods
+    CIFXBoneWeightsModifierEncoder();
+    virtual ~CIFXBoneWeightsModifierEncoder();
 
-	// members
-	BOOL						m_bInitialized;
-	IFXBitStreamCompressedX*	m_pBitStream;
-	IFXCoreServices*			m_pCoreServices;
-	IFXUnknown*					m_pObject;
-	U32							m_uRefCount;
-	IFXDECLAREMEMBER(IFXModifier,m_pModifier);
+    // members
+    BOOL m_bInitialized;
+    IFXBitStreamCompressedX* m_pBitStream;
+    IFXCoreServices* m_pCoreServices;
+    IFXUnknown* m_pObject;
+    U32 m_uRefCount;
+    IFXDECLAREMEMBER(IFXModifier, m_pModifier);
 };
 
 #endif

@@ -24,103 +24,94 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef GlyphModifier_H
 #define GlyphModifier_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
+#include "GlyphCommandList.h"
 #include "IFXResult.h"
 #include "Modifier.h"
-#include "GlyphCommandList.h"
 
 #include "IFXMatrix4x4.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class GlyphModifier : public Modifier
+    {
+    public:
+        GlyphModifier() {};
+        virtual ~GlyphModifier() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        void SetBillboard(const IFXString& rValue);
+        void SetSingleShader(const IFXString& rValue);
+        const IFXString& GetBillboard() const;
+        const IFXString& GetSingleShader() const;
 
+        void SetTM(const IFXMatrix4x4& rMatrix);
+        const IFXMatrix4x4& GetTM() const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        IFXRESULT AddCommand(const GlyphCommand* pCommand);
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class GlyphModifier : public Modifier
-{
-public:
-	GlyphModifier() {};
-	virtual ~GlyphModifier() {};
+        /**
+         */
+        const GlyphCommand* GetCommand(U32 index) const;
 
-	/**
-	*/
-	void SetBillboard( const IFXString& rValue );
-	void SetSingleShader( const IFXString& rValue );
-	const IFXString& GetBillboard() const;
-	const IFXString& GetSingleShader() const;
+        /**
+         */
+        U32 GetCommandCount() const;
 
-	void SetTM( const IFXMatrix4x4& rMatrix );
-	const IFXMatrix4x4& GetTM() const;
+        GlyphModifier& operator=(const GlyphModifier& rModifier);
 
-	/**
-	*/
-	IFXRESULT AddCommand( const GlyphCommand* pCommand );
+    private:
+        IFXString m_billboard;
+        IFXString m_singleShader;
+        GlyphCommandList m_commandList;
+        IFXMatrix4x4 m_tm;
+    };
 
-	/**
-	*/
-	const GlyphCommand* GetCommand( U32 index ) const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	U32 GetCommandCount() const;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	GlyphModifier& operator= (const GlyphModifier& rModifier);
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-private:
-	IFXString m_billboard;
-	IFXString m_singleShader;
-	GlyphCommandList m_commandList;
-	IFXMatrix4x4 m_tm;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
 }
 

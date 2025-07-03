@@ -25,7 +25,6 @@
 //
 //*****************************************************************************
 
-
 #include "CIFXDummyModifierEncoder.h"
 #include "IFXBlockTypes.h"
 #include "IFXCheckX.h"
@@ -33,206 +32,211 @@
 #include "IFXException.h"
 
 // constructor
-CIFXDummyModifierEncoder::CIFXDummyModifierEncoder() :
-	IFXDEFINEMEMBER(m_pModifier)
+CIFXDummyModifierEncoder::CIFXDummyModifierEncoder()
+    : IFXDEFINEMEMBER(m_pModifier)
 {
-	m_bInitialized = FALSE;
-	m_pBitStream = NULL;
-	m_pCoreServices = NULL;
-	m_pObject = NULL;
-	m_uRefCount = 0;
+    m_bInitialized = FALSE;
+    m_pBitStream = NULL;
+    m_pCoreServices = NULL;
+    m_pObject = NULL;
+    m_uRefCount = 0;
 }
 
 // destructor
 CIFXDummyModifierEncoder::~CIFXDummyModifierEncoder()
 {
-	IFXRELEASE( m_pBitStream );
-	IFXRELEASE( m_pCoreServices );
-	IFXRELEASE( m_pObject );
+    IFXRELEASE(m_pBitStream);
+    IFXRELEASE(m_pCoreServices);
+    IFXRELEASE(m_pObject);
 }
-
 
 // IFXUnknown
 U32 CIFXDummyModifierEncoder::AddRef()
 {
-	return ++m_uRefCount;
+    return ++m_uRefCount;
 }
 
 U32 CIFXDummyModifierEncoder::Release()
 {
-	if ( !( --m_uRefCount ) )
-	{
-		delete this;
+    if (!(--m_uRefCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_uRefCount;
+    return m_uRefCount;
 }
 
-IFXRESULT CIFXDummyModifierEncoder::QueryInterface( IFXREFIID interfaceId,
-												  void**	ppInterface )
+IFXRESULT CIFXDummyModifierEncoder::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXEncoderX )
-		{
-			*ppInterface = ( IFXEncoderX* ) this;
-			this->AddRef();
-		}
-		else if ( interfaceId == IID_IFXUnknown )
-		{
-			*ppInterface = ( IFXUnknown* ) this;
-			this->AddRef();
-		}
-		else
-		{
-			*ppInterface = NULL;
-			rc = IFX_E_UNSUPPORTED;
-		}
-	}
-	else
-		rc = IFX_E_INVALID_POINTER;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXEncoderX)
+        {
+            *ppInterface = (IFXEncoderX*)this;
+            this->AddRef();
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+            this->AddRef();
+        }
+        else
+        {
+            *ppInterface = NULL;
+            rc = IFX_E_UNSUPPORTED;
+        }
+    }
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN(rc);
+    IFXRETURN(rc);
 }
-
 
 // IFXEncoderX
-void CIFXDummyModifierEncoder::EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units )
+void CIFXDummyModifierEncoder::EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units)
 {
-	IFXDummyModifier* pDummyModifier = NULL;
-	IFXDataBlockX* pDataBlock = NULL;
-	IFXDataBlockQueueX* pDBQueue = NULL;
+    IFXDummyModifier* pDummyModifier = NULL;
+    IFXDataBlockX* pDataBlock = NULL;
+    IFXDataBlockQueueX* pDBQueue = NULL;
 
-	try
-	{
-		// check for initialization
-		if ( FALSE == m_bInitialized )
-			throw IFXException( IFX_E_NOT_INITIALIZED );
-		if ( NULL == m_pObject )
-			throw IFXException( IFX_E_CANNOT_FIND );
+    try
+    {
+        // check for initialization
+        if (FALSE == m_bInitialized)
+        {
+            throw IFXException(IFX_E_NOT_INITIALIZED);
+        }
+        if (NULL == m_pObject)
+        {
+            throw IFXException(IFX_E_CANNOT_FIND);
+        }
 
-		BOOL bDone = FALSE;
-		IFXCHECKX( m_pObject->QueryInterface( IID_IFXDummyModifier, (void**)&pDummyModifier ) );
-		pDBQueue = pDummyModifier->GetDataBlock();
+        BOOL bDone = FALSE;
+        IFXCHECKX(m_pObject->QueryInterface(IID_IFXDummyModifier, (void**)&pDummyModifier));
+        pDBQueue = pDummyModifier->GetDataBlock();
 
-		if( NULL == pDBQueue )
-			throw IFXException( IFX_E_NOT_INITIALIZED );
+        if (NULL == pDBQueue)
+        {
+            throw IFXException(IFX_E_NOT_INITIALIZED);
+        }
 
-		do
-		{
-			IFXRELEASE( pDataBlock );
-			pDBQueue->GetNextBlockX( pDataBlock, bDone );
-			rDataBlockQueue.AppendBlockX(*pDataBlock);
+        do
+        {
+            IFXRELEASE(pDataBlock);
+            pDBQueue->GetNextBlockX(pDataBlock, bDone);
+            rDataBlockQueue.AppendBlockX(*pDataBlock);
 
-		} while( !bDone );
+        } while (!bDone);
 
-		// clean up
-		IFXRELEASE( pDummyModifier );
-		IFXRELEASE( pDataBlock );
-		IFXRELEASE( pDBQueue );
-	}
-	catch ( ... )
-	{
-		IFXRELEASE( pDummyModifier );
-		IFXRELEASE( pDataBlock );
-		IFXRELEASE( pDBQueue );
+        // clean up
+        IFXRELEASE(pDummyModifier);
+        IFXRELEASE(pDataBlock);
+        IFXRELEASE(pDBQueue);
+    }
+    catch (...)
+    {
+        IFXRELEASE(pDummyModifier);
+        IFXRELEASE(pDataBlock);
+        IFXRELEASE(pDBQueue);
 
-		throw;
-	}
+        throw;
+    }
 }
 
-void CIFXDummyModifierEncoder::InitializeX( IFXCoreServices& rCoreServices )
+void CIFXDummyModifierEncoder::InitializeX(IFXCoreServices& rCoreServices)
 {
-	try
-	{
-		// latch onto the core services object passed in
-		IFXRELEASE( m_pCoreServices )
-		m_pCoreServices = &rCoreServices;
-		m_pCoreServices->AddRef();
+    try
+    {
+        // latch onto the core services object passed in
+        IFXRELEASE(m_pCoreServices)
+        m_pCoreServices = &rCoreServices;
+        m_pCoreServices->AddRef();
 
-		// create a bitstream
-		IFXRELEASE( m_pBitStream );
-		IFXCHECKX( IFXCreateComponent( CID_IFXBitStreamX, IID_IFXBitStreamX,
-									   (void**)&m_pBitStream ) );
+        // create a bitstream
+        IFXRELEASE(m_pBitStream);
+        IFXCHECKX(IFXCreateComponent(CID_IFXBitStreamX, IID_IFXBitStreamX, (void**)&m_pBitStream));
 
-		m_bInitialized = TRUE;
-	}
-	catch ( ... )
-	{
-		IFXRELEASE( m_pCoreServices );
-		IFXRELEASE( m_pBitStream );
+        m_bInitialized = TRUE;
+    }
+    catch (...)
+    {
+        IFXRELEASE(m_pCoreServices);
+        IFXRELEASE(m_pBitStream);
 
-		throw;
-	}
+        throw;
+    }
 }
 
-void CIFXDummyModifierEncoder::SetObjectX( IFXUnknown& rObject )
+void CIFXDummyModifierEncoder::SetObjectX(IFXUnknown& rObject)
 {
-	IFXModifier* pModifier= NULL;
+    IFXModifier* pModifier = NULL;
 
-	try
-	{
-		// set the object
-		IFXRELEASE( m_pObject );
-		m_pObject = &rObject;
-		m_pObject->AddRef();
+    try
+    {
+        // set the object
+        IFXRELEASE(m_pObject);
+        m_pObject = &rObject;
+        m_pObject->AddRef();
 
-		m_pObject->QueryInterface( IID_IFXModifier, (void**)&pModifier );
+        m_pObject->QueryInterface(IID_IFXModifier, (void**)&pModifier);
 
-		pModifier->AddRef();
-		IFXRELEASE( m_pModifier );
-		m_pModifier = pModifier;
+        pModifier->AddRef();
+        IFXRELEASE(m_pModifier);
+        m_pModifier = pModifier;
 
-		IFXRELEASE( pModifier );
-	}
-	catch ( ... )
-	{
-		IFXRELEASE( m_pObject ); // release the member variable, not the input parameter
-		IFXRELEASE( pModifier );
+        IFXRELEASE(pModifier);
+    }
+    catch (...)
+    {
+        IFXRELEASE(m_pObject); // release the member variable, not the input parameter
+        IFXRELEASE(pModifier);
 
-		throw;
-	}
+        throw;
+    }
 }
-
 
 // Factory friend
-IFXRESULT IFXAPI_CALLTYPE CIFXDummyModifierEncoder_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXDummyModifierEncoder_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
+    if (ppInterface)
+    {
+        // Create the CIFXLoadManager component.
+        CIFXDummyModifierEncoder* pComponent = new CIFXDummyModifierEncoder;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXLoadManager component.
-		CIFXDummyModifierEncoder *pComponent = new CIFXDummyModifierEncoder;
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+            // Attempt to obtain a pointer to the requested interface.
+            rc = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Attempt to obtain a pointer to the requested interface.
-			rc = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
+        else
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
+    }
 
-		else
-			rc = IFX_E_OUT_OF_MEMORY;
-	}
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	else
-		rc = IFX_E_INVALID_POINTER;
-
-
-	IFXRETURN( rc );
+    IFXRETURN(rc);
 }

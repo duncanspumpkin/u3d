@@ -25,9 +25,9 @@
 #include "IFXOSUtilities.h"
 #include "wcmatch.h"
 
+#include <stdlib.h>
 #include <wchar.h>
 #include <wctype.h>
-#include <stdlib.h>
 
 #if __MINGW32__
 #define vswprintf _vsnwprintf
@@ -43,143 +43,151 @@ const U32 MAX_INT_LENGTH = 40;
 
 IFXINLINE void IFXString::NewBuffer(U32 size)
 {
-	DeleteBuffer();
-	if(size)
-	{
-		//m_Buffer = new IFXCHAR[size];
-		m_Buffer = (IFXCHAR*)IFXAllocate(size * sizeof(IFXCHAR));
-		if( NULL != m_Buffer )
-			m_BufferLength = size;
-	}
+    DeleteBuffer();
+    if (size)
+    {
+        // m_Buffer = new IFXCHAR[size];
+        m_Buffer = (IFXCHAR*)IFXAllocate(size * sizeof(IFXCHAR));
+        if (NULL != m_Buffer)
+        {
+            m_BufferLength = size;
+        }
+    }
 }
 
 IFXINLINE void IFXString::DeleteBuffer(void)
 {
-	//IFXDELETE_ARRAY( m_Buffer );
+    // IFXDELETE_ARRAY( m_Buffer );
 
-	if(m_Buffer)
-	{
-		IFXDeallocate(m_Buffer);
-		m_Buffer = NULL;
-	}
-	m_BufferLength = 0;
+    if (m_Buffer)
+    {
+        IFXDeallocate(m_Buffer);
+        m_Buffer = NULL;
+    }
+    m_BufferLength = 0;
 }
-
 
 IFXString::IFXString(void)
-: 	m_Buffer(NULL),
-	m_BufferLength(0)
+    : m_Buffer(NULL)
+    , m_BufferLength(0)
 {
 }
-
 
 IFXString::IFXString(const IFXString& operand)
-: 	m_Buffer(NULL),
-	m_BufferLength(0)
+    : m_Buffer(NULL)
+    , m_BufferLength(0)
 {
-	if (operand.m_BufferLength > 0) 
-	{
-		NewBuffer(operand.m_BufferLength);
-		if (m_Buffer)
-			wcscpy(m_Buffer, operand.m_Buffer);
-	}
+    if (operand.m_BufferLength > 0)
+    {
+        NewBuffer(operand.m_BufferLength);
+        if (m_Buffer)
+        {
+            wcscpy(m_Buffer, operand.m_Buffer);
+        }
+    }
 }
-
 
 IFXString::IFXString(const IFXString* operand)
-: 	m_Buffer(NULL),
-	m_BufferLength(0)
+    : m_Buffer(NULL)
+    , m_BufferLength(0)
 {
-	if(!operand)
-	{
-		DeleteBuffer();
-	}
-	else
-	{
-		if (operand->m_BufferLength > 0) 
-		{
-			NewBuffer((U32)operand->m_BufferLength);
-			if (m_Buffer)
-				wcscpy(m_Buffer, operand->m_Buffer);
-		}
-	}
+    if (!operand)
+    {
+        DeleteBuffer();
+    }
+    else
+    {
+        if (operand->m_BufferLength > 0)
+        {
+            NewBuffer((U32)operand->m_BufferLength);
+            if (m_Buffer)
+            {
+                wcscpy(m_Buffer, operand->m_Buffer);
+            }
+        }
+    }
 }
-
 
 IFXString::IFXString(const U8* operand)
-: 	m_Buffer(NULL),
-	m_BufferLength(0)
+    : m_Buffer(NULL)
+    , m_BufferLength(0)
 {
-	if(!operand)
-	{
-		DeleteBuffer();
-	}
-	else
-	{
-		U32 size = 0;
-		IFXRESULT result = IFXOSGetWideCharStrSize( operand, &size );
-		size = size + 1; // null terminator
+    if (!operand)
+    {
+        DeleteBuffer();
+    }
+    else
+    {
+        U32 size = 0;
+        IFXRESULT result = IFXOSGetWideCharStrSize(operand, &size);
+        size = size + 1; // null terminator
 
-		if( IFXSUCCESS(result) && (size > 0) )
-		{
-			NewBuffer(size);
-			if (m_Buffer)
-				IFXOSConvertUtf8StrToWideChar( operand, m_Buffer, size );
-		}
-	}
+        if (IFXSUCCESS(result) && (size > 0))
+        {
+            NewBuffer(size);
+            if (m_Buffer)
+            {
+                IFXOSConvertUtf8StrToWideChar(operand, m_Buffer, size);
+            }
+        }
+    }
 }
-
 
 IFXString::IFXString(const char* operand)
-: 	m_Buffer(NULL),
-	m_BufferLength(0)
+    : m_Buffer(NULL)
+    , m_BufferLength(0)
 {
-	if(!operand)
-	{
-		DeleteBuffer();
-	}
-	else
-	{
-		U32 size = 0;
-		IFXRESULT result = IFXOSGetWideCharStrSize( (const U8*)operand, &size );
-		size = size + 1; // null terminator
+    if (!operand)
+    {
+        DeleteBuffer();
+    }
+    else
+    {
+        U32 size = 0;
+        IFXRESULT result = IFXOSGetWideCharStrSize((const U8*)operand, &size);
+        size = size + 1; // null terminator
 
-		if( IFXSUCCESS(result) && (size > 0) )
-		{
-			NewBuffer(size);
-			if (m_Buffer)
-				IFXOSConvertUtf8StrToWideChar( (const U8*)operand, m_Buffer, size );
-		}
-	}
+        if (IFXSUCCESS(result) && (size > 0))
+        {
+            NewBuffer(size);
+            if (m_Buffer)
+            {
+                IFXOSConvertUtf8StrToWideChar((const U8*)operand, m_Buffer, size);
+            }
+        }
+    }
 }
 
-
 IFXString::IFXString(const IFXCHAR* operand)
-: 	m_Buffer(NULL),
-	m_BufferLength(0)
+    : m_Buffer(NULL)
+    , m_BufferLength(0)
 {
-	if(!operand)
-	{
-		DeleteBuffer();
-	}
-	else
-	{
-		NewBuffer((U32)wcslen(operand)+1);
-		if (m_Buffer)
-			wcscpy(m_Buffer, operand);
-	}
+    if (!operand)
+    {
+        DeleteBuffer();
+    }
+    else
+    {
+        NewBuffer((U32)wcslen(operand) + 1);
+        if (m_Buffer)
+        {
+            wcscpy(m_Buffer, operand);
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
 //  IFXString::IFXString
 //---------------------------------------------------------------------------
 IFXString::IFXString(U32 size)
-: 	m_Buffer(NULL),
-	m_BufferLength(0)
+    : m_Buffer(NULL)
+    , m_BufferLength(0)
 {
-	NewBuffer(size+1);
-	if(m_Buffer)
-		m_Buffer[0] = 0;
+    NewBuffer(size + 1);
+    if (m_Buffer)
+    {
+        m_Buffer[0] = 0;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -187,42 +195,42 @@ IFXString::IFXString(U32 size)
 //---------------------------------------------------------------------------
 IFXString::~IFXString(void)
 {
-	DeleteBuffer();
+    DeleteBuffer();
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::Clear
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::Clear()
 {
-	DeleteBuffer();
+    DeleteBuffer();
 
-	return IFX_OK;
+    return IFX_OK;
 }
-
 
 U32 IFXString::LengthU8(void) const
 {
-	U32 len = 0;
+    U32 len = 0;
 
-	if (m_Buffer)
-		IFXOSGetUtf8StrSize( m_Buffer, &len );
+    if (m_Buffer)
+    {
+        IFXOSGetUtf8StrSize(m_Buffer, &len);
+    }
 
-	return len;
+    return len;
 }
-
 
 U32 IFXString::Length(void) const
 {
-	U32 len = 0;
+    U32 len = 0;
 
-	if (m_Buffer)
-		len = wcslen( m_Buffer );
+    if (m_Buffer)
+    {
+        len = wcslen(m_Buffer);
+    }
 
-	return len;
+    return len;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::GetAt
@@ -231,23 +239,30 @@ U32 IFXString::Length(void) const
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::GetAt(U32 uIndex, IFXCHAR* pChar)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if(uIndex>m_BufferLength)
-		result = IFX_E_INVALID_RANGE;
+    if (uIndex > m_BufferLength)
+    {
+        result = IFX_E_INVALID_RANGE;
+    }
 
-	if(pChar==NULL)
-		result = IFX_E_INVALID_POINTER;
+    if (pChar == NULL)
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	if(m_Buffer==NULL)
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_Buffer == NULL)
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	if( IFXSUCCESS(result) )
-		*pChar=m_Buffer[uIndex];
+    if (IFXSUCCESS(result))
+    {
+        *pChar = m_Buffer[uIndex];
+    }
 
-	return result;
+    return result;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::GetLength
@@ -255,18 +270,24 @@ IFXRESULT IFXString::GetAt(U32 uIndex, IFXCHAR* pChar)
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::GetLengthU8(U32* pLength)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if(pLength == NULL)
-		result = IFX_E_INVALID_POINTER;
+    if (pLength == NULL)
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	if(m_Buffer == NULL)
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_Buffer == NULL)
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	if( IFXSUCCESS(result) )
-		result = IFXOSGetUtf8StrSize( m_Buffer, pLength );
+    if (IFXSUCCESS(result))
+    {
+        result = IFXOSGetUtf8StrSize(m_Buffer, pLength);
+    }
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -276,13 +297,17 @@ IFXRESULT IFXString::GetLengthU8(U32* pLength)
 //---------------------------------------------------------------------------
 BOOL IFXString::IsEmpty()
 {
-	if(NULL == m_Buffer)
-		return IFX_TRUE;
+    if (NULL == m_Buffer)
+    {
+        return IFX_TRUE;
+    }
 
-	if(m_Buffer[0]==0)
-		return IFX_TRUE;
+    if (m_Buffer[0] == 0)
+    {
+        return IFX_TRUE;
+    }
 
-	return IFX_FALSE;
+    return IFX_FALSE;
 }
 
 // &**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&
@@ -296,19 +321,27 @@ BOOL IFXString::IsEmpty()
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::SetAt(U32 uIndex, IFXCHAR* pChar)
 {
-	IFXRESULT iResult=IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(uIndex>m_BufferLength)
-		iResult=IFX_E_INVALID_RANGE;
-	if(pChar==NULL)
-		iResult=IFX_E_INVALID_POINTER;
-	if(m_Buffer==NULL)
-		iResult=IFX_E_NOT_INITIALIZED;
+    if (uIndex > m_BufferLength)
+    {
+        iResult = IFX_E_INVALID_RANGE;
+    }
+    if (pChar == NULL)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
+    if (m_Buffer == NULL)
+    {
+        iResult = IFX_E_NOT_INITIALIZED;
+    }
 
-	if(IFXSUCCESS(iResult))
-		m_Buffer[uIndex]=*pChar;
+    if (IFXSUCCESS(iResult))
+    {
+        m_Buffer[uIndex] = *pChar;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -316,28 +349,33 @@ IFXRESULT IFXString::SetAt(U32 uIndex, IFXCHAR* pChar)
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::ConvertToRawU8(U8* pString, U32 destSize)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( NULL == pString )
-		result = IFX_E_INVALID_POINTER;
+    if (NULL == pString)
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	if( 0 == destSize )
-		result = IFX_E_BAD_PARAM;
+    if (0 == destSize)
+    {
+        result = IFX_E_BAD_PARAM;
+    }
 
-	if( IFXSUCCESS( result ) )
-	{
-		if( NULL != m_Buffer && 0 != Length() )
-		{
-			result =  IFXOSConvertWideCharStrToUtf8( 
-								m_Buffer, pString, destSize );
-		}
-		else
-			result = IFX_E_NOT_INITIALIZED;
-	}
+    if (IFXSUCCESS(result))
+    {
+        if (NULL != m_Buffer && 0 != Length())
+        {
+            result = IFXOSConvertWideCharStrToUtf8(
+                m_Buffer, pString, destSize);
+        }
+        else
+        {
+            result = IFX_E_NOT_INITIALIZED;
+        }
+    }
 
-	return result;
+    return result;
 }
-
 
 // &**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&
 // Assignment Support
@@ -349,27 +387,30 @@ IFXRESULT IFXString::ConvertToRawU8(U8* pString, U32 destSize)
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::Assign(const IFXString* pSource)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if(!pSource)
-	{
-		DeleteBuffer();
-	}
-	else
-	{
-		if (pSource->m_BufferLength > 0) 
-		{
-			NewBuffer(pSource->m_BufferLength);
-			if (m_Buffer)
-				wcscpy(m_Buffer, pSource->m_Buffer);
-			else
-				result = IFX_E_OUT_OF_MEMORY;
-		}
-	}
+    if (!pSource)
+    {
+        DeleteBuffer();
+    }
+    else
+    {
+        if (pSource->m_BufferLength > 0)
+        {
+            NewBuffer(pSource->m_BufferLength);
+            if (m_Buffer)
+            {
+                wcscpy(m_Buffer, pSource->m_Buffer);
+            }
+            else
+            {
+                result = IFX_E_OUT_OF_MEMORY;
+            }
+        }
+    }
 
-	return result;
+    return result;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::Assign
@@ -378,31 +419,37 @@ IFXRESULT IFXString::Assign(const IFXString* pSource)
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::Assign(const U8* pSource)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if(!pSource)
-	{
-		DeleteBuffer();
-	}
-	else
-	{
-		U32 size = 0;
-		result = IFXOSGetWideCharStrSize( pSource, &size );
-		size = size + 1; //null terminator
+    if (!pSource)
+    {
+        DeleteBuffer();
+    }
+    else
+    {
+        U32 size = 0;
+        result = IFXOSGetWideCharStrSize(pSource, &size);
+        size = size + 1; // null terminator
 
-		if( IFXSUCCESS( result) && (size > 0) )
-		{
-			NewBuffer(size);
-			if (m_Buffer)
-				result = IFXOSConvertUtf8StrToWideChar( pSource, m_Buffer, size );
-			else
-				result = IFX_E_OUT_OF_MEMORY;
-		}
-		else
-			result = IFX_E_UNDEFINED;
-	}
+        if (IFXSUCCESS(result) && (size > 0))
+        {
+            NewBuffer(size);
+            if (m_Buffer)
+            {
+                result = IFXOSConvertUtf8StrToWideChar(pSource, m_Buffer, size);
+            }
+            else
+            {
+                result = IFX_E_OUT_OF_MEMORY;
+            }
+        }
+        else
+        {
+            result = IFX_E_UNDEFINED;
+        }
+    }
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -413,24 +460,27 @@ IFXRESULT IFXString::Assign(const U8* pSource)
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::Assign(const IFXCHAR* pSource)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if(!pSource)
-	{
-		DeleteBuffer();
-	}
-	else
-	{
-		NewBuffer((U32)wcslen(pSource)+1);
-		if (m_Buffer)
-			wcscpy(m_Buffer, pSource);
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
+    if (!pSource)
+    {
+        DeleteBuffer();
+    }
+    else
+    {
+        NewBuffer((U32)wcslen(pSource) + 1);
+        if (m_Buffer)
+        {
+            wcscpy(m_Buffer, pSource);
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
 
-	return result;
+    return result;
 }
-
 
 // &**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&
 // Comparison Support
@@ -438,37 +488,48 @@ IFXRESULT IFXString::Assign(const IFXCHAR* pSource)
 
 I32 IFXString::Compare(const IFXCHAR* pSource) const
 {
-	if(m_Buffer==NULL && pSource==NULL)
-		return 0;
-	if(m_Buffer==NULL)
-		return -1;
-	if(pSource==NULL)
-		return 1;
+    if (m_Buffer == NULL && pSource == NULL)
+    {
+        return 0;
+    }
+    if (m_Buffer == NULL)
+    {
+        return -1;
+    }
+    if (pSource == NULL)
+    {
+        return 1;
+    }
 
-	return wcscmp(m_Buffer, pSource);
+    return wcscmp(m_Buffer, pSource);
 }
 
-I32 IFXString::CompareNoCase(const IFXCHAR* pSource)  const
+I32 IFXString::CompareNoCase(const IFXCHAR* pSource) const
 {
-	if(m_Buffer==NULL && pSource==NULL)
-		return 0;
-	else if(m_Buffer==NULL)
-		return -1;
-	else if(pSource==NULL)
-		return 1;
+    if (m_Buffer == NULL && pSource == NULL)
+    {
+        return 0;
+    }
+    else if (m_Buffer == NULL)
+    {
+        return -1;
+    }
+    else if (pSource == NULL)
+    {
+        return 1;
+    }
 
-	IFXString str1(this), str2(pSource);
+    IFXString str1(this), str2(pSource);
 
-	str1.ForceLowercase();
-	str2.ForceLowercase();
+    str1.ForceLowercase();
+    str2.ForceLowercase();
 
-	return wcscmp(str1.Raw(), str2.Raw());
+    return wcscmp(str1.Raw(), str2.Raw());
 }
 
 // &**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&
 // Case support Support
 // &**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&
-
 
 //---------------------------------------------------------------------------
 //  IFXString::ForceUpperCase
@@ -477,12 +538,14 @@ I32 IFXString::CompareNoCase(const IFXCHAR* pSource)  const
 //---------------------------------------------------------------------------
 void IFXString::ForceUppercase()
 {
-	if(m_Buffer)
-	{
-		U32 i;
-		for(i = 0; m_Buffer[i] != L'\0'; ++i)
-			m_Buffer[i] = towupper(m_Buffer[i]);
-	}
+    if (m_Buffer)
+    {
+        U32 i;
+        for (i = 0; m_Buffer[i] != L'\0'; ++i)
+        {
+            m_Buffer[i] = towupper(m_Buffer[i]);
+        }
+    }
 }
 //---------------------------------------------------------------------------
 //  IFXString::ForceLowerCase
@@ -491,12 +554,14 @@ void IFXString::ForceUppercase()
 //---------------------------------------------------------------------------
 void IFXString::ForceLowercase()
 {
-	if(m_Buffer)
-	{
-		U32 i;
-		for(i = 0; m_Buffer[i] != L'\0'; ++i)
-			m_Buffer[i] = towlower(m_Buffer[i]);
-	}
+    if (m_Buffer)
+    {
+        U32 i;
+        for (i = 0; m_Buffer[i] != L'\0'; ++i)
+        {
+            m_Buffer[i] = towlower(m_Buffer[i]);
+        }
+    }
 }
 
 // &**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&
@@ -510,43 +575,36 @@ void IFXString::ForceLowercase()
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::Concatenate(const IFXCHAR* pSource)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if(pSource==NULL)
-		result = IFX_E_INVALID_POINTER;
+    if (pSource == NULL)
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	if (IFXSUCCESS(result))
-	{
-		if (m_Buffer) 
-		{
-			IFXString tmpString(this);
-			NewBuffer(m_BufferLength+(U32)wcslen(pSource));
-			if (m_Buffer)
-			{
-				wcscpy(m_Buffer, tmpString.m_Buffer);
-				wcscat(m_Buffer, pSource);
-			}
-			else
-				result = IFX_E_INVALID_POINTER;
-		} 
-		else
-			result = Assign(pSource);
-	}
+    if (IFXSUCCESS(result))
+    {
+        if (m_Buffer)
+        {
+            IFXString tmpString(this);
+            NewBuffer(m_BufferLength + (U32)wcslen(pSource));
+            if (m_Buffer)
+            {
+                wcscpy(m_Buffer, tmpString.m_Buffer);
+                wcscat(m_Buffer, pSource);
+            }
+            else
+            {
+                result = IFX_E_INVALID_POINTER;
+            }
+        }
+        else
+        {
+            result = Assign(pSource);
+        }
+    }
 
-	return result;
-}
-
-
-//---------------------------------------------------------------------------
-//  IFXString::operator +
-//
-// appends the arg string to this string and returns the newly formaed string
-//---------------------------------------------------------------------------
-IFXString IFXString::operator+( const IFXString& rString ) const
-{
-	IFXString Temp(*this);
-	Temp.Concatenate(rString.m_Buffer);
-	return Temp;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -554,11 +612,11 @@ IFXString IFXString::operator+( const IFXString& rString ) const
 //
 // appends the arg string to this string and returns the newly formaed string
 //---------------------------------------------------------------------------
-IFXString IFXString::operator+( const U8* rString ) const
+IFXString IFXString::operator+(const IFXString& rString) const
 {
-	IFXString Temp(*this);
-	Temp.Concatenate(rString);
-	return Temp;
+    IFXString Temp(*this);
+    Temp.Concatenate(rString.m_Buffer);
+    return Temp;
 }
 
 //---------------------------------------------------------------------------
@@ -566,14 +624,24 @@ IFXString IFXString::operator+( const U8* rString ) const
 //
 // appends the arg string to this string and returns the newly formaed string
 //---------------------------------------------------------------------------
-IFXString IFXString::operator+( const IFXCHAR* rString ) const
+IFXString IFXString::operator+(const U8* rString) const
 {
-	IFXString Temp(*this);
-	Temp.Concatenate((const IFXCHAR*)rString);
-	return Temp;
+    IFXString Temp(*this);
+    Temp.Concatenate(rString);
+    return Temp;
 }
 
-
+//---------------------------------------------------------------------------
+//  IFXString::operator +
+//
+// appends the arg string to this string and returns the newly formaed string
+//---------------------------------------------------------------------------
+IFXString IFXString::operator+(const IFXCHAR* rString) const
+{
+    IFXString Temp(*this);
+    Temp.Concatenate((const IFXCHAR*)rString);
+    return Temp;
+}
 
 // &**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&**&
 // Substring Support
@@ -588,21 +656,27 @@ IFXString IFXString::operator+( const IFXCHAR* rString ) const
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::Substring(IFXString* pDest, U32 uStart, U32 uEnd) const
 {
-	IFXRESULT result = IFX_OK;
-	if(pDest==NULL)
-		result = IFX_E_INVALID_POINTER;
-	
-	if(IFXSUCCESS(result))
-	{
-		pDest->NewBuffer(uEnd-uStart+1);
-		if(pDest->m_Buffer==NULL)
-			result = IFX_E_OUT_OF_MEMORY;
-	}
+    IFXRESULT result = IFX_OK;
+    if (pDest == NULL)
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	if (IFXSUCCESS(result))
-		result = Substring(pDest->m_Buffer, pDest->m_BufferLength, uStart, uEnd);
+    if (IFXSUCCESS(result))
+    {
+        pDest->NewBuffer(uEnd - uStart + 1);
+        if (pDest->m_Buffer == NULL)
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
 
-	return result;
+    if (IFXSUCCESS(result))
+    {
+        result = Substring(pDest->m_Buffer, pDest->m_BufferLength, uStart, uEnd);
+    }
+
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -613,19 +687,24 @@ IFXRESULT IFXString::Substring(IFXString* pDest, U32 uStart, U32 uEnd) const
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::Substring(IFXCHAR* pDest, U32 uDestSize, U32 uStart, U32 uEnd) const
 {
-	if(m_Buffer==NULL)
-		return IFX_E_NOT_INITIALIZED;
-	if(pDest==NULL)
-		return IFX_E_INVALID_POINTER;
-	if(uStart > m_BufferLength || uDestSize < uEnd)
-		return IFX_E_INVALID_RANGE;
+    if (m_Buffer == NULL)
+    {
+        return IFX_E_NOT_INITIALIZED;
+    }
+    if (pDest == NULL)
+    {
+        return IFX_E_INVALID_POINTER;
+    }
+    if (uStart > m_BufferLength || uDestSize < uEnd)
+    {
+        return IFX_E_INVALID_RANGE;
+    }
 
-	wcsncpy((IFXCHAR*)pDest, m_Buffer + uStart, uEnd);
-	pDest[uEnd] = 0;
+    wcsncpy((IFXCHAR*)pDest, m_Buffer + uStart, uEnd);
+    pDest[uEnd] = 0;
 
-	return IFX_OK;
+    return IFX_OK;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::FindSubstring
@@ -635,54 +714,72 @@ IFXRESULT IFXString::Substring(IFXCHAR* pDest, U32 uDestSize, U32 uStart, U32 uE
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::FindSubstring(const IFXCHAR* pKey, U32* pStartIndex) const
 {
-	IFXRESULT result = IFX_OK;
-	const IFXCHAR* pcharSource;
-	U32 uLength, uIndex, uKeyLength;
+    IFXRESULT result = IFX_OK;
+    const IFXCHAR* pcharSource;
+    U32 uLength, uIndex, uKeyLength;
 
-	if(m_Buffer==NULL)
-		return IFX_E_NOT_INITIALIZED;
-	if(pKey==NULL || pStartIndex==NULL)
-		return IFX_E_INVALID_POINTER;
+    if (m_Buffer == NULL)
+    {
+        return IFX_E_NOT_INITIALIZED;
+    }
+    if (pKey == NULL || pStartIndex == NULL)
+    {
+        return IFX_E_INVALID_POINTER;
+    }
 
-	if (IFXSUCCESS(result))
-		if(*pStartIndex > m_BufferLength)
-			result = IFX_E_INVALID_RANGE;
+    if (IFXSUCCESS(result))
+    {
+        if (*pStartIndex > m_BufferLength)
+        {
+            result = IFX_E_INVALID_RANGE;
+        }
+    }
 
-	if (IFXSUCCESS(result))
-		if(m_Buffer==NULL || pKey==NULL || pStartIndex==NULL)
-			result = IFX_E_INVALID_POINTER;
+    if (IFXSUCCESS(result))
+    {
+        if (m_Buffer == NULL || pKey == NULL || pStartIndex == NULL)
+        {
+            result = IFX_E_INVALID_POINTER;
+        }
+    }
 
-	if (IFXSUCCESS(result)) {
-		// pcharSource = (const IFXCHAR*)m_Buffer;
-		// uLength = 0;
-		// uIndex = 0;
-		// uKeyLength = 0;
+    if (IFXSUCCESS(result))
+    {
+        // pcharSource = (const IFXCHAR*)m_Buffer;
+        // uLength = 0;
+        // uIndex = 0;
+        // uKeyLength = 0;
 
-		pcharSource=(IFXCHAR*)m_Buffer;
+        pcharSource = (IFXCHAR*)m_Buffer;
 
-		uLength = (U32)wcslen(pcharSource);
-		uKeyLength = (U32)wcslen(pKey);
+        uLength = (U32)wcslen(pcharSource);
+        uKeyLength = (U32)wcslen(pKey);
 
-		if (uLength == 0)
-			result = IFX_E_CANNOT_FIND;
-	}
+        if (uLength == 0)
+        {
+            result = IFX_E_CANNOT_FIND;
+        }
+    }
 
-	if (IFXSUCCESS(result)) {
-		uIndex=*pStartIndex;
-		while(uIndex<uLength ) {
-			if(wcsncmp(&pcharSource[uIndex], pKey, uKeyLength) ==0) {
-				*pStartIndex = uIndex;
-				return IFX_OK;
-			} else
-				uIndex++;
-		}
-	}
+    if (IFXSUCCESS(result))
+    {
+        uIndex = *pStartIndex;
+        while (uIndex < uLength)
+        {
+            if (wcsncmp(&pcharSource[uIndex], pKey, uKeyLength) == 0)
+            {
+                *pStartIndex = uIndex;
+                return IFX_OK;
+            }
+            else
+            {
+                uIndex++;
+            }
+        }
+    }
 
-
-	return IFX_E_CANNOT_FIND;
-
+    return IFX_E_CANNOT_FIND;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::IsDigit
@@ -692,17 +789,18 @@ IFXRESULT IFXString::FindSubstring(const IFXCHAR* pKey, U32* pStartIndex) const
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::IsDigit(U32 uIndex)
 {
-	IFXRESULT iResult=IFX_TRUE;
-	if(uIndex > m_BufferLength)
-		iResult=IFX_E_INVALID_RANGE;
+    IFXRESULT iResult = IFX_TRUE;
+    if (uIndex > m_BufferLength)
+    {
+        iResult = IFX_E_INVALID_RANGE;
+    }
 
-	if(IFXSUCCESS(iResult))
-	{
-		iResult = iswdigit((wint_t)m_Buffer[uIndex]) != 0;
-	}
-	return iResult;
+    if (IFXSUCCESS(iResult))
+    {
+        iResult = iswdigit((wint_t)m_Buffer[uIndex]) != 0;
+    }
+    return iResult;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::ToString
@@ -712,114 +810,120 @@ IFXRESULT IFXString::IsDigit(U32 uIndex)
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::ToString(U32 uValue, I8 iRadix)
 {
-	IFXRESULT result = IFX_OK;
-	U8 number[MAX_INT_LENGTH], c;
-	U32 i, j, len, temp, rest;
+    IFXRESULT result = IFX_OK;
+    U8 number[MAX_INT_LENGTH], c;
+    U32 i, j, len, temp, rest;
 
-	if ( (iRadix < 2) || (iRadix > 32) )
-	{
-		result = IFX_E_BAD_PARAM;
-	}
+    if ((iRadix < 2) || (iRadix > 32))
+    {
+        result = IFX_E_BAD_PARAM;
+    }
 
-	if (IFXSUCCESS(result))
-	{
-		i = 0;
-		temp = uValue;
-		do
-		{
-			rest = temp%iRadix;
-			temp = temp/iRadix;
+    if (IFXSUCCESS(result))
+    {
+        i = 0;
+        temp = uValue;
+        do
+        {
+            rest = temp % iRadix;
+            temp = temp / iRadix;
 
-			if (rest > 9)
-				number[i] = (U8)((I32)('a')+(rest-10));
-			else
-				number[i] = (U8)((I32)('0')+rest);
+            if (rest > 9)
+            {
+                number[i] = (U8)((I32)('a') + (rest - 10));
+            }
+            else
+            {
+                number[i] = (U8)((I32)('0') + rest);
+            }
 
-			i++;
-		}
-		while (temp > 0);
-		
-		len = i;
-		number[len] = '\0';
-		
-		for (i = 0, j = len-1; i<j; i++, j--)
-		{
-			c = number[i];
-			number[i] = number[j]; 
-			number[j] = c;
-		}
+            i++;
+        } while (temp > 0);
 
-		result = Assign( number );
-	}
+        len = i;
+        number[len] = '\0';
 
-	return result;
+        for (i = 0, j = len - 1; i < j; i++, j--)
+        {
+            c = number[i];
+            number[i] = number[j];
+            number[j] = c;
+        }
+
+        result = Assign(number);
+    }
+
+    return result;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXString::ToValue
 //
-//  This method converts the string characters into a numerical value. 
+//  This method converts the string characters into a numerical value.
 //  Similar to atoi or other functions
 //---------------------------------------------------------------------------
 IFXRESULT IFXString::ToValue(U32* pValue, I8 iRadix)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if (NULL == pValue)
-		result = IFX_E_INVALID_POINTER;
+    if (NULL == pValue)
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	if (NULL == m_Buffer)
-		result = IFX_E_NOT_INITIALIZED;
+    if (NULL == m_Buffer)
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	if (IFXSUCCESS(result))
-	{
-		IFXCHAR* pEnd = NULL;
-		*pValue=(U32)wcstol( m_Buffer, &pEnd, iRadix );
-	}
+    if (IFXSUCCESS(result))
+    {
+        IFXCHAR* pEnd = NULL;
+        *pValue = (U32)wcstol(m_Buffer, &pEnd, iRadix);
+    }
 
-	return result;
+    return result;
 }
 
 // Somewhat brute force, but works.  Rewrite if necessary for speed.
 IFXString& IFXString::VSPrintf(const IFXCHAR* fmt, va_list ap)
 {
-	int sz = m_BufferLength;
+    int sz = m_BufferLength;
 
-	if(!m_BufferLength)
-	{ // start at 80 bytes, seems reasonable (1 tty line)
-		NewBuffer(80);
-		sz = m_BufferLength;
-	}
-	else
-	{
-		NewBuffer(sz);
-	}
+    if (!m_BufferLength)
+    { // start at 80 bytes, seems reasonable (1 tty line)
+        NewBuffer(80);
+        sz = m_BufferLength;
+    }
+    else
+    {
+        NewBuffer(sz);
+    }
 
-	while(IFX_TRUE)
-	{
-		int n =  vswprintf((IFXCHAR*)m_Buffer, m_BufferLength, fmt, ap);
+    while (IFX_TRUE)
+    {
+        int n = vswprintf((IFXCHAR*)m_Buffer, m_BufferLength, fmt, ap);
 
-		if(n > -1 && n < sz)
-		{
-			break;
-		}
-		if(n > -1)
-		{
-			sz = n+1;
-		}
-		else
-		{
-			sz *= 2;
-		}
-		NewBuffer(sz);
-	}
+        if (n > -1 && n < sz)
+        {
+            break;
+        }
+        if (n > -1)
+        {
+            sz = n + 1;
+        }
+        else
+        {
+            sz *= 2;
+        }
+        NewBuffer(sz);
+    }
 
-	return *this;
+    return *this;
 }
 
-U32 IFXString::Match(const IFXCHAR *wildcard, U32 icase)
+U32 IFXString::Match(const IFXCHAR* wildcard, U32 icase)
 {
     const IFXCHAR *beg, *end;
-    return WCMatchPos((IFXCHAR*)m_Buffer,wildcard,&beg,&end,icase);
+    return WCMatchPos((IFXCHAR*)m_Buffer, wildcard, &beg, &end, icase);
 }

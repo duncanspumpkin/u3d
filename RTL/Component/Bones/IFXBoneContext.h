@@ -17,45 +17,49 @@
 //***************************************************************************
 
 /**
-	@file IFXBoneContext.h
+        @file IFXBoneContext.h
 */
 
 #ifndef IFXBONECONTEXT_H
 #define IFXBONECONTEXT_H
 
-/**
-	Contains items that can be shared between similar characters.
+#include "IFXSkin.h"
 
-	@note Minimally accessible, so manual ref-counting is fine.
+/**
+        Contains items that can be shared between similar characters.
+
+        @note Minimally accessible, so manual ref-counting is fine.
 */
 class IFXBoneContext
 {
 public:
-	IFXBoneContext(void)
-	{
-		m_references = 1;
-	}
+    IFXBoneContext(void)
+    {
+        m_references = 1;
+    }
 
-	void IncReferences(void)
-	{ 
-		++m_references;
-	}
-	
-	void DecReferences(void)
-	{
-		--m_references;
-		if(!m_references)
-			delete this;
-	}
+    void IncReferences(void)
+    {
+        ++m_references;
+    }
 
-	IFXSkin& Skin(void)
-	{ 
-		return m_skin; 
-	}
+    void DecReferences(void)
+    {
+        --m_references;
+        if (!m_references)
+        {
+            delete this;
+        }
+    }
+
+    IFXSkin& Skin(void)
+    {
+        return m_skin;
+    }
 
 private:
-	IFXSkin m_skin;
-	U32 m_references;
+    IFXSkin m_skin;
+    U32 m_references;
 };
 
 #endif

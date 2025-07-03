@@ -27,20 +27,21 @@
 //***************************************************************************
 #include "CIFXGlyph2DCommands.h"
 
-
 //****************************************************************
 //  IID_IFXGlyphTagBlock
 //****************************************************************
 
 // IFXGlyph2DCommands methods
 
-CIFXGlyphTagBlock::CIFXGlyphTagBlock() {
-	m_uRefCount = 0;
-	m_eType = IGG_TYPE_STARTGLYPHSTRING;
-	m_x = 0;
-	m_y = 0;
+CIFXGlyphTagBlock::CIFXGlyphTagBlock()
+{
+    m_uRefCount = 0;
+    m_eType = IGG_TYPE_STARTGLYPHSTRING;
+    m_x = 0;
+    m_y = 0;
 }
-CIFXGlyphTagBlock::~CIFXGlyphTagBlock() {
+CIFXGlyphTagBlock::~CIFXGlyphTagBlock()
+{
 }
 
 //---------------------------------------------------------------------------
@@ -50,15 +51,19 @@ CIFXGlyphTagBlock::~CIFXGlyphTagBlock() {
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphTagBlock::GetType(EGLYPH_TYPE* pType) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pType)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pType)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pType = m_eType;
+    if (IFXSUCCESS(iResult))
+    {
+        *pType = m_eType;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -68,11 +73,11 @@ IFXRESULT CIFXGlyphTagBlock::GetType(EGLYPH_TYPE* pType) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphTagBlock::SetType(const EGLYPH_TYPE eType)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_eType = eType;
+    m_eType = eType;
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -82,15 +87,19 @@ IFXRESULT CIFXGlyphTagBlock::SetType(const EGLYPH_TYPE eType)
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphTagBlock::GetAttributes(U32* pAttr) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pAttr)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pAttr)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pAttr = m_attr;
+    if (IFXSUCCESS(iResult))
+    {
+        *pAttr = m_attr;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -100,13 +109,12 @@ IFXRESULT CIFXGlyphTagBlock::GetAttributes(U32* pAttr) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphTagBlock::SetAttributes(const U32 attr)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_attr = attr;
+    m_attr = attr;
 
-	return iResult;
+    return iResult;
 }
-
 
 // IFXUnknown methods
 
@@ -119,8 +127,9 @@ IFXRESULT CIFXGlyphTagBlock::SetAttributes(const U32 attr)
 //  from 1 to 2^32 - 1 that defines the new reference count.  The return
 //  value should only be used for debugging purposes.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphTagBlock::AddRef(void) {
-	return ++m_uRefCount;
+U32 CIFXGlyphTagBlock::AddRef(void)
+{
+    return ++m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -132,17 +141,18 @@ U32 CIFXGlyphTagBlock::AddRef(void) {
 //  used for debugging purposes.  If the reference count on a component falls
 //  to zero, the component is destroyed.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphTagBlock::Release(void) {
-	if ( !( --m_uRefCount ) )
-	{
-		delete this;
+U32 CIFXGlyphTagBlock::Release(void)
+{
+    if (!(--m_uRefCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_uRefCount;
+    return m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -157,32 +167,42 @@ U32 CIFXGlyphTagBlock::Release(void) {
 //  QueryInterface.  For a list of such rules, refer to the Microsoft COM
 //  description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
-IFXRESULT CIFXGlyphTagBlock::QueryInterface( IFXREFIID interfaceId, void** ppInterface ){
-	IFXRESULT result  = IFX_OK;
+IFXRESULT CIFXGlyphTagBlock::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
+{
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXGlyphTagBlock )
-			*ppInterface = ( IFXGlyphTagBlock* ) this;
-		else if ( interfaceId == IID_IFXUnknown )
-			*ppInterface = ( IFXUnknown* ) this;
-		else if ( interfaceId == IID_IFXGlyph2DCommands )
-			*ppInterface = ( IFXGlyph2DCommands* ) this;
-		else
-		{
-			*ppInterface = NULL;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXGlyphTagBlock)
+        {
+            *ppInterface = (IFXGlyphTagBlock*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else if (interfaceId == IID_IFXGlyph2DCommands)
+        {
+            *ppInterface = (IFXGlyph2DCommands*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
 
-			result = IFX_E_UNSUPPORTED;
-		}
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			( ( IFXUnknown* ) *ppInterface )->AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            ((IFXUnknown*)*ppInterface)->AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
-
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -192,64 +212,69 @@ IFXRESULT CIFXGlyphTagBlock::QueryInterface( IFXREFIID interfaceId, void** ppInt
 //  CIFXGlyphTagBlock component is NOT a singleton.  This function creates the
 //  TextGenerator object, addref()'s it and returns it.
 //---------------------------------------------------------------------------
-IFXRESULT IFXAPI_CALLTYPE CIFXGlyphTagBlock_Factory( IFXREFIID  interfaceId,
-									void**    ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXGlyphTagBlock_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result;
+    IFXRESULT result;
 
-	if ( ppInterface )
-	{
-		// It doesn't exist, so try to create it.
-		CIFXGlyphTagBlock *pComponent = new CIFXGlyphTagBlock;
+    if (ppInterface)
+    {
+        // It doesn't exist, so try to create it.
+        CIFXGlyphTagBlock* pComponent = new CIFXGlyphTagBlock;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
 IFXRESULT CIFXGlyphTagBlock::GetData(F64* px, F64* py) const
 {
 
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == px || NULL == py )
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == px || NULL == py)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult)) {
-		*px = m_x;
-		*py = m_y;
-	}
+    if (IFXSUCCESS(iResult))
+    {
+        *px = m_x;
+        *py = m_y;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 IFXRESULT CIFXGlyphTagBlock::SetData(const F64 x, const F64 y)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_x = x;
-	m_y = y;
+    m_x = x;
+    m_y = y;
 
-	return iResult;
+    return iResult;
 }
-
 
 //****************************************************************
 //  IID_IFXGlyphMoveToBlock
@@ -257,13 +282,15 @@ IFXRESULT CIFXGlyphTagBlock::SetData(const F64 x, const F64 y)
 
 // IFXGlyph2DCommands methods
 
-CIFXGlyphMoveToBlock::CIFXGlyphMoveToBlock() {
-	m_uRefCount = 0;
-	m_eType = IGG_TYPE_MOVETO;
-	m_x = 0;
-	m_y = 0;
+CIFXGlyphMoveToBlock::CIFXGlyphMoveToBlock()
+{
+    m_uRefCount = 0;
+    m_eType = IGG_TYPE_MOVETO;
+    m_x = 0;
+    m_y = 0;
 }
-CIFXGlyphMoveToBlock::~CIFXGlyphMoveToBlock() {
+CIFXGlyphMoveToBlock::~CIFXGlyphMoveToBlock()
+{
 }
 //---------------------------------------------------------------------------
 //  CIFXGlyphMoveToBlock::GetType
@@ -272,15 +299,19 @@ CIFXGlyphMoveToBlock::~CIFXGlyphMoveToBlock() {
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphMoveToBlock::GetType(EGLYPH_TYPE* pType) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pType)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pType)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pType = m_eType;
+    if (IFXSUCCESS(iResult))
+    {
+        *pType = m_eType;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -290,26 +321,29 @@ IFXRESULT CIFXGlyphMoveToBlock::GetType(EGLYPH_TYPE* pType) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphMoveToBlock::SetType(const EGLYPH_TYPE eType)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_eType = eType;
+    m_eType = eType;
 
-	return iResult;
+    return iResult;
 }
 
 IFXRESULT CIFXGlyphMoveToBlock::GetData(F64* px, F64* py) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == px || NULL == py)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == px || NULL == py)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult)) {
-		*px = m_x;
-		*py = m_y;
-	}
+    if (IFXSUCCESS(iResult))
+    {
+        *px = m_x;
+        *py = m_y;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -319,15 +353,19 @@ IFXRESULT CIFXGlyphMoveToBlock::GetData(F64* px, F64* py) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphMoveToBlock::GetAttributes(U32* pAttr) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pAttr)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pAttr)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pAttr = m_attr;
+    if (IFXSUCCESS(iResult))
+    {
+        *pAttr = m_attr;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -337,24 +375,21 @@ IFXRESULT CIFXGlyphMoveToBlock::GetAttributes(U32* pAttr) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphMoveToBlock::SetAttributes(const U32 attr)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_attr = attr;
+    m_attr = attr;
 
-	return iResult;
+    return iResult;
 }
 
 IFXRESULT CIFXGlyphMoveToBlock::SetData(const F64 x, const F64 y)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_x = x;
-	m_y = y;
-	return iResult;
+    m_x = x;
+    m_y = y;
+    return iResult;
 }
-
-
-
 
 // IFXUnknown methods
 
@@ -367,8 +402,9 @@ IFXRESULT CIFXGlyphMoveToBlock::SetData(const F64 x, const F64 y)
 //  from 1 to 2^32 - 1 that defines the new reference count.  The return
 //  value should only be used for debugging purposes.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphMoveToBlock::AddRef(void) {
-	return ++m_uRefCount;
+U32 CIFXGlyphMoveToBlock::AddRef(void)
+{
+    return ++m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -380,17 +416,18 @@ U32 CIFXGlyphMoveToBlock::AddRef(void) {
 //  used for debugging purposes.  If the reference count on a component falls
 //  to zero, the component is destroyed.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphMoveToBlock::Release(void) {
-	if ( !( --m_uRefCount ) )
-	{
-		delete this;
+U32 CIFXGlyphMoveToBlock::Release(void)
+{
+    if (!(--m_uRefCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_uRefCount;
+    return m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -405,33 +442,43 @@ U32 CIFXGlyphMoveToBlock::Release(void) {
 //  QueryInterface.  For a list of such rules, refer to the Microsoft COM
 //  description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
-IFXRESULT CIFXGlyphMoveToBlock::QueryInterface( IFXREFIID interfaceId, void** ppInterface ){
-	IFXRESULT result  = IFX_OK;
+IFXRESULT CIFXGlyphMoveToBlock::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
+{
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXGlyphMoveToBlock )
-			*ppInterface = ( IFXGlyphMoveToBlock* ) this;
-		else if ( interfaceId == IID_IFXUnknown )
-			*ppInterface = ( IFXUnknown* ) this;
-		else if ( interfaceId == IID_IFXGlyph2DCommands )
-			*ppInterface = ( IFXGlyph2DCommands* ) this;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXGlyphMoveToBlock)
+        {
+            *ppInterface = (IFXGlyphMoveToBlock*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else if (interfaceId == IID_IFXGlyph2DCommands)
+        {
+            *ppInterface = (IFXGlyph2DCommands*)this;
+        }
 
-		else
-		{
-			*ppInterface = NULL;
+        else
+        {
+            *ppInterface = NULL;
 
-			result = IFX_E_UNSUPPORTED;
-		}
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			( ( IFXUnknown* ) *ppInterface )->AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            ((IFXUnknown*)*ppInterface)->AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
-
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -441,36 +488,39 @@ IFXRESULT CIFXGlyphMoveToBlock::QueryInterface( IFXREFIID interfaceId, void** pp
 //  CIFXGlyphMoveToBlock component is NOT a singleton.  This function creates the
 //  TextGenerator object, addref()'s it and returns it.
 //---------------------------------------------------------------------------
-IFXRESULT IFXAPI_CALLTYPE CIFXGlyphMoveToBlock_Factory( IFXREFIID interfaceId,
-									   void**    ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXGlyphMoveToBlock_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result;
+    IFXRESULT result;
 
-	if ( ppInterface )
-	{
-		// It doesn't exist, so try to create it.
-		CIFXGlyphMoveToBlock  *pComponent = new CIFXGlyphMoveToBlock;
+    if (ppInterface)
+    {
+        // It doesn't exist, so try to create it.
+        CIFXGlyphMoveToBlock* pComponent = new CIFXGlyphMoveToBlock;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 //****************************************************************
 //  IID_IFXGlyphLineToBlock
@@ -478,13 +528,15 @@ IFXRESULT IFXAPI_CALLTYPE CIFXGlyphMoveToBlock_Factory( IFXREFIID interfaceId,
 
 // IFXGlyph2DCommands methods
 
-CIFXGlyphLineToBlock::CIFXGlyphLineToBlock() {
-	m_uRefCount = 0;
-	m_eType = IGG_TYPE_LINETO;
-	m_x = 0;
-	m_y = 0;
+CIFXGlyphLineToBlock::CIFXGlyphLineToBlock()
+{
+    m_uRefCount = 0;
+    m_eType = IGG_TYPE_LINETO;
+    m_x = 0;
+    m_y = 0;
 }
-CIFXGlyphLineToBlock::~CIFXGlyphLineToBlock() {
+CIFXGlyphLineToBlock::~CIFXGlyphLineToBlock()
+{
 }
 //---------------------------------------------------------------------------
 //  CIFXGlyphLineToBlock::GetType
@@ -493,15 +545,19 @@ CIFXGlyphLineToBlock::~CIFXGlyphLineToBlock() {
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphLineToBlock::GetType(EGLYPH_TYPE* pType) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pType)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pType)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pType = m_eType;
+    if (IFXSUCCESS(iResult))
+    {
+        *pType = m_eType;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -511,11 +567,11 @@ IFXRESULT CIFXGlyphLineToBlock::GetType(EGLYPH_TYPE* pType) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphLineToBlock::SetType(const EGLYPH_TYPE eType)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_eType = eType;
+    m_eType = eType;
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -525,15 +581,19 @@ IFXRESULT CIFXGlyphLineToBlock::SetType(const EGLYPH_TYPE eType)
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphLineToBlock::GetAttributes(U32* pAttr) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pAttr)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pAttr)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pAttr = m_attr;
+    if (IFXSUCCESS(iResult))
+    {
+        *pAttr = m_attr;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -543,39 +603,41 @@ IFXRESULT CIFXGlyphLineToBlock::GetAttributes(U32* pAttr) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphLineToBlock::SetAttributes(const U32 attr)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_attr = attr;
+    m_attr = attr;
 
-	return iResult;
+    return iResult;
 }
 
 IFXRESULT CIFXGlyphLineToBlock::GetData(F64* px, F64* py) const
 {
 
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == px || NULL == py )
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == px || NULL == py)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult)) {
-		*px = m_x;
-		*py = m_y;
-	}
+    if (IFXSUCCESS(iResult))
+    {
+        *px = m_x;
+        *py = m_y;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 IFXRESULT CIFXGlyphLineToBlock::SetData(const F64 x, const F64 y)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_x = x;
-	m_y = y;
+    m_x = x;
+    m_y = y;
 
-	return iResult;
+    return iResult;
 }
-
 
 // IFXUnknown methods
 
@@ -588,8 +650,9 @@ IFXRESULT CIFXGlyphLineToBlock::SetData(const F64 x, const F64 y)
 //  from 1 to 2^32 - 1 that defines the new reference count.  The return
 //  value should only be used for debugging purposes.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphLineToBlock::AddRef(void) {
-	return ++m_uRefCount;
+U32 CIFXGlyphLineToBlock::AddRef(void)
+{
+    return ++m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -601,17 +664,18 @@ U32 CIFXGlyphLineToBlock::AddRef(void) {
 //  used for debugging purposes.  If the reference count on a component falls
 //  to zero, the component is destroyed.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphLineToBlock::Release(void) {
-	if ( !( --m_uRefCount ) )
-	{
-		delete this;
+U32 CIFXGlyphLineToBlock::Release(void)
+{
+    if (!(--m_uRefCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_uRefCount;
+    return m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -626,32 +690,42 @@ U32 CIFXGlyphLineToBlock::Release(void) {
 //  QueryInterface.  For a list of such rules, refer to the Microsoft COM
 //  description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
-IFXRESULT CIFXGlyphLineToBlock::QueryInterface( IFXREFIID interfaceId, void** ppInterface ){
-	IFXRESULT result  = IFX_OK;
+IFXRESULT CIFXGlyphLineToBlock::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
+{
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXGlyphLineToBlock )
-			*ppInterface = ( IFXGlyphLineToBlock* ) this;
-		else if ( interfaceId == IID_IFXUnknown )
-			*ppInterface = ( IFXUnknown* ) this;
-		else if ( interfaceId == IID_IFXGlyph2DCommands )
-			*ppInterface = ( IFXGlyph2DCommands* ) this;
-		else
-		{
-			*ppInterface = NULL;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXGlyphLineToBlock)
+        {
+            *ppInterface = (IFXGlyphLineToBlock*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else if (interfaceId == IID_IFXGlyph2DCommands)
+        {
+            *ppInterface = (IFXGlyph2DCommands*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
 
-			result = IFX_E_UNSUPPORTED;
-		}
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			( ( IFXUnknown* ) *ppInterface )->AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            ((IFXUnknown*)*ppInterface)->AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
-
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -661,36 +735,39 @@ IFXRESULT CIFXGlyphLineToBlock::QueryInterface( IFXREFIID interfaceId, void** pp
 //  CIFXGlyphLineToBlock component is NOT a singleton.  This function creates the
 //  TextGenerator object, addref()'s it and returns it.
 //---------------------------------------------------------------------------
-IFXRESULT IFXAPI_CALLTYPE CIFXGlyphLineToBlock_Factory( IFXREFIID interfaceId,
-									   void**    ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXGlyphLineToBlock_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result;
+    IFXRESULT result;
 
-	if ( ppInterface )
-	{
-		// It doesn't exist, so try to create it.
-		CIFXGlyphLineToBlock  *pComponent = new CIFXGlyphLineToBlock;
+    if (ppInterface)
+    {
+        // It doesn't exist, so try to create it.
+        CIFXGlyphLineToBlock* pComponent = new CIFXGlyphLineToBlock;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 //****************************************************************
 //  IID_IFXGlyphCurveToBlock
@@ -698,18 +775,20 @@ IFXRESULT IFXAPI_CALLTYPE CIFXGlyphLineToBlock_Factory( IFXREFIID interfaceId,
 
 // IFXGlyph2DCommands methods
 
-CIFXGlyphCurveToBlock::CIFXGlyphCurveToBlock() {
-	m_uRefCount = 0;
-	m_eType = IGG_TYPE_CURVETO;
-	m_Cx1 = 0;
-	m_Cy1 = 0;
-	m_Cx2 = 0;
-	m_Cy2 = 0;
-	m_Ax = 0;
-	m_Ay = 0;
-	m_uNumberOfCurveSteps = 0;
+CIFXGlyphCurveToBlock::CIFXGlyphCurveToBlock()
+{
+    m_uRefCount = 0;
+    m_eType = IGG_TYPE_CURVETO;
+    m_Cx1 = 0;
+    m_Cy1 = 0;
+    m_Cx2 = 0;
+    m_Cy2 = 0;
+    m_Ax = 0;
+    m_Ay = 0;
+    m_uNumberOfCurveSteps = 0;
 }
-CIFXGlyphCurveToBlock::~CIFXGlyphCurveToBlock() {
+CIFXGlyphCurveToBlock::~CIFXGlyphCurveToBlock()
+{
 }
 //---------------------------------------------------------------------------
 //  CIFXGlyphCurveToBlock::GetType
@@ -718,15 +797,19 @@ CIFXGlyphCurveToBlock::~CIFXGlyphCurveToBlock() {
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphCurveToBlock::GetType(EGLYPH_TYPE* pType) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pType)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pType)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pType = m_eType;
+    if (IFXSUCCESS(iResult))
+    {
+        *pType = m_eType;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -736,11 +819,11 @@ IFXRESULT CIFXGlyphCurveToBlock::GetType(EGLYPH_TYPE* pType) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphCurveToBlock::SetType(const EGLYPH_TYPE eType)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_eType = eType;
+    m_eType = eType;
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -750,15 +833,19 @@ IFXRESULT CIFXGlyphCurveToBlock::SetType(const EGLYPH_TYPE eType)
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphCurveToBlock::GetAttributes(U32* pAttr) const
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pAttr)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pAttr)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult))
-		*pAttr = m_attr;
+    if (IFXSUCCESS(iResult))
+    {
+        *pAttr = m_attr;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //---------------------------------------------------------------------------
@@ -768,53 +855,51 @@ IFXRESULT CIFXGlyphCurveToBlock::GetAttributes(U32* pAttr) const
 //---------------------------------------------------------------------------
 IFXRESULT CIFXGlyphCurveToBlock::SetAttributes(const U32 attr)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_attr = attr;
+    m_attr = attr;
 
-	return iResult;
+    return iResult;
 }
-
 
 IFXRESULT CIFXGlyphCurveToBlock::GetData(F64* pCx1, F64* pCy1, F64* pCx2, F64* pCy2, F64* pAx, F64* pAy, U32* pNumberOfCurveSteps) const
 {
 
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(NULL == pCx1 || NULL == pCy1 || NULL == pCx2
-		|| NULL == pAx || NULL == pAy || NULL == pNumberOfCurveSteps)
-		iResult = IFX_E_INVALID_POINTER;
+    if (NULL == pCx1 || NULL == pCy1 || NULL == pCx2
+        || NULL == pAx || NULL == pAy || NULL == pNumberOfCurveSteps)
+    {
+        iResult = IFX_E_INVALID_POINTER;
+    }
 
-	if(IFXSUCCESS(iResult)) {
-		*pCx1 = m_Cx1;
-		*pCy1 = m_Cy1;
-		*pCx2 = m_Cx2;
-		*pCy2 = m_Cy2;
-		*pAx = m_Ax;
-		*pAy = m_Ay;
-		*pNumberOfCurveSteps = m_uNumberOfCurveSteps;
-	}
+    if (IFXSUCCESS(iResult))
+    {
+        *pCx1 = m_Cx1;
+        *pCy1 = m_Cy1;
+        *pCx2 = m_Cx2;
+        *pCy2 = m_Cy2;
+        *pAx = m_Ax;
+        *pAy = m_Ay;
+        *pNumberOfCurveSteps = m_uNumberOfCurveSteps;
+    }
 
-	return iResult;
+    return iResult;
 }
 
-IFXRESULT CIFXGlyphCurveToBlock::SetData(const F64 fCx1, const F64 fCy1, const F64 fCx2, const F64 fCy2, const F64 fAx,
-										 const F64 fAy, const U32 uNumberOfCurveSteps)
+IFXRESULT CIFXGlyphCurveToBlock::SetData(const F64 fCx1, const F64 fCy1, const F64 fCx2, const F64 fCy2, const F64 fAx, const F64 fAy, const U32 uNumberOfCurveSteps)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	m_Cx1 = fCx1;
-	m_Cy1 = fCy1;
-	m_Cx2 = fCx2;
-	m_Cy2 = fCy2;
-	m_Ax = fAx;
-	m_Ay = fAy;
-	m_uNumberOfCurveSteps = uNumberOfCurveSteps;
-	return iResult;
+    m_Cx1 = fCx1;
+    m_Cy1 = fCy1;
+    m_Cx2 = fCx2;
+    m_Cy2 = fCy2;
+    m_Ax = fAx;
+    m_Ay = fAy;
+    m_uNumberOfCurveSteps = uNumberOfCurveSteps;
+    return iResult;
 }
-
-
-
 
 // IFXUnknown methods
 
@@ -827,8 +912,9 @@ IFXRESULT CIFXGlyphCurveToBlock::SetData(const F64 fCx1, const F64 fCy1, const F
 //  from 1 to 2^32 - 1 that defines the new reference count.  The return
 //  value should only be used for debugging purposes.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphCurveToBlock::AddRef(void) {
-	return ++m_uRefCount;
+U32 CIFXGlyphCurveToBlock::AddRef(void)
+{
+    return ++m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -840,17 +926,18 @@ U32 CIFXGlyphCurveToBlock::AddRef(void) {
 //  used for debugging purposes.  If the reference count on a component falls
 //  to zero, the component is destroyed.
 //---------------------------------------------------------------------------
-U32 CIFXGlyphCurveToBlock::Release(void) {
-	if ( !( --m_uRefCount ) )
-	{
-		delete this;
+U32 CIFXGlyphCurveToBlock::Release(void)
+{
+    if (!(--m_uRefCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_uRefCount;
+    return m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -865,33 +952,43 @@ U32 CIFXGlyphCurveToBlock::Release(void) {
 //  QueryInterface.  For a list of such rules, refer to the Microsoft COM
 //  description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
-IFXRESULT CIFXGlyphCurveToBlock::QueryInterface( IFXREFIID interfaceId, void** ppInterface ){
-	IFXRESULT result  = IFX_OK;
+IFXRESULT CIFXGlyphCurveToBlock::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
+{
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXGlyphCurveToBlock )
-			*ppInterface = ( IFXGlyphCurveToBlock* ) this;
-		else if ( interfaceId == IID_IFXUnknown )
-			*ppInterface = ( IFXUnknown* ) this;
-		else if ( interfaceId == IID_IFXGlyph2DCommands )
-			*ppInterface = ( IFXGlyph2DCommands* ) this;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXGlyphCurveToBlock)
+        {
+            *ppInterface = (IFXGlyphCurveToBlock*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else if (interfaceId == IID_IFXGlyph2DCommands)
+        {
+            *ppInterface = (IFXGlyph2DCommands*)this;
+        }
 
-		else
-		{
-			*ppInterface = NULL;
+        else
+        {
+            *ppInterface = NULL;
 
-			result = IFX_E_UNSUPPORTED;
-		}
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			( ( IFXUnknown* ) *ppInterface )->AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            ((IFXUnknown*)*ppInterface)->AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
-
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -901,34 +998,37 @@ IFXRESULT CIFXGlyphCurveToBlock::QueryInterface( IFXREFIID interfaceId, void** p
 //  CIFXGlyphCurveToBlock component is NOT a singleton.  This function creates the
 //  TextGenerator object, addref()'s it and returns it.
 //---------------------------------------------------------------------------
-IFXRESULT IFXAPI_CALLTYPE CIFXCurveToBlock_Factory( IFXREFIID interfaceId,
-								   void**    ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXCurveToBlock_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result;
+    IFXRESULT result;
 
-	if ( ppInterface )
-	{
-		// It doesn't exist, so try to create it.
-		CIFXGlyphCurveToBlock *pComponent = new CIFXGlyphCurveToBlock;
+    if (ppInterface)
+    {
+        // It doesn't exist, so try to create it.
+        CIFXGlyphCurveToBlock* pComponent = new CIFXGlyphCurveToBlock;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }

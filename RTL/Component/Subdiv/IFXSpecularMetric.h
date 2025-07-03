@@ -19,24 +19,22 @@
 #ifndef IFXSPECULARMETRIC_DOT_H
 #define IFXSPECULARMETRIC_DOT_H
 
-#include <memory.h>
 #include "IFXAdaptiveMetric.h"
-
+#include <memory.h>
 
 class IFXSpecularMetric : public IFXAdaptiveMetric
 {
 private:
     IFXVector3 m_lightPosition;
-    float  m_pMatrix[16];
+    float m_pMatrix[16];
 
 public:
-    
     IFXSpecularMetric();
     ~IFXSpecularMetric() {};
 
-    virtual void EvaluateTriangle (IFXTQTTriangle *pTriangle, Action *pAction);
+    virtual void EvaluateTriangle(IFXTQTTriangle* pTriangle, Action* pAction);
 
-    void UpdateOrientation (float pMatrix[16]) {   memcpy(m_pMatrix, pMatrix, 16 * sizeof (float)); };
+    void UpdateOrientation(float pMatrix[16]) { memcpy(m_pMatrix, pMatrix, 16 * sizeof(float)); };
 };
 
 #endif

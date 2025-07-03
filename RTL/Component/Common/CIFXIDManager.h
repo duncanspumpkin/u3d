@@ -26,52 +26,54 @@ class CIFXIDManager;
 class CIFXIDStack
 {
 public:
-	friend class CIFXIDManager;
-private:
-	CIFXIDStack();
-	~CIFXIDStack();
+    friend class CIFXIDManager;
 
-	U32 m_uId;
-	CIFXIDStack* m_pNext;
+private:
+    CIFXIDStack();
+    ~CIFXIDStack();
+
+    U32 m_uId;
+    CIFXIDStack* m_pNext;
 };
 
 class CIFXIDManager : virtual public IFXIDManager, virtual public IFXUnknown
 {
-	U32 m_refCount;
+    U32 m_refCount;
+
 public:
-	U32 IFXAPI  AddRef ();
-	U32 IFXAPI  Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXIDManagerFactory(IFXREFIID intId, void** ppUnk);
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXIDManagerFactory(IFXREFIID intId, void** ppUnk);
 
-	IFXREFIID IFXAPI GetCID() const;
-	
-	//=========================
-	// IFXIDManager Methods
-	//=========================
-	virtual IFXRESULT IFXAPI Clear();
+    IFXREFIID IFXAPI GetCID() const;
 
-	virtual IFXRESULT IFXAPI GetId(U32& uOutId);
-	virtual IFXRESULT IFXAPI ReleaseId(U32 uInId);
+    //=========================
+    // IFXIDManager Methods
+    //=========================
+    virtual IFXRESULT IFXAPI Clear();
 
-	virtual void IFXAPI OutputAllocatedIds();
+    virtual IFXRESULT IFXAPI GetId(U32& uOutId);
+    virtual IFXRESULT IFXAPI ReleaseId(U32 uInId);
+
+    virtual void IFXAPI OutputAllocatedIds();
 
 protected:
-	//=========================
-	// CIFXIDManager Methods
-	//=========================
-	CIFXIDManager();
-	virtual ~CIFXIDManager();
+    //=========================
+    // CIFXIDManager Methods
+    //=========================
+    CIFXIDManager();
+    virtual ~CIFXIDManager();
 
-	IFXRESULT IFXAPI Push(U32 uInId);
-	IFXRESULT IFXAPI Pop(U32& uOutId);
-	IFXRESULT IFXAPI RemoveIdFromStack(U32 uInId);
+    IFXRESULT IFXAPI Push(U32 uInId);
+    IFXRESULT IFXAPI Pop(U32& uOutId);
+    IFXRESULT IFXAPI RemoveIdFromStack(U32 uInId);
 
-	IFXRESULT IFXAPI Construct();
+    IFXRESULT IFXAPI Construct();
 
-	CIFXIDStack*	m_pIDStack;
-	U32				m_uNextId;
+    CIFXIDStack* m_pIDStack;
+    U32 m_uNextId;
 };
 
 #endif

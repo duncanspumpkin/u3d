@@ -17,10 +17,10 @@
 //***************************************************************************
 
 /**
-	@file	CIFXComponentManager.cpp
+        @file	CIFXComponentManager.cpp
 
-			This module defines the CIFXComponentManager class. It is used to
-			manage all operations with components and component database.
+                        This module defines the CIFXComponentManager class. It is used to
+                        manage all operations with components and component database.
 */
 
 //***************************************************************************
@@ -29,28 +29,24 @@
 
 #include "CIFXComponentManager.h"
 #include "CIFXGuidHashMap.h"
-#include "IFXPlugin.h"
 #include "IFXCOM.h"
+#include "IFXPlugin.h"
 
 //***************************************************************************
 //	Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //	Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //	Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //	Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //	Global data
@@ -63,11 +59,9 @@ extern U32 g_coreComponentNumber;
 //	Local data
 //***************************************************************************
 
-
 //***************************************************************************
 //	Local function prototypes
 //***************************************************************************
-
 
 //***************************************************************************
 //	Public methods
@@ -75,102 +69,108 @@ extern U32 g_coreComponentNumber;
 
 CIFXComponentManager::CIFXComponentManager()
 {
-	m_refCount = 0;
-	m_pGuidHashMap = NULL;
+    m_refCount = 0;
+    m_pGuidHashMap = NULL;
 }
 
 CIFXComponentManager::~CIFXComponentManager()
 {
-	if( NULL != m_pGuidHashMap )
-		delete m_pGuidHashMap;
-	m_pGuidHashMap = NULL;
+    if (NULL != m_pGuidHashMap)
+    {
+        delete m_pGuidHashMap;
+    }
+    m_pGuidHashMap = NULL;
 }
 
 U32 CIFXComponentManager::AddRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
 
 U32 CIFXComponentManager::Release()
 {
-	if(!(--m_refCount))
-	{
-		delete this;
-		return 0;
-	}
-	return m_refCount;
+    if (!(--m_refCount))
+    {
+        delete this;
+        return 0;
+    }
+    return m_refCount;
 }
 
 IFXRESULT CIFXComponentManager::Initialize()
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( NULL != m_pGuidHashMap)
-	{
-		delete m_pGuidHashMap;
-	}
+    if (NULL != m_pGuidHashMap)
+    {
+        delete m_pGuidHashMap;
+    }
 
-	m_pGuidHashMap = new CIFXGuidHashMap;
+    m_pGuidHashMap = new CIFXGuidHashMap;
 
-	if ( NULL != m_pGuidHashMap)
-	{
-		// initialize component database and register core components
-		result = m_pGuidHashMap->Initialize( g_coreComponentNumber,
-											 g_coreComponentDescriptorList);
-	}
-	else
-		result = IFX_E_OUT_OF_MEMORY;
+    if (NULL != m_pGuidHashMap)
+    {
+        // initialize component database and register core components
+        result = m_pGuidHashMap->Initialize(g_coreComponentNumber, g_coreComponentDescriptorList);
+    }
+    else
+    {
+        result = IFX_E_OUT_OF_MEMORY;
+    }
 
-	return result;
+    return result;
 }
 
-IFXRESULT CIFXComponentManager::CreateComponent( const IFXCID& rComponentId, 
-												 const IFXIID& rInterfaceId, 
-												 void** ppInterface)
+IFXRESULT CIFXComponentManager::CreateComponent(const IFXCID& rComponentId, const IFXIID& rInterfaceId, void** ppInterface)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( NULL != m_pGuidHashMap )
-	{
-		const IFXComponentDescriptor* pComponentDescriptor;
+    if (NULL != m_pGuidHashMap)
+    {
+        const IFXComponentDescriptor* pComponentDescriptor;
 
-		result = m_pGuidHashMap->Find( rComponentId, &pComponentDescriptor );
+        result = m_pGuidHashMap->Find(rComponentId, &pComponentDescriptor);
 
-		if( IFXSUCCESS(result) )
-		{
-			if( NULL != pComponentDescriptor->pFactoryFunction )
-			{
-				// creation request for core/client component
-				// or for loaded plug-in components
-				if (pComponentDescriptor->Version >= 0)
-					result = (pComponentDescriptor->pFactoryFunction)
-								(rInterfaceId, ppInterface);
-				else
-					result = (pComponentDescriptor->pCLIFactoryFunction)
-								(rComponentId, rInterfaceId, ppInterface);
-			}
-			else {
-				result = IFX_E_COMPONENT;
-			}
-		}
-		else
-			result = IFX_E_COMPONENT;
-	}
-	else
-		result = IFX_E_NOT_INITIALIZED;
+        if (IFXSUCCESS(result))
+        {
+            if (NULL != pComponentDescriptor->pFactoryFunction)
+            {
+                // creation request for core/client component
+                // or for loaded plug-in components
+                if (pComponentDescriptor->Version >= 0)
+                {
+                    result = (pComponentDescriptor->pFactoryFunction)(rInterfaceId, ppInterface);
+                }
+                else
+                {
+                    result = (pComponentDescriptor->pCLIFactoryFunction)(rComponentId, rInterfaceId, ppInterface);
+                }
+            }
+            else
+            {
+                result = IFX_E_COMPONENT;
+            }
+        }
+        else
+        {
+            result = IFX_E_COMPONENT;
+        }
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	return result;
+    return result;
 }
 
 //***************************************************************************
 //	Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //	Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //	Local functions

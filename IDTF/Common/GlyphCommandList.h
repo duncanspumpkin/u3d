@@ -24,93 +24,84 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef GlyphCommandList_H
 #define GlyphCommandList_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
+#include "IFXArray.h"
 #include "IFXResult.h"
 #include "IFXString.h"
-#include "IFXArray.h"
 
 #include "GlyphCommands.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class GlyphCommandList
+    {
+    public:
+        GlyphCommandList() {};
+        virtual ~GlyphCommandList() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        IFXRESULT AddCommand(const GlyphCommand* pCommand);
 
+        /**
+         */
+        const GlyphCommand* GetCommand(U32 index) const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        U32 GetCommandCount() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class GlyphCommandList
-{
-public:
-	GlyphCommandList() {};
-	virtual ~GlyphCommandList() {};
+    private:
+        IFXArray<GlyphCommand*> m_commandPointerList;
+        IFXArray<GlyphCommand> m_commandList;
+        IFXArray<EndGlyph> m_endGlyphList;
+        IFXArray<MoveTo> m_moveToList;
+        IFXArray<LineTo> m_lineToList;
+        IFXArray<CurveTo> m_curveToList;
+    };
 
-	/**
-	*/
-	IFXRESULT AddCommand( const GlyphCommand* pCommand );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	const GlyphCommand* GetCommand( U32 index ) const;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	/**
-	*/
-	U32 GetCommandCount() const;
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-private:
-	IFXArray<GlyphCommand*> m_commandPointerList;
-	IFXArray<GlyphCommand> m_commandList;
-	IFXArray<EndGlyph> m_endGlyphList;
-	IFXArray<MoveTo> m_moveToList;
-	IFXArray<LineTo> m_lineToList;
-	IFXArray<CurveTo> m_curveToList;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
 }
 

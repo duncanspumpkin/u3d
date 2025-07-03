@@ -24,84 +24,78 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ModelNode_H
 #define ModelNode_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "Node.h"
 #include "IFXString.h"
+#include "Node.h"
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ModelNode : public Node
+    {
+    public:
+        ModelNode();
+        virtual ~ModelNode() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        void SetVisibility(const IFXString& rVisibility);
+        const IFXString& GetVisibility() const;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+    private:
+        IFXString m_visibility;
+    };
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class ModelNode : public Node
-	{
-	public:
-		ModelNode();
-		virtual ~ModelNode() {};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		void SetVisibility( const IFXString& rVisibility );
-		const IFXString& GetVisibility() const;
+    IFXFORCEINLINE ModelNode::ModelNode()
+        : m_visibility(L"FRONT")
+    {
+    }
 
-	private:
-		IFXString m_visibility;
-	};
+    IFXFORCEINLINE void ModelNode::SetVisibility(const IFXString& rVisibility)
+    {
+        m_visibility = rVisibility;
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE const IFXString& ModelNode::GetVisibility() const
+    {
+        return m_visibility;
+    }
 
-	IFXFORCEINLINE ModelNode::ModelNode()
-		: m_visibility( L"FRONT" )
-	{
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE void ModelNode::SetVisibility( const IFXString& rVisibility )
-	{
-		m_visibility = rVisibility;
-	}
-
-	IFXFORCEINLINE const IFXString& ModelNode::GetVisibility() const
-	{
-		return m_visibility;
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

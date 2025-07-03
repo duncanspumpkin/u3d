@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ConverterOptions_H
 #define ConverterOptions_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,69 +36,64 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    struct ConverterOptions
+    {
+        U32 positionQuality;
+        U32 texCoordQuality;
+        U32 normalQuality;
+        U32 diffuseQuality;
+        U32 specularQuality;
+        U32 geoQuality;
+        U32 textureQuality;
+        U32 animQuality;
+        U32 textureLimit;
+        BOOL removeZeroAreaFaces;
+        F32 zeroAreaFaceTolerance;
+        BOOL excludeNormals;
+    };
 
+    struct FileOptions
+    {
+        IFXString inFile;
+        IFXString outFile;
+        IFXExportOptions exportOptions;
+        U32 profile;
+        F32 scalingFactor;
+        U32 debugLevel;
+    };
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-struct ConverterOptions
-{
-	U32 positionQuality;
-	U32 texCoordQuality;
-	U32 normalQuality;
-	U32 diffuseQuality;
-	U32 specularQuality;
-	U32 geoQuality;
-	U32 textureQuality;
-	U32 animQuality;
-	U32 textureLimit;
-	BOOL removeZeroAreaFaces;
-	F32 zeroAreaFaceTolerance;
-	BOOL excludeNormals;
-};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-struct FileOptions
-{
-	IFXString   inFile;
-	IFXString   outFile;
-	IFXExportOptions    exportOptions;
-	U32 profile;
-	F32 scalingFactor;
-	U32 debugLevel;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file IFXLong3.h
+        @file IFXLong3.h
 */
 
 #ifndef IFXLONG3_H
@@ -26,39 +26,41 @@
 #include "IFXList.h"
 
 /**
-	this could be made into a big deal, but it's not used much
+        this could be made into a big deal, but it's not used much
 */
 class IFXLong3
 {
 public:
-	IFXLong3(void)
-	{
-		m_data[0]=0;
-		m_data[1]=0;
-		m_data[2]=0;
-	}
+    IFXLong3(void)
+    {
+        m_data[0] = 0;
+        m_data[1] = 0;
+        m_data[2] = 0;
+    }
 
-	I32& operator[](I32 index)
-	{ return m_data[index]; }
+    I32& operator[](I32 index)
+    {
+        return m_data[index];
+    }
 
-	void Set(I32 a, I32 b, I32 c)
-	{
-		m_data[0] = a;
-		m_data[1] = b;
-		m_data[2] = c;
-	}
+    void Set(I32 a, I32 b, I32 c)
+    {
+        m_data[0] = a;
+        m_data[1] = b;
+        m_data[2] = c;
+    }
 
 private:
-	I32 m_data[3];
+    I32 m_data[3];
 };
 
-class IFXLong3List: public IFXList<IFXLong3>
+class IFXLong3List : public IFXList<IFXLong3>
 {
 public:
-	IFXLong3List(void)
-	{
-		SetAutoDestruct(true);
-	};
+    IFXLong3List(void)
+    {
+        SetAutoDestruct(true);
+    };
 };
 
 #endif

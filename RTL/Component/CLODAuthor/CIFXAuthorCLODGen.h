@@ -27,26 +27,22 @@
 
 class CIFXAuthorCLODGen : virtual public IFXAuthorCLODGen
 {
-	          CIFXAuthorCLODGen();
-	virtual  ~CIFXAuthorCLODGen();
-	friend 
-	IFXRESULT IFXAPI_CALLTYPE CIFXAuthorCLODGen_Factory(IFXREFIID iid, void** ppv);
+    CIFXAuthorCLODGen();
+    virtual ~CIFXAuthorCLODGen();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXAuthorCLODGen_Factory(IFXREFIID iid, void** ppv);
 
 public:
-	// IFXUnknown
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// IFXAuthorCLODGen
-	IFXRESULT IFXAPI 	Generate(const IFXAuthorCLODGenParam*, IFXProgressCallback*, 
-								 IFXAuthorCLODMesh*, 
-								 IFXAuthorCLODMesh**, IFXAuthorMeshMap**);
-
+    // IFXAuthorCLODGen
+    IFXRESULT IFXAPI Generate(const IFXAuthorCLODGenParam*, IFXProgressCallback*, IFXAuthorCLODMesh*, IFXAuthorCLODMesh**, IFXAuthorMeshMap**);
 
 private:
-	U32 m_uRefCount;
-	U32 m_TotalPairs;
+    U32 m_uRefCount;
+    U32 m_TotalPairs;
 };
 
 #endif // __CIFXCLODAUTHOR_H__

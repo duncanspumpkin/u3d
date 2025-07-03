@@ -25,17 +25,17 @@
 //*****************************************************************************
 //*****************************************************************************
 //	Includes
-//***************************************************************************** 
+//*****************************************************************************
 #include "CIFXBTreeNode.h"
 #include "CIFXAxisAlignedBBox.h"
 
 //*****************************************************************************
 //	Defines
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Constants
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Enumerations
@@ -60,11 +60,10 @@
 //-----------------------------------------------------------------------------
 CIFXBTreeNode::CIFXBTreeNode()
 {
-	m_pBound          = NULL;
-	m_pLeftBTreeNode  = NULL;
-	m_pRightBTreeNode = NULL;
+    m_pBound = NULL;
+    m_pLeftBTreeNode = NULL;
+    m_pRightBTreeNode = NULL;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBTreeNode::~CIFXBTreeNode
@@ -73,22 +72,25 @@ CIFXBTreeNode::CIFXBTreeNode()
 //-----------------------------------------------------------------------------
 CIFXBTreeNode::~CIFXBTreeNode()
 {
-	if( m_pBound )
-	{
-		CIFXAxisAlignedBBox *pBox = (CIFXAxisAlignedBBox *) m_pBound;
+    if (m_pBound)
+    {
+        CIFXAxisAlignedBBox* pBox = (CIFXAxisAlignedBBox*)m_pBound;
 
-		IFXDELETE(pBox);
-	}
+        IFXDELETE(pBox);
+    }
 
-	m_pBound = NULL;
+    m_pBound = NULL;
 
-	if( m_pLeftBTreeNode ) 
-		IFXDELETE(m_pLeftBTreeNode);
+    if (m_pLeftBTreeNode)
+    {
+        IFXDELETE(m_pLeftBTreeNode);
+    }
 
-	if( m_pRightBTreeNode ) 
-		IFXDELETE(m_pRightBTreeNode);
+    if (m_pRightBTreeNode)
+    {
+        IFXDELETE(m_pRightBTreeNode);
+    }
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBTreeNode::Initialize
@@ -98,58 +100,69 @@ CIFXBTreeNode::~CIFXBTreeNode()
 
 IFXRESULT CIFXBTreeNode::Initialize(U32 uLevel, IFXBoundVolume* pBound)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( pBound )
-	{
-		m_pBound = pBound;
+    if (pBound)
+    {
+        m_pBound = pBound;
 
-		m_uLevel = uLevel;
+        m_uLevel = uLevel;
 
-		m_pLeftBTreeNode  = NULL;
-		m_pRightBTreeNode = NULL;
-	}
-	else 
-		result = IFX_E_INVALID_POINTER;
+        m_pLeftBTreeNode = NULL;
+        m_pRightBTreeNode = NULL;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
 
 IFXRESULT CIFXBTreeNode::SetBound(IFXBoundVolume* pBound)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( pBound )
-		m_pBound = pBound;
-	else 
-		result = IFX_E_INVALID_POINTER;
+    if (pBound)
+    {
+        m_pBound = pBound;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
 
 IFXRESULT CIFXBTreeNode::SetLeftTreeNode(CIFXBTreeNode* pLeftBTreeNode)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( pLeftBTreeNode )
-		m_pLeftBTreeNode = pLeftBTreeNode;
-	else 
-		result = IFX_E_INVALID_POINTER;
+    if (pLeftBTreeNode)
+    {
+        m_pLeftBTreeNode = pLeftBTreeNode;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
 
 IFXRESULT CIFXBTreeNode::SetRightTreeNode(CIFXBTreeNode* pRightBTreeNode)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( pRightBTreeNode )
-		m_pRightBTreeNode = pRightBTreeNode;
-	else 
-		result = IFX_E_INVALID_POINTER;
+    if (pRightBTreeNode)
+    {
+        m_pRightBTreeNode = pRightBTreeNode;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }

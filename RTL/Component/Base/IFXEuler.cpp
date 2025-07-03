@@ -17,9 +17,9 @@
 //***************************************************************************
 
 /**
-	@file	IFXEuler.cpp
+        @file	IFXEuler.cpp
 
-			This module defines the IFXEuler interface.
+                        This module defines the IFXEuler interface.
 */
 
 //***************************************************************************
@@ -32,78 +32,82 @@
 IFXEuler& IFXEuler::operator=(const IFXQuaternion& rOperand)
 {
 #if TRUE
-	IFXVector3 xaxis(1.0f,0.0f,0.0f);
+    IFXVector3 xaxis(1.0f, 0.0f, 0.0f);
 
-	IFXTransform transform=rOperand;
-	transform.Quaternion(READWRITE).ForcePositiveW();
+    IFXTransform transform = rOperand;
+    transform.Quaternion(READWRITE).ForcePositiveW();
 
-	IFXQuaternion qinv,result;
-	IFXVector3 rotated;
-	transform.RotateVector(xaxis,rotated);
+    IFXQuaternion qinv, result;
+    IFXVector3 rotated;
+    transform.RotateVector(xaxis, rotated);
 
-	IFXASSERT(result[0]!=0.0f);
-	m_data[2]= IFXATAN2(rotated[1],rotated[0]);
+    IFXASSERT(result[0] != 0.0f);
+    m_data[2] = IFXATAN2(rotated[1], rotated[0]);
 
-	qinv.MakeRotation(-m_data[2],IFX_Z_AXIS);
-	result.Multiply(qinv,transform.QuaternionConst());
-	result.ForcePositiveW();
+    qinv.MakeRotation(-m_data[2], IFX_Z_AXIS);
+    result.Multiply(qinv, transform.QuaternionConst());
+    result.ForcePositiveW();
 
-	transform=result;
+    transform = result;
 
-	transform.RotateVector(xaxis,rotated);
+    transform.RotateVector(xaxis, rotated);
 
-	IFXASSERT(result[0]!=0.0f);
-	m_data[1]= -IFXATAN2(rotated[2],rotated[0]);
+    IFXASSERT(result[0] != 0.0f);
+    m_data[1] = -IFXATAN2(rotated[2], rotated[0]);
 
-	qinv.MakeRotation(-m_data[1],IFX_Y_AXIS);
-	result.Multiply(qinv,transform.QuaternionConst());
-	result.ForcePositiveW();
+    qinv.MakeRotation(-m_data[1], IFX_Y_AXIS);
+    result.Multiply(qinv, transform.QuaternionConst());
+    result.ForcePositiveW();
 
-	if(result[1]< -1.0f)
-		m_data[0]= -IFXPI;
-	else if(result[1]> 1.0f)
-		m_data[0]=IFXPI;
-	else
-	{
-		IFXASSERT(result[1]>= -1.0f);
-		IFXASSERT(result[1]<=1.0f);
-		m_data[0]=2.0f*IFXASIN(result[1]);
-	}
+    if (result[1] < -1.0f)
+    {
+        m_data[0] = -IFXPI;
+    }
+    else if (result[1] > 1.0f)
+    {
+        m_data[0] = IFXPI;
+    }
+    else
+    {
+        IFXASSERT(result[1] >= -1.0f);
+        IFXASSERT(result[1] <= 1.0f);
+        m_data[0] = 2.0f * IFXASIN(result[1]);
+    }
 #else
-	IFXVector3 zaxis(0.0f,0.0f,1.0f);
+    IFXVector3 zaxis(0.0f, 0.0f, 1.0f);
 
-	IFXTransform transform=rOperand;
-	transform.Quaternion(READWRITE).ForcePositiveW();
+    IFXTransform transform = rOperand;
+    transform.Quaternion(READWRITE).ForcePositiveW();
 
-	IFXQuaternion qinv,result;
-	IFXVector3 rotated;
-	transform.RotateVector(zaxis,rotated);
+    IFXQuaternion qinv, result;
+    IFXVector3 rotated;
+    transform.RotateVector(zaxis, rotated);
 
-	m_data[0]= -IFXATAN2(rotated[1],rotated[2]);
+    m_data[0] = -IFXATAN2(rotated[1], rotated[2]);
 
-	qinv.MakeRotation(-m_data[0],IFX_X_AXIS);
-	result.Multiply(qinv,transform.QuaternionConst());
-	result.ForcePositiveW();
+    qinv.MakeRotation(-m_data[0], IFX_X_AXIS);
+    result.Multiply(qinv, transform.QuaternionConst());
+    result.ForcePositiveW();
 
-	transform=result;
+    transform = result;
 
-	transform.RotateVector(zaxis,rotated);
+    transform.RotateVector(zaxis, rotated);
 
-	m_data[1]= IFXATAN2(rotated[0],rotated[2]);
+    m_data[1] = IFXATAN2(rotated[0], rotated[2]);
 
-	qinv.MakeRotation(-m_data[1],IFX_Y_AXIS);
-	result.Multiply(qinv,transform.QuaternionConst());
-	result.ForcePositiveW();
+    qinv.MakeRotation(-m_data[1], IFX_Y_AXIS);
+    result.Multiply(qinv, transform.QuaternionConst());
+    result.ForcePositiveW();
 
-	m_data[2]=2.0f*IFXASIN(result[3]);
+    m_data[2] = 2.0f * IFXASIN(result[3]);
 #endif
 
-	return *this;
+    return *this;
 }
 
 void IFXEuler::ConvertToQuaternion(IFXQuaternion& rOperand) const
 {
-	rOperand.MakeRotation(m_data[2],IFX_Z_AXIS);
-	rOperand.Rotate(m_data[1],IFX_Y_AXIS);
-	rOperand.Rotate(m_data[0],IFX_X_AXIS);
+    rOperand.MakeRotation(m_data[2], IFX_Z_AXIS);
+    rOperand.Rotate(m_data[1], IFX_Y_AXIS);
+    rOperand.Rotate(m_data[0], IFX_X_AXIS);
 }

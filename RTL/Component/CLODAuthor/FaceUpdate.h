@@ -19,37 +19,47 @@
 #define FACEUPDATE_DOT_H
 
 // Class FaceUpdate encapsulates a changed attribute within a face of
-// an CLOD model.  The following list of token identifiers indicate which 
+// an CLOD model.  The following list of token identifiers indicate which
 // attributes  may be changed:
 
 // DataUpdate Attribute Tokens:
-#define CLOD_VERTEX_A       0
-#define CLOD_VERTEX_B       1
-#define CLOD_VERTEX_C       2
-#define CLOD_NORMAL_A       3
-#define CLOD_NORMAL_B       4
-#define CLOD_NORMAL_C       5
-#define CLOD_TEXCOORD_A     6
-#define CLOD_TEXCOORD_B     7
-#define CLOD_TEXCOORD_C     8
+#define CLOD_VERTEX_A 0
+#define CLOD_VERTEX_B 1
+#define CLOD_VERTEX_C 2
+#define CLOD_NORMAL_A 3
+#define CLOD_NORMAL_B 4
+#define CLOD_NORMAL_C 5
+#define CLOD_TEXCOORD_A 6
+#define CLOD_TEXCOORD_B 7
+#define CLOD_TEXCOORD_C 8
 
-typedef enum 
-{ 
-	BadToken,
-	VertexA, VertexB, VertexC, 
-	NormalA, NormalB, NormalC, 
-	TexCoordA, TexCoordB, TexCoordC
+typedef enum
+{
+    BadToken,
+    VertexA,
+    VertexB,
+    VertexC,
+    NormalA,
+    NormalB,
+    NormalC,
+    TexCoordA,
+    TexCoordB,
+    TexCoordC
 } AttribToken;
 
-typedef enum {Decreasing, Increasing} Direction;
+typedef enum
+{
+    Decreasing,
+    Increasing
+} Direction;
 
 class FaceUpdate
 {
 public:
-	int			faceIndex;		// Index of the IFACE to be changed
-	AttribToken	attribToken;	// One of CLOD_UPDATE_* tokens (defined above)
-	int			value[2];		// [0]:Attribute value for resolution decrease.
-								// [1]: Attribute value for resolution increase.
+    int faceIndex;           // Index of the IFACE to be changed
+    AttribToken attribToken; // One of CLOD_UPDATE_* tokens (defined above)
+    int value[2];            // [0]:Attribute value for resolution decrease.
+                             // [1]: Attribute value for resolution increase.
 };
 
 #endif // FACEUPDATE_DOT_H

@@ -17,34 +17,39 @@
 //***************************************************************************
 
 /**
-	@file IFXVertexWeight.cpp
+        @file IFXVertexWeight.cpp
 */
 
-#include <wchar.h>
 #include "IFXVertexWeight.h"
+#include <wchar.h>
 
 #if __MINGW32__
 #define swprintf _snwprintf
 #endif
 
 /**
-	Generates a string representing the contents of this VertexWeight. 
+        Generates a string representing the contents of this VertexWeight.
 
-	@todo check: verbose - unused parameter?
+        @todo check: verbose - unused parameter?
 */
 IFXString IFXVertexWeight::Out(bool verbose) const
 {
-	const int IFXBONES_MAX_STRING_LEN = 256;
+    const int IFXBONES_MAX_STRING_LEN = 256;
 
-	IFXCHAR buffer[ IFXBONES_MAX_STRING_LEN ];
+    IFXCHAR buffer[IFXBONES_MAX_STRING_LEN];
 
-	swprintf(
-		buffer,
-		IFXBONES_MAX_STRING_LEN, L"%d:%d %d %.6G %ls %ls",
-		m_meshid, m_vertexid, m_boneid, m_weight,m_offset.Out().Raw(),
-		m_normalOffset.Out().Raw());
+    swprintf(
+        buffer,
+        IFXBONES_MAX_STRING_LEN,
+        L"%d:%d %d %.6G %ls %ls",
+        m_meshid,
+        m_vertexid,
+        m_boneid,
+        m_weight,
+        m_offset.Out().Raw(),
+        m_normalOffset.Out().Raw());
 
-	IFXString result(buffer);
+    IFXString result(buffer);
 
-	return result;
+    return result;
 }

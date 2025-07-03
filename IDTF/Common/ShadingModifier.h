@@ -24,128 +24,121 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ShadingModifier_H
 #define ShadingModifier_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXResult.h"
 #include "IFXArray.h"
+#include "IFXResult.h"
 #include "Modifier.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class ShaderList
+    {
+    public:
+        void AddShaderName(const IFXString& rName);
+        const IFXString& GetShaderName(U32 index) const;
+        U32 GetShaderCount() const;
 
+    private:
+        IFXArray<IFXString> m_shaderNames;
+    };
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-class ShaderList
-{
-public:
-	void AddShaderName( const IFXString& rName );
-	const IFXString& GetShaderName( U32 index ) const ;
-	U32 GetShaderCount() const;
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ShadingModifier : public Modifier
+    {
+    public:
+        ShadingModifier() {};
+        virtual ~ShadingModifier() {};
 
-private:
-	IFXArray< IFXString > m_shaderNames;
-};
+        void AddShaderList(const ShaderList& rShaderList);
+        const ShaderList& GetShaderList(U32 index) const;
+        U32 GetShaderListCount() const;
+        U32 GetAttributes() const;
+        void SetAttributes(U32 attr);
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+    private:
+        IFXArray<ShaderList> m_shaderLists;
+        U32 m_attributes;
+    };
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class ShadingModifier : public Modifier
-{
-public:
-	ShadingModifier() {};
-	virtual ~ShadingModifier() {};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	void AddShaderList( const ShaderList& rShaderList );
-	const ShaderList& GetShaderList( U32 index ) const;
-	U32 GetShaderListCount() const;
-	U32 GetAttributes() const;
-	void SetAttributes( U32 attr );
+    IFXFORCEINLINE void ShaderList::AddShaderName(const IFXString& rName)
+    {
+        IFXString& name = m_shaderNames.CreateNewElement();
+        name = rName;
+    }
 
-private:
-	IFXArray< ShaderList > m_shaderLists;
-	U32 m_attributes;
-};
+    IFXFORCEINLINE const IFXString& ShaderList::GetShaderName(U32 index) const
+    {
+        return m_shaderNames.GetElementConst(index);
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE U32 ShaderList::GetShaderCount() const
+    {
+        return m_shaderNames.GetNumberElements();
+    }
 
-IFXFORCEINLINE void ShaderList::AddShaderName( const IFXString& rName )
-{
-	IFXString& name = m_shaderNames.CreateNewElement();
-	name = rName;
-}
+    IFXFORCEINLINE void ShadingModifier::AddShaderList(const ShaderList& rShaderList)
+    {
+        ShaderList& shaderList = m_shaderLists.CreateNewElement();
+        shaderList = rShaderList;
+    }
 
-IFXFORCEINLINE const IFXString& ShaderList::GetShaderName( U32 index ) const
-{
-	return m_shaderNames.GetElementConst( index );
-}
+    IFXFORCEINLINE const ShaderList& ShadingModifier::GetShaderList(U32 index) const
+    {
+        return m_shaderLists.GetElementConst(index);
+    }
 
-IFXFORCEINLINE U32 ShaderList::GetShaderCount() const
-{
-	return m_shaderNames.GetNumberElements();
-}
+    IFXFORCEINLINE U32 ShadingModifier::GetShaderListCount() const
+    {
+        return m_shaderLists.GetNumberElements();
+    }
 
-IFXFORCEINLINE void ShadingModifier::AddShaderList( const ShaderList& rShaderList )
-{
-	ShaderList& shaderList = m_shaderLists.CreateNewElement();
-	shaderList = rShaderList;
-}
+    IFXFORCEINLINE U32 ShadingModifier::GetAttributes() const
+    {
+        return m_attributes;
+    }
 
-IFXFORCEINLINE const ShaderList& ShadingModifier::GetShaderList( U32 index ) const
-{
-	return m_shaderLists.GetElementConst( index );
-}
+    IFXFORCEINLINE void ShadingModifier::SetAttributes(U32 attr)
+    {
+        m_attributes = attr;
+    }
 
-IFXFORCEINLINE U32 ShadingModifier::GetShaderListCount() const
-{
-	return m_shaderLists.GetNumberElements();
-}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE U32 ShadingModifier::GetAttributes() const
-{
-	return m_attributes;
-}
-
-IFXFORCEINLINE void ShadingModifier::SetAttributes( U32 attr )
-{
-	m_attributes = attr;
-}
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

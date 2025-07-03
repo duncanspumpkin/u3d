@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file IFXBoneNodeList.h
+        @file IFXBoneNodeList.h
 */
 
 #ifndef IFXBONENODELIST_H
@@ -25,7 +25,7 @@
 
 #include "IFXBoneNode.h"
 
-class IFXBoneNodeList: public IFXList<IFXBoneNode>
+class IFXBoneNodeList : public IFXList<IFXBoneNode>
 {
 };
 

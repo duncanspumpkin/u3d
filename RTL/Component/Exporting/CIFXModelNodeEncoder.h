@@ -20,50 +20,46 @@
 //
 //	DESCRIPTION:
 //		Declaration of the CIFXModelNodeEncoder.
-//		The CIFXModelNodeEncoder contains model node encoding functionality 
+//		The CIFXModelNodeEncoder contains model node encoding functionality
 //		that is used by the write manager.
-//	
+//
 //*****************************************************************************
 
 #ifndef CIFXMODELNODEENCODER_H
 #define CIFXMODELNODEENCODER_H
 
-
-// no ordering requirements for include files 
+// no ordering requirements for include files
 #include "CIFXNodeBaseEncoder.h"
 #include "IFXCoreServices.h"
 #include "IFXDataBlockX.h"
 #include "IFXEncoderX.h"
 #include "IFXString.h"
 
-
-class  CIFXModelNodeEncoder : virtual public IFXEncoderX,
-							  public CIFXNodeBaseEncoder
+class CIFXModelNodeEncoder : virtual public IFXEncoderX,
+                             public CIFXNodeBaseEncoder
 {
 public:
-	
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXModelNodeEncoder_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXModelNodeEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXUnknown
-	U32 IFXAPI 			AddRef ( void );
-	U32 IFXAPI 			Release ( void );
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	void	IFXAPI		EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
-	void	IFXAPI		InitializeX( IFXCoreServices& rCoreServices );
-	void	IFXAPI		SetObjectX( IFXUnknown& rObject );
-
+    // IFXEncoderX
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
 
 private:
-	// methods
-	CIFXModelNodeEncoder();
-	~CIFXModelNodeEncoder();
+    // methods
+    CIFXModelNodeEncoder();
+    ~CIFXModelNodeEncoder();
 
-	// members
-	BOOL	m_bInitialized;
-	U32		m_uRefCount;
+    // members
+    BOOL m_bInitialized;
+    U32 m_uRefCount;
 };
 
 #endif

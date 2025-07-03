@@ -17,74 +17,66 @@
 //***************************************************************************
 
 /**
-	@file	IFXScreenSpaceMetric.h
+        @file	IFXScreenSpaceMetric.h
 
-			Implements Hoppe's Screen Space Metric (SIGGRAPH 1997)
-			Modified for subdivision triangles.
+                        Implements Hoppe's Screen Space Metric (SIGGRAPH 1997)
+                        Modified for subdivision triangles.
 */
 
 #ifndef IFXSREENSPACEMETRIC_DOT_H
 #define IFXSREENSPACEMETRIC_DOT_H
 
-#include "IFXScreenSpaceMetricInterface.h"
 #include "IFXAdaptiveMetric.h"
+#include "IFXScreenSpaceMetricInterface.h"
 #include "IFXTQTTriangle.h"
 
 class IFXTQTTriangle;
 
-
 class IFXScreenSpaceMetric : public IFXScreenSpaceMetricInterface
 {
 private:
+    IFXVector3 m_eye;
+    IFXVector3 m_xdir, m_ydir, m_zdir;
 
-    IFXVector3  m_eye;
-  IFXVector3  m_xdir, m_ydir, m_zdir;
+    F32 m_fConstant;
+    F32 m_fPixelTolerance;
 
-    F32         m_fConstant;
-    F32         m_fPixelTolerance;
+    F32 m_fFOV;
 
-  F32         m_fFOV;
+    IFXVector3 m_frustum[4];
+    F32 m_frustumdist[4];
+    IFXVector3 m_frustumEdge[4];
 
-  IFXVector3  m_frustum[4];
-  F32         m_frustumdist[4];
-  IFXVector3  m_frustumEdge[4];
+    BOOL m_bLockViewpoint;
+    F32 m_fModelSize;
+    IFXVector3 m_fModelCenter;
 
-  BOOL        m_bLockViewpoint;
-  F32         m_fModelSize;
-  IFXVector3  m_fModelCenter;
+    void FindTriangleCenter(IFXVector3& center, IFXTQTVertex** ppVertex);
 
-  void FindTriangleCenter(IFXVector3 &center, IFXTQTVertex **ppVertex);
+    // Evaluate Hoppe's screen space geometric error equation
+    void EvaluateGeometricError(IFXTQTTriangle* pTriangle, IFXTQTVertex** ppVertex, IFXVector3& faceNormal, F32 delsquared, F32* pLeftmetric, F32* pRightmetric);
 
-  // Evaluate Hoppe's screen space geometric error equation
-  void EvaluateGeometricError(IFXTQTTriangle *pTriangle,
-    IFXTQTVertex **ppVertex, IFXVector3 &faceNormal, F32 delsquared,
-    F32 *pLeftmetric, F32 *pRightmetric);
+    // Use "tipup" or "tipdown" orientation to compute face normal
+    bool GetFaceNormal(IFXTQTTriangle* pTriangle, IFXTQTVertex** ppVertex, IFXVector3& faceNormal);
 
-  // Use "tipup" or "tipdown" orientation to compute face normal
-  bool GetFaceNormal(IFXTQTTriangle *pTriangle, IFXTQTVertex **ppVertex,
-    IFXVector3 &faceNormal);
+    // Determine whether a triangle should be subdivided, consolidated, or sustained
+    IFXAdaptiveMetric::Action ScreenSpace(IFXTQTTriangle* pTriangle, IFXTQTVertex** ppVertex);
 
-  // Determine whether a triangle should be subdivided, consolidated, or sustained
-  IFXAdaptiveMetric::Action ScreenSpace(IFXTQTTriangle *pTriangle,
-      IFXTQTVertex **ppVertex);
 public:
-
     IFXScreenSpaceMetric();
 
-    virtual void EvaluateTriangle (IFXTQTTriangle *pTriangle, Action *pAction);
+    virtual void EvaluateTriangle(IFXTQTTriangle* pTriangle, Action* pAction);
 
-    void IFXAPI   UpdateViewpoint (IFXVector3 &pCameraX, IFXVector3 &pCameraY,
-    IFXVector3 &pCameraZ, IFXVector3 &pCameraPos, F32 fAspect, F32 fFieldOfView);
+    void IFXAPI UpdateViewpoint(IFXVector3& pCameraX, IFXVector3& pCameraY, IFXVector3& pCameraZ, IFXVector3& pCameraPos, F32 fAspect, F32 fFieldOfView);
 
-	F32 IFXAPI   GetPixelTolerance();
-	void IFXAPI   SetPixelTolerance(F32 factor);
+    F32 IFXAPI GetPixelTolerance();
+    void IFXAPI SetPixelTolerance(F32 factor);
 
-	F32 IFXAPI   GetFieldofView();
-	void IFXAPI   SetFieldofView(F32 degrees);
+    F32 IFXAPI GetFieldofView();
+    void IFXAPI SetFieldofView(F32 degrees);
 
-	BOOL IFXAPI   GetViewpointLock();
-	void IFXAPI   SetViewpointLock(BOOL state);
-
+    BOOL IFXAPI GetViewpointLock();
+    void IFXAPI SetViewpointLock(BOOL state);
 };
 
 #endif

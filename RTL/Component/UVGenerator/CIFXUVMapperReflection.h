@@ -27,16 +27,15 @@
 
 #include "CIFXUVMapperNone.h"
 
-class CIFXUVMapperReflection : public CIFXUVMapperNone 
+class CIFXUVMapperReflection : public CIFXUVMapperNone
 {
 public:
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperReflection_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperReflection_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 private:
-	CIFXUVMapperReflection();
-	~CIFXUVMapperReflection();
+    CIFXUVMapperReflection();
+    ~CIFXUVMapperReflection();
 };
-
 
 #endif

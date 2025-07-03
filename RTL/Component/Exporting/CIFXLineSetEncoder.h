@@ -16,130 +16,122 @@
 //
 //***************************************************************************
 
-/** 
-	@file	CIFXLineSetEncoder.h
+/**
+        @file	CIFXLineSetEncoder.h
 
-			Declaration of CIFXLineSetEncoder class implementation.
+                        Declaration of CIFXLineSetEncoder class implementation.
 */
 
 #ifndef CIFXLineSetEncoder_H
 #define CIFXLineSetEncoder_H
 
-#include "IFXCoreServices.h"
-#include "IFXEncoderX.h"
+#include "IFXArray.h"
+#include "IFXAuthorLineSetAnalyzer.h"
+#include "IFXAuthorLineSetResource.h"
 #include "IFXAutoRelease.h"
 #include "IFXBitStreamCompressedX.h"
-#include "IFXArray.h"
-#include "IFXAuthorLineSetResource.h"
-#include "IFXAuthorLineSetAnalyzer.h"
-
+#include "IFXCoreServices.h"
+#include "IFXEncoderX.h"
 
 class CIFXLineSetEncoder : virtual public IFXEncoderX
 {
 public:
-	// IFXUnknown
-	U32 IFXAPI  AddRef ( void );
-	U32 IFXAPI  Release ( void );
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	/// Provide the encoder with a pointer to the object which is to be encoded.
-	void IFXAPI	SetObjectX(IFXUnknown &rObject);
-	/// Initialize and get a reference to the core services
-	void IFXAPI	InitializeX(IFXCoreServices &rCoreServices);
-	/// Encode data into data blocks and place these blocks in a queue
-	void IFXAPI	EncodeX(IFXString &rName, IFXDataBlockQueueX &rDataBlockQueue, F64 units = 1.0f);
+    // IFXEncoderX
+    /// Provide the encoder with a pointer to the object which is to be encoded.
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
+    /// Initialize and get a reference to the core services
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    /// Encode data into data blocks and place these blocks in a queue
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
 
-	// Factory function
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXLineSetEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+    // Factory function
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXLineSetEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 private:
+    enum AttribType
+    {
+        NORMAL,
+        DIFFUSECOLOR,
+        SPECULARCOLOR
+    };
 
-	enum AttribType 
-	{
-		NORMAL,
-		DIFFUSECOLOR,
-		SPECULARCOLOR
-	};
+    CIFXLineSetEncoder();
+    virtual ~CIFXLineSetEncoder();
 
-	CIFXLineSetEncoder();
-	virtual ~CIFXLineSetEncoder();
-	
-	/// Writes the model resource declaration block
-	void MakeDeclarationBlockX(	IFXString &rName, IFXDataBlockQueueX &rDataBlockQueue	);
+    /// Writes the model resource declaration block
+    void MakeDeclarationBlockX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue);
 
-	/// Write the contiuation blocks
-	void MakeContinuationBlocksX(IFXString &rName, IFXDataBlockQueueX &rDataBlockQueue	);
-	
-	/// returns number of lines encoded with written update assoiated with Poistion at currPosInd
-	U32 WriteLineUpdateX(U32 currPosInd, IFXBitStreamCompressedX* pBitStreamX);
+    /// Write the contiuation blocks
+    void MakeContinuationBlocksX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue);
 
-	void CalculateQuantizationFactorsX();
+    /// returns number of lines encoded with written update assoiated with Poistion at currPosInd
+    U32 WriteLineUpdateX(U32 currPosInd, IFXBitStreamCompressedX* pBitStreamX);
 
-	void CalculatePredictedNormalAtSplitPosX(U32 currPosInd, U32 splitPosInd, IFXVector3& vPredictedNormal);
-	
-	void CalculatePredictedColorAtSplitPosX(BOOL bDiffuseColor, U32 currPosInd, U32 splitPosInd,
-											IFXVector4& v4PredictedVertColor);
-	
-	void CalculatePredictedTexCoordAtSplitPosX(U32 texInd, U32 currPosInd, U32 splitPosInd, IFXVector4& v4PredictedTexCoord);
+    void CalculateQuantizationFactorsX();
 
-	void QuantizePositionForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
+    void CalculatePredictedNormalAtSplitPosX(U32 currPosInd, U32 splitPosInd, IFXVector3& vPredictedNormal);
 
-	void QuantizeNormalForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
+    void CalculatePredictedColorAtSplitPosX(BOOL bDiffuseColor, U32 currPosInd, U32 splitPosInd, IFXVector4& v4PredictedVertColor);
 
-	void QuantizeColorForWrite(BOOL bDiffuseColor, IFXVector4& color, 
-								U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
-	
-	void QuantizeTexCoordForWrite(IFXVector4& texCoord, 
-								U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
+    void CalculatePredictedTexCoordAtSplitPosX(U32 texInd, U32 currPosInd, U32 splitPosInd, IFXVector4& v4PredictedTexCoord);
 
-	void GetLineAttribIndexes(U32 lineInd, U32 splitPos, CIFXLineSetEncoder::AttribType attrib,
-							  U32& splitInd, U32& endInd );
-	void GetLineTexCoord(U32 texLayer, U32 lineInd, U32 currPos, U32& currInd, U32& endInd );
+    void QuantizePositionForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
+
+    void QuantizeNormalForWrite(IFXVector3& pos, U8& u8Signs, U32& udX, U32& udY, U32& udZ);
+
+    void QuantizeColorForWrite(BOOL bDiffuseColor, IFXVector4& color, U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
+
+    void QuantizeTexCoordForWrite(IFXVector4& texCoord, U8& u8Signs, U32& udR, U32& udG, U32& udB, U32& udA);
+
+    void GetLineAttribIndexes(U32 lineInd, U32 splitPos, CIFXLineSetEncoder::AttribType attrib, U32& splitInd, U32& endInd);
+    void GetLineTexCoord(U32 texLayer, U32 lineInd, U32 currPos, U32& currInd, U32& endInd);
 
 #if _DEBUG
-	void ReconstructPosition(U8 u8Signs, U32 udX, U32 udY, U32 udZ, IFXVector3& vReconstructedPosition);
+    void ReconstructPosition(U8 u8Signs, U32 udX, U32 udY, U32 udZ, IFXVector3& vReconstructedPosition);
 #endif
 
-	void PrepareForWriting();
+    void PrepareForWriting();
 
-	U32		m_uRefCount;
-	U32		m_uPriorityIncrement;
-	U32		m_uPriorityCurrent;
+    U32 m_uRefCount;
+    U32 m_uPriorityIncrement;
+    U32 m_uPriorityCurrent;
 
-	IFXDECLAREMEMBER(IFXCoreServices, m_pCoreServices);
-	IFXDECLAREMEMBER(IFXAuthorLineSetResource, m_pLineSetResource);
-	IFXDECLAREMEMBER(IFXAuthorLineSet,m_pAuthorLineSet);
+    IFXDECLAREMEMBER(IFXCoreServices, m_pCoreServices);
+    IFXDECLAREMEMBER(IFXAuthorLineSetResource, m_pLineSetResource);
+    IFXDECLAREMEMBER(IFXAuthorLineSet, m_pAuthorLineSet);
 
-	// Quantization Factors
-	F32 m_fQuantPosition;
-	F32 m_fQuantNormal;
-	F32 m_fQuantTexCoord;
-	F32 m_fQuantDiffuseColor;
-	F32 m_fQuantSpecularColor;
+    // Quantization Factors
+    F32 m_fQuantPosition;
+    F32 m_fQuantNormal;
+    F32 m_fQuantTexCoord;
+    F32 m_fQuantDiffuseColor;
+    F32 m_fQuantSpecularColor;
 
-	F32 m_fInverseQuantPosition;
-	F32 m_fInverseQuantNormal;
-	F32 m_fInverseQuantTexCoord;
-	F32 m_fInverseQuantDiffuseColor;
-	F32 m_fInverseQuantSpecularColor;
+    F32 m_fInverseQuantPosition;
+    F32 m_fInverseQuantNormal;
+    F32 m_fInverseQuantTexCoord;
+    F32 m_fInverseQuantDiffuseColor;
+    F32 m_fInverseQuantSpecularColor;
 
+    BOOL m_bBaseBlockPresent;
+    U32 m_uPositionsWritten;
+    IFXAuthorLineSetDesc* m_pLineSetDescription;
+    IFXAuthorLineSetAnalyzer* m_pLineSetAnalyzer;
 
-	BOOL	m_bBaseBlockPresent;
-	U32		m_uPositionsWritten;
-	IFXAuthorLineSetDesc*			m_pLineSetDescription;
-	IFXAuthorLineSetAnalyzer*		m_pLineSetAnalyzer;
+    U32 m_uCurrentTexCoordCount;
+    U32 m_uCurrentNumDiffuseColors;
+    U32 m_uCurrentNumSpecularColors;
+    U32 m_uCurrentNumTexCoord;
+    U32 m_uLastDiffuseColorInd;
+    U32 m_uLastSpecularColorInd;
+    U32 m_uLastTexCoordInd;
 
-	U32		m_uCurrentTexCoordCount;
-	U32		m_uCurrentNumDiffuseColors;
-	U32		m_uCurrentNumSpecularColors;
-	U32     m_uCurrentNumTexCoord;
-	U32		m_uLastDiffuseColorInd;
-	U32		m_uLastSpecularColorInd;
-	U32		m_uLastTexCoordInd;
-
-	F64 m_unitScale;
+    F64 m_unitScale;
 };
-
 
 #endif

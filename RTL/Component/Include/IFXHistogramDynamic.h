@@ -25,6 +25,8 @@
 #ifndef IFXHistogramDynamic_H
 #define IFXHistogramDynamic_H
 
+#include "IFXDataTypes.h"
+
 class IFXHistogramDynamic
 {
   enum { IFXOptimization_REF, IFXOptimization_MMX, IFXOptimization_SSE2 };

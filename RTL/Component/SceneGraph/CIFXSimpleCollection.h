@@ -17,64 +17,52 @@
 //***************************************************************************
 
 /**
-	@file	CIFXSimpleCollection.h
+        @file	CIFXSimpleCollection.h
 
-			The header file for the base CCIFXSimpleCollection class.
+                        The header file for the base CCIFXSimpleCollection class.
 */
 
 #ifndef __CIFXSIMPLECOLLECTION_H__
 #define __CIFXSIMPLECOLLECTION_H__
 
-#include "IFXSpatial.h"
 #include "IFXCollection.h"
 #include "IFXCoreCIDs.h"
+#include "IFXSpatial.h"
 
 class CIFXSimpleCollection : virtual public IFXCollection
 {
-            CIFXSimpleCollection();
-  virtual  ~CIFXSimpleCollection();
-  friend
-  IFXRESULT IFXAPI_CALLTYPE CIFXSimpleCollection_Factory(
-                                  IFXREFIID         interfaceId,
-                                  void**            ppInterface );
+    CIFXSimpleCollection();
+    virtual ~CIFXSimpleCollection();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXSimpleCollection_Factory(
+        IFXREFIID interfaceId,
+        void** ppInterface);
+
 public:
-  // IFXUnknown
-  U32 IFXAPI        AddRef ();
-  U32 IFXAPI        Release ();
-  IFXRESULT IFXAPI  QueryInterface (       IFXREFIID         riid,
-                                  void**            ppv );
-  // IFXCollection
-    const
-  IFXGUID&  GetCID() { return CID_IFXSimpleCollection; };
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
+    // IFXCollection
+    const IFXGUID& GetCID() { return CID_IFXSimpleCollection; };
 
-  IFXRESULT  IFXAPI 	 InitializeCollection( IFXSpatial**      pInSpatials,
-                                  U32               uInNumberOfSpatials,
-                                  IFXSpatial::eType eInType );
-  IFXRESULT  IFXAPI 	 InitializeCollection( IFXCollection* pInCollection);
+    IFXRESULT IFXAPI InitializeCollection(IFXSpatial** pInSpatials, U32 uInNumberOfSpatials, IFXSpatial::eType eInType);
+    IFXRESULT IFXAPI InitializeCollection(IFXCollection* pInCollection);
 
-  IFXRESULT  IFXAPI 	 AddSpatials(          IFXSpatial**      pInSpatials,
-                                  U32               uInNumberOfSpatials,
-                                  IFXSpatial::eType eInType );
-  IFXRESULT  IFXAPI 	 RemoveSpatials(       IFXSpatial**      pInSpatials,
-                                  U32               uInNumberOfSpatials,
-                                  IFXSpatial::eType eInType );
-  IFXRESULT  IFXAPI 	 GetSpatials(          IFXSpatial**&     rpOutSpatials,
-                                  U32&              ruOutNumberOfSpatials,
-                                  IFXSpatial::eType eInType               );
+    IFXRESULT IFXAPI AddSpatials(IFXSpatial** pInSpatials, U32 uInNumberOfSpatials, IFXSpatial::eType eInType);
+    IFXRESULT IFXAPI RemoveSpatials(IFXSpatial** pInSpatials, U32 uInNumberOfSpatials, IFXSpatial::eType eInType);
+    IFXRESULT IFXAPI GetSpatials(IFXSpatial**& rpOutSpatials, U32& ruOutNumberOfSpatials, IFXSpatial::eType eInType);
+
 private:
-  IFXRESULT _AddSpatials(         IFXSpatial**      pInSpatials,
-                                  U32               uInNumberOfSpatials,
-                                  IFXSpatial::eType eInType );
-  void      Destruct();
+    IFXRESULT _AddSpatials(IFXSpatial** pInSpatials, U32 uInNumberOfSpatials, IFXSpatial::eType eInType);
+    void Destruct();
 
-  IFXSpatial** m_pSpatials[IFXSpatial::TYPE_COUNT];
-  U32          m_uSpatials[IFXSpatial::TYPE_COUNT];
-  U32          m_uSpatialsAllocated[IFXSpatial::TYPE_COUNT];
+    IFXSpatial** m_pSpatials[IFXSpatial::TYPE_COUNT];
+    U32 m_uSpatials[IFXSpatial::TYPE_COUNT];
+    U32 m_uSpatialsAllocated[IFXSpatial::TYPE_COUNT];
 
-  static
-  const U32    m_allocationPad;
+    static const U32 m_allocationPad;
 
-  U32          m_uRefCount;
+    U32 m_uRefCount;
 };
 
 #endif

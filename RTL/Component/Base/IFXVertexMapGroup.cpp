@@ -17,9 +17,9 @@
 //***************************************************************************
 
 /**
-	@file	IFXVertexMapGroup.cpp
+        @file	IFXVertexMapGroup.cpp
 
-			This module defines the IFXVertexMapGroup class.
+                        This module defines the IFXVertexMapGroup class.
 */
 
 //***************************************************************************
@@ -28,25 +28,31 @@
 
 #include "IFXVertexMapGroup.h"
 
-IFXVertexMapGroup::IFXVertexMapGroup() {
-	m_pMapArray = NULL;
-	m_arraySize = 0;
+IFXVertexMapGroup::IFXVertexMapGroup()
+{
+    m_pMapArray = NULL;
+    m_arraySize = 0;
 }
 
-IFXVertexMapGroup::~IFXVertexMapGroup() {
-	IFXDELETE_ARRAY(m_pMapArray);
-	m_arraySize = 0;
+IFXVertexMapGroup::~IFXVertexMapGroup()
+{
+    IFXDELETE_ARRAY(m_pMapArray);
+    m_arraySize = 0;
 }
 
-IFXRESULT IFXVertexMapGroup::AllocateGroup(U32 numMeshes) {
-	IFXRESULT result = IFX_OK;
+IFXRESULT IFXVertexMapGroup::AllocateGroup(U32 numMeshes)
+{
+    IFXRESULT result = IFX_OK;
 
-	m_pMapArray = new IFXVertexMap[numMeshes];
-	if (m_pMapArray) {
-		m_arraySize = numMeshes;
-	} else {
-		m_arraySize = 0;
-		result = IFX_E_OUT_OF_MEMORY;
-	}
-	return result;
+    m_pMapArray = new IFXVertexMap[numMeshes];
+    if (m_pMapArray)
+    {
+        m_arraySize = numMeshes;
+    }
+    else
+    {
+        m_arraySize = 0;
+        result = IFX_E_OUT_OF_MEMORY;
+    }
+    return result;
 }

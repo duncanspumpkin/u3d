@@ -19,71 +19,71 @@
 
 IFXFastAllocator::IFXFastAllocator()
 {
-	m_initialSize = 0;
-	m_growSize = 0;
-	m_pHeap = NULL;
-	m_pFree = NULL;
-	m_pEnd = NULL;
+    m_initialSize = 0;
+    m_growSize = 0;
+    m_pHeap = NULL;
+    m_pFree = NULL;
+    m_pEnd = NULL;
 }
-
 
 IFXFastAllocator::~IFXFastAllocator()
 {
-	FreeAll();
+    FreeAll();
 }
-
 
 IFXRESULT IFXFastAllocator::Initialize(U32 initialSize, U32 growSize)
 {
-	IFXASSERT(m_pHeap == NULL);
+    IFXASSERT(m_pHeap == NULL);
 
-	m_initialSize = initialSize;
-	m_growSize = growSize;
-	m_pFree = new U8[initialSize + sizeof(U8*)];
-	if (!m_pFree)
-		return IFX_E_OUT_OF_MEMORY;
+    m_initialSize = initialSize;
+    m_growSize = growSize;
+    m_pFree = new U8[initialSize + sizeof(U8*)];
+    if (!m_pFree)
+    {
+        return IFX_E_OUT_OF_MEMORY;
+    }
 
-	m_pHeap = m_pFree;
-	m_pEnd = m_pFree + initialSize;
-	*((U8**)(m_pEnd)) = NULL;
-	return IFX_OK;
+    m_pHeap = m_pFree;
+    m_pEnd = m_pFree + initialSize;
+    *((U8**)(m_pEnd)) = NULL;
+    return IFX_OK;
 }
-
 
 void IFXFastAllocator::FreeAll()
 {
-	if (m_pHeap)
-	{
-		U8* pChunk = *((U8**)(m_pHeap + m_initialSize));
-		delete m_pHeap;
-		m_pHeap = NULL;
+    if (m_pHeap)
+    {
+        U8* pChunk = *((U8**)(m_pHeap + m_initialSize));
+        delete m_pHeap;
+        m_pHeap = NULL;
 
-		U8* pNextChunk;
-		while (pChunk)
-		{
-//			IFXASSERT(_msize(pChunk) == int(m_growSize)+sizeof(U8*));
-			pNextChunk = *((U8**)(pChunk + m_growSize));
-			delete pChunk;
-			pChunk = pNextChunk;
-		}
-	}
+        U8* pNextChunk;
+        while (pChunk)
+        {
+            //			IFXASSERT(_msize(pChunk) == int(m_growSize)+sizeof(U8*));
+            pNextChunk = *((U8**)(pChunk + m_growSize));
+            delete pChunk;
+            pChunk = pNextChunk;
+        }
+    }
 }
-
 
 U8* IFXFastAllocator::GrowThenAllocate(U32 size)
 {
-	IFXASSERT(size < m_growSize);
+    IFXASSERT(size < m_growSize);
 
-	m_pFree = new U8[m_growSize + sizeof(U8*)];
-	if (!m_pFree)
-		return NULL;
+    m_pFree = new U8[m_growSize + sizeof(U8*)];
+    if (!m_pFree)
+    {
+        return NULL;
+    }
 
-	*((U8**)(m_pEnd)) = m_pFree;
-	m_pEnd = m_pFree + m_growSize;
-	*((U8**)(m_pEnd)) = NULL;
+    *((U8**)(m_pEnd)) = m_pFree;
+    m_pEnd = m_pFree + m_growSize;
+    *((U8**)(m_pEnd)) = NULL;
 
-	// this is guaranteed
-	U8 *pPtr = m_pFree;
-	m_pFree += size;
-	return pPtr;
+    // this is guaranteed
+    U8* pPtr = m_pFree;
+    m_pFree += size;
+    return pPtr;
 }

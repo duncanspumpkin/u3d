@@ -22,7 +22,6 @@
 This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -34,56 +33,45 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
-
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //-------------------------------------------------------------------------------------------------
 /**
@@ -97,28 +85,26 @@ using namespace U3D_IDTF;
 
 IFXRESULT SceneUtilities::CompressMotionTracks(IFXMotionResource* in_MotionResource)
 {
-	IFXRESULT iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	if(!m_bInit || !in_MotionResource)
-	{
-		iResult = IFX_E_NOT_INITIALIZED;
-		IFXASSERT(0);
-	}
+    if (!m_bInit || !in_MotionResource)
+    {
+        iResult = IFX_E_NOT_INITIALIZED;
+        IFXASSERT(0);
+    }
 
-	// Call the method which does the trimming of the motion track.
-	if ( in_MotionResource && IFXSUCCESS(iResult) )
-	{
-		const F32 deltatime=0.01f;
-		const F32 deltadisplacement=0.01f;
-		const F32 deltarotation=0.001f;
+    // Call the method which does the trimming of the motion track.
+    if (in_MotionResource && IFXSUCCESS(iResult))
+    {
+        const F32 deltatime = 0.01f;
+        const F32 deltadisplacement = 0.01f;
+        const F32 deltarotation = 0.001f;
 
-		iResult = in_MotionResource->FilterAndCompress(deltatime,
-			deltadisplacement, deltarotation);
-	}
+        iResult = in_MotionResource->FilterAndCompress(deltatime, deltadisplacement, deltarotation);
+    }
 
-	return iResult;
+    return iResult;
 }
-
 
 //-------------------------------------------------------------------------------------------------
 /**
@@ -133,74 +119,80 @@ search for the specified modifier.
 @return  IFXRESULT         Return status of this method.
 **/
 //-------------------------------------------------------------------------------------------------
-IFXRESULT SceneUtilities::TestModifierResourceChain(  IFXAuthorCLODResource * in_pCLODResource,
-													IFXREFIID in_ModifierID,
-													U32 *out_pFound)
+IFXRESULT SceneUtilities::TestModifierResourceChain(IFXAuthorCLODResource* in_pCLODResource, IFXREFIID in_ModifierID, U32* out_pFound)
 {
-	IFXRESULT     iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	IFXModifier   *pModifier = NULL;
-	IFXModifierChain  *pModChain = NULL;
-	IFXSubdivModifier *pSubdiv = NULL;
-	U32         ModifierCount = 0;
-	U32         CurrentModifier = 0;
-	U32         found = 0;
+    IFXModifier* pModifier = NULL;
+    IFXModifierChain* pModChain = NULL;
+    IFXSubdivModifier* pSubdiv = NULL;
+    U32 ModifierCount = 0;
+    U32 CurrentModifier = 0;
+    U32 found = 0;
 
-	if (!m_bInit || !in_pCLODResource || !out_pFound )
-	{
-		iResult = IFX_E_NOT_INITIALIZED;
-		IFXASSERT(0);
-	}
+    if (!m_bInit || !in_pCLODResource || !out_pFound)
+    {
+        iResult = IFX_E_NOT_INITIALIZED;
+        IFXASSERT(0);
+    }
 
-	// Get access to the resource modifier chain
-	iResult = in_pCLODResource->GetModifierChain(&pModChain);
+    // Get access to the resource modifier chain
+    iResult = in_pCLODResource->GetModifierChain(&pModChain);
 
-	// Find out how many modifiers/generators it contains
-	if (IFXSUCCESS(iResult))
-		iResult = pModChain->GetModifierCount(ModifierCount);
+    // Find out how many modifiers/generators it contains
+    if (IFXSUCCESS(iResult))
+    {
+        iResult = pModChain->GetModifierCount(ModifierCount);
+    }
 
-	// Get the first modifier after the IFXAuthorCLODResource
-	if (ModifierCount > 1)
-		CurrentModifier = 1; // Skip the pCLODResource in the modifier chain
+    // Get the first modifier after the IFXAuthorCLODResource
+    if (ModifierCount > 1)
+    {
+        CurrentModifier = 1; // Skip the pCLODResource in the modifier chain
+    }
 
-	// Now iterate through all the modifiers looking for the one of interest
-	if ( IFXSUCCESS(iResult) )
-	{
-		for (; CurrentModifier < ModifierCount; CurrentModifier++)
-		{
-			if (IFXSUCCESS(iResult))
-				iResult =  pModChain->GetModifier(CurrentModifier, pModifier);
+    // Now iterate through all the modifiers looking for the one of interest
+    if (IFXSUCCESS(iResult))
+    {
+        for (; CurrentModifier < ModifierCount; CurrentModifier++)
+        {
+            if (IFXSUCCESS(iResult))
+            {
+                iResult = pModChain->GetModifier(CurrentModifier, pModifier);
+            }
 
-			if (pModifier && IFXSUCCESS(iResult) )
-			{
-				if (IID_IFXSubdivModifier == in_ModifierID)
-				{
-					if ( IFX_OK == pModifier->QueryInterface( IID_IFXSubdivModifier,
-						(void**)&pSubdiv ) )
-					{
-						IFXRELEASE(pSubdiv);
-						found = 1;
-					}
-				}
-			}  // if pModifier
+            if (pModifier && IFXSUCCESS(iResult))
+            {
+                if (IID_IFXSubdivModifier == in_ModifierID)
+                {
+                    if (IFX_OK == pModifier->QueryInterface(IID_IFXSubdivModifier, (void**)&pSubdiv))
+                    {
+                        IFXRELEASE(pSubdiv);
+                        found = 1;
+                    }
+                }
+            } // if pModifier
 
-			IFXRELEASE(pModifier);
-		}
-	}
+            IFXRELEASE(pModifier);
+        }
+    }
 
-	IFXRELEASE(pModChain);
+    IFXRELEASE(pModChain);
 
-	if (out_pFound)
-	{
-		if (0 == found)
-			*out_pFound = 0;
-		else
-			*out_pFound = 1;
-	}
+    if (out_pFound)
+    {
+        if (0 == found)
+        {
+            *out_pFound = 0;
+        }
+        else
+        {
+            *out_pFound = 1;
+        }
+    }
 
-	return iResult;
+    return iResult;
 }
-
 
 //-------------------------------------------------------------------------------------------------
 /**
@@ -215,85 +207,90 @@ search for the specified modifier.
 @return  IFXRESULT         Return status of this method.
 **/
 //-------------------------------------------------------------------------------------------------
-IFXRESULT SceneUtilities::TestModifierNodeChain(  IFXNode * in_pNode,
-												IFXREFIID in_ModifierID,
-												U32 *out_pFound)
+IFXRESULT SceneUtilities::TestModifierNodeChain(IFXNode* in_pNode, IFXREFIID in_ModifierID, U32* out_pFound)
 {
-	IFXRESULT     iResult = IFX_OK;
+    IFXRESULT iResult = IFX_OK;
 
-	IFXModifier   *pModifier = NULL;
-	IFXModifierChain  *pModChain = NULL;
-	IFXAnimationModifier  *pAnimation = NULL;
-	IFXSubdivModifier *pSubdiv = NULL;
-	U32         ModifierCount = 0;
-	U32         CurrentModifier = 0;
-	U32         found = 0;
+    IFXModifier* pModifier = NULL;
+    IFXModifierChain* pModChain = NULL;
+    IFXAnimationModifier* pAnimation = NULL;
+    IFXSubdivModifier* pSubdiv = NULL;
+    U32 ModifierCount = 0;
+    U32 CurrentModifier = 0;
+    U32 found = 0;
 
-	if (!m_bInit || !in_pNode || !out_pFound )
-	{
-		iResult = IFX_E_NOT_INITIALIZED;
-		IFXASSERT(0);
-	}
+    if (!m_bInit || !in_pNode || !out_pFound)
+    {
+        iResult = IFX_E_NOT_INITIALIZED;
+        IFXASSERT(0);
+    }
 
-	// Get access to the resource modifier chain
-	iResult = in_pNode->GetModifierChain(&pModChain);
+    // Get access to the resource modifier chain
+    iResult = in_pNode->GetModifierChain(&pModChain);
 
-	// Find out how many modifiers/generators it contains
-	if (IFXSUCCESS(iResult))
-		iResult = pModChain->GetModifierCount(ModifierCount);
+    // Find out how many modifiers/generators it contains
+    if (IFXSUCCESS(iResult))
+    {
+        iResult = pModChain->GetModifierCount(ModifierCount);
+    }
 
-	// Get the first modifier after the IFXAuthorCLODResource
-	if (ModifierCount > 1)
-		CurrentModifier = 1; // Skip the pCLODResource in the modifier chain
+    // Get the first modifier after the IFXAuthorCLODResource
+    if (ModifierCount > 1)
+    {
+        CurrentModifier = 1; // Skip the pCLODResource in the modifier chain
+    }
 
-	// Now iterate through all the modifiers looking for the one of interest
-	if ( IFXSUCCESS(iResult) )
-	{
-		for (; CurrentModifier < ModifierCount; CurrentModifier++)
-		{
-			if (IFXSUCCESS(iResult))
-				iResult =  pModChain->GetModifier(CurrentModifier, pModifier);
+    // Now iterate through all the modifiers looking for the one of interest
+    if (IFXSUCCESS(iResult))
+    {
+        for (; CurrentModifier < ModifierCount; CurrentModifier++)
+        {
+            if (IFXSUCCESS(iResult))
+            {
+                iResult = pModChain->GetModifier(CurrentModifier, pModifier);
+            }
 
-			if (pModifier && IFXSUCCESS(iResult) )
-			{
-				if (IID_IFXAnimationModifier == in_ModifierID)
-				{
-					if ( IFX_OK == pModifier->QueryInterface( IID_IFXAnimationModifier,
-						(void**)&pAnimation ) )
-					{
-						IFXRELEASE(pAnimation);
-						found = 1;
-					}
-				}
+            if (pModifier && IFXSUCCESS(iResult))
+            {
+                if (IID_IFXAnimationModifier == in_ModifierID)
+                {
+                    if (IFX_OK == pModifier->QueryInterface(IID_IFXAnimationModifier, (void**)&pAnimation))
+                    {
+                        IFXRELEASE(pAnimation);
+                        found = 1;
+                    }
+                }
 
-				if (IID_IFXSubdivModifier == in_ModifierID)
-				{
-					if ( IFX_OK == pModifier->QueryInterface( IID_IFXSubdivModifier,
-						(void**)&pSubdiv ) )
-					{
-						IFXRELEASE(pSubdiv);
-						found = 1;
-					}
-				}
-			}  // if pModifier
+                if (IID_IFXSubdivModifier == in_ModifierID)
+                {
+                    if (IFX_OK == pModifier->QueryInterface(IID_IFXSubdivModifier, (void**)&pSubdiv))
+                    {
+                        IFXRELEASE(pSubdiv);
+                        found = 1;
+                    }
+                }
+            } // if pModifier
 
-			IFXRELEASE(pModifier);
-		}
-	}
+            IFXRELEASE(pModifier);
+        }
+    }
 
-	IFXRELEASE(pModChain);
+    IFXRELEASE(pModChain);
 
-	if (out_pFound)
-	{
-		if (0 == found)
-			*out_pFound = 0;
-		else
-			*out_pFound = 1;
-	}
+    if (out_pFound)
+    {
+        if (0 == found)
+        {
+            *out_pFound = 0;
+        }
+        else
+        {
+            *out_pFound = 1;
+        }
+    }
 
-	return iResult;
+    return iResult;
 }
-
 
 //-------------------------------------------------------------------------------------------------
 /**
@@ -305,51 +302,48 @@ IFXRESULT SceneUtilities::TestModifierNodeChain(  IFXNode * in_pNode,
 @return  IFXRESULT         Return status of this method.
 **/
 //-------------------------------------------------------------------------------------------------
-IFXRESULT SceneUtilities::GetWorldTransform(IFXNode *in_pNode,
-											IFXMatrix4x4 *out_pWorldTransform)
+IFXRESULT SceneUtilities::GetWorldTransform(IFXNode* in_pNode, IFXMatrix4x4* out_pWorldTransform)
 {
-	IFXRESULT       iResult = IFX_OK;
-	IFXModifierChain    *pModifierChain = NULL;
-	IFXModifierDataPacket *pMDP = NULL;
-	IFXMatrix4x4      *pTransformMatrix = NULL;
-	U32           uTransformDataElementIndex = 0;
+    IFXRESULT iResult = IFX_OK;
+    IFXModifierChain* pModifierChain = NULL;
+    IFXModifierDataPacket* pMDP = NULL;
+    IFXMatrix4x4* pTransformMatrix = NULL;
+    U32 uTransformDataElementIndex = 0;
 
-	if (!m_bInit || !in_pNode || !out_pWorldTransform )
-	{
-		iResult = IFX_E_NOT_INITIALIZED;
-		IFXASSERT(0);
-	}
+    if (!m_bInit || !in_pNode || !out_pWorldTransform)
+    {
+        iResult = IFX_E_NOT_INITIALIZED;
+        IFXASSERT(0);
+    }
 
-	if (in_pNode && IFXSUCCESS(iResult))
-	{
-		iResult = in_pNode->GetModifierChain( &pModifierChain );
-	}
+    if (in_pNode && IFXSUCCESS(iResult))
+    {
+        iResult = in_pNode->GetModifierChain(&pModifierChain);
+    }
 
-	if (pModifierChain && IFXSUCCESS(iResult))
-	{
-		iResult = pModifierChain->GetDataPacket( pMDP );
-	}
+    if (pModifierChain && IFXSUCCESS(iResult))
+    {
+        iResult = pModifierChain->GetDataPacket(pMDP);
+    }
 
-	if (pMDP  && IFXSUCCESS(iResult))
-	{
-		iResult = pMDP->GetDataElementIndex( DID_IFXTransform,
-			uTransformDataElementIndex );
-	}
+    if (pMDP && IFXSUCCESS(iResult))
+    {
+        iResult = pMDP->GetDataElementIndex(DID_IFXTransform, uTransformDataElementIndex);
+    }
 
-	if (pMDP  && IFXSUCCESS(iResult))
-	{
-		iResult = pMDP->GetDataElement( uTransformDataElementIndex,
-			(void**)&pTransformMatrix );   // Does not AddRef
-	}
+    if (pMDP && IFXSUCCESS(iResult))
+    {
+        iResult = pMDP->GetDataElement(uTransformDataElementIndex,
+                                       (void**)&pTransformMatrix); // Does not AddRef
+    }
 
-	if (pTransformMatrix  && IFXSUCCESS(iResult))
-	{
-		out_pWorldTransform = pTransformMatrix;
-	}
+    if (pTransformMatrix && IFXSUCCESS(iResult))
+    {
+        out_pWorldTransform = pTransformMatrix;
+    }
 
-	return iResult;
+    return iResult;
 }
-
 
 //***************************************************************************
 //  Local functions

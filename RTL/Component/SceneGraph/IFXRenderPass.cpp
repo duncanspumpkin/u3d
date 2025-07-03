@@ -17,21 +17,21 @@
 //***************************************************************************
 
 /**
-	@file  IFXRenderPass.cpp
+        @file  IFXRenderPass.cpp
 */
 
-#include "IFXRenderContext.h"
-#include "IFXNode.h"
-#include "IFXSubject.h"
 #include "IFXRenderPass.h"
+#include "IFXNode.h"
+#include "IFXRenderContext.h"
+#include "IFXSubject.h"
 
 IFXRenderPass::IFXRenderPass()
 {
-	m_nodeIndex = 0;
-	m_nodeInstance = 0;
-	m_nodeSet = FALSE;
+    m_nodeIndex = 0;
+    m_nodeInstance = 0;
+    m_nodeSet = FALSE;
 
-	SetDefaults(0);
+    SetDefaults(0);
 }
 
 IFXRenderPass::~IFXRenderPass()
@@ -41,43 +41,43 @@ IFXRenderPass::~IFXRenderPass()
 // IFXRenderPass
 void IFXRenderPass::SetDefaults(U32 uRenderPass)
 {
-	m_nodeIndex = 0;
-	m_nodeInstance = 0;
-	m_nodeSet = FALSE;
+    m_nodeIndex = 0;
+    m_nodeInstance = 0;
+    m_nodeSet = FALSE;
 
-	m_uRenderPass = uRenderPass;
+    m_uRenderPass = uRenderPass;
 
-	m_Clear.InitData();
-	m_Fog.InitData();
-	m_Stencil.InitData();
+    m_Clear.InitData();
+    m_Fog.InitData();
+    m_Stencil.InitData();
 
-	m_bDepthTest = TRUE;
-	m_eDepthFunc = IFX_LEQUAL;
-	m_bDepthWrite = TRUE;
+    m_bDepthTest = TRUE;
+    m_eDepthFunc = IFX_LEQUAL;
+    m_bDepthWrite = TRUE;
 
-	m_bFogEnabled = FALSE;
-	m_bStencilEnabled = FALSE;
-		
-	if(uRenderPass)
-	{
-		m_Clear.SetColorCleared(FALSE);
-		m_Clear.SetDepthCleared(FALSE);
-		m_Clear.SetStencilCleared(FALSE);
-	}
+    m_bFogEnabled = FALSE;
+    m_bStencilEnabled = FALSE;
+
+    if (uRenderPass)
+    {
+        m_Clear.SetColorCleared(FALSE);
+        m_Clear.SetDepthCleared(FALSE);
+        m_Clear.SetStencilCleared(FALSE);
+    }
 }
 
 IFXRESULT IFXRenderPass::SetRootNode(U32 nodeIndex, U32 nodeInstance)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	m_nodeIndex = nodeIndex;
-	m_nodeInstance = nodeInstance;
-	m_nodeSet = TRUE;
+    m_nodeIndex = nodeIndex;
+    m_nodeInstance = nodeInstance;
+    m_nodeSet = TRUE;
 
-	return rc;
+    return rc;
 }
 
 void IFXRenderPass::ClearRootNode()
 {
-	m_nodeSet = FALSE;
+    m_nodeSet = FALSE;
 }

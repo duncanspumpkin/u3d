@@ -17,36 +17,31 @@
 //***************************************************************************
 
 /**
-	@file	CIFXUVMapperSpherical.h
+        @file	CIFXUVMapperSpherical.h
 
-			Class header file for the spherical texture coordinate mapper classes.
+                        Class header file for the spherical texture coordinate mapper classes.
 */
 #ifndef __IFXUVMAPPERSPHERICAL_CLASS_INTERFACE_H__
 #define __IFXUVMAPPERSPHERICAL_CLASS_INTERFACE_H__
 
 #include "CIFXUVMapperNone.h"
 
-const float IFX_UV_PI=3.1415926535897932384626433832795f;
+const float IFX_UV_PI = 3.1415926535897932384626433832795f;
 
-class CIFXUVMapperSpherical : public CIFXUVMapperNone 
+class CIFXUVMapperSpherical : public CIFXUVMapperNone
 {
 public:
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperSpherical_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperSpherical_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 protected:
-	BOOL IFXAPI   NeedToMap(IFXMesh& rMesh, IFXUVMapParameters* pParams);
+    BOOL IFXAPI NeedToMap(IFXMesh& rMesh, IFXUVMapParameters* pParams);
 
 private:
-	CIFXUVMapperSpherical();
-	virtual ~CIFXUVMapperSpherical();
+    CIFXUVMapperSpherical();
+    virtual ~CIFXUVMapperSpherical();
 
-	IFXRESULT IFXAPI   Map(	IFXMesh& rMesh, 
-					IFXUVMapParameters* pParams,
-					IFXMatrix4x4* pModelMatrix,
-					IFXMatrix4x4* pViewMatrix, 
-					const IFXLightSet* pLightSet);
-
+    IFXRESULT IFXAPI Map(IFXMesh& rMesh, IFXUVMapParameters* pParams, IFXMatrix4x4* pModelMatrix, IFXMatrix4x4* pViewMatrix, const IFXLightSet* pLightSet);
 };
 
 #endif

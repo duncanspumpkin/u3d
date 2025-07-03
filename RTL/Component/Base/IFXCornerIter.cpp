@@ -17,9 +17,9 @@
 //***************************************************************************
 
 /**
-	@file	IFXCornerIter.cpp
+        @file	IFXCornerIter.cpp
 
-			This module defines the IFXCornerIter class.
+                        This module defines the IFXCornerIter class.
 */
 
 //***************************************************************************
@@ -29,24 +29,23 @@
 #include "IFXCornerIter.h"
 #include "IFXNeighborMesh.h"
 
-void IFXCornerIter::Initialize(IFXNeighborMesh* pNeighborMesh,
-							   U32 mesh, U32 face, U32 corner)
+void IFXCornerIter::Initialize(IFXNeighborMesh* pNeighborMesh, U32 mesh, U32 face, U32 corner)
 {
-	IFXASSERT(pNeighborMesh);
+    IFXASSERT(pNeighborMesh);
 
-	if (NULL != pNeighborMesh)
-	{
-		m_pNeighborMesh = pNeighborMesh;
-		m_mesh = mesh;
-		m_face = face;
-		m_corner = corner;
+    if (NULL != pNeighborMesh)
+    {
+        m_pNeighborMesh = pNeighborMesh;
+        m_mesh = mesh;
+        m_face = face;
+        m_corner = corner;
 
-		m_pNeighborFaces = m_pNeighborMesh->GetNeighborFaceArray(m_mesh);
-	}
+        m_pNeighborFaces = m_pNeighborMesh->GetNeighborFaceArray(m_mesh);
+    }
 }
 
 void IFXCornerIter::LoadMesh()
 {
-	// Get new pointer to array of neighbor faces
-	m_pNeighborFaces = m_pNeighborMesh->GetNeighborFaceArray(m_mesh);
+    // Get new pointer to array of neighbor faces
+    m_pNeighborFaces = m_pNeighborMesh->GetNeighborFaceArray(m_mesh);
 }

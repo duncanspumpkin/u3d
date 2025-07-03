@@ -21,54 +21,46 @@
 This module defines the CIFXGlyphCommandList component
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXCOM.h"
-#include "IFXCoreCIDs.h"
-#include "CIFXGlyph3DGenerator.h"
-#include "IFXCheckX.h"
-#include "IFXException.h"
-#include "IFXGlyph2DCommands.h"
 #include "CIFXGlyphCommandList.h"
+#include "CIFXGlyph3DGenerator.h"
+#include "IFXCOM.h"
+#include "IFXCheckX.h"
+#include "IFXCoreCIDs.h"
+#include "IFXException.h"
 #include "IFXExportingCIDs.h"
+#include "IFXGlyph2DCommands.h"
 
 //***************************************************************************
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
-
 
 //***************************************************************************
 //  Public methods
@@ -77,184 +69,191 @@ This module defines the CIFXGlyphCommandList component
 //---------------------------------------------------------------------------
 U32 CIFXGlyphCommandList::AddRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
 
 //---------------------------------------------------------------------------
 U32 CIFXGlyphCommandList::Release()
 {
-	if ( !( --m_refCount ) )
-	{
-		delete this;
+    if (!(--m_refCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_refCount;
+    return m_refCount;
 }
 
 //---------------------------------------------------------------------------
-IFXRESULT CIFXGlyphCommandList::QueryInterface( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXGlyphCommandList::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result  = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXGlyphCommandList )
-		{
-			*ppInterface = ( IFXGlyphCommandList* ) this;
-		}
-		else if ( interfaceId == IID_IFXUnknown )
-		{
-			*ppInterface = ( IFXUnknown* ) this;
-		}
-		else
-		{
-			*ppInterface = NULL;
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXGlyphCommandList)
+        {
+            *ppInterface = (IFXGlyphCommandList*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
 
-			result = IFX_E_UNSUPPORTED;
-		}
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			AddRef();
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
-
 
 // CIFXGlyphCommandList methods
 
-
-IFXRESULT CIFXGlyphCommandList::AddTagBlock( IFXGlyph2DCommands::EGLYPH_TYPE comType, F64 x, F64 y )
+IFXRESULT CIFXGlyphCommandList::AddTagBlock(IFXGlyph2DCommands::EGLYPH_TYPE comType, F64 x, F64 y)
 {
-	IFXRESULT result = IFX_OK;
-	IFXGlyphTagBlock* pCom = NULL;
-	if( !m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData );
-		if( IFXSUCCESS( result ) && m_pData )
-			m_pData->Initialize( 1 );
-	}
-	if( IFXSUCCESS( result ) && m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXGlyphTagBlock, IID_IFXGlyphTagBlock, (void**)&pCom );
-	}
-	if( IFXSUCCESS( result ) )
-	{
-		IFXUnknown* pUnknown = NULL;
-		U32 idx = 0;
-		pCom->SetType( comType );
-		pCom->SetData( x, y );
-		pCom->QueryInterface( IID_IFXUnknown, (void**)&pUnknown );
-		IFXRELEASE( pCom );
-		result = m_pData->Add( pUnknown, &idx );
-		IFXRELEASE( pUnknown );
-	}
-	return result;
+    IFXRESULT result = IFX_OK;
+    IFXGlyphTagBlock* pCom = NULL;
+    if (!m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData);
+        if (IFXSUCCESS(result) && m_pData)
+        {
+            m_pData->Initialize(1);
+        }
+    }
+    if (IFXSUCCESS(result) && m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXGlyphTagBlock, IID_IFXGlyphTagBlock, (void**)&pCom);
+    }
+    if (IFXSUCCESS(result))
+    {
+        IFXUnknown* pUnknown = NULL;
+        U32 idx = 0;
+        pCom->SetType(comType);
+        pCom->SetData(x, y);
+        pCom->QueryInterface(IID_IFXUnknown, (void**)&pUnknown);
+        IFXRELEASE(pCom);
+        result = m_pData->Add(pUnknown, &idx);
+        IFXRELEASE(pUnknown);
+    }
+    return result;
 }
 
-IFXRESULT CIFXGlyphCommandList::AddMoveToBlock( F64 x, F64 y )
+IFXRESULT CIFXGlyphCommandList::AddMoveToBlock(F64 x, F64 y)
 {
-	IFXRESULT result = IFX_OK;
-	IFXGlyphMoveToBlock* pCom = NULL;
-	if( !m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData );
-		if( IFXSUCCESS( result ) && m_pData )
-			m_pData->Initialize( 1 );
-	}
-	if( IFXSUCCESS( result ) && m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXGlyphMoveToBlock, IID_IFXGlyphMoveToBlock, (void**)&pCom );
-	}
-	if( IFXSUCCESS( result ) )
-	{
-		IFXUnknown* pUnknown = NULL;
-		U32 idx = 0;
-		pCom->SetType( IFXGlyph2DCommands::IGG_TYPE_MOVETO );
-		pCom->SetData( x, y );
-		pCom->QueryInterface( IID_IFXUnknown, (void**)&pUnknown );
-		IFXRELEASE( pCom );
-		result = m_pData->Add( pUnknown, &idx );
-		IFXRELEASE( pUnknown );
-	}
-	return result;
+    IFXRESULT result = IFX_OK;
+    IFXGlyphMoveToBlock* pCom = NULL;
+    if (!m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData);
+        if (IFXSUCCESS(result) && m_pData)
+        {
+            m_pData->Initialize(1);
+        }
+    }
+    if (IFXSUCCESS(result) && m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXGlyphMoveToBlock, IID_IFXGlyphMoveToBlock, (void**)&pCom);
+    }
+    if (IFXSUCCESS(result))
+    {
+        IFXUnknown* pUnknown = NULL;
+        U32 idx = 0;
+        pCom->SetType(IFXGlyph2DCommands::IGG_TYPE_MOVETO);
+        pCom->SetData(x, y);
+        pCom->QueryInterface(IID_IFXUnknown, (void**)&pUnknown);
+        IFXRELEASE(pCom);
+        result = m_pData->Add(pUnknown, &idx);
+        IFXRELEASE(pUnknown);
+    }
+    return result;
 }
 
-IFXRESULT CIFXGlyphCommandList::AddLineToBlock( F64 x, F64 y )
+IFXRESULT CIFXGlyphCommandList::AddLineToBlock(F64 x, F64 y)
 {
-	IFXRESULT result = IFX_OK;
-	IFXGlyphLineToBlock* pCom = NULL;
-	if( !m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData );
-		if( IFXSUCCESS( result ) && m_pData )
-			m_pData->Initialize( 1 );
-	}
-	if( IFXSUCCESS( result ) && m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXGlyphLineToBlock, IID_IFXGlyphLineToBlock, (void**)&pCom );
-	}
-	if( IFXSUCCESS( result ) )
-	{
-		IFXUnknown* pUnknown = NULL;
-		U32 idx = 0;
-		pCom->SetType( IFXGlyph2DCommands::IGG_TYPE_LINETO );
-		pCom->SetData( x, y );
-		pCom->QueryInterface( IID_IFXUnknown, (void**)&pUnknown );
-		IFXRELEASE( pCom );
-		result = m_pData->Add( pUnknown, &idx );
-		IFXRELEASE( pUnknown );
-	}
-	return result;
+    IFXRESULT result = IFX_OK;
+    IFXGlyphLineToBlock* pCom = NULL;
+    if (!m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData);
+        if (IFXSUCCESS(result) && m_pData)
+        {
+            m_pData->Initialize(1);
+        }
+    }
+    if (IFXSUCCESS(result) && m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXGlyphLineToBlock, IID_IFXGlyphLineToBlock, (void**)&pCom);
+    }
+    if (IFXSUCCESS(result))
+    {
+        IFXUnknown* pUnknown = NULL;
+        U32 idx = 0;
+        pCom->SetType(IFXGlyph2DCommands::IGG_TYPE_LINETO);
+        pCom->SetData(x, y);
+        pCom->QueryInterface(IID_IFXUnknown, (void**)&pUnknown);
+        IFXRELEASE(pCom);
+        result = m_pData->Add(pUnknown, &idx);
+        IFXRELEASE(pUnknown);
+    }
+    return result;
 }
 
-IFXRESULT CIFXGlyphCommandList::AddCurveToBlock( F64 x1, F64 y1, F64 x2, F64 y2, F64 x3, F64 y3, U32 numSteps )
+IFXRESULT CIFXGlyphCommandList::AddCurveToBlock(F64 x1, F64 y1, F64 x2, F64 y2, F64 x3, F64 y3, U32 numSteps)
 {
-	IFXRESULT result = IFX_OK;
-	IFXGlyphCurveToBlock* pCom = NULL;
-	if( !m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData );
-		if( IFXSUCCESS( result ) && m_pData )
-			m_pData->Initialize( 1 );
-	}
-	if( IFXSUCCESS( result ) && m_pData )
-	{
-		result = IFXCreateComponent( CID_IFXGlyphCurveToBlock, IID_IFXGlyphCurveToBlock, (void**)&pCom );
-	}
-	if( IFXSUCCESS( result ) )
-	{
-		IFXUnknown* pUnknown = NULL;
-		U32 idx = 0;
-		pCom->SetType( IFXGlyph2DCommands::IGG_TYPE_CURVETO );
-		pCom->SetData( x1, y1, x2, y2, x3, y3, numSteps );
-		pCom->QueryInterface( IID_IFXUnknown, (void**)&pUnknown );
-		IFXRELEASE( pCom );
-		result = m_pData->Add( pUnknown, &idx );
-		IFXRELEASE( pUnknown );
-	}
-	return result;
+    IFXRESULT result = IFX_OK;
+    IFXGlyphCurveToBlock* pCom = NULL;
+    if (!m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXSimpleList, IID_IFXSimpleList, (void**)&m_pData);
+        if (IFXSUCCESS(result) && m_pData)
+        {
+            m_pData->Initialize(1);
+        }
+    }
+    if (IFXSUCCESS(result) && m_pData)
+    {
+        result = IFXCreateComponent(CID_IFXGlyphCurveToBlock, IID_IFXGlyphCurveToBlock, (void**)&pCom);
+    }
+    if (IFXSUCCESS(result))
+    {
+        IFXUnknown* pUnknown = NULL;
+        U32 idx = 0;
+        pCom->SetType(IFXGlyph2DCommands::IGG_TYPE_CURVETO);
+        pCom->SetData(x1, y1, x2, y2, x3, y3, numSteps);
+        pCom->QueryInterface(IID_IFXUnknown, (void**)&pUnknown);
+        IFXRELEASE(pCom);
+        result = m_pData->Add(pUnknown, &idx);
+        IFXRELEASE(pUnknown);
+    }
+    return result;
 }
 
-IFXRESULT CIFXGlyphCommandList::GetList( IFXSimpleList** ppList )
+IFXRESULT CIFXGlyphCommandList::GetList(IFXSimpleList** ppList)
 {
-	m_pData->AddRef();
-	*ppList = m_pData;
-	return IFX_OK;
+    m_pData->AddRef();
+    *ppList = m_pData;
+    return IFX_OK;
 }
-
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
-
 
 //***************************************************************************
 //  Private methods
@@ -271,8 +270,8 @@ method if one's supported.
 
 CIFXGlyphCommandList::CIFXGlyphCommandList()
 {
-	m_pData = NULL;
-	m_refCount = 0;
+    m_pData = NULL;
+    m_refCount = 0;
 }
 
 //---------------------------------------------------------------------------
@@ -280,9 +279,10 @@ CIFXGlyphCommandList::CIFXGlyphCommandList()
 This is the component destructor.  After all references to the component
 are released, it performs any necessary cleanup activities.
 */
-CIFXGlyphCommandList::~CIFXGlyphCommandList() {
+CIFXGlyphCommandList::~CIFXGlyphCommandList()
+{
 
-	IFXRELEASE(m_pData);
+    IFXRELEASE(m_pData);
 }
 
 //---------------------------------------------------------------------------
@@ -300,13 +300,12 @@ following are returned:  @todo: return codes.
 */
 IFXRESULT CIFXGlyphCommandList::RobustConstructor()
 {
-	return IFX_OK;
+    return IFX_OK;
 }
 
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //---------------------------------------------------------------------------
 /**
@@ -327,40 +326,46 @@ following failures are returned:  IFX_E_COMPONENT,
 IFX_E_INVALID_POINTER, IFX_E_OUT_OF_MEMORY or
 IFX_E_UNSUPPORTED.
 */
-IFXRESULT IFXAPI_CALLTYPE CIFXGlyphCommandList_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXGlyphCommandList_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result  = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXComponentName component.
-		CIFXGlyphCommandList *pComponent = new CIFXGlyphCommandList;
+    if (ppInterface)
+    {
+        // Create the CIFXComponentName component.
+        CIFXGlyphCommandList* pComponent = new CIFXGlyphCommandList;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Call the component's robust constructor that can return a
-			// result code to indicate success or failure.
-			result = pComponent->RobustConstructor();
+            // Call the component's robust constructor that can return a
+            // result code to indicate success or failure.
+            result = pComponent->RobustConstructor();
 
-			// Attempt to obtain a pointer to the requested interface.
-			if ( IFXSUCCESS( result ) )
-				result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            if (IFXSUCCESS(result))
+            {
+                result = pComponent->QueryInterface(interfaceId, ppInterface);
+            }
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the RobustConstructor or QI fails,
-			// this will cause the component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the RobustConstructor or QI fails,
+            // this will cause the component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
 //***************************************************************************

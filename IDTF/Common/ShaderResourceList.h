@@ -24,7 +24,6 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ShaderResourceList_H
 #define ShaderResourceList_H
 
@@ -38,79 +37,73 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ShaderResourceList : public ResourceList
+    {
+    public:
+        ShaderResourceList() {};
+        virtual ~ShaderResourceList() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+         */
+        void AddResource(const Shader& rResource);
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const Shader& GetResource(U32 index) const;
+        U32 GetResourceCount() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class ShaderResourceList : public ResourceList
-	{
-	public:
-		ShaderResourceList() {};
-		virtual ~ShaderResourceList() {};
+    private:
+        IFXArray<Shader> m_resourceList;
+    };
 
-		/**
-		*/
-		void AddResource( const Shader& rResource );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		*/
-		const Shader& GetResource( U32 index ) const;
-		U32 GetResourceCount() const;
+    IFXFORCEINLINE void ShaderResourceList::AddResource(const Shader& rResource)
+    {
+        Shader& resource = m_resourceList.CreateNewElement();
+        resource = rResource;
+    }
 
-	private:
-		IFXArray< Shader > m_resourceList;
-	};
+    IFXFORCEINLINE const Shader& ShaderResourceList::GetResource(U32 index) const
+    {
+        return m_resourceList.GetElementConst(index);
+    }
 
+    IFXFORCEINLINE U32 ShaderResourceList::GetResourceCount() const
+    {
+        return m_resourceList.GetNumberElements();
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE void ShaderResourceList::AddResource( const Shader& rResource )
-	{
-		Shader& resource = m_resourceList.CreateNewElement();
-		resource = rResource;
-	}
-
-	IFXFORCEINLINE const Shader& ShaderResourceList::GetResource( U32 index ) const
-	{
-		return m_resourceList.GetElementConst( index );
-	}
-
-	IFXFORCEINLINE U32 ShaderResourceList::GetResourceCount() const
-	{
-		return m_resourceList.GetNumberElements();
-	}
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

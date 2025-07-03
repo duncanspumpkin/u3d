@@ -17,15 +17,13 @@
 //***************************************************************************
 
 /**
-	@file	ShadingDescription.h
+        @file	ShadingDescription.h
 
-			This header defines the shading description container.
+                        This header defines the shading description container.
 */
-
 
 #ifndef ShadingDescription_H
 #define ShadingDescription_H
-
 
 //***************************************************************************
 //  Includes
@@ -35,78 +33,73 @@
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+            This is the implementation of a class that is used to handle shading
+            description.
+    */
+    class ShadingDescription
+    {
+    public:
+        ShadingDescription() {};
+        ~ShadingDescription() {};
 
+        void AddTextureCoordDimension(const U32& rDimension);
+        const U32& GetTextureCoordDimention(U32 index) const;
+        U32 GetTextureLayerCount() const;
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        U32 m_shaderId;
+        U32 m_textureLayerCount;
 
+    private:
+        IFXArray<U32> m_textureCoordDimensions; // number of texture layers
+    };
 
-/**
-	This is the implementation of a class that is used to handle shading 
-	description.
-*/
-class ShadingDescription
-{
-public:
-	ShadingDescription() {};
-	~ShadingDescription() {};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	void AddTextureCoordDimension( const U32& rDimension );
-	const U32& GetTextureCoordDimention( U32 index ) const;
-	U32 GetTextureLayerCount() const;
+    IFXFORCEINLINE void
+    ShadingDescription::AddTextureCoordDimension(const U32& rDimension)
+    {
+        U32& dimension = m_textureCoordDimensions.CreateNewElement();
+        dimension = rDimension;
+    }
 
-	U32 m_shaderId;
-	U32 m_textureLayerCount;
+    IFXFORCEINLINE const U32&
+    ShadingDescription::GetTextureCoordDimention(U32 index) const
+    {
+        return m_textureCoordDimensions.GetElementConst(index);
+    }
 
-private:
-	IFXArray< U32 > m_textureCoordDimensions; // number of texture layers
-};
+    IFXFORCEINLINE U32
+    ShadingDescription::GetTextureLayerCount() const
+    {
+        return m_textureCoordDimensions.GetNumberElements();
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE void
-	ShadingDescription::AddTextureCoordDimension( const U32& rDimension )
-{
-	U32& dimension = m_textureCoordDimensions.CreateNewElement();
-	dimension = rDimension;
-}
-
-IFXFORCEINLINE const U32&
-	ShadingDescription::GetTextureCoordDimention( U32 index ) const
-{
-	return m_textureCoordDimensions.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32
-	ShadingDescription::GetTextureLayerCount() const
-{
-	return m_textureCoordDimensions.GetNumberElements();
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

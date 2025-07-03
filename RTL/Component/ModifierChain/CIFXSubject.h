@@ -18,97 +18,93 @@
 #ifndef _CIFXSUBJECT_H_
 #define _CIFXSUBJECT_H_
 
-
 #include "CArrayList.h"
 #include "CIFXObserverStateTree.h"
 
-	
-typedef CArrayList<SIFXObserverRequest*> OBSERVERSTATELIST; 
-typedef CArrayList<IFXObserver*> OBSERVERLIST; 
+typedef CArrayList<SIFXObserverRequest*> OBSERVERSTATELIST;
+typedef CArrayList<IFXObserver*> OBSERVERLIST;
 
 struct ObserverInterest
 {
-	U32 interest;
-	OBSERVERSTATELIST* pObserverStates;
+    U32 interest;
+    OBSERVERSTATELIST* pObserverStates;
 };
 
-typedef CArrayList<ObserverInterest> INTERESTLIST; 
+typedef CArrayList<ObserverInterest> INTERESTLIST;
 
-
-class CIFXSubject : virtual public IFXSubject 
+class CIFXSubject : virtual public IFXSubject
 {
-protected :
-	OBSERVERSTATETREE	m_observerTree;
-	OBSERVERSTATELIST	m_observerList;
-	OBSERVERSTATELIST	m_tmpAttachList;
-	OBSERVERLIST		m_tmpDettachList;
-	INTERESTLIST		m_interestList;
-	BOOL				m_bSafeToModifyList;
-	BOOL				m_bNeedResolution;
-	U32					m_changedBits;
-	U32					m_interestBits;
-	U32					m_currentTimeStamp;
+protected:
+    OBSERVERSTATETREE m_observerTree;
+    OBSERVERSTATELIST m_observerList;
+    OBSERVERSTATELIST m_tmpAttachList;
+    OBSERVERLIST m_tmpDettachList;
+    INTERESTLIST m_interestList;
+    BOOL m_bSafeToModifyList;
+    BOOL m_bNeedResolution;
+    U32 m_changedBits;
+    U32 m_interestBits;
+    U32 m_currentTimeStamp;
 
-private :
-	// Updates the List with the Queued up additions and deletion requests that occured during iteration
-	void ResolvePendingAttachments()
-	{		
-		U32 iterObsList; 	
-		if(!m_tmpAttachList.empty())
-		{
-			for(iterObsList = m_tmpAttachList.begin(); iterObsList != m_tmpAttachList.end();iterObsList++)
-			{
-				SIFXObserverRequest* oreq = m_tmpAttachList[iterObsList];
-				Attach(oreq->pObserver,oreq->uObserverInterests,oreq->rInterfaceType);
-				oreq->pObserver->Release();
-				delete oreq;
-			}
-		
-			m_tmpAttachList.clear();
-		}
-		if(!m_tmpDettachList.empty())
-		{
-			U32 iter;
-			for(iter = m_tmpDettachList.begin(); iter != m_tmpDettachList.end();iter++)
-				Detach(m_tmpDettachList[iter]);
-			// Clean up tmpDetachList
-			m_tmpDettachList.clear();
+private:
+    // Updates the List with the Queued up additions and deletion requests that occured during iteration
+    void ResolvePendingAttachments()
+    {
+        U32 iterObsList;
+        if (!m_tmpAttachList.empty())
+        {
+            for (iterObsList = m_tmpAttachList.begin(); iterObsList != m_tmpAttachList.end(); iterObsList++)
+            {
+                SIFXObserverRequest* oreq = m_tmpAttachList[iterObsList];
+                Attach(oreq->pObserver, oreq->uObserverInterests, oreq->rInterfaceType);
+                oreq->pObserver->Release();
+                delete oreq;
+            }
 
-		}
-		m_bNeedResolution = FALSE;
-	}
+            m_tmpAttachList.clear();
+        }
+        if (!m_tmpDettachList.empty())
+        {
+            U32 iter;
+            for (iter = m_tmpDettachList.begin(); iter != m_tmpDettachList.end(); iter++)
+            {
+                Detach(m_tmpDettachList[iter]);
+            }
+            // Clean up tmpDetachList
+            m_tmpDettachList.clear();
+        }
+        m_bNeedResolution = FALSE;
+    }
 
-	
-	BOOL FindObserver(IFXObserver* pObs, U32 & iterObsList)
-	{
-		BOOL found = FALSE;
-		for( iterObsList = m_observerList.begin(); iterObsList != m_observerList.end(); ++iterObsList )
-		{
-			if( m_observerList[iterObsList]->pObserver == pObs )
-			{
-				found = TRUE;
-				break;
-			}
-		}
-		
-		return found;
-	}
+    BOOL FindObserver(IFXObserver* pObs, U32& iterObsList)
+    {
+        BOOL found = FALSE;
+        for (iterObsList = m_observerList.begin(); iterObsList != m_observerList.end(); ++iterObsList)
+        {
+            if (m_observerList[iterObsList]->pObserver == pObs)
+            {
+                found = TRUE;
+                break;
+            }
+        }
 
-public :
-	CIFXSubject();
-	virtual ~CIFXSubject();
+        return found;
+    }
 
-	// attaches an observer to this subject
-	virtual IFXRESULT IFXAPI  Attach(IFXObserver* pObs, U32 interest,
-						IFXREFIID rIType=IID_IFXUnknown, U32 shiftBits=0);
-	// removes an observer 
-	virtual IFXRESULT IFXAPI  Detach(IFXObserver* pObs);
+public:
+    CIFXSubject();
+    virtual ~CIFXSubject();
 
-	// the observers will get update calls when the 
-	// subject state the observer is interested in changes
-	virtual void IFXAPI  PostChanges(U32 changedBits);
+    // attaches an observer to this subject
+    virtual IFXRESULT IFXAPI Attach(IFXObserver* pObs, U32 interest, IFXREFIID rIType = IID_IFXUnknown, U32 shiftBits = 0);
+    // removes an observer
+    virtual IFXRESULT IFXAPI Detach(IFXObserver* pObs);
 
-	void  IFXAPI 	PreDestruct();
+    // the observers will get update calls when the
+    // subject state the observer is interested in changes
+    virtual void IFXAPI PostChanges(U32 changedBits);
+
+    void IFXAPI PreDestruct();
 };
 
 #endif

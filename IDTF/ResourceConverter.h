@@ -24,10 +24,8 @@
   @note
 */
 
-
 #ifndef ResourceConverter_H
 #define ResourceConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -45,129 +43,123 @@ struct IFXAuthorMaterial;
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class SceneResources;
+    class SceneUtilities;
+    struct ConverterOptions;
 
-
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
-
-class SceneResources;
-class SceneUtilities;
-struct ConverterOptions;
-
-class MotionTrack;
-class Shader;
-class TextureLayer;
-class Texture;
-class Material;
-
-/**
-This is the implementation of a class that is used to ResourceConverter.
-
-It supports the following interfaces:  ResourceConverter.
-*/
-class ResourceConverter : public IConverter
-{
-public:
-    ResourceConverter( 
-				SceneResources* pSceneResources, 
-				SceneUtilities* pSceneUtils,
-				ConverterOptions* pOptions );
-
-    virtual ~ResourceConverter();
+    class MotionTrack;
+    class Shader;
+    class TextureLayer;
+    class Texture;
+    class Material;
 
     /**
+    This is the implementation of a class that is used to ResourceConverter.
+
+    It supports the following interfaces:  ResourceConverter.
     */
-    virtual IFXRESULT Convert();
+    class ResourceConverter : public IConverter
+    {
+    public:
+        ResourceConverter(
+            SceneResources* pSceneResources,
+            SceneUtilities* pSceneUtils,
+            ConverterOptions* pOptions);
 
-private:
-    ResourceConverter();
-	
-	IFXRESULT ConvertMotionResources();
-	IFXRESULT ConvertShaderResources();
-	IFXRESULT ConvertMaterialResources();
-	IFXRESULT ConvertTextureResources();
-	IFXRESULT ConvertModelResources();
-	IFXRESULT ConvertLightResources();
-	IFXRESULT ConvertViewResources();
+        virtual ~ResourceConverter();
 
-	/**
-	Insert motion data for the specified track into an IFXMotionResource
+        /**
+         */
+        virtual IFXRESULT Convert();
 
-	@param	U32 trackId					The track to populate in the motion.
-	@param	IFXMotionResource* pMotion	The motion that owns this track.
-	@param  const MotionTrack& rIDTFTrack   IDTF motion track
+    private:
+        ResourceConverter();
 
-	@return	IFXRESULT					Return status of this method.
-	*/
-	IFXRESULT ConvertKeyFrames( 
-						U32 trackId, 
-						IFXMotionResource* pMotion,
-						const MotionTrack& rIDTFTrack );
+        IFXRESULT ConvertMotionResources();
+        IFXRESULT ConvertShaderResources();
+        IFXRESULT ConvertMaterialResources();
+        IFXRESULT ConvertTextureResources();
+        IFXRESULT ConvertModelResources();
+        IFXRESULT ConvertLightResources();
+        IFXRESULT ConvertViewResources();
 
-	/**
-	Converts the data for a single material into U3D  
+        /**
+        Insert motion data for the specified track into an IFXMotionResource
 
-	@return	IFXRESULT Return status of this method.
-	*/
-	IFXRESULT ConvertMaterial( 
-						const Material& rIDTFMaterial );
+        @param	U32 trackId					The track to populate in the motion.
+        @param	IFXMotionResource* pMotion	The motion that owns this track.
+        @param  const MotionTrack& rIDTFTrack   IDTF motion track
 
-	/**
-	Converts the data for a single shader into U3D  
+        @return	IFXRESULT					Return status of this method.
+        */
+        IFXRESULT ConvertKeyFrames(
+            U32 trackId,
+            IFXMotionResource* pMotion,
+            const MotionTrack& rIDTFTrack);
 
-	@return	IFXRESULT Return status of this method.
-	*/
-	IFXRESULT ConvertShader( 
-						const Shader& rIDTFShader );
+        /**
+        Converts the data for a single material into U3D
 
+        @return	IFXRESULT Return status of this method.
+        */
+        IFXRESULT ConvertMaterial(
+            const Material& rIDTFMaterial);
 
-	/**
-	Converts a texture layer and place it in the specified shader.
-	Finish up by assigning texture to the specified texture layer
-	of the shader.
+        /**
+        Converts the data for a single shader into U3D
 
-	@param  const U3D_IDTF::TextureLayer& rIDTFTextureLayer
-											IDTF texture layer.
-	@param	IFXShaderLitTexture* pShader	The Shader to hook up to the
-											loaded texture layer.
-	@return	IFXRESULT						Return status of this method.
-	*/
-	IFXRESULT ConvertTextureLayer( 
-						const TextureLayer& rIDTFTextureLayer,
-						IFXShaderLitTexture* pShader );
+        @return	IFXRESULT Return status of this method.
+        */
+        IFXRESULT ConvertShader(
+            const Shader& rIDTFShader);
 
-	SceneResources* m_pResources;
-	SceneUtilities* m_pSceneUtils;
-	ConverterOptions* m_pOptions;
-};
+        /**
+        Converts a texture layer and place it in the specified shader.
+        Finish up by assigning texture to the specified texture layer
+        of the shader.
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+        @param  const U3D_IDTF::TextureLayer& rIDTFTextureLayer
+                                                                                        IDTF texture layer.
+        @param	IFXShaderLitTexture* pShader	The Shader to hook up to the
+                                                                                        loaded texture layer.
+        @return	IFXRESULT						Return status of this method.
+        */
+        IFXRESULT ConvertTextureLayer(
+            const TextureLayer& rIDTFTextureLayer,
+            IFXShaderLitTexture* pShader);
 
+        SceneResources* m_pResources;
+        SceneUtilities* m_pSceneUtils;
+        ConverterOptions* m_pOptions;
+    };
 
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 
