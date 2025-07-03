@@ -30,26 +30,19 @@
 
 #include "CIFXUVMapperNone.h"
 
-class CIFXUVMapperPlanar:public CIFXUVMapperNone 
+class CIFXUVMapperPlanar : public CIFXUVMapperNone
 {
 public:
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperPlanar_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXUVMapperPlanar_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 protected:
-	BOOL IFXAPI   NeedToMap(IFXMesh& rMesh, IFXUVMapParameters* pParams);
+    BOOL IFXAPI NeedToMap(IFXMesh& rMesh, IFXUVMapParameters* pParams);
 
 private:
-	CIFXUVMapperPlanar();
-	virtual ~CIFXUVMapperPlanar();
-	IFXRESULT IFXAPI   Map(	IFXMesh& rMesh, 
-							IFXUVMapParameters* pParams,
-							IFXMatrix4x4* pModelMatrix,
-							IFXMatrix4x4* pViewMatrix, 
-							const IFXLightSet* pLightSet);
-
+    CIFXUVMapperPlanar();
+    virtual ~CIFXUVMapperPlanar();
+    IFXRESULT IFXAPI Map(IFXMesh& rMesh, IFXUVMapParameters* pParams, IFXMatrix4x4* pModelMatrix, IFXMatrix4x4* pViewMatrix, const IFXLightSet* pLightSet);
 };
-
-
 
 #endif

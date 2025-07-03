@@ -19,370 +19,401 @@
 #include "IFXList.h"
 #include "IFXUnitAllocator.h"
 
-#if IFXLIST_USEALLOCATOR==1
-IFXUnitAllocator  *IFXCoreList::m_pAllocator=NULL;
-#elif IFXLIST_USEALLOCATOR==2
-IFXChunkPool    *IFXCoreList::m_pChunkPool=NULL;
+#if IFXLIST_USEALLOCATOR == 1
+IFXUnitAllocator* IFXCoreList::m_pAllocator = NULL;
+#elif IFXLIST_USEALLOCATOR == 2
+IFXChunkPool* IFXCoreList::m_pChunkPool = NULL;
 #endif
 
-U32         IFXCoreList::m_listCount=0;
-
+U32 IFXCoreList::m_listCount = 0;
 
 IFXCoreList::IFXCoreList(void)
 {
-	m_head=NULL;
-	m_tail=NULL;
-	m_length=0;
-	m_autodestruct=false;
+    m_head = NULL;
+    m_tail = NULL;
+    m_length = 0;
+    m_autodestruct = false;
 
-	if(!m_listCount++)
-	{
-#if IFXLIST_USEALLOCATOR==1
-		m_pAllocator=new IFXUnitAllocator;
-		// unitsize, initial, growth
-		m_pAllocator->Initialize(sizeof(IFXListNode),100,25);
+    if (!m_listCount++)
+    {
+#if IFXLIST_USEALLOCATOR == 1
+        m_pAllocator = new IFXUnitAllocator;
+        // unitsize, initial, growth
+        m_pAllocator->Initialize(sizeof(IFXListNode), 100, 25);
 
-#elif IFXLIST_USEALLOCATOR==2
-		IFXASSERT(!m_pChunkPool);
-		m_pChunkPool=new IFXChunkPool(1024);
+#elif IFXLIST_USEALLOCATOR == 2
+        IFXASSERT(!m_pChunkPool);
+        m_pChunkPool = new IFXChunkPool(1024);
 #endif
-	}
+    }
 
-#if IFXLIST_USEALLOCATOR==3
-	/// @todo: tune this IFXList m_allocator settings
-	m_allocator.Initialize(sizeof(IFXListNode),2,10);
+#if IFXLIST_USEALLOCATOR == 3
+    /// @todo: tune this IFXList m_allocator settings
+    m_allocator.Initialize(sizeof(IFXListNode), 2, 10);
 #endif
 
-#if IFXLIST_USEALLOCATOR==2
-	IFXASSERT(m_pChunkPool);
+#if IFXLIST_USEALLOCATOR == 2
+    IFXASSERT(m_pChunkPool);
 #endif
 }
-
 
 IFXCoreList::~IFXCoreList(void)
 {
-	if(!--m_listCount)
-	{
-#if IFXLIST_USEALLOCATOR==1
-		delete m_pAllocator;
-		m_pAllocator=NULL;
-#elif IFXLIST_USEALLOCATOR==2
-		IFXASSERT(m_pChunkPool);
-		delete m_pChunkPool;
-		m_pChunkPool=NULL;
+    if (!--m_listCount)
+    {
+#if IFXLIST_USEALLOCATOR == 1
+        delete m_pAllocator;
+        m_pAllocator = NULL;
+#elif IFXLIST_USEALLOCATOR == 2
+        IFXASSERT(m_pChunkPool);
+        delete m_pChunkPool;
+        m_pChunkPool = NULL;
 #endif
-	}
+    }
 }
 
-
-void IFXCoreList::Deallocate(void *ptr)
+void IFXCoreList::Deallocate(void* ptr)
 {
-#if IFXLIST_USEALLOCATOR==1
-	IFXASSERT(m_pAllocator);
-	if(m_pAllocator)
-		m_pAllocator->Deallocate((U8 *)ptr);
-#elif IFXLIST_USEALLOCATOR==2
-	m_pChunkPool->Deallocate(ptr,sizeof(IFXListNode));
-#elif IFXLIST_USEALLOCATOR==3
-	m_allocator.Deallocate((U8 *)ptr);
+#if IFXLIST_USEALLOCATOR == 1
+    IFXASSERT(m_pAllocator);
+    if (m_pAllocator)
+    {
+        m_pAllocator->Deallocate((U8*)ptr);
+    }
+#elif IFXLIST_USEALLOCATOR == 2
+    m_pChunkPool->Deallocate(ptr, sizeof(IFXListNode));
+#elif IFXLIST_USEALLOCATOR == 3
+    m_allocator.Deallocate((U8*)ptr);
 #else
-	delete ptr;
+    delete ptr;
 #endif
 }
-
 
 void IFXCoreList::Clear(void)
 {
-	IFXListNode *node;
-	while( (node=m_head) != NULL)
-		CoreRemoveNode(node);
+    IFXListNode* node;
+    while ((node = m_head) != NULL)
+    {
+        CoreRemoveNode(node);
+    }
 }
-
 
 void IFXCoreList::RemoveAll(void)
 {
-	while( m_head != NULL)
-	{
+    while (m_head != NULL)
+    {
 #ifdef _DEBUG
-		BOOL result=
+        BOOL result =
 #endif
-		CoreRemoveNode(m_head);
-		IFXASSERT(result);
-	}
+            CoreRemoveNode(m_head);
+        IFXASSERT(result);
+    }
 }
 
-
-void *IFXCoreList::InternalToHead(IFXListContext &context) const
+void* IFXCoreList::InternalToHead(IFXListContext& context) const
 {
 #if IFXLIST_CHECKPOINTER
-	context.SetCorePointer(this);
+    context.SetCorePointer(this);
 #endif
-	context.SetCurrent(m_head);
-	return InternalGetCurrent(context);
+    context.SetCurrent(m_head);
+    return InternalGetCurrent(context);
 }
 
-
-void *IFXCoreList::InternalPostIncrement(IFXListContext &context) const
+void* IFXCoreList::InternalPostIncrement(IFXListContext& context) const
 {
 #if IFXLIST_CHECKPOINTER
-	context.CheckCorePointer(this);
+    context.CheckCorePointer(this);
 #endif
-	IFXListNode *node=context.GetCurrent();
-	if(node)
-		context.SetCurrent(node->GetNext());
-	else if(!(context.GetAtTail()))
-		InternalToHead(context);
-	if(m_length && !context.GetCurrent())
-		context.SetAtTail(true);
-	return node? (node->GetPointer()): NULL;
+    IFXListNode* node = context.GetCurrent();
+    if (node)
+    {
+        context.SetCurrent(node->GetNext());
+    }
+    else if (!(context.GetAtTail()))
+    {
+        InternalToHead(context);
+    }
+    if (m_length && !context.GetCurrent())
+    {
+        context.SetAtTail(true);
+    }
+    return node ? (node->GetPointer()) : NULL;
 }
 
-
-BOOL IFXCoreList::CoreRemove(void *entry, IFXListContext &hint)
+BOOL IFXCoreList::CoreRemove(void* entry, IFXListContext& hint)
 {
 #if IFXLIST_CHECKPOINTER
-	hint.CheckCorePointer(this);
+    hint.CheckCorePointer(this);
 #endif
 
-	/*** Due to the nature of normal list usage (PostIncrementing and Post
-	Decrementing), Remove can now check current, next, and prev nodes before
-	churning through the whole list. */
+    /*** Due to the nature of normal list usage (PostIncrementing and Post
+    Decrementing), Remove can now check current, next, and prev nodes before
+    churning through the whole list. */
 
-	IFXListNode *pNode;
-	if((pNode=hint.GetCurrent()))
-	{
-		if(pNode->GetPointer()==entry)
-			return CoreRemoveNode(pNode);
-		else if(pNode->GetNext() && pNode->GetNext()->GetPointer()==entry)
-			return CoreRemoveNode(pNode->GetNext());
-		else if(pNode->GetPrevious() &&
-			pNode->GetPrevious()->GetPointer()==entry)
-			return CoreRemoveNode(pNode->GetPrevious());
-	}
+    IFXListNode* pNode;
+    if ((pNode = hint.GetCurrent()))
+    {
+        if (pNode->GetPointer() == entry)
+        {
+            return CoreRemoveNode(pNode);
+        }
+        else if (pNode->GetNext() && pNode->GetNext()->GetPointer() == entry)
+        {
+            return CoreRemoveNode(pNode->GetNext());
+        }
+        else if (pNode->GetPrevious() && pNode->GetPrevious()->GetPointer() == entry)
+        {
+            return CoreRemoveNode(pNode->GetPrevious());
+        }
+    }
 
-	return CoreRemove(entry);
-	/*
-	IFXListContext context;
-	void *entry2;
+    return CoreRemove(entry);
+    /*
+    IFXListContext context;
+    void *entry2;
 
-	InternalToHead(context);
-	while( (entry2=InternalGetCurrent(context)) != NULL)
-	{
-	if(entry2==entry)
-	break;
-	else
-	InternalPostIncrement(context);
-	}
+    InternalToHead(context);
+    while( (entry2=InternalGetCurrent(context)) != NULL)
+    {
+    if(entry2==entry)
+    break;
+    else
+    InternalPostIncrement(context);
+    }
 
-	if(!entry2)
-	return false;
+    if(!entry2)
+    return false;
 
-	return RemoveNode(context.GetCurrent());
-	*/
+    return RemoveNode(context.GetCurrent());
+    */
 }
 
-
-BOOL IFXCoreList::CoreRemove(void *entry)
+BOOL IFXCoreList::CoreRemove(void* entry)
 {
-	IFXListContext context;
-	void *entry2;
+    IFXListContext context;
+    void* entry2;
 
-	InternalToHead(context);
-	while( (entry2=InternalGetCurrent(context)) != NULL)
-	{
-		if(entry2==entry)
-			break;
-		else
-			InternalPostIncrement(context);
-	}
+    InternalToHead(context);
+    while ((entry2 = InternalGetCurrent(context)) != NULL)
+    {
+        if (entry2 == entry)
+        {
+            break;
+        }
+        else
+        {
+            InternalPostIncrement(context);
+        }
+    }
 
-	if(!entry2)
-		return false;
+    if (!entry2)
+    {
+        return false;
+    }
 
-	return CoreRemoveNode(context.GetCurrent());
+    return CoreRemoveNode(context.GetCurrent());
 }
 
-
-void *IFXCoreList::CoreSearchForElement(IFXListContext &context,
-										void *entry) const
+void* IFXCoreList::CoreSearchForElement(IFXListContext& context, void* entry) const
 {
-	InternalToHead(context);
+    InternalToHead(context);
 
-	void *entry2;
-	while( (entry2=InternalGetCurrent(context)) != NULL)
-	{
-		if(entry2==entry)
-			break;
-		else
-			InternalPostIncrement(context);
-	}
+    void* entry2;
+    while ((entry2 = InternalGetCurrent(context)) != NULL)
+    {
+        if (entry2 == entry)
+        {
+            break;
+        }
+        else
+        {
+            InternalPostIncrement(context);
+        }
+    }
 
-	if(!entry2)
-		return NULL;
+    if (!entry2)
+    {
+        return NULL;
+    }
 
-	IFXListNode *node=context.GetCurrent();
-	return node? (node->GetPointer()): NULL;
+    IFXListNode* node = context.GetCurrent();
+    return node ? (node->GetPointer()) : NULL;
 }
 
-
-void *IFXCoreList::CoreGetElement(long index) const
+void* IFXCoreList::CoreGetElement(long index) const
 {
-	//* retains no state, so this can be slow on a long list
+    //* retains no state, so this can be slow on a long list
 
-	// FUTURE internal context just for GetElement()
-	// would optimise for incremental use
+    // FUTURE internal context just for GetElement()
+    // would optimise for incremental use
 
-	IFXListContext context;
-	InternalToHead(context);
+    IFXListContext context;
+    InternalToHead(context);
 
-	long m;
-	for(m=0;m<index;m++)
-		InternalPostIncrement(context);
+    long m;
+    for (m = 0; m < index; m++)
+    {
+        InternalPostIncrement(context);
+    }
 
-	IFXListNode *node=context.GetCurrent();
-	return node? (node->GetPointer()): NULL;
+    IFXListNode* node = context.GetCurrent();
+    return node ? (node->GetPointer()) : NULL;
 }
 
-
-void **IFXCoreList::CoreInsert(BOOL before,IFXListContext &context,
-							   void *entry,IFXListNode *existingNode)
+void** IFXCoreList::CoreInsert(BOOL before, IFXListContext& context, void* entry, IFXListNode* existingNode)
 {
 #if IFXLIST_CHECKPOINTER
-	context.CheckCorePointer(this);
+    context.CheckCorePointer(this);
 #endif
 
-	IFXListNode *node=existingNode;
-	if(!node)
-	{
-#if IFXLIST_USEALLOCATOR==1
-		IFXASSERT(m_pAllocator);
-		node=(IFXListNode *)m_pAllocator->Allocate();
-		IFXASSERT(node);
-		node->Reset();
-#elif IFXLIST_USEALLOCATOR==2
-		node=(IFXListNode*)m_pChunkPool->Allocate(
-			sizeof(IFXListNode));
-		if(!node)
-			return NULL;
-		node->Reset();
-#elif IFXLIST_USEALLOCATOR==3
-		node=(IFXListNode *)m_allocator.Allocate();
-		IFXASSERT(node);
-		node->Reset(this);
+    IFXListNode* node = existingNode;
+    if (!node)
+    {
+#if IFXLIST_USEALLOCATOR == 1
+        IFXASSERT(m_pAllocator);
+        node = (IFXListNode*)m_pAllocator->Allocate();
+        IFXASSERT(node);
+        node->Reset();
+#elif IFXLIST_USEALLOCATOR == 2
+        node = (IFXListNode*)m_pChunkPool->Allocate(
+            sizeof(IFXListNode));
+        if (!node)
+        {
+            return NULL;
+        }
+        node->Reset();
+#elif IFXLIST_USEALLOCATOR == 3
+        node = (IFXListNode*)m_allocator.Allocate();
+        IFXASSERT(node);
+        node->Reset(this);
 #else
-		node=new IFXListNode;
-		if(!node)
-			return NULL;
+        node = new IFXListNode;
+        if (!node)
+        {
+            return NULL;
+        }
 #endif
 
-		IFXASSERT(entry);
-		node->SetPointer(entry);
-	}
+        IFXASSERT(entry);
+        node->SetPointer(entry);
+    }
 
-	IFXListNode *current=context.GetCurrent();
-	IFXListNode *left,*right;
+    IFXListNode* current = context.GetCurrent();
+    IFXListNode *left, *right;
 
+    if (!m_length)
+    {
+        left = NULL;
+        right = NULL;
+        m_head = node;
+        m_tail = node;
+    }
+    else if (current)
+    {
+        if (before)
+        {
+            left = current->GetPrevious();
+            right = current;
+        }
+        else
+        {
+            left = current;
+            right = current->GetNext();
+        }
+    }
+    else if (context.GetAtTail())
+    {
+        // m_tail is NULL
+        left = m_tail;
+        right = NULL;
+    }
+    else
+    {
+        // m_head is NULL
+        left = NULL;
+        right = m_head;
+    }
 
-	if(!m_length)
-	{
-		left=NULL;
-		right=NULL;
-		m_head=node;
-		m_tail=node;
-	}
-	else if(current)
-	{
-		if(before)
-		{
-			left=current->GetPrevious();
-			right=current;
-		}
-		else
-		{
-			left=current;
-			right=current->GetNext();
-		}
-	}
-	else if(context.GetAtTail())
-	{
-		// m_tail is NULL
-		left=m_tail;
-		right=NULL;
-	}
-	else
-	{
-		// m_head is NULL
-		left=NULL;
-		right=m_head;
-	}
+    node->SetPrevious(left);
+    node->SetNext(right);
 
-	node->SetPrevious(left);
-	node->SetNext(right);
+    if (left)
+    {
+        left->SetNext(node);
+    }
+    else
+    {
+        m_head = node;
+    }
 
-	if(left)
-		left->SetNext(node);
-	else
-		m_head=node;
+    if (right)
+    {
+        right->SetPrevious(node);
+    }
+    else
+    {
+        m_tail = node;
+    }
 
-	if(right)
-		right->SetPrevious(node);
-	else
-		m_tail=node;
+    m_length++;
 
-	m_length++;
-
-	return (void **)(node->GetPointerLocation());
+    return (void**)(node->GetPointerLocation());
 }
 
-
-void *IFXCoreList::InternalGetCurrent(IFXListContext &context) const
+void* IFXCoreList::InternalGetCurrent(IFXListContext& context) const
 {
 #if IFXLIST_CHECKPOINTER
-	context.CheckCorePointer(this);
+    context.CheckCorePointer(this);
 #endif
 
-	IFXListNode *node=context.GetCurrent();
-	return node? (node->GetPointer()): NULL;
+    IFXListNode* node = context.GetCurrent();
+    return node ? (node->GetPointer()) : NULL;
 }
 
-
-BOOL IFXCoreList::CoreRemoveNode(IFXListNode *node)
+BOOL IFXCoreList::CoreRemoveNode(IFXListNode* node)
 {
-	if(!node)
-		return false;
+    if (!node)
+    {
+        return false;
+    }
 
-	InternalDetachNode(node);
+    InternalDetachNode(node);
 
-	//* let node delete itself later
-	node->Abandon();
-	return true;
+    //* let node delete itself later
+    node->Abandon();
+    return true;
 }
 
-
-void IFXCoreList::InternalDetachNode(IFXListNode *node)
+void IFXCoreList::InternalDetachNode(IFXListNode* node)
 {
-	IFXListNode *left,*right;
-	left=node->GetPrevious();
-	right=node->GetNext();
+    IFXListNode *left, *right;
+    left = node->GetPrevious();
+    right = node->GetNext();
 
-	if(left)
-		left->SetNext(right);
-	else
-		m_head=right;
+    if (left)
+    {
+        left->SetNext(right);
+    }
+    else
+    {
+        m_head = right;
+    }
 
-	if(right)
-		right->SetPrevious(left);
-	else
-		m_tail=left;
+    if (right)
+    {
+        right->SetPrevious(left);
+    }
+    else
+    {
+        m_tail = left;
+    }
 
-	m_length--;
+    m_length--;
 }
 
-
-BOOL IFXCoreList::CoreMoveNode(BOOL before,IFXListContext &from,
-							   IFXListContext &to)
+BOOL IFXCoreList::CoreMoveNode(BOOL before, IFXListContext& from, IFXListContext& to)
 {
-	IFXListNode *node=from.GetCurrent();
-	InternalDetachNode(node);
-	return (CoreInsert(before,to,NULL,node)!=NULL);
+    IFXListNode* node = from.GetCurrent();
+    InternalDetachNode(node);
+    return (CoreInsert(before, to, NULL, node) != NULL);
 }

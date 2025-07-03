@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef BoneWeightModifier_H
 #define BoneWeightModifier_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,176 +36,170 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    class BoneWeightList
+    {
+    public:
+        BoneWeightList() {};
+        virtual ~BoneWeightList() {};
 
+        /**
+         */
+        void AddBoneWeight(const I32& rBoneWeight);
+        const I32& GetBoneWeight(U32 index) const;
+        U32 GetBoneWeightCount() const;
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+         */
+        void AddBoneIndex(const I32& rBoneWeightIndex);
+        const I32& GetBoneIndex(U32 index) const;
+        U32 GetBoneIndexCount() const;
 
-	class BoneWeightList
-	{
-	public:
-		BoneWeightList() {};
-		virtual ~BoneWeightList() {};
+    private:
+        IFXArray<I32> m_boneWeightList;
+        IFXArray<I32> m_boneIndexList;
+    };
 
-		/**
-		*/
-		void AddBoneWeight( const I32& rBoneWeight );
-		const I32& GetBoneWeight( U32 index ) const;
-		U32   GetBoneWeightCount() const;
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-		/**
-		*/
-		void AddBoneIndex( const I32& rBoneWeightIndex );
-		const I32& GetBoneIndex( U32 index ) const;
-		U32   GetBoneIndexCount() const;
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class BoneWeightModifier : public Modifier
+    {
+    public:
+        BoneWeightModifier() {};
+        virtual ~BoneWeightModifier() {};
 
-	private:
-		IFXArray< I32 > m_boneWeightList;
-		IFXArray< I32 > m_boneIndexList;
-	};
+        /**
+         */
+        void SetAttributes(const IFXString& rAttributes);
+        const IFXString& GetAttributes() const;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        void SetInverseQuant(const F32& rInverseQuant);
+        const F32& GetInverseQuant() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class BoneWeightModifier : public Modifier
-	{
-	public:
-		BoneWeightModifier() {};
-		virtual ~BoneWeightModifier() {};
+        void AddBoneWeightList(const BoneWeightList& rBoneWeightList);
+        const BoneWeightList& GetBoneWeightList(U32 index) const;
+        U32 GetBoneWeightListCount() const;
 
-		/**
-		*/
-		void SetAttributes( const IFXString& rAttributes );
-		const IFXString& GetAttributes() const;
+    protected:
+    private:
+        IFXString m_attributes;
+        F32 m_inverseQuant;
+        IFXArray<BoneWeightList> m_positionBoneWeightList;
+    };
 
-		/**
-		*/
-		void SetInverseQuant( const F32& rInverseQuant );
-		const F32& GetInverseQuant() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		void AddBoneWeightList( const BoneWeightList& rBoneWeightList );
-		const BoneWeightList& GetBoneWeightList( U32 index ) const;
-		U32   GetBoneWeightListCount() const;
+    IFXFORCEINLINE void BoneWeightModifier::SetAttributes(
+        const IFXString& rAttributes)
+    {
+        m_attributes = rAttributes;
+    }
 
-	protected:
+    IFXFORCEINLINE const IFXString& BoneWeightModifier::GetAttributes() const
+    {
+        return m_attributes;
+    }
 
-	private:
-		IFXString m_attributes;
-		F32 m_inverseQuant;
-		IFXArray< BoneWeightList > m_positionBoneWeightList;
-	};
+    IFXFORCEINLINE void BoneWeightModifier::SetInverseQuant(
+        const F32& rInverseQuant)
+    {
+        m_inverseQuant = rInverseQuant;
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE const F32& BoneWeightModifier::GetInverseQuant() const
+    {
+        return m_inverseQuant;
+    }
 
-	IFXFORCEINLINE void BoneWeightModifier::SetAttributes(
-		const IFXString& rAttributes )
-	{
-		m_attributes = rAttributes;
-	}
+    IFXFORCEINLINE void BoneWeightModifier::AddBoneWeightList(
+        const BoneWeightList& rBoneWeightList)
+    {
+        BoneWeightList& boneWeightList = m_positionBoneWeightList.CreateNewElement();
+        boneWeightList = rBoneWeightList;
+    }
 
-	IFXFORCEINLINE const IFXString& BoneWeightModifier::GetAttributes() const
-	{
-		return m_attributes;
-	}
+    IFXFORCEINLINE const BoneWeightList& BoneWeightModifier::GetBoneWeightList(U32 index) const
+    {
+        return m_positionBoneWeightList.GetElementConst(index);
+    }
 
-	IFXFORCEINLINE void BoneWeightModifier::SetInverseQuant(
-		const F32& rInverseQuant )
-	{
-		m_inverseQuant = rInverseQuant;
-	}
+    IFXFORCEINLINE U32 BoneWeightModifier::GetBoneWeightListCount() const
+    {
+        return m_positionBoneWeightList.GetNumberElements();
+    }
 
-	IFXFORCEINLINE const F32& BoneWeightModifier::GetInverseQuant() const
-	{
-		return m_inverseQuant;
-	}
+    IFXFORCEINLINE void BoneWeightList::AddBoneWeight(
+        const I32& rBoneWeight)
+    {
+        I32& boneWeight = m_boneWeightList.CreateNewElement();
+        boneWeight = rBoneWeight;
+    }
 
-	IFXFORCEINLINE void BoneWeightModifier::AddBoneWeightList(
-		const BoneWeightList& rBoneWeightList )
-	{
-		BoneWeightList& boneWeightList = m_positionBoneWeightList.CreateNewElement();
-		boneWeightList = rBoneWeightList;
-	}
+    IFXFORCEINLINE const I32& BoneWeightList::GetBoneWeight(U32 index) const
+    {
+        return m_boneWeightList.GetElementConst(index);
+    }
 
-	IFXFORCEINLINE const BoneWeightList& BoneWeightModifier::GetBoneWeightList( U32 index ) const
-	{
-		return m_positionBoneWeightList.GetElementConst( index );
-	}
+    IFXFORCEINLINE U32 BoneWeightList::GetBoneWeightCount() const
+    {
+        return m_boneWeightList.GetNumberElements();
+    }
 
-	IFXFORCEINLINE U32 BoneWeightModifier::GetBoneWeightListCount() const
-	{
-		return m_positionBoneWeightList.GetNumberElements();
-	}
+    IFXFORCEINLINE void BoneWeightList::AddBoneIndex(
+        const I32& rBoneWeightIndex)
+    {
+        I32& boneWeightIndex = m_boneIndexList.CreateNewElement();
+        boneWeightIndex = rBoneWeightIndex;
+    }
 
-	IFXFORCEINLINE void BoneWeightList::AddBoneWeight(
-		const I32& rBoneWeight )
-	{
-		I32& boneWeight = m_boneWeightList.CreateNewElement();
-		boneWeight = rBoneWeight;
-	}
+    IFXFORCEINLINE const I32& BoneWeightList::GetBoneIndex(U32 index) const
+    {
+        return m_boneIndexList.GetElementConst(index);
+    }
 
-	IFXFORCEINLINE const I32& BoneWeightList::GetBoneWeight( U32 index ) const
-	{
-		return m_boneWeightList.GetElementConst( index );
-	}
+    IFXFORCEINLINE U32 BoneWeightList::GetBoneIndexCount() const
+    {
+        return m_boneIndexList.GetNumberElements();
+    }
 
-	IFXFORCEINLINE U32 BoneWeightList::GetBoneWeightCount() const
-	{
-		return m_boneWeightList.GetNumberElements();
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE void BoneWeightList::AddBoneIndex(
-		const I32& rBoneWeightIndex )
-	{
-		I32& boneWeightIndex = m_boneIndexList.CreateNewElement();
-		boneWeightIndex = rBoneWeightIndex;
-	}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-	IFXFORCEINLINE const I32& BoneWeightList::GetBoneIndex( U32 index ) const
-	{
-		return m_boneIndexList.GetElementConst( index );
-	}
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-	IFXFORCEINLINE U32 BoneWeightList::GetBoneIndexCount() const
-	{
-		return m_boneIndexList.GetNumberElements();
-	}
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
-
-	//***************************************************************************
-	//  Failure return codes
-	//***************************************************************************
-
-	/**
-	@todo:  Insert module/interface specific return code description.
-	*/
-	//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

@@ -30,27 +30,27 @@
 
 #include "IFXContourExtruder.h"
 
-
-class CIFXContourExtruder:public IFXContourExtruder {
+class CIFXContourExtruder : public IFXContourExtruder
+{
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXContourExtruder_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXContourExtruder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXTextGenerator methods
-	IFXRESULT IFXAPI   Extrude(SIFXExtruderProperties* pExtruderProperties, IFXSimpleList* pGlyphList, IFXMeshGroup** ppMeshGroup);
-	IFXRESULT IFXAPI   Extrude(SIFXExtruderProperties* pExtruderProperties, IFXContour* pGlyph, IFXMesh** ppMesh);
+    // IFXTextGenerator methods
+    IFXRESULT IFXAPI Extrude(SIFXExtruderProperties* pExtruderProperties, IFXSimpleList* pGlyphList, IFXMeshGroup** ppMeshGroup);
+    IFXRESULT IFXAPI Extrude(SIFXExtruderProperties* pExtruderProperties, IFXContour* pGlyph, IFXMesh** ppMesh);
 
 private:
-	CIFXContourExtruder();
-	virtual ~CIFXContourExtruder();
-	IFXRESULT DetermineVertexCount(IFXContour* pContour, U32* pVertexCount, U32* pFaceCount);
+    CIFXContourExtruder();
+    virtual ~CIFXContourExtruder();
+    IFXRESULT DetermineVertexCount(IFXContour* pContour, U32* pVertexCount, U32* pFaceCount);
 
-	U32		m_uRefCount;
+    U32 m_uRefCount;
 };
 
 #endif // #define __CIFXCONTOUREXTRUDER_CLASS_H__

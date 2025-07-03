@@ -30,133 +30,135 @@
 
 #include "IFXGlyph2DCommands.h"
 
-class CIFXGlyphTagBlock:public IFXGlyphTagBlock {
+class CIFXGlyphTagBlock : public IFXGlyphTagBlock
+{
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXGlyphTagBlock_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXGlyphTagBlock_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXGlyph2DCommands function.
-	IFXRESULT  IFXAPI 	 GetType(EGLYPH_TYPE* uType) const ;
-	IFXRESULT  IFXAPI 	 SetType(const EGLYPH_TYPE uType);
-	IFXRESULT  IFXAPI 	 GetAttributes( U32* pAttr ) const ;
-	IFXRESULT  IFXAPI 	 SetAttributes( const U32 attr );
-	IFXRESULT  IFXAPI 	 GetData(F64* px, F64* py) const ;//only for EndGlyph
-	IFXRESULT  IFXAPI 	 SetData(const F64 x, const F64 y);//
+    // IFXGlyph2DCommands function.
+    IFXRESULT IFXAPI GetType(EGLYPH_TYPE* uType) const;
+    IFXRESULT IFXAPI SetType(const EGLYPH_TYPE uType);
+    IFXRESULT IFXAPI GetAttributes(U32* pAttr) const;
+    IFXRESULT IFXAPI SetAttributes(const U32 attr);
+    IFXRESULT IFXAPI GetData(F64* px, F64* py) const;   // only for EndGlyph
+    IFXRESULT IFXAPI SetData(const F64 x, const F64 y); //
 
 private:
-	CIFXGlyphTagBlock();
-	virtual ~CIFXGlyphTagBlock();
+    CIFXGlyphTagBlock();
+    virtual ~CIFXGlyphTagBlock();
 
-	EGLYPH_TYPE   m_eType;
-	U32       m_attr;
-	U32       m_uRefCount;
-	F64       m_x;//only for EndGlyph
-	F64       m_y;//
+    EGLYPH_TYPE m_eType;
+    U32 m_attr;
+    U32 m_uRefCount;
+    F64 m_x; // only for EndGlyph
+    F64 m_y; //
 };
 
 //---------------------------------------------------------------------------
-class CIFXGlyphMoveToBlock:public IFXGlyphMoveToBlock {
+class CIFXGlyphMoveToBlock : public IFXGlyphMoveToBlock
+{
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXGlyphMoveToBlock_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXGlyphMoveToBlock_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXGlyph2DCommands function.
-	IFXRESULT  IFXAPI 	 GetType(EGLYPH_TYPE* uType) const ;
-	IFXRESULT  IFXAPI 	 SetType(const EGLYPH_TYPE uType);
+    // IFXGlyph2DCommands function.
+    IFXRESULT IFXAPI GetType(EGLYPH_TYPE* uType) const;
+    IFXRESULT IFXAPI SetType(const EGLYPH_TYPE uType);
 
-	IFXRESULT  IFXAPI 	 GetData(F64* px, F64* py) const ;
-	IFXRESULT  IFXAPI 	 SetData(const F64 x, const F64 y);
-	IFXRESULT  IFXAPI 	 GetAttributes( U32* pAttr ) const ;
-	IFXRESULT  IFXAPI 	 SetAttributes( const U32 attr );
+    IFXRESULT IFXAPI GetData(F64* px, F64* py) const;
+    IFXRESULT IFXAPI SetData(const F64 x, const F64 y);
+    IFXRESULT IFXAPI GetAttributes(U32* pAttr) const;
+    IFXRESULT IFXAPI SetAttributes(const U32 attr);
 
 private:
-	CIFXGlyphMoveToBlock();
-	virtual ~CIFXGlyphMoveToBlock();
+    CIFXGlyphMoveToBlock();
+    virtual ~CIFXGlyphMoveToBlock();
 
-	EGLYPH_TYPE   m_eType;
-	U32       m_attr;
-	F64       m_x;
-	F64       m_y;
-	U32       m_uRefCount;
+    EGLYPH_TYPE m_eType;
+    U32 m_attr;
+    F64 m_x;
+    F64 m_y;
+    U32 m_uRefCount;
 };
 
 //---------------------------------------------------------------------------
-class CIFXGlyphLineToBlock:public IFXGlyphLineToBlock {
+class CIFXGlyphLineToBlock : public IFXGlyphLineToBlock
+{
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXGlyphLineToBlock_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXGlyphLineToBlock_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXGlyph2DCommands function.
-	IFXRESULT  IFXAPI 	 GetType(EGLYPH_TYPE* uType) const ;
-	IFXRESULT  IFXAPI 	 SetType(const EGLYPH_TYPE uType);
+    // IFXGlyph2DCommands function.
+    IFXRESULT IFXAPI GetType(EGLYPH_TYPE* uType) const;
+    IFXRESULT IFXAPI SetType(const EGLYPH_TYPE uType);
 
-	IFXRESULT  IFXAPI 	 GetData(F64* px, F64* py) const ;
-	IFXRESULT  IFXAPI 	 SetData(const F64 x, const F64 y);
-	IFXRESULT  IFXAPI 	 GetAttributes( U32* pAttr ) const ;
-	IFXRESULT  IFXAPI 	 SetAttributes( const U32 attr );
+    IFXRESULT IFXAPI GetData(F64* px, F64* py) const;
+    IFXRESULT IFXAPI SetData(const F64 x, const F64 y);
+    IFXRESULT IFXAPI GetAttributes(U32* pAttr) const;
+    IFXRESULT IFXAPI SetAttributes(const U32 attr);
 
 private:
-	CIFXGlyphLineToBlock();
-	virtual ~CIFXGlyphLineToBlock();
+    CIFXGlyphLineToBlock();
+    virtual ~CIFXGlyphLineToBlock();
 
-	EGLYPH_TYPE   m_eType;
-	U32       m_attr;
-	U32       m_uRefCount;
-	F64       m_x;
-	F64       m_y;
+    EGLYPH_TYPE m_eType;
+    U32 m_attr;
+    U32 m_uRefCount;
+    F64 m_x;
+    F64 m_y;
 };
 
-
 //---------------------------------------------------------------------------
-class CIFXGlyphCurveToBlock:public IFXGlyphCurveToBlock {
+class CIFXGlyphCurveToBlock : public IFXGlyphCurveToBlock
+{
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXCurveToBlock_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXCurveToBlock_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXGlyph2DCommands function.
-	IFXRESULT  IFXAPI 	 GetType(EGLYPH_TYPE* uType) const ;
-	IFXRESULT  IFXAPI 	 SetType(const EGLYPH_TYPE uType);
+    // IFXGlyph2DCommands function.
+    IFXRESULT IFXAPI GetType(EGLYPH_TYPE* uType) const;
+    IFXRESULT IFXAPI SetType(const EGLYPH_TYPE uType);
 
-	IFXRESULT  IFXAPI 	 GetData(F64* pCx1, F64* pCy1, F64* pCx2, F64* pCy2, F64* pAx, F64* pAy, U32* uNumberOfCurveSteps) const ;
-	IFXRESULT  IFXAPI 	 SetData(const F64 fCx1, const F64 fCy1, const F64 fCx2, const F64 fCy2, const F64 fAx,
-					  const F64 fAy, const U32 uNumberOfCurveSteps);
-	IFXRESULT  IFXAPI 	 GetAttributes( U32* pAttr ) const ;
-	IFXRESULT  IFXAPI 	 SetAttributes( const U32 attr );
+    IFXRESULT IFXAPI GetData(F64* pCx1, F64* pCy1, F64* pCx2, F64* pCy2, F64* pAx, F64* pAy, U32* uNumberOfCurveSteps) const;
+    IFXRESULT IFXAPI SetData(const F64 fCx1, const F64 fCy1, const F64 fCx2, const F64 fCy2, const F64 fAx, const F64 fAy, const U32 uNumberOfCurveSteps);
+    IFXRESULT IFXAPI GetAttributes(U32* pAttr) const;
+    IFXRESULT IFXAPI SetAttributes(const U32 attr);
 
 private:
-	CIFXGlyphCurveToBlock();
-	virtual ~CIFXGlyphCurveToBlock();
+    CIFXGlyphCurveToBlock();
+    virtual ~CIFXGlyphCurveToBlock();
 
-	EGLYPH_TYPE   m_eType;
-	U32       m_attr;
-	U32       m_uRefCount;
-	F64       m_Cx1;
-	F64       m_Cy1;
-	F64       m_Cx2;
-	F64       m_Cy2;
-	F64       m_Ax;
-	F64       m_Ay;
-	U32       m_uNumberOfCurveSteps;
+    EGLYPH_TYPE m_eType;
+    U32 m_attr;
+    U32 m_uRefCount;
+    F64 m_Cx1;
+    F64 m_Cy1;
+    F64 m_Cx2;
+    F64 m_Cy2;
+    F64 m_Ax;
+    F64 m_Ay;
+    U32 m_uNumberOfCurveSteps;
 };
 
 #endif // #define __CIFXGLYPH2DCOMMANDS_CLASS_H__

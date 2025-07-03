@@ -24,7 +24,6 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef MotionResourceList_H
 #define MotionResourceList_H
 
@@ -34,87 +33,79 @@ This header defines the ... functionality.
 
 #include "IFXArray.h"
 
-#include "ResourceList.h"
 #include "MotionResource.h"
+#include "ResourceList.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class MotionResourceList : public ResourceList
+    {
+    public:
+        MotionResourceList() {};
+        virtual ~MotionResourceList() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        void AddResource(const MotionResource& rResource);
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const MotionResource& GetResource(U32 index) const;
+        U32 GetResourceCount() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class MotionResourceList : public ResourceList
-{
-public:
-	MotionResourceList() {};
-	virtual ~MotionResourceList() {};
+    protected:
+    private:
+        IFXArray<MotionResource> m_resourceList;
+    };
 
-	/**
-	*/
-	void AddResource( const MotionResource& rResource );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	const MotionResource& GetResource( U32 index ) const;
-	U32 GetResourceCount() const;
+    IFXFORCEINLINE void MotionResourceList::AddResource(const MotionResource& rResource)
+    {
+        MotionResource& resource = m_resourceList.CreateNewElement();
+        resource = rResource;
+    }
 
-protected:
+    IFXFORCEINLINE const MotionResource& MotionResourceList::GetResource(U32 index) const
+    {
+        return m_resourceList.GetElementConst(index);
+    }
 
-private:
-	IFXArray< MotionResource > m_resourceList;
-};
+    IFXFORCEINLINE U32 MotionResourceList::GetResourceCount() const
+    {
+        return m_resourceList.GetNumberElements();
+    }
 
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-IFXFORCEINLINE void MotionResourceList::AddResource( const MotionResource& rResource )
-{
-	MotionResource& resource = m_resourceList.CreateNewElement();
-	resource = rResource;
-}
-
-IFXFORCEINLINE const MotionResource& MotionResourceList::GetResource( U32 index ) const
-{
-	return m_resourceList.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 MotionResourceList::GetResourceCount() const
-{
-	return m_resourceList.GetNumberElements();
-}
-
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

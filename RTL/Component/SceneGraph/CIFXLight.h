@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file	CIFXLight.h
+        @file	CIFXLight.h
 */
 
 #ifndef __CIFXLIGHT_H__
@@ -28,60 +28,46 @@
 
 class CIFXLight : private CIFXNode, virtual public IFXLight
 {
-			CIFXLight();
-	virtual  ~CIFXLight();
-	friend
-	IFXRESULT IFXAPI_CALLTYPE CIFXLight_Factory( IFXREFIID riid,
-								void**    ppv );
+    CIFXLight();
+    virtual ~CIFXLight();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXLight_Factory(IFXREFIID riid, void** ppv);
+
 public:
-	// IFXUnknown
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface ( IFXREFIID riid,
-							void**    ppv );
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
+    // IFXMarkerX
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
-	// IFXMarkerX
-	void IFXAPI       GetEncoderX ( IFXEncoderX*& rpEncoderX );
+    // IFXSpatial
+    IFXRESULT IFXAPI GetSpatialBound(IFXVector4& rOutSphere, U32 WorldInstance);
+    IFXSpatial::eType IFXAPI GetSpatialType();
 
-	// IFXSpatial
-	IFXRESULT IFXAPI GetSpatialBound(    IFXVector4&        rOutSphere, U32 WorldInstance );
-	IFXSpatial::eType IFXAPI GetSpatialType();
+    // IFXModifier
+    IFXRESULT IFXAPI GetOutputs(IFXGUID**& rpOutOutputs, U32& rOutNumberOfOutputs, U32*& rpOutOutputDepAttrs);
+    IFXRESULT IFXAPI GetDependencies(IFXGUID* pInOutputDID, IFXGUID**& rppOutInputDependencies, U32& rOutNumberInputDependencies, IFXGUID**& rppOutOutputDependencies, U32& rOutNumberOfOutputDependencies, U32*& rpOutOutputDepAttrs);
+    IFXRESULT IFXAPI GenerateOutput(U32 inOutputDataElementIndex, void*& rpOutData, BOOL& rNeedRelease);
+    IFXRESULT IFXAPI SetDataPacket(IFXModifierDataPacket* pInInputDataPacket, IFXModifierDataPacket* pInDataPacket);
+    IFXRESULT IFXAPI Notify(IFXModifierMessage eInMessage, void* pMessageContext);
 
-	// IFXModifier
-	IFXRESULT IFXAPI  GetOutputs ( IFXGUID**& rpOutOutputs,
-						U32&       rOutNumberOfOutputs,
-						U32*&      rpOutOutputDepAttrs );
-	IFXRESULT IFXAPI  GetDependencies ( IFXGUID*   pInOutputDID,
-								IFXGUID**& rppOutInputDependencies,
-								U32&       rOutNumberInputDependencies,
-								IFXGUID**& rppOutOutputDependencies,
-								U32&       rOutNumberOfOutputDependencies,
-								U32*&      rpOutOutputDepAttrs );
-	IFXRESULT IFXAPI  GenerateOutput ( U32    inOutputDataElementIndex,
-							void*& rpOutData, BOOL& rNeedRelease );
-	IFXRESULT IFXAPI  SetDataPacket ( IFXModifierDataPacket* pInInputDataPacket,
-							IFXModifierDataPacket* pInDataPacket );
-	IFXRESULT IFXAPI  Notify ( IFXModifierMessage eInMessage,
-            void*         pMessageContext );
+    // Node
+    void IFXAPI Counter(EIFXNodeCounterType type, U32* puOutCount);
 
-	// Node
-	void IFXAPI Counter(EIFXNodeCounterType type, U32* puOutCount);
-
-	// IFXLight
-	void IFXAPI Disable( IFXRenderContext* pRenderLayer, U32 uInLightID);
-	void IFXAPI Enable( IFXRenderContext*  pRenderLayer, U32* puInLightID, U32 lightInstance);
-	IFXLightResource* IFXAPI GetLightResource( void );
-	IFXRESULT IFXAPI GetLightResourceID(U32*);
-	IFXRESULT IFXAPI SetLightResourceID(U32);
+    // IFXLight
+    void IFXAPI Disable(IFXRenderContext* pRenderLayer, U32 uInLightID);
+    void IFXAPI Enable(IFXRenderContext* pRenderLayer, U32* puInLightID, U32 lightInstance);
+    IFXLightResource* IFXAPI GetLightResource(void);
+    IFXRESULT IFXAPI GetLightResourceID(U32*);
+    IFXRESULT IFXAPI SetLightResourceID(U32);
 
 private:
-  // IFXModifier
-  static const IFXGUID* m_scpOutputDIDs[];
+    // IFXModifier
+    static const IFXGUID* m_scpOutputDIDs[];
 
-  // IFXLight
-  U32 m_lightResourceID;
+    // IFXLight
+    U32 m_lightResourceID;
 };
-
 
 #endif

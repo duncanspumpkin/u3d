@@ -20,7 +20,7 @@
 
 This file defines the implementation of the TGAImage class.
 
-@note 
+@note
 Here is the description of supported TGA format
 
 DATA TYPE 2: Unmapped RGB
@@ -86,307 +86,330 @@ DATA TYPE 2: Unmapped RGB
 
 */
 
-#include <stdio.h>
 #include <memory.h>
+#include <stdio.h>
 #include <string.h>
 
-#include "TGAImage.h"
 #include "IFXOSLoader.h"
+#include "TGAImage.h"
 
 using namespace U3D_IDTF;
 
 namespace U3D_IDTF
 {
-typedef struct _TgaHeader
-{
-    U8 numIden;
-    U8 colorMapType;
-    U8 imageType;
-    U8 colorMapSpec[5]; // not used, just here to take up space
-    U8 origX[2];
-    U8 origY[2];
-    U8 width[2];
-    U8 height[2];
-    U8 bpp;
-    U8 imageDes; // don't use, space eater
-} TgaHeader;
+    typedef struct _TgaHeader
+    {
+        U8 numIden;
+        U8 colorMapType;
+        U8 imageType;
+        U8 colorMapSpec[5]; // not used, just here to take up space
+        U8 origX[2];
+        U8 origY[2];
+        U8 width[2];
+        U8 height[2];
+        U8 bpp;
+        U8 imageDes; // don't use, space eater
+    } TgaHeader;
 
 }
 
 TGAImage::TGAImage()
 {
-	m_Width = 0;
-	m_Height = 0;
-	m_Channels = 0;
-	m_RGBPixels = NULL;
+    m_Width = 0;
+    m_Height = 0;
+    m_Channels = 0;
+    m_RGBPixels = NULL;
 }
 
 TGAImage::~TGAImage()
 {
-	Deallocate();
+    Deallocate();
 }
 
-TGAImage::TGAImage(const TGAImage& other )
+TGAImage::TGAImage(const TGAImage& other)
 {
-	m_Width = other.m_Width;
-	m_Height = other.m_Height;
-	m_Channels = other.m_Channels;
-	if ( other.m_RGBPixels != NULL )
-	{
-		m_RGBPixels =  new U8[m_Width * m_Height * m_Channels];
-		memcpy( m_RGBPixels, other.m_RGBPixels, m_Width * m_Height * m_Channels );
-	}
-	else
-		m_RGBPixels =  NULL;
+    m_Width = other.m_Width;
+    m_Height = other.m_Height;
+    m_Channels = other.m_Channels;
+    if (other.m_RGBPixels != NULL)
+    {
+        m_RGBPixels = new U8[m_Width * m_Height * m_Channels];
+        memcpy(m_RGBPixels, other.m_RGBPixels, m_Width * m_Height * m_Channels);
+    }
+    else
+    {
+        m_RGBPixels = NULL;
+    }
 }
 
-TGAImage& TGAImage::operator = (const TGAImage& other)
+TGAImage& TGAImage::operator=(const TGAImage& other)
 {
-	if (this != &other) // protect against invalid self-assignment
-	{
-		Deallocate();
-		m_Width = other.m_Width;
-		m_Height = other.m_Height;
-		m_Channels = other.m_Channels;
-		if ( other.m_RGBPixels != NULL )
-		{
-			m_RGBPixels =  new U8[m_Width * m_Height * m_Channels];
-			memcpy( m_RGBPixels, other.m_RGBPixels, m_Width * m_Height * m_Channels );
-		}
-	}
-	// by convention, always return *this
-	return *this;
+    if (this != &other) // protect against invalid self-assignment
+    {
+        Deallocate();
+        m_Width = other.m_Width;
+        m_Height = other.m_Height;
+        m_Channels = other.m_Channels;
+        if (other.m_RGBPixels != NULL)
+        {
+            m_RGBPixels = new U8[m_Width * m_Height * m_Channels];
+            memcpy(m_RGBPixels, other.m_RGBPixels, m_Width * m_Height * m_Channels);
+        }
+    }
+    // by convention, always return *this
+    return *this;
 }
 
 IFXRESULT TGAImage::Deallocate()
 {
-	if(m_RGBPixels)
-	{
-		delete[] m_RGBPixels;
-	}
+    if (m_RGBPixels)
+    {
+        delete[] m_RGBPixels;
+    }
 
-	m_RGBPixels = NULL;
+    m_RGBPixels = NULL;
 
-	m_Width = 0;
-	m_Height = 0;
-	m_Channels = 0;
+    m_Width = 0;
+    m_Height = 0;
+    m_Channels = 0;
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
-IFXRESULT TGAImage::Read( const IFXCHAR* pFileName )
+IFXRESULT TGAImage::Read(const IFXCHAR* pFileName)
 {
     FILE* inFile = 0;
     TgaHeader header;
-	IFXRESULT ret = IFX_OK;
+    IFXRESULT ret = IFX_OK;
 
     Deallocate();
 
-    if( !pFileName )
+    if (!pFileName)
     {
         ret = IFX_E_INVALID_POINTER;
     }
 
-    if( IFXSUCCESS( ret ) )
+    if (IFXSUCCESS(ret))
     {
-		inFile = IFXOSFileOpen( pFileName, L"rb" );
+        inFile = IFXOSFileOpen(pFileName, L"rb");
 
-		if( !inFile )
-		{
-			ret = IFX_E_INVALID_FILE;
-		}
+        if (!inFile)
+        {
+            ret = IFX_E_INVALID_FILE;
+        }
     }
 
-    if( IFXSUCCESS( ret ) )
+    if (IFXSUCCESS(ret))
     {
-		// read the file header
-		size_t count = 
-			fread( &header, sizeof(TgaHeader), 1, inFile );
+        // read the file header
+        size_t count = fread(&header, sizeof(TgaHeader), 1, inFile);
 
-		// if file header was not successfully read
-		if( 1 != count )
-		{
-			ret = IFX_E_READ_FAILED;
-		}
+        // if file header was not successfully read
+        if (1 != count)
+        {
+            ret = IFX_E_READ_FAILED;
+        }
     }
 
-    if( IFXSUCCESS( ret ) )
+    if (IFXSUCCESS(ret))
     {
-		if( header.colorMapType != 0 )
-		  ret = IFX_E_UNDEFINED;
+        if (header.colorMapType != 0)
+        {
+            ret = IFX_E_UNDEFINED;
+        }
 
-		if( header.imageType != 2 )
-		  ret = IFX_E_UNDEFINED;
+        if (header.imageType != 2)
+        {
+            ret = IFX_E_UNDEFINED;
+        }
 
-		// make sure we are loading a supported type
-		if( header.bpp!= 32 && header.bpp!= 24 )
-		  ret = IFX_E_UNDEFINED;
+        // make sure we are loading a supported type
+        if (header.bpp != 32 && header.bpp != 24)
+        {
+            ret = IFX_E_UNDEFINED;
+        }
     }
 
-    if( IFXSUCCESS( ret ) )
+    if (IFXSUCCESS(ret))
     {
-		m_Width = header.width[0] + header.width[1] * 256;
-		m_Height = header.height[0] + header.height[1] * 256;
-		m_Channels = header.bpp/8;
-		m_RGBPixels = new U8[m_Width * m_Height * m_Channels];
-		if( !m_RGBPixels )
-			ret = IFX_E_OUT_OF_MEMORY;
+        m_Width = header.width[0] + header.width[1] * 256;
+        m_Height = header.height[0] + header.height[1] * 256;
+        m_Channels = header.bpp / 8;
+        m_RGBPixels = new U8[m_Width * m_Height * m_Channels];
+        if (!m_RGBPixels)
+        {
+            ret = IFX_E_OUT_OF_MEMORY;
+        }
     }
 
-	if( IFXSUCCESS( ret ) && 0 != header.numIden )
-	{
-		// seek file pointer after image identification field
-		fseek( inFile, header.numIden, SEEK_CUR ); 
-	}
+    if (IFXSUCCESS(ret) && 0 != header.numIden)
+    {
+        // seek file pointer after image identification field
+        fseek(inFile, header.numIden, SEEK_CUR);
+    }
 
-	if( IFXSUCCESS( ret ) )
-	{
-		// read the pixel data in BGR format
-		size_t count = 
-			fread( m_RGBPixels, m_Width * m_Height * m_Channels, 1, inFile );
-		
-		// if file was successfully read
-		if( 1 == count )
-		{
-			// R and B channels reordering
-			U32 i;
-			for( i = 0; i < m_Width * m_Height * m_Channels; i += m_Channels )
-			{    
-				U8 tmp = m_RGBPixels[i];
-				m_RGBPixels[i] = m_RGBPixels[i+2];
-				m_RGBPixels[i+2] = tmp;
-			}
-		}
-		else
-		{
-			ret = IFX_E_READ_FAILED;
-		}
-	}
+    if (IFXSUCCESS(ret))
+    {
+        // read the pixel data in BGR format
+        size_t count = fread(m_RGBPixels, m_Width * m_Height * m_Channels, 1, inFile);
 
-	if( inFile )
-	{
-		fclose( inFile );
-	}
+        // if file was successfully read
+        if (1 == count)
+        {
+            // R and B channels reordering
+            U32 i;
+            for (i = 0; i < m_Width * m_Height * m_Channels; i += m_Channels)
+            {
+                U8 tmp = m_RGBPixels[i];
+                m_RGBPixels[i] = m_RGBPixels[i + 2];
+                m_RGBPixels[i + 2] = tmp;
+            }
+        }
+        else
+        {
+            ret = IFX_E_READ_FAILED;
+        }
+    }
 
-	if( IFXFAILURE( ret ) )
-	{
-		Deallocate();
-	}
+    if (inFile)
+    {
+        fclose(inFile);
+    }
+
+    if (IFXFAILURE(ret))
+    {
+        Deallocate();
+    }
 
     return ret;
 }
 
-IFXRESULT TGAImage::Write( const IFXCHAR* pFileName ) const
+IFXRESULT TGAImage::Write(const IFXCHAR* pFileName) const
 {
-	TgaHeader header;
-	U8* BGRPixels = NULL; // BGRA
+    TgaHeader header;
+    U8* BGRPixels = NULL; // BGRA
 
     IFXRESULT ret = IFX_OK;
-	FILE* outFile = 0;
+    FILE* outFile = 0;
 
-	if( !m_RGBPixels )
-	{
-		ret = IFX_E_INVALID_POINTER;
-	}
+    if (!m_RGBPixels)
+    {
+        ret = IFX_E_INVALID_POINTER;
+    }
 
-	if( IFXSUCCESS( ret ) )
-	{
-		outFile = IFXOSFileOpen( pFileName, L"wb" );
+    if (IFXSUCCESS(ret))
+    {
+        outFile = IFXOSFileOpen(pFileName, L"wb");
 
-		if( !outFile )
-			ret = IFX_E_INVALID_FILE;
-	}
+        if (!outFile)
+        {
+            ret = IFX_E_INVALID_FILE;
+        }
+    }
 
-	if( IFXSUCCESS( ret ) )
-	{
-		// first attemp to write TGA image
-		BGRPixels = new U8[ m_Width * m_Height * m_Channels ];
-		if( NULL != BGRPixels && NULL != m_RGBPixels )
-		{
-			// R and B channels reordering
-			U32 i;
-			for( i = 0; i < m_Width * m_Height * m_Channels; i += m_Channels )
-			{    
-				BGRPixels[i] = m_RGBPixels[i+2]; // R->B
-				BGRPixels[i+1] = m_RGBPixels[i+1]; // G->G
-				BGRPixels[i+2] = m_RGBPixels[i]; // B->R
-				if( 4 == m_Channels )
-					BGRPixels[i+3] = m_RGBPixels[i+3]; // A->A
-			}
-		}
-		else
-			ret = IFX_E_OUT_OF_MEMORY;
-	}
+    if (IFXSUCCESS(ret))
+    {
+        // first attemp to write TGA image
+        BGRPixels = new U8[m_Width * m_Height * m_Channels];
+        if (NULL != BGRPixels && NULL != m_RGBPixels)
+        {
+            // R and B channels reordering
+            U32 i;
+            for (i = 0; i < m_Width * m_Height * m_Channels; i += m_Channels)
+            {
+                BGRPixels[i] = m_RGBPixels[i + 2];     // R->B
+                BGRPixels[i + 1] = m_RGBPixels[i + 1]; // G->G
+                BGRPixels[i + 2] = m_RGBPixels[i];     // B->R
+                if (4 == m_Channels)
+                {
+                    BGRPixels[i + 3] = m_RGBPixels[i + 3]; // A->A
+                }
+            }
+        }
+        else
+        {
+            ret = IFX_E_OUT_OF_MEMORY;
+        }
+    }
 
-	if( IFXSUCCESS( ret ) )
-	{
-		memset(&header,0, sizeof(TgaHeader));
-		header.imageType = 2;
-		header.width[0] = m_Width % 256; header.width[1] = m_Width / 256;
-		header.height[0] = m_Height % 256; header.height[1] = m_Height / 256;
-		header.bpp = m_Channels*8;
+    if (IFXSUCCESS(ret))
+    {
+        memset(&header, 0, sizeof(TgaHeader));
+        header.imageType = 2;
+        header.width[0] = m_Width % 256;
+        header.width[1] = m_Width / 256;
+        header.height[0] = m_Height % 256;
+        header.height[1] = m_Height / 256;
+        header.bpp = m_Channels * 8;
 
-		size_t count = fwrite( &header, sizeof(TgaHeader), 1, outFile );
-		// if file header was not successfully written
-		if( 1 != count )
-		{
-			ret = IFX_E_WRITE_FAILED;
-		}
-	}
+        size_t count = fwrite(&header, sizeof(TgaHeader), 1, outFile);
+        // if file header was not successfully written
+        if (1 != count)
+        {
+            ret = IFX_E_WRITE_FAILED;
+        }
+    }
 
-	if( IFXSUCCESS( ret ) )
-	{
-		size_t count = 
-			fwrite( BGRPixels, m_Width * m_Height * m_Channels, 1, outFile );
-		
-		// if file data was not successfully written
-		if( 1 != count )
-		{
-			ret = IFX_E_WRITE_FAILED;
-		}
-	}
+    if (IFXSUCCESS(ret))
+    {
+        size_t count = fwrite(BGRPixels, m_Width * m_Height * m_Channels, 1, outFile);
 
-	if( outFile )
-		fclose( outFile );
+        // if file data was not successfully written
+        if (1 != count)
+        {
+            ret = IFX_E_WRITE_FAILED;
+        }
+    }
 
-	if( BGRPixels )
-	{
-		delete[] BGRPixels;
-	}
-	
-	return ret;
+    if (outFile)
+    {
+        fclose(outFile);
+    }
+
+    if (BGRPixels)
+    {
+        delete[] BGRPixels;
+    }
+
+    return ret;
 }
 
-IFXRESULT TGAImage::Initialize( U32 in_Width, U32 in_Height, U32 in_Channels )
+IFXRESULT TGAImage::Initialize(U32 in_Width, U32 in_Height, U32 in_Channels)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if(in_Width < 1 || in_Height < 1 || (in_Channels != 3 && in_Channels != 4))
-	{
-		result = IFX_E_INVALID_RANGE;
-	}
-	else
-	{
-		m_Height = in_Height;
-		m_Width = in_Width;
-		m_Channels = in_Channels;
+    if (in_Width < 1 || in_Height < 1 || (in_Channels != 3 && in_Channels != 4))
+    {
+        result = IFX_E_INVALID_RANGE;
+    }
+    else
+    {
+        m_Height = in_Height;
+        m_Width = in_Width;
+        m_Channels = in_Channels;
 
-		m_RGBPixels = new U8[ in_Width * in_Height * in_Channels ];
-		if( !m_RGBPixels )
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	
-	return result;
+        m_RGBPixels = new U8[in_Width * in_Height * in_Channels];
+        if (!m_RGBPixels)
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+
+    return result;
 }
 
-void TGAImage::SetData(const U8* data )
+void TGAImage::SetData(const U8* data)
 {
-	if ( data != NULL )
-		memcpy( m_RGBPixels, data, m_Width * m_Height * m_Channels );
-	else
-	{
-		if(m_RGBPixels)
-			delete[] m_RGBPixels;
-		m_RGBPixels =  NULL;
-	}
+    if (data != NULL)
+    {
+        memcpy(m_RGBPixels, data, m_Width * m_Height * m_Channels);
+    }
+    else
+    {
+        if (m_RGBPixels)
+        {
+            delete[] m_RGBPixels;
+        }
+        m_RGBPixels = NULL;
+    }
 }

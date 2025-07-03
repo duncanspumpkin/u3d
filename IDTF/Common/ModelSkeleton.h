@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ModelSkeleton_H
 #define ModelSkeleton_H
-
 
 //***************************************************************************
 //  Includes
@@ -39,83 +37,78 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    struct BoneInfo
+    {
+        IFXString name;
+        IFXString parentName;
+        F32 length;
+        Point displacement;
+        Quat orientation;
+    };
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ModelSkeleton
+    {
+    public:
+        ModelSkeleton() {};
+        ~ModelSkeleton() {};
 
-struct BoneInfo
-{
-	IFXString name;
-	IFXString parentName;
-	F32 length;
-	Point displacement;
-	Quat orientation;
-};
+        void AddBoneInfo(const BoneInfo& rBoneInfo);
+        const BoneInfo& GetBoneInfo(U32 index) const;
+        U32 GetBoneInfoCount() const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+    private:
+        IFXArray<BoneInfo> m_boneInfoList; // number of bone infos
+    };
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class ModelSkeleton
-{
-public:
-	ModelSkeleton() {};
-	~ModelSkeleton() {};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	void AddBoneInfo( const BoneInfo& rBoneInfo );
-	const BoneInfo& GetBoneInfo( U32 index ) const;
-	U32 GetBoneInfoCount() const;
+    IFXFORCEINLINE void
+    ModelSkeleton::AddBoneInfo(const BoneInfo& rBoneInfo)
+    {
+        BoneInfo& boneInfo = m_boneInfoList.CreateNewElement();
+        boneInfo = rBoneInfo;
+    }
 
-private:
-	IFXArray< BoneInfo > m_boneInfoList; // number of bone infos
-};
+    IFXFORCEINLINE const BoneInfo& ModelSkeleton::GetBoneInfo(U32 index) const
+    {
+        return m_boneInfoList.GetElementConst(index);
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE U32 ModelSkeleton::GetBoneInfoCount() const
+    {
+        return m_boneInfoList.GetNumberElements();
+    }
 
-IFXFORCEINLINE void
-	ModelSkeleton::AddBoneInfo( const BoneInfo& rBoneInfo )
-{
-	BoneInfo& boneInfo = m_boneInfoList.CreateNewElement();
-	boneInfo = rBoneInfo;
-}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE const BoneInfo& ModelSkeleton::GetBoneInfo( U32 index ) const
-{
-	return m_boneInfoList.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 ModelSkeleton::GetBoneInfoCount() const
-{
-	return m_boneInfoList.GetNumberElements();
-}
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

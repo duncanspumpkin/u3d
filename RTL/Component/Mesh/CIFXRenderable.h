@@ -25,44 +25,48 @@
 //*****************************************************************************
 #ifndef __CIFXRenderable_H__
 #define __CIFXRenderable_H__
-#include "IFXRenderable.h"
 #include "IFXInterleavedData.h"
+#include "IFXRenderable.h"
 
 class CIFXRenderable : virtual public IFXRenderable
 {
 public:
-  CIFXRenderable();
-  virtual ~CIFXRenderable();
+    CIFXRenderable();
+    virtual ~CIFXRenderable();
 
-  // IFXRenderable
-  virtual IFXRESULT IFXAPI  TransferData(IFXRenderable&, BOOL, BOOL) = 0;
-  virtual const IFXIID& IFXAPI GetElementType() = 0;
+    // IFXRenderable
+    virtual IFXRESULT IFXAPI TransferData(IFXRenderable&, BOOL, BOOL) = 0;
+    virtual const IFXIID& IFXAPI GetElementType() = 0;
 
-  U32     IFXAPI     GetNumElements() { return m_uNumElements; }
-  virtual void** GetElementList() = 0;
+    U32 IFXAPI GetNumElements() { return m_uNumElements; }
+    virtual void** GetElementList() = 0;
 
-  BOOL     IFXAPI    GetEnabled() { return m_bEnabled; }
-  IFXRESULT IFXAPI   SetEnabled( BOOL bInEnabled )
-          { m_bEnabled = bInEnabled; return IFX_OK; }
-  IFXRESULT IFXAPI   GetElementShaderList( U32 uInElement, IFXShaderList** out_ppShaderList );
-  IFXRESULT IFXAPI   SetElementShaderList( U32 uInElement, IFXShaderList* in_pShaderList);
+    BOOL IFXAPI GetEnabled() { return m_bEnabled; }
+    IFXRESULT IFXAPI SetEnabled(BOOL bInEnabled)
+    {
+        m_bEnabled = bInEnabled;
+        return IFX_OK;
+    }
+    IFXRESULT IFXAPI GetElementShaderList(U32 uInElement, IFXShaderList** out_ppShaderList);
+    IFXRESULT IFXAPI SetElementShaderList(U32 uInElement, IFXShaderList* in_pShaderList);
 
-  IFXRESULT IFXAPI GetShaderDataArray(IFXShaderList*** pShaderArray);
+    IFXRESULT IFXAPI GetShaderDataArray(IFXShaderList*** pShaderArray);
 
 protected:
-  IFXRESULT AllocateShaders(IFXShaderList** in_ppData = NULL, BOOL in_bCopy = TRUE);
-  void Deallocate();
-  virtual void IFXAPI  DeallocateObject() {};
+    IFXRESULT AllocateShaders(IFXShaderList** in_ppData = NULL, BOOL in_bCopy = TRUE);
+    void Deallocate();
+    virtual void IFXAPI DeallocateObject() {};
 
-  // IFXRenderable
-  BOOL m_bEnabled;
+    // IFXRenderable
+    BOOL m_bEnabled;
 
-  U32 m_uNumElements;
+    U32 m_uNumElements;
 
-  IFXShaderList**    m_ppShaders;
+    IFXShaderList** m_ppShaders;
+
 private:
-  // IFXUnknown
-  U32            m_uRefCount;
+    // IFXUnknown
+    U32 m_uRefCount;
 };
 
 #endif

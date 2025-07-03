@@ -20,54 +20,48 @@
 //
 //	DESCRIPTION:
 //		Declaration of the CIFXMaterialResourceEncoder.
-//		The CIFXMaterialResourceEncoder contains material resource encoding 
+//		The CIFXMaterialResourceEncoder contains material resource encoding
 //		functionality that is used by the write manager.
-//	
+//
 //*****************************************************************************
 
 #ifndef CIFXMATERIALRESOURCEENCODER_H__
 #define CIFXMATERIALRESOURCEENCODER_H__
 
-
-// no ordering requirements for include files 
+// no ordering requirements for include files
 #include "IFXBitStreamX.h"
 #include "IFXCoreServices.h"
 #include "IFXDataBlockQueueX.h"
 #include "IFXEncoderX.h"
 #include "IFXString.h"
 
-
-class  CIFXMaterialResourceEncoder : virtual public IFXEncoderX
+class CIFXMaterialResourceEncoder : virtual public IFXEncoderX
 {
 public:
-	
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXMaterialResourceEncoder_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXMaterialResourceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	
-	// IFXUnknown
-	U32 IFXAPI 			AddRef ( void );
-	U32 IFXAPI 			Release ( void );
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	
-	// IFXEncoderX
-	void	IFXAPI		EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
-	void	IFXAPI		InitializeX( IFXCoreServices& rCoreServices );
-	void	IFXAPI		SetObjectX( IFXUnknown& rObject );
-
+    // IFXEncoderX
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
 
 private:
-	// methods
-	CIFXMaterialResourceEncoder();
-	virtual ~CIFXMaterialResourceEncoder();
+    // methods
+    CIFXMaterialResourceEncoder();
+    virtual ~CIFXMaterialResourceEncoder();
 
-	// members
-	BOOL				m_bInitialized;
-	IFXBitStreamX*		m_pBitStream;
-	IFXCoreServices*	m_pCoreServices;
-	IFXUnknown*			m_pObject;
-	U32					m_uRefCount;
+    // members
+    BOOL m_bInitialized;
+    IFXBitStreamX* m_pBitStream;
+    IFXCoreServices* m_pCoreServices;
+    IFXUnknown* m_pObject;
+    U32 m_uRefCount;
 };
 
 #endif

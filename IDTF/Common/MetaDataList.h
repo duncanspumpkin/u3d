@@ -24,144 +24,136 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef MetaDataList_H
 #define MetaDataList_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXString.h"
 #include "IFXArray.h"
+#include "IFXString.h"
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    class BinaryMetaData
+    {
+    public:
+        BinaryMetaData();
+        ~BinaryMetaData();
+        BinaryMetaData(BinaryMetaData&);
 
+        /**
+        Get/Set binary metadata
+        */
+        const U8* GetBinaryValue() const;
+        IFXRESULT SetBinaryValue(const U8* pValue, const U32 size);
+        const U32& GetBinarySize() const;
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        BinaryMetaData& operator=(const BinaryMetaData& rBinary);
 
-	class BinaryMetaData
-	{
-	public:
-		BinaryMetaData();
-		~BinaryMetaData();
-		BinaryMetaData( BinaryMetaData& );
+    private:
+        U8* m_pValue;
+        U32 m_size;
+    };
 
-		/**
-		Get/Set binary metadata
-		*/
-		const U8* GetBinaryValue() const;
-		IFXRESULT SetBinaryValue( const U8* pValue, const U32 size );
-		const U32& GetBinarySize() const;
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-		BinaryMetaData& operator= ( const BinaryMetaData& rBinary );
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class StringMetaData
+    {
+    public:
+        StringMetaData();
+        virtual ~StringMetaData();
 
-	private:
-		U8* m_pValue;
-		U32 m_size;
-	};
+        /**
+        Get/Set string metadata
+        */
+        const IFXString& GetStringValue() const;
+        void SetStringValue(const IFXString& rValue);
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+    private:
+        IFXString m_value;
+    };
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class StringMetaData
-	{
-	public:
-		StringMetaData();
-		virtual ~StringMetaData();
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-		/**
-		Get/Set string metadata
-		*/
-		const IFXString& GetStringValue() const;
-		void SetStringValue( const IFXString& rValue );
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class MetaData : public StringMetaData, public BinaryMetaData
+    {
+    public:
+        MetaData();
+        virtual ~MetaData();
 
-	private:
-		IFXString m_value;
-	};
+        /**
+        Get/Set Key
+        */
+        void SetKey(const IFXString& rKey);
+        const IFXString& GetKey() const;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+        Get/Set metadata attribute
+        */
+        void SetAttribute(const IFXString& rAttribute);
+        const IFXString& GetAttribute() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class MetaData : public StringMetaData, public BinaryMetaData
-	{
-	public:
-		MetaData();
-		virtual ~MetaData();
+    private:
+        IFXString m_attribute;
+        IFXString m_key;
+    };
 
-		/**
-		Get/Set Key
-		*/
-		void SetKey( const IFXString& rKey );
-		const IFXString& GetKey() const;
+    class MetaDataList
+    {
+    public:
+        MetaDataList();
+        virtual ~MetaDataList();
 
-		/**
-		Get/Set metadata attribute
-		*/
-		void SetAttribute( const IFXString& rAttribute );
-		const IFXString& GetAttribute() const;
+        /**
+        Set/Get metadata to/from metadata list
+        */
+        IFXRESULT SetMetaData(const MetaData* pMetaData);
+        const MetaData& GetMetaData(const U32 index) const;
 
-	private:
-		IFXString m_attribute;
-		IFXString m_key;
-	};
+        /**
+        Get metadata list element count
+        */
+        const U32& GetMetaDataCount() const;
 
-	class MetaDataList
-	{
-	public:
-		MetaDataList();
-		virtual ~MetaDataList();
+    private:
+        IFXArray<MetaData> m_metaDataList;
+    };
 
-		/**
-		Set/Get metadata to/from metadata list
-		*/
-		IFXRESULT SetMetaData( const MetaData* pMetaData );
-		const MetaData& GetMetaData( const U32 index ) const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		Get metadata list element count
-		*/
-		const U32& GetMetaDataCount() const;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	private:
-		IFXArray< MetaData > m_metaDataList;
-	};
-
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

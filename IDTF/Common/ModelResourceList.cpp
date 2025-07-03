@@ -22,7 +22,6 @@
       This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -36,42 +35,35 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
 
-ModelResourceList::ModelResourceList() 
+ModelResourceList::ModelResourceList()
 {
 }
 
@@ -79,69 +71,67 @@ ModelResourceList::~ModelResourceList()
 {
 }
 
-IFXRESULT ModelResourceList::AddResource( const ModelResource* pModelResource )
+IFXRESULT ModelResourceList::AddResource(const ModelResource* pModelResource)
 {
-	IFXRESULT result = IFX_OK;
-	ModelResource* pTmpModelResource = NULL;
+    IFXRESULT result = IFX_OK;
+    ModelResource* pTmpModelResource = NULL;
 
-	const IFXString& rModelResourceType = pModelResource->m_type;
+    const IFXString& rModelResourceType = pModelResource->m_type;
 
-	if( rModelResourceType == IDTF_MESH )
-	{
-		MeshResource& meshResource = m_meshResourceList.CreateNewElement();
-		meshResource = *static_cast<const MeshResource*>(pModelResource);
-		pTmpModelResource = &meshResource;
-	}
-	else if( rModelResourceType == IDTF_LINE_SET )
-	{
-		LineSetResource& lineSetResource = m_lineSetResourceList.CreateNewElement();
-		lineSetResource = *static_cast<const LineSetResource*>(pModelResource);
-		pTmpModelResource = &lineSetResource;
-	}
-	else if( rModelResourceType == IDTF_POINT_SET )
-	{
-		PointSetResource& pointSetResource = m_pointSetResourceList.CreateNewElement();
-		pointSetResource = *static_cast<const PointSetResource*>(pModelResource);
-		pTmpModelResource = &pointSetResource;
-	}
-	else
-		result = IFX_E_UNDEFINED;
+    if (rModelResourceType == IDTF_MESH)
+    {
+        MeshResource& meshResource = m_meshResourceList.CreateNewElement();
+        meshResource = *static_cast<const MeshResource*>(pModelResource);
+        pTmpModelResource = &meshResource;
+    }
+    else if (rModelResourceType == IDTF_LINE_SET)
+    {
+        LineSetResource& lineSetResource = m_lineSetResourceList.CreateNewElement();
+        lineSetResource = *static_cast<const LineSetResource*>(pModelResource);
+        pTmpModelResource = &lineSetResource;
+    }
+    else if (rModelResourceType == IDTF_POINT_SET)
+    {
+        PointSetResource& pointSetResource = m_pointSetResourceList.CreateNewElement();
+        pointSetResource = *static_cast<const PointSetResource*>(pModelResource);
+        pTmpModelResource = &pointSetResource;
+    }
+    else
+    {
+        result = IFX_E_UNDEFINED;
+    }
 
-	if( IFXSUCCESS( result ) )
-	{
-		// add new node pointer to the model resource list
-		ModelResource*& resource = m_resourcePointerList.CreateNewElement();
-		resource = pTmpModelResource;
-	}
+    if (IFXSUCCESS(result))
+    {
+        // add new node pointer to the model resource list
+        ModelResource*& resource = m_resourcePointerList.CreateNewElement();
+        resource = pTmpModelResource;
+    }
 
-	return result;
+    return result;
 }
 
-const ModelResource* ModelResourceList::GetResource( U32 index ) const
+const ModelResource* ModelResourceList::GetResource(U32 index) const
 {
-	return m_resourcePointerList.GetElementConst( index );
+    return m_resourcePointerList.GetElementConst(index);
 }
 
 U32 ModelResourceList::GetResourceCount() const
 {
-	return m_resourcePointerList.GetNumberElements();
+    return m_resourcePointerList.GetNumberElements();
 }
-
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions

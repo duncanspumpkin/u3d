@@ -24,153 +24,145 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef FileReference_H
 #define FileReference_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXString.h"
 #include "IFXArray.h"
+#include "IFXString.h"
 #include "UrlList.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class Filter
+    {
+    public:
+        Filter();
+        virtual ~Filter();
 
+        /**
+         */
+        void SetType(const IFXString& rType);
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        const IFXString& GetType() const;
 
+        /**
+         */
+        void SetObjectName(const IFXString& rName);
 
-class Filter
-{
-public:
-	Filter();
-	virtual ~Filter();
+        /**
+         */
+        const IFXString& GetObjectName() const;
 
-	/**
-	*/
-	void SetType( const IFXString& rType );
+        /**
+         */
+        void SetObjectType(const I32 type);
 
-	/**
-	*/
-	const IFXString& GetType() const;
+        /**
+         */
+        const I32& GetObjectType() const;
 
-	/**
-	*/
-	void SetObjectName( const IFXString& rName );
+    private:
+        IFXString m_type;
+        IFXString m_objectName;
+        I32 m_objectType;
+    };
 
-	/**
-	*/
-	const IFXString& GetObjectName() const;
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-	/**
-	*/
-	void SetObjectType( const I32 type );
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class FileReference
+    {
+    public:
+        FileReference();
+        virtual ~FileReference();
 
-	/**
-	*/
-	const I32& GetObjectType() const;
+        /**
+         */
+        void SetScopeName(const IFXString& rName);
 
-private:
-	IFXString m_type;
-	IFXString m_objectName;
-	I32 m_objectType;
-};
+        /**
+         */
+        const IFXString& GetScopeName() const;
 
+        /**
+         */
+        void AddUrlList(const UrlList& rUrlList);
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const IFXArray<IFXString>& GetUrlList() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class FileReference
-{
-public:
-	FileReference();
-	virtual ~FileReference();
+        /**
+         */
+        IFXRESULT AddFilter(const Filter& rUrl);
 
-	/**
-	*/
-	void SetScopeName( const IFXString& rName );
+        /**
+         */
+        const Filter& GetFilter(U32 index) const;
 
-	/**
-	*/
-	const IFXString& GetScopeName() const;
+        /**
+         */
+        const U32& GetFilterCount() const;
 
-	/**
-	*/
-	void AddUrlList( const UrlList& rUrlList );
+        /**
+         */
+        void SetCollisionPolicy(const IFXString& rName);
 
-	/**
-	*/
-	const IFXArray<IFXString>& GetUrlList() const;
+        /**
+         */
+        const IFXString& GetCollisionPolicy() const;
 
-	/**
-	*/
-	IFXRESULT AddFilter( const Filter& rUrl );
+        /**
+         */
+        void SetWorldAlias(const IFXString& rWorldAlias);
 
-	/**
-	*/
-	const Filter& GetFilter( U32 index ) const;
+        /**
+         */
+        const IFXString& GetWorldAlias() const;
 
-	/**
-	*/
-	const U32& GetFilterCount() const;
+    private:
+        IFXString m_scopeName;
+        UrlList m_urlList;
+        IFXArray<Filter> m_filterList;
+        IFXString m_nameCollisionPolicy;
+        IFXString m_worldAlias;
+    };
 
-	/**
-	*/
-	void SetCollisionPolicy( const IFXString& rName );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	const IFXString& GetCollisionPolicy() const;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	/**
-	*/
-	void SetWorldAlias( const IFXString& rWorldAlias );
-
-	/**
-	*/
-	const IFXString& GetWorldAlias() const;
-
-private:
-	IFXString m_scopeName;
-	UrlList m_urlList;
-	IFXArray<Filter> m_filterList;
-	IFXString m_nameCollisionPolicy;
-	IFXString m_worldAlias;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

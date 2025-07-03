@@ -24,7 +24,6 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef TextureResourceList_H
 #define TextureResourceList_H
 
@@ -38,78 +37,73 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class TextureResourceList : public ResourceList
+    {
+    public:
+        TextureResourceList() {};
+        virtual ~TextureResourceList() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+         */
+        void AddResource(const Texture& rResource);
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const Texture& GetResource(U32 index) const;
+        U32 GetResourceCount() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class TextureResourceList : public ResourceList
-	{
-	public:
-		TextureResourceList() {};
-		virtual ~TextureResourceList() {};
+    private:
+        IFXArray<Texture> m_resourceList;
+    };
 
-		/**
-		*/
-		void AddResource( const Texture& rResource );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		*/
-		const Texture& GetResource( U32 index ) const;
-		U32 GetResourceCount() const;
+    IFXFORCEINLINE void TextureResourceList::AddResource(const Texture& rResource)
+    {
+        Texture& resource = m_resourceList.CreateNewElement();
+        resource = rResource;
+    }
 
-	private:
-		IFXArray< Texture > m_resourceList;
-	};
+    IFXFORCEINLINE const Texture& TextureResourceList::GetResource(U32 index) const
+    {
+        return m_resourceList.GetElementConst(index);
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE U32 TextureResourceList::GetResourceCount() const
+    {
+        return m_resourceList.GetNumberElements();
+    }
 
-	IFXFORCEINLINE void TextureResourceList::AddResource( const Texture& rResource )
-	{
-		Texture& resource = m_resourceList.CreateNewElement();
-		resource = rResource;
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE const Texture& TextureResourceList::GetResource( U32 index ) const
-	{
-		return m_resourceList.GetElementConst( index );
-	}
-
-	IFXFORCEINLINE U32 TextureResourceList::GetResourceCount() const
-	{
-		return m_resourceList.GetNumberElements();
-	}
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

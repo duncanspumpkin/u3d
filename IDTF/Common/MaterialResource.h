@@ -31,78 +31,72 @@
 //  Includes
 //***************************************************************************
 
+#include "Color.h"
 #include "IFXString.h"
 #include "Resource.h"
-#include "Color.h"
-
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+     */
 
+    class Material : public Resource
+    {
+    public:
+        Material();
+        virtual ~Material() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        IFXString m_ambientEnabled;
+        IFXString m_diffuseEnabled;
+        IFXString m_specularEnabled;
+        IFXString m_emissiveEnabled;
+        IFXString m_reflectivityEnabled;
+        IFXString m_opacityEnabled;
+        Color m_ambient;
+        Color m_diffuse;
+        Color m_specular;
+        Color m_emissive;
+        F32 m_reflectivity;
+        F32 m_opacity;
+    };
 
-/**
-*/
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-class Material : public Resource
-{
-public:
-	Material();
-	virtual ~Material() {};
+    IFXFORCEINLINE Material::Material()
+        : m_ambientEnabled(L"TRUE")
+        , m_diffuseEnabled(L"TRUE")
+        , m_specularEnabled(L"TRUE")
+        , m_emissiveEnabled(L"TRUE")
+        , m_reflectivityEnabled(L"TRUE")
+        , m_opacityEnabled(L"TRUE")
+    {
+    }
 
-	IFXString m_ambientEnabled;
-	IFXString m_diffuseEnabled;
-	IFXString m_specularEnabled;
-	IFXString m_emissiveEnabled;
-	IFXString m_reflectivityEnabled;
-	IFXString m_opacityEnabled;
-	Color m_ambient;
-	Color m_diffuse;
-	Color m_specular;
-	Color m_emissive;
-	F32 m_reflectivity;
-	F32 m_opacity;
-};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-IFXFORCEINLINE Material::Material()
-:	m_ambientEnabled( L"TRUE" ),
-	m_diffuseEnabled( L"TRUE" ),
-	m_specularEnabled( L"TRUE" ),
-	m_emissiveEnabled( L"TRUE" ),
-	m_reflectivityEnabled( L"TRUE" ),
-	m_opacityEnabled( L"TRUE" )
-{
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

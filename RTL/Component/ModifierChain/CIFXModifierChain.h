@@ -17,22 +17,22 @@
 //***************************************************************************
 
 /**
-	@file	CIFXModifierChain.h
+        @file	CIFXModifierChain.h
 
-			The header file that defines the base implementation class of the
-			CIFXModifierChain. 
+                        The header file that defines the base implementation class of the
+                        CIFXModifierChain.
 */
 
 #ifndef CIFXModifierChain_H
 #define CIFXModifierChain_H
 
-#include "IFXModifierChainInternal.h"
 #include "CIFXSubject.h"
-#include "IFXModifierDataPacketInternal.h"
+#include "IFXClock.h"
 #include "IFXDidRegistry.h"
 #include "IFXModifier.h"
+#include "IFXModifierChainInternal.h"
+#include "IFXModifierDataPacketInternal.h"
 #include "IFXSet.h"
-#include "IFXClock.h"
 
 class IFXModifierChainState;
 
@@ -53,8 +53,8 @@ prepended modifier chain.
 
 Invalidation: Invalidation are currently propagated down the entire chain when they
 happen, however the propagation detects previous invalidation and does not
-re invalidate items. This decision was made to speed the checking that must be done 
-during GetDataElement, so that the entire dep chain does not need to be checked 
+re invalidate items. This decision was made to speed the checking that must be done
+during GetDataElement, so that the entire dep chain does not need to be checked
 every time and element is retrieved.
 
 NOTE: Validations: only data elements that have been requested directly or indirectly
@@ -93,142 +93,142 @@ have there inputs validated. So to solve this problem we have decided to
 */
 
 /**
-	The CIFXModifierChain component supports the IFXModifierChainInternal, 
-	IFXObserver interfaces and CIFXSubject implementation. 
+        The CIFXModifierChain component supports the IFXModifierChainInternal,
+        IFXObserver interfaces and CIFXSubject implementation.
 */
 class CIFXModifierChain : private CIFXSubject,
-                  virtual public     IFXModifierChainInternal,
-				  virtual public	 IFXObserver
+                          virtual public IFXModifierChainInternal,
+                          virtual public IFXObserver
 {
 public:
-	// IFXUnknown
-	U32		  IFXAPI AddRef ();
-	U32		  IFXAPI Release ();
-	IFXRESULT IFXAPI QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// IFXModifierChain
-	IFXRESULT IFXAPI Initialize();
-	IFXRESULT IFXAPI PrependModifierChain( IFXModifierChain* pInModifierChain );
-	IFXRESULT IFXAPI AddModifier(IFXModifier& rInModifier, U32 index, BOOL isReqValidation);
+    // IFXModifierChain
+    IFXRESULT IFXAPI Initialize();
+    IFXRESULT IFXAPI PrependModifierChain(IFXModifierChain* pInModifierChain);
+    IFXRESULT IFXAPI AddModifier(IFXModifier& rInModifier, U32 index, BOOL isReqValidation);
 
-	IFXRESULT IFXAPI SetModifier(IFXModifier& rInModifier, U32 index, BOOL isReqValidation);
+    IFXRESULT IFXAPI SetModifier(IFXModifier& rInModifier, U32 index, BOOL isReqValidation);
 
-	IFXRESULT IFXAPI RemoveModifier(U32 index);
+    IFXRESULT IFXAPI RemoveModifier(U32 index);
 
-	IFXRESULT IFXAPI GetDataPacket( IFXModifierDataPacket*& rpOutDataPacket );
+    IFXRESULT IFXAPI GetDataPacket(IFXModifierDataPacket*& rpOutDataPacket);
 
-	IFXRESULT IFXAPI GetModifierCount( U32& rOutModifierCount );
-	IFXRESULT IFXAPI GetModifier( U32 index, IFXModifier*& rpOutModifier );
+    IFXRESULT IFXAPI GetModifierCount(U32& rOutModifierCount);
+    IFXRESULT IFXAPI GetModifier(U32 index, IFXModifier*& rpOutModifier);
 
-	IFXRESULT IFXAPI SetClock( IFXSubject* pInClockSubject );
+    IFXRESULT IFXAPI SetClock(IFXSubject* pInClockSubject);
 
-	// IFXModifierChainInternal
-	IFXRESULT IFXAPI Invalidate( 
-							U32 invalidDataElementIndex,
-							U32 modifierIndex );
-	IFXRESULT IFXAPI ProcessDependencies( 
-							U32 dataElementIndex,
-							U32 modifierIndex );
-	IFXRESULT IFXAPI AddAppendedModifierChain( 
-							IFXModifierChainInternal* pModChain);
-	IFXRESULT IFXAPI RemoveAppendedModifierChain( 
-							IFXModifierChainInternal* pModChain);
-	IFXRESULT IFXAPI RebuildDataPackets(BOOL isReqValidation);
-	IFXRESULT IFXAPI BuildCachedState( 
-							IFXModifierDataPacketInternal* pDP, 
-							BOOL isReqValidation );
+    // IFXModifierChainInternal
+    IFXRESULT IFXAPI Invalidate(
+        U32 invalidDataElementIndex,
+        U32 modifierIndex);
+    IFXRESULT IFXAPI ProcessDependencies(
+        U32 dataElementIndex,
+        U32 modifierIndex);
+    IFXRESULT IFXAPI AddAppendedModifierChain(
+        IFXModifierChainInternal* pModChain);
+    IFXRESULT IFXAPI RemoveAppendedModifierChain(
+        IFXModifierChainInternal* pModChain);
+    IFXRESULT IFXAPI RebuildDataPackets(BOOL isReqValidation);
+    IFXRESULT IFXAPI BuildCachedState(
+        IFXModifierDataPacketInternal* pDP,
+        BOOL isReqValidation);
 
-	IFXRESULT IFXAPI RestoreOldState();
-	IFXRESULT IFXAPI ClearOldState();
+    IFXRESULT IFXAPI RestoreOldState();
+    IFXRESULT IFXAPI ClearOldState();
 
-	BOOL	  IFXAPI NeedTime();
-	void	  IFXAPI RecheckNeedTime();
+    BOOL IFXAPI NeedTime();
+    void IFXAPI RecheckNeedTime();
 
-	IFXRESULT IFXAPI GetDEState(U32, IFXDataElementState**);
-	IFXRESULT IFXAPI GetIntraDeps(IFXIntraDependencies**);
-	IFXRESULT IFXAPI NotifyActive();
+    IFXRESULT IFXAPI GetDEState(U32, IFXDataElementState**);
+    IFXRESULT IFXAPI GetIntraDeps(IFXIntraDependencies**);
+    IFXRESULT IFXAPI NotifyActive();
 
-	// IFXObserver (for time mgmt )
-	IFXRESULT IFXAPI Update(
-						IFXSubject* pInSubject, 
-						U32 changeBits,
-						IFXREFIID rIType );
+    // IFXObserver (for time mgmt )
+    IFXRESULT IFXAPI Update(
+        IFXSubject* pInSubject,
+        U32 changeBits,
+        IFXREFIID rIType);
+
 private:
-	// IFXUnknown
-	U32 m_refCount;
+    // IFXUnknown
+    U32 m_refCount;
 
-	// IFXModifierChain
-	IFXModifierChainState* m_pModChainState;///< real state, if success
-	IFXModifierChainState* m_pCachedState;///< populated in rebuild:  potential new state
-	IFXModifierChainState* m_pOldState;   ///< rollback state
+    // IFXModifierChain
+    IFXModifierChainState* m_pModChainState; ///< real state, if success
+    IFXModifierChainState* m_pCachedState;   ///< populated in rebuild:  potential new state
+    IFXModifierChainState* m_pOldState;      ///< rollback state
 
-	BOOL m_bNeedTime; ///< Does this mod chain or an appended chain need the time
-	BOOL m_bInApplyState; ///< Are we currently in an apply state call
+    BOOL m_bNeedTime;     ///< Does this mod chain or an appended chain need the time
+    BOOL m_bInApplyState; ///< Are we currently in an apply state call
 
-	U32             m_Time;
-	IFXClock*       m_pClockNR; ///< serves as signal if we are attached to the clock
-	IFXSubject*     m_pClockSubjectNR;
+    U32 m_Time;
+    IFXClock* m_pClockNR; ///< serves as signal if we are attached to the clock
+    IFXSubject* m_pClockSubjectNR;
 
-	IFXDidRegistry* m_pDidRegistry;
+    IFXDidRegistry* m_pDidRegistry;
 
-	/**
-	An unrefed list of modifier chains that have had this chain prepended to them.
-	*/
-	IFXSet<IFXModifierChainInternal*> m_appendedChains;
+    /**
+    An unrefed list of modifier chains that have had this chain prepended to them.
+    */
+    IFXSet<IFXModifierChainInternal*> m_appendedChains;
 
-	/**
-	Destroy and clean up the modifier chain
-	*/
-	void Destruct();
+    /**
+    Destroy and clean up the modifier chain
+    */
+    void Destruct();
 
-	/**
-	Builds a new state for the modifier chain. May fail if
-	input requirements are violated.
+    /**
+    Builds a new state for the modifier chain. May fail if
+    input requirements are violated.
 
-	@param	pBaseChain
+    @param	pBaseChain
 
-	@param	pInOverrideDP
+    @param	pInOverrideDP
 
-	@param	modIdx	
-			May be 0 to NumModifers, or INVALID_MODIFIER_INDEX
-			to indicate no modifier to add or remove.
+    @param	modIdx
+                    May be 0 to NumModifers, or INVALID_MODIFIER_INDEX
+                    to indicate no modifier to add or remove.
 
-	@param	pInMod	
-			The address of the modifier to add, or if is Null and
-			modIdx != INVALID_MODIFIER_INDEX then modIdx = the index
-			of the modifier to remove.
+    @param	pInMod
+                    The address of the modifier to add, or if is Null and
+                    modIdx != INVALID_MODIFIER_INDEX then modIdx = the index
+                    of the modifier to remove.
 
-	@param	ppOutModChainState
+    @param	ppOutModChainState
 
-	@param	bReplace
+    @param	bReplace
 
-	@param	isReqValidation
+    @param	isReqValidation
 
-	@return	IFXRESULT code.
-	*/
-	IFXRESULT BuildNewModifierState(
-						IFXModifierChainInternal* pBaseChain,
-						IFXModifierDataPacketInternal* pInOverrideDP,
-						U32 modIdx,
-						IFXModifier* pInMod,
-						IFXModifierChainState** ppOutModChainState,
-						BOOL bReplace,
-						BOOL isReqValidation);
+    @return	IFXRESULT code.
+    */
+    IFXRESULT BuildNewModifierState(
+        IFXModifierChainInternal* pBaseChain,
+        IFXModifierDataPacketInternal* pInOverrideDP,
+        U32 modIdx,
+        IFXModifier* pInMod,
+        IFXModifierChainState** ppOutModChainState,
+        BOOL bReplace,
+        BOOL isReqValidation);
 
+    /**
+    Takes a New Modifier Chain State and attempts to set it as
+    the active modifier chain state. Side effects will delete @e pInNewState
+    if application fails, if application succeeds @e m_pOldState will hold the
+    last valid state of the mod chain. Which must either be directly deleted
+    via call to ClearOldState or RestoreOldState.  This call whether it succeeds
+    or fails clears the old and cached states off of the appended chain hier.
+    */
+    IFXRESULT ApplyNewModifierState(IFXModifierChainState* pInNewState);
 
-	/** 
-	Takes a New Modifier Chain State and attempts to set it as
-	the active modifier chain state. Side effects will delete @e pInNewState
-	if application fails, if application succeeds @e m_pOldState will hold the
-	last valid state of the mod chain. Which must either be directly deleted
-	via call to ClearOldState or RestoreOldState.  This call whether it succeeds
-	or fails clears the old and cached states off of the appended chain hier.
-	*/
-	IFXRESULT ApplyNewModifierState( IFXModifierChainState* pInNewState );
-
-			CIFXModifierChain();
-	virtual ~CIFXModifierChain();
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXModifierChain_Factory(IFXREFIID iid, void** ppv);
+    CIFXModifierChain();
+    virtual ~CIFXModifierChain();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXModifierChain_Factory(IFXREFIID iid, void** ppv);
 };
 
 #endif

@@ -18,12 +18,10 @@
 //***************************************************************************
 #include "IFXVertexAllocator.h"
 
-
 IFXVertexAllocator::IFXVertexAllocator(U32 uNumInitialUnits, U32 uGrowByNumUnits)
 {
-    Initialize (sizeof (IFXTQTVertex), uNumInitialUnits, uGrowByNumUnits);
+    Initialize(sizeof(IFXTQTVertex), uNumInitialUnits, uGrowByNumUnits);
 }
-
 
 IFXVertexAllocator::~IFXVertexAllocator()
 {

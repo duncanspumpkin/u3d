@@ -17,50 +17,47 @@
 //***************************************************************************
 
 /**
-	@file	CIFXContourTesselator.h
+        @file	CIFXContourTesselator.h
 
-			Header file for the TrueType font classes.
+                        Header file for the TrueType font classes.
 */
 
 #ifndef __CIFXCONTOURTESSELATOR_CLASS_H__
 #define __CIFXCONTOURTESSELATOR_CLASS_H__
 
-
 #include "IFXContourTessellator.h"
 
-#include <math.h>
+#include "CIFXQuadEdge.h"
 #include "IFXVector2.h"
 #include "IFXVector3.h"
-#include "CIFXQuadEdge.h"
+#include <math.h>
 
-class CIFXContourTessellator : public IFXContourTessellator 
+class CIFXContourTessellator : public IFXContourTessellator
 {
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXContourTessellator_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXContourTessellator_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXContourTessellator methods
-	IFXRESULT IFXAPI   Tessellate(SIFXTessellatorProperties* pTessellatorProperties, IFXSimpleList* pGlyphList, IFXMeshGroup** ppMeshGroup);
-	IFXRESULT IFXAPI   Tessellate(SIFXTessellatorProperties* pTessellatorProperties, IFXContour* pGlyph, IFXMesh** ppMesh);
-	IFXRESULT Tessellate
-	(
-	 IFXSimpleList* pGlyphList,
-	 SIFXTessellatorProperties* pTessellatorPropertiesFront, 
-	 IFXMeshGroup** ppMeshGroupFront,
-	 SIFXTessellatorProperties* pTessellatorPropertiesBack, 
-	 IFXMeshGroup** ppMeshGroupBack
-	);
+    // IFXContourTessellator methods
+    IFXRESULT IFXAPI Tessellate(SIFXTessellatorProperties* pTessellatorProperties, IFXSimpleList* pGlyphList, IFXMeshGroup** ppMeshGroup);
+    IFXRESULT IFXAPI Tessellate(SIFXTessellatorProperties* pTessellatorProperties, IFXContour* pGlyph, IFXMesh** ppMesh);
+    IFXRESULT Tessellate(
+        IFXSimpleList* pGlyphList,
+        SIFXTessellatorProperties* pTessellatorPropertiesFront,
+        IFXMeshGroup** ppMeshGroupFront,
+        SIFXTessellatorProperties* pTessellatorPropertiesBack,
+        IFXMeshGroup** ppMeshGroupBack);
 
 private:
-	CIFXContourTessellator();
-	virtual ~CIFXContourTessellator();
+    CIFXContourTessellator();
+    virtual ~CIFXContourTessellator();
 
-	U32	m_uRefCount;
+    U32 m_uRefCount;
 };
 
 #endif

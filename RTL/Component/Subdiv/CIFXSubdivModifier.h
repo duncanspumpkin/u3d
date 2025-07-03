@@ -20,11 +20,11 @@
 #ifndef __CIFXSubdivModifier_h__
 #define __CIFXSubdivModifier_h__
 
-#include "IFXSubdivModifier.h"
 #include "CIFXModifier.h"
+#include "IFXCoreCIDs.h"
 #include "IFXMeshGroup.h"
 #include "IFXNeighborMesh.h"
-#include "IFXCoreCIDs.h"
+#include "IFXSubdivModifier.h"
 
 #define IFX_SDS_MAX_ALLOWED_SUBDIVISION_DEPTH 5
 
@@ -32,11 +32,11 @@
 // initalization:
 typedef struct
 {
-  bool    bActive;
-  U32     uDepth;
-  F32     fError;
-  F32     fTension;
-  BOOL    bAdaptive;
+    bool bActive;
+    U32 uDepth;
+    F32 fError;
+    F32 fTension;
+    BOOL bAdaptive;
 
 } IFXSubdivInitData;
 
@@ -44,84 +44,71 @@ typedef struct
 class IFXSubdivisionManager;
 class IFXScreenSpaceMetric;
 
-
 class CIFXSubdivModifier : private CIFXModifier,
-                   virtual public  IFXSubdivModifier
+                           virtual public IFXSubdivModifier
 {
-            CIFXSubdivModifier();
-  virtual  ~CIFXSubdivModifier();
-  friend
-  IFXRESULT IFXAPI_CALLTYPE CIFXSubdivModifier_Factory(IFXREFIID iid, void** ppv);
+    CIFXSubdivModifier();
+    virtual ~CIFXSubdivModifier();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXSubdivModifier_Factory(IFXREFIID iid, void** ppv);
 
 public:
-  // IFXUnknown
-  U32 IFXAPI            AddRef ();
-  U32 IFXAPI            Release ();
-  IFXRESULT IFXAPI      QueryInterface (IFXREFIID riid, void **ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-  // IFXMarkerX
-  void IFXAPI  GetEncoderX (IFXEncoderX*& rpEncoderX) ;
+    // IFXMarkerX
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
+    // IFXModifier
+    IFXRESULT IFXAPI GetOutputs(IFXGUID**& rpOutOutputs, U32& rOutNumberOfOutputs, U32*& rpOutOutputDepAttrs);
 
-  // IFXModifier
-  IFXRESULT IFXAPI  GetOutputs ( IFXGUID**& rpOutOutputs,
-                        U32&       rOutNumberOfOutputs,
-              U32*&    rpOutOutputDepAttrs );
+    IFXRESULT IFXAPI GetDependencies(IFXGUID* pInOutputDID, IFXGUID**& rppOutInputDependencies, U32& rOutNumberInputDependencies, IFXGUID**& rppOutOutputDependencies, U32& rOutNumberOfOutputDependencies, U32*& rpOutOutputDepAttrs);
 
-  IFXRESULT IFXAPI  GetDependencies (    IFXGUID*   pInOutputDID,
-                                IFXGUID**& rppOutInputDependencies,
-                                  U32&       rOutNumberInputDependencies,
-                                  IFXGUID**& rppOutOutputDependencies,
-                                U32&       rOutNumberOfOutputDependencies,
-                  U32*&    rpOutOutputDepAttrs );
+    IFXRESULT IFXAPI GenerateOutput(U32 inOutputDataElementIndex, void*& rpOutData, BOOL& rNeedRelease);
 
-  IFXRESULT IFXAPI  GenerateOutput ( U32    inOutputDataElementIndex,
-                            void*& rpOutData, BOOL& rNeedRelease );
+    IFXRESULT IFXAPI SetDataPacket(IFXModifierDataPacket* pInInputDataPacket, IFXModifierDataPacket* pInDataPacket);
 
-  IFXRESULT IFXAPI  SetDataPacket ( IFXModifierDataPacket* pInInputDataPacket,
-               IFXModifierDataPacket* pInDataPacket );
+    IFXRESULT IFXAPI Notify(IFXModifierMessage eInMessage, void* pMessageContext);
 
-  IFXRESULT IFXAPI  Notify ( IFXModifierMessage eInMessage,
-                    void*               pMessageContext );
-
-  // IFXSubdivModifier
-  virtual IFXRESULT IFXAPI  GetEnable   (BOOL* pbEnable);
-  virtual IFXRESULT IFXAPI  SetEnable   (BOOL bEnable);
-    virtual IFXRESULT IFXAPI  GetDepth    (U32* pDepth);
-    virtual IFXRESULT IFXAPI  SetDepth    (U32 depth);
-    virtual IFXRESULT IFXAPI  GetTension  (F32* pTension);
-    virtual IFXRESULT IFXAPI  SetTension  (F32 tension);
-  virtual IFXRESULT IFXAPI  GetError    (F32* pError);
-    virtual IFXRESULT IFXAPI  SetError    (F32 error);
-  virtual IFXRESULT IFXAPI  GetAdaptive (BOOL* pbAdaptive);
-  virtual IFXRESULT IFXAPI  SetAdaptive (BOOL bAdaptive);
+    // IFXSubdivModifier
+    virtual IFXRESULT IFXAPI GetEnable(BOOL* pbEnable);
+    virtual IFXRESULT IFXAPI SetEnable(BOOL bEnable);
+    virtual IFXRESULT IFXAPI GetDepth(U32* pDepth);
+    virtual IFXRESULT IFXAPI SetDepth(U32 depth);
+    virtual IFXRESULT IFXAPI GetTension(F32* pTension);
+    virtual IFXRESULT IFXAPI SetTension(F32 tension);
+    virtual IFXRESULT IFXAPI GetError(F32* pError);
+    virtual IFXRESULT IFXAPI SetError(F32 error);
+    virtual IFXRESULT IFXAPI GetAdaptive(BOOL* pbAdaptive);
+    virtual IFXRESULT IFXAPI SetAdaptive(BOOL bAdaptive);
 
 private:
-  // IFXUnknown attributes...
-  U32 m_uRefCount;
+    // IFXUnknown attributes...
+    U32 m_uRefCount;
 
-  // IFXModifier
-  static const IFXDID* m_scpOutputDIDs[];
-  static const IFXDID* m_scpInputDIDs[];
-  U32 m_uMeshGroupDataElementIndex;
-  U32 m_uNeighborMeshDataElementIndex;
-  U32 m_uFrustumDataElementIndex;
-  U32 m_uTransformDataElementIndex;
+    // IFXModifier
+    static const IFXDID* m_scpOutputDIDs[];
+    static const IFXDID* m_scpInputDIDs[];
+    U32 m_uMeshGroupDataElementIndex;
+    U32 m_uNeighborMeshDataElementIndex;
+    U32 m_uFrustumDataElementIndex;
+    U32 m_uTransformDataElementIndex;
 
-  // IFXSubdivModifier
-  IFXSubdivisionManager*  m_pSubdivMgr;
-  IFXScreenSpaceMetric* m_pScreenSpaceMetric;
-  IFXSubdivInitData   m_InitData;
-  BOOL          m_bEnabled;
-  BOOL                    m_bFaceDataChanged;
-  BOOL                    m_bOtherDataChanged;
-  U32*                    m_puOtherChangeCounts;
-  U32*                    m_puFaceChangeCounts;
+    // IFXSubdivModifier
+    IFXSubdivisionManager* m_pSubdivMgr;
+    IFXScreenSpaceMetric* m_pScreenSpaceMetric;
+    IFXSubdivInitData m_InitData;
+    BOOL m_bEnabled;
+    BOOL m_bFaceDataChanged;
+    BOOL m_bOtherDataChanged;
+    U32* m_puOtherChangeCounts;
+    U32* m_puFaceChangeCounts;
 
-  IFXRESULT InitializeSubdiv(IFXMeshGroup* pMeshGroup, IFXNeighborMesh* pNeighborMesh );
-  IFXRESULT   DataChanged(IFXMeshGroup* pMeshGroup);
-  U32         CalculateSafeDepth();
-  void      ResetInitData();
+    IFXRESULT InitializeSubdiv(IFXMeshGroup* pMeshGroup, IFXNeighborMesh* pNeighborMesh);
+    IFXRESULT DataChanged(IFXMeshGroup* pMeshGroup);
+    U32 CalculateSafeDepth();
+    void ResetInitData();
 };
 
 #endif

@@ -16,57 +16,58 @@
 //
 //***************************************************************************
 /*
-@file  cIFXResourceClient.cpp                                                
+@file  cIFXResourceClient.cpp
 */
 
 #include "CIFXResourceClient.h"
-#include "IFXPalette.h"
-#include "IFXModifierChain.h"
-#include "IFXSceneGraph.h"
 #include "IFXModel.h"
-
+#include "IFXModifierChain.h"
+#include "IFXPalette.h"
+#include "IFXSceneGraph.h"
 
 CIFXResourceClient::CIFXResourceClient()
 {
-	m_uResourceIndex = 0;
+    m_uResourceIndex = 0;
 }
-
 
 CIFXResourceClient::~CIFXResourceClient()
 {
 }
 
-
-IFXRESULT CIFXResourceClient::SetResourceIndex( U32 uInEntryIndex )
+IFXRESULT CIFXResourceClient::SetResourceIndex(U32 uInEntryIndex)
 {
-	IFXSceneGraph* pSceneGraph = NULL;
-	IFXPalette*    pPalette    = NULL;
-	
-	IFXRESULT result = GetSceneGraph(&pSceneGraph);
+    IFXSceneGraph* pSceneGraph = NULL;
+    IFXPalette* pPalette = NULL;
 
-	if( IFXSUCCESS(result) )
-	{
-		result = pSceneGraph->GetPalette( 
-					(IFXSceneGraph::EIFXPalette)GetResourcePalette(), &pPalette );
-	}
+    IFXRESULT result = GetSceneGraph(&pSceneGraph);
 
-	// Set the observer
-	if( IFXSUCCESS(result) )
-	{
-		IFXModel* pModel = NULL;
-		result = this->QueryInterface(IID_IFXModel, (void**)&pModel);
+    if (IFXSUCCESS(result))
+    {
+        result = pSceneGraph->GetPalette(
+            (IFXSceneGraph::EIFXPalette)GetResourcePalette(), &pPalette);
+    }
 
-		if( IFXSUCCESS(result) )
-			result = pPalette->SetResourceObserver(m_uResourceIndex, uInEntryIndex, pModel);
+    // Set the observer
+    if (IFXSUCCESS(result))
+    {
+        IFXModel* pModel = NULL;
+        result = this->QueryInterface(IID_IFXModel, (void**)&pModel);
 
-		IFXRELEASE(pModel);
-	}
+        if (IFXSUCCESS(result))
+        {
+            result = pPalette->SetResourceObserver(m_uResourceIndex, uInEntryIndex, pModel);
+        }
 
-	if( IFXSUCCESS(result) )
-		m_uResourceIndex = uInEntryIndex;
-	
-	IFXRELEASE(pSceneGraph);
-	IFXRELEASE(pPalette);
+        IFXRELEASE(pModel);
+    }
 
-	return result;
+    if (IFXSUCCESS(result))
+    {
+        m_uResourceIndex = uInEntryIndex;
+    }
+
+    IFXRELEASE(pSceneGraph);
+    IFXRELEASE(pPalette);
+
+    return result;
 }

@@ -18,31 +18,33 @@
 #ifndef _CIFXOBSERVERSTATE_H_
 #define _CIFXOBSERVERSTATE_H_
 
+#include "CRedBlackTree.h"
 #include "IFXObserver.h"
 #include "IFXSubject.h"
-#include "CRedBlackTree.h"
 
 class CompareObservers
 {
-public :
-	I32 operator()(const SIFXObserverRequest* arg1, const SIFXObserverRequest* arg2 ) const
-	{
-		I32 result = arg1->pObserver == arg2->pObserver ? 0:1;
-		if(result)
-			result = arg1->pObserver < arg2->pObserver ? -1:1;
-		return result;
-	}
-	I32 operator()(const SIFXObserverRequest* arg1,const IFXObserver* arg2 ) const
-	{
-		I32 result = arg1->pObserver == arg2 ? 0:1;
-		if(result)
-			result = arg1->pObserver < arg2 ? -1:1;
-		return result;
-	}
+public:
+    I32 operator()(const SIFXObserverRequest* arg1, const SIFXObserverRequest* arg2) const
+    {
+        I32 result = arg1->pObserver == arg2->pObserver ? 0 : 1;
+        if (result)
+        {
+            result = arg1->pObserver < arg2->pObserver ? -1 : 1;
+        }
+        return result;
+    }
+    I32 operator()(const SIFXObserverRequest* arg1, const IFXObserver* arg2) const
+    {
+        I32 result = arg1->pObserver == arg2 ? 0 : 1;
+        if (result)
+        {
+            result = arg1->pObserver < arg2 ? -1 : 1;
+        }
+        return result;
+    }
 };
 
-
-
-typedef CRedBlackTree<SIFXObserverRequest*, IFXObserver*, CompareObservers> OBSERVERSTATETREE; 
+typedef CRedBlackTree<SIFXObserverRequest*, IFXObserver*, CompareObservers> OBSERVERSTATETREE;
 
 #endif

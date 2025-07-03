@@ -17,70 +17,69 @@
 //***************************************************************************
 
 /**
-	@file IFXMeshVertexMap.h
+        @file IFXMeshVertexMap.h
 */
 
 #ifndef IFXMESHVERTEXMAP_H
 #define IFXMESHVERTEXMAP_H
 
-#include "IFXList.h"
 #include "IFXArray.h"
+#include "IFXList.h"
 
 class IFXMeshVertex
 {
 public:
-	IFXMeshVertex(void)
-	{
-		m_mesh=0;
-		m_vertex=0;
-	};
+    IFXMeshVertex(void)
+    {
+        m_mesh = 0;
+        m_vertex = 0;
+    };
 
-	U32             &GetMeshIndex(void)     { return m_mesh; }
-	U32             &GetVertexIndex(void)   { return m_vertex; }
+    U32& GetMeshIndex(void) { return m_mesh; }
+    U32& GetVertexIndex(void) { return m_vertex; }
 
-	void            GetMeshVertex(U32* m, U32* v)
-	{
-		*m = m_mesh;
-		*v = m_vertex;
-	}
-	void            SetMeshVertex(U32 m,U32 v)
-	{
-		m_mesh=m;
-		m_vertex=v;
-	}
+    void GetMeshVertex(U32* m, U32* v)
+    {
+        *m = m_mesh;
+        *v = m_vertex;
+    }
+    void SetMeshVertex(U32 m, U32 v)
+    {
+        m_mesh = m;
+        m_vertex = v;
+    }
 
-	IFXMeshVertex   &operator=(const IFXMeshVertex &operand)
-	{
-		m_mesh=operand.m_mesh;
-		m_vertex=operand.m_vertex;
-		return *this;
-	}
+    IFXMeshVertex& operator=(const IFXMeshVertex& operand)
+    {
+        m_mesh = operand.m_mesh;
+        m_vertex = operand.m_vertex;
+        return *this;
+    }
 
-	bool            operator==(const IFXMeshVertex &operand) const
-	{ return (m_mesh==operand.m_mesh &&
-	m_vertex==operand.m_vertex); };
+    bool operator==(const IFXMeshVertex& operand) const
+    {
+        return (m_mesh == operand.m_mesh && m_vertex == operand.m_vertex);
+    };
 
 private:
-	U32     m_mesh;
-	U32     m_vertex;
+    U32 m_mesh;
+    U32 m_vertex;
 };
 
-class IFXMeshVertexList: public IFXList<IFXMeshVertex>
+class IFXMeshVertexList : public IFXList<IFXMeshVertex>
 {
 public:
-	IFXMeshVertexList(void)
-	{
-		SetAutoDestruct(true);
-	};
+    IFXMeshVertexList(void)
+    {
+        SetAutoDestruct(true);
+    };
 };
 
-
-
-class IFXMeshVertexArray: public IFXArray<IFXMeshVertex>
+class IFXMeshVertexArray : public IFXArray<IFXMeshVertex>
 {
 };
 
-class IFXMeshVertexMap: public IFXArray<IFXMeshVertexList>
+class IFXMeshVertexMap : public IFXArray<IFXMeshVertexList>
 {
 };
 

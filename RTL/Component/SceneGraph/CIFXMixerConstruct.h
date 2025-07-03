@@ -17,68 +17,63 @@
 //***************************************************************************
 
 /**
-	@file	CIFXMixerConstruct.h
+        @file	CIFXMixerConstruct.h
 
-			Implementation of IFXMixerConstruct interface.
-			The IFXMixerConstruct interface is used to get to animation data.
-			The animation data is stored in separate tracks.
-			Each track generally corresponds to the animation of one bone.
+                        Implementation of IFXMixerConstruct interface.
+                        The IFXMixerConstruct interface is used to get to animation data.
+                        The animation data is stored in separate tracks.
+                        Each track generally corresponds to the animation of one bone.
 */
 
 #ifndef CIFXMixerConstruct_H
 #define CIFXMixerConstruct_H
 
-#include "IFXMixerConstruct.h"
-#include "CIFXSubject.h"
 #include "CIFXMarker.h"
+#include "CIFXSubject.h"
 #include "IFXCoreCIDs.h"
+#include "IFXMixerConstruct.h"
 
 class IFXSceneGraph;
 class IFXMotionResource;
 
 class CIFXMixerConstruct : private CIFXSubject,
-						   private CIFXMarker,
-                   virtual public  IFXMixerConstruct
+                           private CIFXMarker,
+                           virtual public IFXMixerConstruct
 {
 public:
-// IFXMarkerX
-	void IFXAPI 		GetEncoderX (IFXEncoderX*& rpEncoderX);
+    // IFXMarkerX
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
-// IFXMixerConstruct	
-	void                  IFXAPI SetMotionResource( 
-	                                   IFXMotionResource* pIFXMotionResource );
-	IFXMotionResource*    IFXAPI GetMotionResource();
-	void                  IFXAPI AddMapping(  IFXMixerConstruct* pMixer, 
-											  IFXString*        pBoneName );
-	IFXINLINE
-	IFXList<IFXMapEntry>* IFXAPI GetEntryList() {return &m_EntryList;}
-	F32                   IFXAPI GetDuration();
-	MotionType            IFXAPI GetType();
+    // IFXMixerConstruct
+    void IFXAPI SetMotionResource(
+        IFXMotionResource* pIFXMotionResource);
+    IFXMotionResource* IFXAPI GetMotionResource();
+    void IFXAPI AddMapping(IFXMixerConstruct* pMixer, IFXString* pBoneName);
+    IFXINLINE
+    IFXList<IFXMapEntry>* IFXAPI GetEntryList() { return &m_EntryList; }
+    F32 IFXAPI GetDuration();
+    MotionType IFXAPI GetType();
 
 private:
-	IFXMotionResource*   m_pIFXMotionResource;
-	IFXList<IFXMapEntry> m_EntryList;
-	F32                  m_Duration;
-	MotionType           m_type;
+    IFXMotionResource* m_pIFXMotionResource;
+    IFXList<IFXMapEntry> m_EntryList;
+    F32 m_Duration;
+    MotionType m_type;
 
-
-// IFXUnknown
+    // IFXUnknown
 public:
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface ( IFXREFIID riid, void** ppv );
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
 private:
-	U32       m_refCount;
-	
-	IFXSceneGraph* m_pSceneGraph;
+    U32 m_refCount;
 
-	          CIFXMixerConstruct();
-	virtual  ~CIFXMixerConstruct();
-	friend 
-	IFXRESULT IFXAPI_CALLTYPE CIFXMixerConstruct_Factory( IFXREFIID interfaceId, 
-	                                      void**    ppInterface );
+    IFXSceneGraph* m_pSceneGraph;
+
+    CIFXMixerConstruct();
+    virtual ~CIFXMixerConstruct();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXMixerConstruct_Factory(IFXREFIID interfaceId, void** ppInterface);
 };
-
 
 #endif

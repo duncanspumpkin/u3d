@@ -24,10 +24,8 @@
   @note
 */
 
-
 #ifndef FileReferenceConverter_H
 #define FileReferenceConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -40,65 +38,59 @@ class IFXFileReferenceX;
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
-
-
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
-
-class FileReference;
-class SceneUtilities;
-
-/**
-This is the implementation of a class that is used to convert meta-data.
-*/
-class FileReferenceConverter : public IConverter
-{
-public:
-	FileReferenceConverter( 
-				SceneUtilities* pSceneUtils,
-				const FileReference* pIDTFFileReferenceList );
-    virtual ~FileReferenceConverter();
+    class FileReference;
+    class SceneUtilities;
 
     /**
-		Convert file reference
-	*/
-    virtual IFXRESULT Convert();
+    This is the implementation of a class that is used to convert meta-data.
+    */
+    class FileReferenceConverter : public IConverter
+    {
+    public:
+        FileReferenceConverter(
+            SceneUtilities* pSceneUtils,
+            const FileReference* pIDTFFileReferenceList);
+        virtual ~FileReferenceConverter();
 
-private:
-    FileReferenceConverter();
+        /**
+                    Convert file reference
+            */
+        virtual IFXRESULT Convert();
 
-	const FileReference* m_pFileReference;
-	SceneUtilities* m_pSceneUtils;
-};
+    private:
+        FileReferenceConverter();
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+        const FileReference* m_pFileReference;
+        SceneUtilities* m_pSceneUtils;
+    };
 
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

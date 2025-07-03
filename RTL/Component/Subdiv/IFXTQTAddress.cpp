@@ -20,6 +20,4 @@
 
 #include "IFXTQTAddress.h"
 
-IFXTQTAddress::Direction IFXTQTAddress::m_usReOrient[6] = 
-{IFXTQTAddress::Left, IFXTQTAddress::Base, IFXTQTAddress::Right, 
-IFXTQTAddress::Left, IFXTQTAddress::Base, IFXTQTAddress::Right};
+IFXTQTAddress::Direction IFXTQTAddress::m_usReOrient[6] = { IFXTQTAddress::Left, IFXTQTAddress::Base, IFXTQTAddress::Right, IFXTQTAddress::Left, IFXTQTAddress::Base, IFXTQTAddress::Right };

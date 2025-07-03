@@ -29,40 +29,44 @@
 //*****************************************************************************
 
 #include "CIFXGroupDecoder.h"
-#include "IFXCoreCIDs.h"
 #include "IFXBlockTypes.h"
 #include "IFXCheckX.h"
+#include "IFXCoreCIDs.h"
 
 // Factory function.
-IFXRESULT IFXAPI_CALLTYPE CIFXGroupDecoder_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXGroupDecoder_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXLoadManager component.
-		CIFXGroupDecoder *pComponent = new CIFXGroupDecoder;
+    if (ppInterface)
+    {
+        // Create the CIFXLoadManager component.
+        CIFXGroupDecoder* pComponent = new CIFXGroupDecoder;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			rc = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            rc = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			rc = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		rc = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	return rc;
+    return rc;
 }
 
 // Constructor
@@ -75,86 +79,90 @@ CIFXGroupDecoder::~CIFXGroupDecoder()
 {
 }
 
-
 // IFXUnknown
-U32 CIFXGroupDecoder::AddRef( void )
+U32 CIFXGroupDecoder::AddRef(void)
 {
-	return ++m_uRefCount;
+    return ++m_uRefCount;
 }
 
-U32 CIFXGroupDecoder::Release( void )
+U32 CIFXGroupDecoder::Release(void)
 {
-	if ( 1 == m_uRefCount ) {
-		delete this;
+    if (1 == m_uRefCount)
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return --m_uRefCount;
+    return --m_uRefCount;
 }
 
-IFXRESULT CIFXGroupDecoder::QueryInterface( IFXREFIID	interfaceId,
-										    void**		ppInterface )
+IFXRESULT CIFXGroupDecoder::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if ( ppInterface ) {
-		if ( interfaceId == IID_IFXDecoderX )
-		{
-			*ppInterface = ( IFXDecoderX* ) this;
-			this->AddRef();
-		}
-		else if ( interfaceId == IID_IFXUnknown ) 
-		{
-			*ppInterface = ( IFXUnknown* ) this;
-			this->AddRef();
-		} 
-		else
-		{
-			*ppInterface = NULL;
-			rc = IFX_E_UNSUPPORTED;
-		}
-	} else {
-		rc = IFX_E_INVALID_POINTER;
-	}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXDecoderX)
+        {
+            *ppInterface = (IFXDecoderX*)this;
+            this->AddRef();
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+            this->AddRef();
+        }
+        else
+        {
+            *ppInterface = NULL;
+            rc = IFX_E_UNSUPPORTED;
+        }
+    }
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	return rc;
+    return rc;
 }
-
 
 // IFXDecoderX
-void CIFXGroupDecoder::InitializeX(const IFXLoadConfig &lc)
+void CIFXGroupDecoder::InitializeX(const IFXLoadConfig& lc)
 {
-	CIFXNodeBaseDecoder::InitializeX(lc);
+    CIFXNodeBaseDecoder::InitializeX(lc);
 }
 
-void CIFXGroupDecoder::PutNextBlockX( IFXDataBlockX &rDataBlockX )
+void CIFXGroupDecoder::PutNextBlockX(IFXDataBlockX& rDataBlockX)
 {
-	if(NULL == m_pDataBlockQueueX) {
-		IFXCHECKX(IFX_E_NOT_INITIALIZED);
-	}
+    if (NULL == m_pDataBlockQueueX)
+    {
+        IFXCHECKX(IFX_E_NOT_INITIALIZED);
+    }
 
-	m_pDataBlockQueueX->AppendBlockX( rDataBlockX );
-	CreateObjectX(rDataBlockX, CID_IFXGroup);
+    m_pDataBlockQueueX->AppendBlockX(rDataBlockX);
+    CreateObjectX(rDataBlockX, CID_IFXGroup);
 }
 
-void CIFXGroupDecoder::TransferX(IFXRESULT &rWarningPartialTransfer)
+void CIFXGroupDecoder::TransferX(IFXRESULT& rWarningPartialTransfer)
 {
-	CheckInitializedX();
+    CheckInitializedX();
 
-	// For each data block in the list
-	BOOL bDone = FALSE;
-	while (FALSE == bDone) {
-		// Get the next data block
-		IFXDECLARELOCAL(IFXDataBlockX,pDataBlockX);
-		m_pDataBlockQueueX->GetNextBlockX( pDataBlockX, bDone);
+    // For each data block in the list
+    BOOL bDone = FALSE;
+    while (FALSE == bDone)
+    {
+        // Get the next data block
+        IFXDECLARELOCAL(IFXDataBlockX, pDataBlockX);
+        m_pDataBlockQueueX->GetNextBlockX(pDataBlockX, bDone);
 
-		if (pDataBlockX) {
-			CommonNodeReadU3DX(*pDataBlockX);
-		}
-	}
+        if (pDataBlockX)
+        {
+            CommonNodeReadU3DX(*pDataBlockX);
+        }
+    }
 
-	rWarningPartialTransfer = IFX_OK;
+    rWarningPartialTransfer = IFX_OK;
 }

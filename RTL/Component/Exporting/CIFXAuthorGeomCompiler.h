@@ -35,34 +35,28 @@ class CIFXAuthorGeomCompilerProgress;
 class CIFXAuthorGeomCompiler : public IFXAuthorGeomCompiler
 {
 public:
-	CIFXAuthorGeomCompiler();
-	virtual ~CIFXAuthorGeomCompiler();
-	// Member functions:  IFXUnknown.
-	U32 IFXAPI 			AddRef ();
-	U32 IFXAPI 			Release ();
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    CIFXAuthorGeomCompiler();
+    virtual ~CIFXAuthorGeomCompiler();
+    // Member functions:  IFXUnknown.
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXAuthorGeomCompiler
-	IFXRESULT IFXAPI	SetSceneGraph(IFXSceneGraph*);
-	IFXRESULT IFXAPI	 Compile(IFXString& rName, IFXAuthorMesh*, 
-					IFXAuthorCLODResource** out_ppResource,
-					BOOL forceCompress,
-					IFXAuthorGeomCompilerParams*);
+    // IFXAuthorGeomCompiler
+    IFXRESULT IFXAPI SetSceneGraph(IFXSceneGraph*);
+    IFXRESULT IFXAPI Compile(IFXString& rName, IFXAuthorMesh*, IFXAuthorCLODResource** out_ppResource, BOOL forceCompress, IFXAuthorGeomCompilerParams*);
 
-	IFXRESULT IFXAPI	 Recompile(IFXAuthorCLODResource* in_pResource,
-					IFXAuthorMeshMap* in_pMeshMap, 
-					IFXAuthorMeshMap** out_ppMeshMap);
-
+    IFXRESULT IFXAPI Recompile(IFXAuthorCLODResource* in_pResource, IFXAuthorMeshMap* in_pMeshMap, IFXAuthorMeshMap** out_ppMeshMap);
 
 private:
-	U32	m_refCount;	// Number of outstanding references to the object.
+    U32 m_refCount; // Number of outstanding references to the object.
 
-	IFXAuthorGeomCompilerParams* m_pParams;
-	IFXSceneGraph* m_pSceneGraph;
+    IFXAuthorGeomCompilerParams* m_pParams;
+    IFXSceneGraph* m_pSceneGraph;
 
-	IFXRESULT ValidateParams(IFXAuthorGeomCompilerParams*);
+    IFXRESULT ValidateParams(IFXAuthorGeomCompilerParams*);
 
-	friend class CIFXAuthorGeomCompilerProgress;
+    friend class CIFXAuthorGeomCompilerProgress;
 };
 
 #endif

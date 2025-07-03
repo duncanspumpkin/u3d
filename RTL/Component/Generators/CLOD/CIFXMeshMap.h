@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file	CIFXMeshMap.h
+        @file	CIFXMeshMap.h
 */
 
 #ifndef CIFXMeshMap_H
@@ -29,54 +29,54 @@
 class CIFXMeshMap : public IFXMeshMap
 {
 public:
-	// IFXUnknown.
-	U32 IFXAPI 			AddRef ();
-	U32 IFXAPI 			Release ();
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
-	
-	// IFXMeshMap
-	IFXRESULT IFXAPI 	Allocate(IFXAuthorMesh* pMesh);
-	IFXRESULT IFXAPI 	Allocate(IFXAuthorLineSet* pLineSet);
-	IFXRESULT IFXAPI 	Allocate(IFXAuthorPointSet* pPointSet);
+    // IFXUnknown.
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	IFXRESULT IFXAPI 	Allocate(IFXMeshMap* pMeshMap);
-	/**
-	@note each map in pmesh map must be less than or equal to corresponding map
-	*/
-	IFXRESULT IFXAPI 	Concatenate(IFXAuthorMeshMap* pMapB);
-	IFXRESULT IFXAPI 	ConcatenateMeshMap(IFXMeshMap* pMeshMap,IFXMeshMap** ppOutMap);
-	IFXRESULT IFXAPI 	PopulateMeshMap(IFXAuthorMeshMap* pAuthorMeshMap);
-	IFXRESULT IFXAPI 	AddIdentityMappingToMap(U32 mapIndex);
+    // IFXMeshMap
+    IFXRESULT IFXAPI Allocate(IFXAuthorMesh* pMesh);
+    IFXRESULT IFXAPI Allocate(IFXAuthorLineSet* pLineSet);
+    IFXRESULT IFXAPI Allocate(IFXAuthorPointSet* pPointSet);
 
-	IFXRESULT IFXAPI	AddMappingToMap(
-							const U32 mapIndex, const U32 origVertexIndex, 
-							const U32 indexMesh, U32 indexVertex);
+    IFXRESULT IFXAPI Allocate(IFXMeshMap* pMeshMap);
+    /**
+    @note each map in pmesh map must be less than or equal to corresponding map
+    */
+    IFXRESULT IFXAPI Concatenate(IFXAuthorMeshMap* pMapB);
+    IFXRESULT IFXAPI ConcatenateMeshMap(IFXMeshMap* pMeshMap, IFXMeshMap** ppOutMap);
+    IFXRESULT IFXAPI PopulateMeshMap(IFXAuthorMeshMap* pAuthorMeshMap);
+    IFXRESULT IFXAPI AddIdentityMappingToMap(U32 mapIndex);
 
-	IFXVertexMap* IFXAPI GetFaceMap();
-	IFXVertexMap* IFXAPI GetPositionMap();
-	IFXVertexMap* IFXAPI GetNormalMap();
-	IFXVertexMap* IFXAPI GetTextureMap();
-	IFXVertexMap* IFXAPI GetDiffuseMap();
-	IFXVertexMap* IFXAPI GetSpecularMap();
-	IFXVertexMap* IFXAPI GetMap(U32 i);
+    IFXRESULT IFXAPI AddMappingToMap(
+        const U32 mapIndex, const U32 origVertexIndex,
+        const U32 indexMesh, U32 indexVertex);
+
+    IFXVertexMap* IFXAPI GetFaceMap();
+    IFXVertexMap* IFXAPI GetPositionMap();
+    IFXVertexMap* IFXAPI GetNormalMap();
+    IFXVertexMap* IFXAPI GetTextureMap();
+    IFXVertexMap* IFXAPI GetDiffuseMap();
+    IFXVertexMap* IFXAPI GetSpecularMap();
+    IFXVertexMap* IFXAPI GetMap(U32 i);
 
     // Factory function.
-    friend IFXRESULT IFXAPI_CALLTYPE CIFXMeshMap_Factory( 
-										IFXREFIID interfaceId, void** ppInterface );
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXMeshMap_Factory(
+        IFXREFIID interfaceId, void** ppInterface);
 
 private:
-	CIFXMeshMap();
-	virtual ~CIFXMeshMap();
+    CIFXMeshMap();
+    virtual ~CIFXMeshMap();
 
-	IFXRESULT Construct( U32* pMapSizes );
+    IFXRESULT Construct(U32* pMapSizes);
 
-	/** 
-	For each attribute there is an IFXVertexMap that describes
-	the mapping of that particular attribute.  The VertexMap name
-	is to maintain compatability with the previous release.
-	*/
-	IFXVertexMap* m_pMaps[6];
-	U32 m_refCount;
+    /**
+    For each attribute there is an IFXVertexMap that describes
+    the mapping of that particular attribute.  The VertexMap name
+    is to maintain compatability with the previous release.
+    */
+    IFXVertexMap* m_pMaps[6];
+    U32 m_refCount;
 };
 
 #endif

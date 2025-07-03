@@ -25,83 +25,84 @@ class CIFXSimpleHashData;
 
 class CIFXSimpleHash : virtual public IFXSimpleHash, virtual public IFXUnknown
 {
-	U32 m_refCount;
+    U32 m_refCount;
+
 public:
-	U32 IFXAPI  AddRef ();
-	U32 IFXAPI  Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXSimpleHashFactory(IFXREFIID intId, void** ppvUnk);
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXSimpleHashFactory(IFXREFIID intId, void** ppvUnk);
 
-	//==============================
-	// IFXSimpleHash methods
-	//==============================
-	IFXRESULT IFXAPI Initialize(U32 uTableSize);
+    //==============================
+    // IFXSimpleHash methods
+    //==============================
+    IFXRESULT IFXAPI Initialize(U32 uTableSize);
 
-	IFXRESULT IFXAPI Clear();
+    IFXRESULT IFXAPI Clear();
 
-	IFXRESULT IFXAPI AddData(U32 uId, IFXUnknownPtr& spUnk);
+    IFXRESULT IFXAPI AddData(U32 uId, IFXUnknownPtr& spUnk);
 
-	IFXRESULT IFXAPI AddData(U32 uId, IFXUnknown* pUnk);
+    IFXRESULT IFXAPI AddData(U32 uId, IFXUnknown* pUnk);
 
-	IFXRESULT IFXAPI GetData(U32 uId, IFXUnknownPtr& spUnk);
+    IFXRESULT IFXAPI GetData(U32 uId, IFXUnknownPtr& spUnk);
 
-	IFXRESULT IFXAPI GetData(U32 uId, IFXUnknown*& pUnk);
+    IFXRESULT IFXAPI GetData(U32 uId, IFXUnknown*& pUnk);
 
-	IFXRESULT IFXAPI GetLowestId(U32& uId, IFXUnknownPtr& spUnk);
+    IFXRESULT IFXAPI GetLowestId(U32& uId, IFXUnknownPtr& spUnk);
 
-	IFXRESULT IFXAPI GetLowestId(U32& uId, IFXUnknown*& pUnk);
+    IFXRESULT IFXAPI GetLowestId(U32& uId, IFXUnknown*& pUnk);
 
-	IFXRESULT IFXAPI ExtractData(U32 uId, IFXUnknownPtr& spUnk);
+    IFXRESULT IFXAPI ExtractData(U32 uId, IFXUnknownPtr& spUnk);
 
-	IFXRESULT IFXAPI ExtractData(U32 uId, IFXUnknown*& pUnk);
+    IFXRESULT IFXAPI ExtractData(U32 uId, IFXUnknown*& pUnk);
 
-	IFXRESULT IFXAPI ExtractLowestId(U32& uId, IFXUnknownPtr& spUnk);
+    IFXRESULT IFXAPI ExtractLowestId(U32& uId, IFXUnknownPtr& spUnk);
 
-	IFXRESULT IFXAPI ExtractLowestId(U32& uId, IFXUnknown*& pUnk);
+    IFXRESULT IFXAPI ExtractLowestId(U32& uId, IFXUnknown*& pUnk);
 
-	IFXRESULT IFXAPI RemoveData(U32 uId);
+    IFXRESULT IFXAPI RemoveData(U32 uId);
 
 protected:
-	//=========================
-	// CIFXSimpleHash Methods
-	//=========================
-	CIFXSimpleHash();
-	virtual ~CIFXSimpleHash();
+    //=========================
+    // CIFXSimpleHash Methods
+    //=========================
+    CIFXSimpleHash();
+    virtual ~CIFXSimpleHash();
 
-	virtual IFXRESULT IFXAPI Construct();
-	
-	CIFXSimpleHashData* IFXAPI FindData(U32 uId);
-	U32 FindLowestId();
+    virtual IFXRESULT IFXAPI Construct();
 
-	U32 Hash(U32 uId);
+    CIFXSimpleHashData* IFXAPI FindData(U32 uId);
+    U32 FindLowestId();
 
-	//=========================
-	// CIFXSimpleHash Data
-	//=========================
-	U32 m_uTableSize;
-	U32 m_uHashMask;
-	CIFXSimpleHashData* m_pTable;
+    U32 Hash(U32 uId);
 
-	IFXRESULT m_rcInitialized;
+    //=========================
+    // CIFXSimpleHash Data
+    //=========================
+    U32 m_uTableSize;
+    U32 m_uHashMask;
+    CIFXSimpleHashData* m_pTable;
+
+    IFXRESULT m_rcInitialized;
 };
 
 class CIFXSimpleHashData
 {
 public:
-	friend class CIFXSimpleHash;
+    friend class CIFXSimpleHash;
 
 private:
-	CIFXSimpleHashData();
-	~CIFXSimpleHashData();
+    CIFXSimpleHashData();
+    ~CIFXSimpleHashData();
 
-	void IFXAPI RemoveFromTable();
+    void IFXAPI RemoveFromTable();
 
-	IFXUnknownPtr	m_pUnk;
-	U32				m_uId;
+    IFXUnknownPtr m_pUnk;
+    U32 m_uId;
 
-	CIFXSimpleHashData* m_pNext;
-	CIFXSimpleHashData* m_pPrev;
+    CIFXSimpleHashData* m_pNext;
+    CIFXSimpleHashData* m_pPrev;
 };
 
 //============================
@@ -109,14 +110,14 @@ private:
 //============================
 IFXINLINE CIFXSimpleHashData::CIFXSimpleHashData()
 {
-	m_uId = 0;
-	m_pNext = 0;
-	m_pPrev = 0;
+    m_uId = 0;
+    m_pNext = 0;
+    m_pPrev = 0;
 }
 
 IFXINLINE CIFXSimpleHashData::~CIFXSimpleHashData()
 {
-	IFXDELETE(m_pNext);
+    IFXDELETE(m_pNext);
 }
 
 //=========================
@@ -124,7 +125,7 @@ IFXINLINE CIFXSimpleHashData::~CIFXSimpleHashData()
 //=========================
 IFXINLINE U32 CIFXSimpleHash::Hash(U32 uId)
 {
-	return (uId & m_uHashMask);
+    return (uId & m_uHashMask);
 }
 
 #endif

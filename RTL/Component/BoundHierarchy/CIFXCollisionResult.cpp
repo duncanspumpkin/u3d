@@ -19,7 +19,7 @@
 //	CIFXCollisionResult.cpp
 //
 //	DESCRIPTION
-//		
+//
 //		Souce file for module CIFXCollisionResult.
 //
 //	NOTES
@@ -29,16 +29,16 @@
 
 //*****************************************************************************
 //	Includes
-//***************************************************************************** 
+//*****************************************************************************
 #include "CIFXResultAllocator.h"
 
 //*****************************************************************************
 //	Defines
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Constants
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Enumerations
@@ -56,7 +56,6 @@
 //	Classes, structures and types
 //*****************************************************************************
 
-
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::CIFXCollisionResult
 //
@@ -65,15 +64,14 @@
 
 CIFXCollisionResult::CIFXCollisionResult()
 {
-	m_fU        = -1.0f;
-	m_fV        = -1.0f;
-	m_fDistance = -1.0f;
-	m_pNext     = NULL;
+    m_fU = -1.0f;
+    m_fV = -1.0f;
+    m_fDistance = -1.0f;
+    m_pNext = NULL;
 
-	m_vIntersectNormal.Set(0,0,1);
-	m_vIntersectPoint.Set(0,0,0);
+    m_vIntersectNormal.Set(0, 0, 1);
+    m_vIntersectPoint.Set(0, 0, 0);
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::~CIFXCollisionResult
@@ -85,37 +83,35 @@ CIFXCollisionResult::~CIFXCollisionResult()
 {
 }
 
-
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::FindFirstCollision
 //
 //  Return a pointer to the first CollisionResult.
 //-----------------------------------------------------------------------------
 
-CIFXCollisionResult * CIFXCollisionResult::FindFirstCollision()
+CIFXCollisionResult* CIFXCollisionResult::FindFirstCollision()
 {
-	CIFXCollisionResult* pResult  = GetNext();
-	CIFXCollisionResult* pClosest = this;
+    CIFXCollisionResult* pResult = GetNext();
+    CIFXCollisionResult* pClosest = this;
 
-	F32 fNextDistance;
-	F32 fDistance = m_fDistance;
+    F32 fNextDistance;
+    F32 fDistance = m_fDistance;
 
-	while( pResult )
-	{
-		fNextDistance = pResult->GetDistance();
-		
-		if( fNextDistance < fDistance )
-		{
-			fDistance = fNextDistance;
-			pClosest  = pResult;
-		}
+    while (pResult)
+    {
+        fNextDistance = pResult->GetDistance();
 
-		pResult = pResult->GetNext();
-	}
+        if (fNextDistance < fDistance)
+        {
+            fDistance = fNextDistance;
+            pClosest = pResult;
+        }
 
-	return pClosest;
+        pResult = pResult->GetNext();
+    }
+
+    return pClosest;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::GetIntersectNormal
@@ -124,9 +120,8 @@ CIFXCollisionResult * CIFXCollisionResult::FindFirstCollision()
 //-----------------------------------------------------------------------------
 void CIFXCollisionResult::GetIntersectNormal(IFXVector3& vIntersectNormal)
 {
-	vIntersectNormal = m_vIntersectNormal;
+    vIntersectNormal = m_vIntersectNormal;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::GetIntersectPoint
@@ -135,9 +130,8 @@ void CIFXCollisionResult::GetIntersectNormal(IFXVector3& vIntersectNormal)
 //-----------------------------------------------------------------------------
 void CIFXCollisionResult::GetIntersectPoint(IFXVector3& vIntersectPoint)
 {
-	vIntersectPoint = m_vIntersectPoint;
+    vIntersectPoint = m_vIntersectPoint;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::GetVertex
@@ -145,23 +139,19 @@ void CIFXCollisionResult::GetIntersectPoint(IFXVector3& vIntersectPoint)
 //  Return the indexed vertex - (Picking only)
 //-----------------------------------------------------------------------------
 
-void CIFXCollisionResult::GetVertices( IFXVector3& vVertex1, 
-									   IFXVector3& vVertex2, 
-									   IFXVector3& vVertex3 )
+void CIFXCollisionResult::GetVertices(IFXVector3& vVertex1, IFXVector3& vVertex2, IFXVector3& vVertex3)
 
 {
-	vVertex1 = m_vVertex[0];
-	vVertex2 = m_vVertex[1];
-	vVertex3 = m_vVertex[2];
+    vVertex1 = m_vVertex[0];
+    vVertex2 = m_vVertex[1];
+    vVertex3 = m_vVertex[2];
 }
-
 
 void CIFXCollisionResult::Initialize()
 {
-	m_fU = m_fV = m_fDistance = -1.0f;
-	m_pNext = NULL;
+    m_fU = m_fV = m_fDistance = -1.0f;
+    m_pNext = NULL;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::SetIDs
@@ -171,10 +161,9 @@ void CIFXCollisionResult::Initialize()
 
 void CIFXCollisionResult::SetIDs(U32 uMeshID, U32 uFaceID)
 {
-	m_uMeshID = uMeshID;
-	m_uFaceID = uFaceID;
+    m_uMeshID = uMeshID;
+    m_uFaceID = uFaceID;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::SetIntersectNormal
@@ -184,9 +173,8 @@ void CIFXCollisionResult::SetIDs(U32 uMeshID, U32 uFaceID)
 
 void CIFXCollisionResult::SetIntersectNormal(IFXVector3& vIntersectNormal)
 {
-	m_vIntersectNormal = vIntersectNormal;
+    m_vIntersectNormal = vIntersectNormal;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::SetIntersectPoint
@@ -196,9 +184,8 @@ void CIFXCollisionResult::SetIntersectNormal(IFXVector3& vIntersectNormal)
 
 void CIFXCollisionResult::SetIntersectPoint(IFXVector3& vIntersectPoint)
 {
-	m_vIntersectPoint = vIntersectPoint;
+    m_vIntersectPoint = vIntersectPoint;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::SetUVTCoords
@@ -209,11 +196,10 @@ void CIFXCollisionResult::SetIntersectPoint(IFXVector3& vIntersectPoint)
 
 void CIFXCollisionResult::SetUVTCoords(F32 fU, F32 fV, F32 fDistance)
 {
-	m_fU = fU;
-	m_fV = fV;
-	m_fDistance = fDistance;
+    m_fU = fU;
+    m_fV = fV;
+    m_fDistance = fDistance;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCollisionResult::SetVertices
@@ -221,11 +207,9 @@ void CIFXCollisionResult::SetUVTCoords(F32 fU, F32 fV, F32 fDistance)
 //  Set the vertices of the intersected triangle
 //-----------------------------------------------------------------------------
 
-void CIFXCollisionResult::SetVertices( IFXVector3& vVertex1, 
-									   IFXVector3& vVertex2, 
-									   IFXVector3& vVertex3 )
+void CIFXCollisionResult::SetVertices(IFXVector3& vVertex1, IFXVector3& vVertex2, IFXVector3& vVertex3)
 {
-	m_vVertex[0] = vVertex1;
-	m_vVertex[1] = vVertex2;
-	m_vVertex[2] = vVertex3;
+    m_vVertex[0] = vVertex1;
+    m_vVertex[1] = vVertex2;
+    m_vVertex[2] = vVertex3;
 }

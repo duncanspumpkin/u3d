@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef Modifier_H
 #define Modifier_H
-
 
 //***************************************************************************
 //  Includes
@@ -39,109 +37,102 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class Modifier : public MetaDataList
+    {
+    public:
+        Modifier() {};
+        virtual ~Modifier() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+        Set modifier type
+        */
+        void SetType(const IFXString& rType);
+        const IFXString& GetType() const;
 
+        /**
+        Set modifier chain type
+        */
+        void SetChainType(const IFXString& rType);
+        const IFXString& GetChainType() const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        void SetName(const IFXString& rName);
+        const IFXString& GetName() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class Modifier : public MetaDataList
-{
-public:
-	Modifier() {};
-	virtual ~Modifier() {};
+    protected:
+    private:
+        IFXString m_name;
+        IFXString m_type;
+        IFXString m_chainType;
+    };
 
-	/**
-	Set modifier type
-	*/
-	void SetType( const IFXString& rType );
-	const IFXString& GetType() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	Set modifier chain type
-	*/
-	void SetChainType( const IFXString& rType );
-	const IFXString& GetChainType() const;
+    IFXFORCEINLINE void Modifier::SetType(const IFXString& rType)
+    {
+        m_type = rType;
+    }
 
-	/**
-	*/
-	void SetName( const IFXString& rName );
-	const IFXString& GetName() const;
+    IFXFORCEINLINE const IFXString& Modifier::GetType() const
+    {
+        return m_type;
+    }
 
-protected:
+    IFXFORCEINLINE void Modifier::SetChainType(const IFXString& rChainType)
+    {
+        m_chainType = rChainType;
+    }
 
-private:
-	IFXString m_name;
-	IFXString m_type;
-	IFXString m_chainType;
-};
+    IFXFORCEINLINE const IFXString& Modifier::GetChainType() const
+    {
+        return m_chainType;
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE void Modifier::SetName(const IFXString& rName)
+    {
+        m_name = rName;
+    }
 
-IFXFORCEINLINE void Modifier::SetType( const IFXString& rType )
-{
-	m_type = rType;
-}
+    IFXFORCEINLINE const IFXString& Modifier::GetName() const
+    {
+        return m_name;
+    }
 
-IFXFORCEINLINE const IFXString& Modifier::GetType() const
-{
-	return m_type;
-}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE void Modifier::SetChainType( const IFXString& rChainType )
-{
-	m_chainType = rChainType;
-}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-IFXFORCEINLINE const IFXString& Modifier::GetChainType() const
-{
-	return m_chainType;
-}
-
-IFXFORCEINLINE void Modifier::SetName( const IFXString& rName )
-{
-	m_name = rName;
-}
-
-IFXFORCEINLINE const IFXString& Modifier::GetName() const
-{
-	return m_name;
-}
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
 }
 

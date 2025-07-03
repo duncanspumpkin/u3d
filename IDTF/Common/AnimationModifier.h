@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef AnimationModifier_H
 #define AnimationModifier_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,130 +36,125 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    struct MotionInfo
+    {
+        IFXString m_name;
+        BOOL m_loop;
+        BOOL m_sync;
+        F32 m_timeOffset;
+        F32 m_timeScale;
+    };
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class AnimationModifier : public Modifier
+    {
+    public:
+        AnimationModifier() {};
+        virtual ~AnimationModifier() {};
 
-	struct MotionInfo
-	{
-		IFXString m_name;
-		BOOL m_loop;
-		BOOL m_sync;
-		F32 m_timeOffset;
-		F32 m_timeScale;
-	};
+        /**
+         */
+        void SetTimeScale(const F32& rTimeScale);
+        const F32& GetTimeScale() const;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        void SetBlendTime(const F32& rBlendTime);
+        const F32& GetBlendTime() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class AnimationModifier : public Modifier
-	{
-	public:
-		AnimationModifier() {};
-		virtual ~AnimationModifier() {};
+        void AddMotionInfo(const MotionInfo& rMotionInfo);
+        const MotionInfo& GetMotionInfo(U32 index) const;
+        U32 GetMotionInfoCount() const;
 
-		/**
-		*/
-		void SetTimeScale( const F32& rTimeScale );
-		const F32& GetTimeScale() const;
+        BOOL m_playing;
+        BOOL m_rootLock;
+        BOOL m_autoBlend;
+        BOOL m_singleTrack;
 
-		/**
-		*/
-		void SetBlendTime( const F32& rBlendTime );
-		const F32& GetBlendTime() const;
+    private:
+        F32 m_timeScale;
+        F32 m_blendTime;
+        IFXArray<MotionInfo> m_motionInfoList;
+    };
 
-		void AddMotionInfo( const MotionInfo& rMotionInfo );
-		const MotionInfo& GetMotionInfo( U32 index ) const;
-		U32   GetMotionInfoCount() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		BOOL m_playing;
-		BOOL m_rootLock;
-		BOOL m_autoBlend;
-		BOOL m_singleTrack;
-	private:
-		F32 m_timeScale;
-		F32 m_blendTime;
-		IFXArray< MotionInfo > m_motionInfoList;
-	};
+    IFXFORCEINLINE void AnimationModifier::SetTimeScale(
+        const F32& rTimeScale)
+    {
+        m_timeScale = rTimeScale;
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE const F32& AnimationModifier::GetTimeScale() const
+    {
+        return m_timeScale;
+    }
 
-	IFXFORCEINLINE void AnimationModifier::SetTimeScale(
-		const F32& rTimeScale )
-	{
-		m_timeScale = rTimeScale;
-	}
+    IFXFORCEINLINE void AnimationModifier::SetBlendTime(const F32& rBlendTime)
+    {
+        m_blendTime = rBlendTime;
+    }
 
-	IFXFORCEINLINE const F32& AnimationModifier::GetTimeScale() const
-	{
-		return m_timeScale;
-	}
+    IFXFORCEINLINE const F32& AnimationModifier::GetBlendTime() const
+    {
+        return m_blendTime;
+    }
 
-	IFXFORCEINLINE void AnimationModifier::SetBlendTime( const F32& rBlendTime )
-	{
-		m_blendTime = rBlendTime;
-	}
+    IFXFORCEINLINE void AnimationModifier::AddMotionInfo(
+        const MotionInfo& rMotionInfo)
+    {
+        MotionInfo& motionInfo = m_motionInfoList.CreateNewElement();
+        motionInfo = rMotionInfo;
+    }
 
-	IFXFORCEINLINE const F32& AnimationModifier::GetBlendTime() const
-	{
-		return m_blendTime;
-	}
+    IFXFORCEINLINE const MotionInfo& AnimationModifier::GetMotionInfo(U32 index) const
+    {
+        return m_motionInfoList.GetElementConst(index);
+    }
 
+    IFXFORCEINLINE U32 AnimationModifier::GetMotionInfoCount() const
+    {
+        return m_motionInfoList.GetNumberElements();
+    }
 
-	IFXFORCEINLINE void AnimationModifier::AddMotionInfo(
-		const MotionInfo& rMotionInfo )
-	{
-		MotionInfo& motionInfo = m_motionInfoList.CreateNewElement();
-		motionInfo = rMotionInfo;
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE const MotionInfo& AnimationModifier::GetMotionInfo( U32 index ) const
-	{
-		return m_motionInfoList.GetElementConst( index );
-	}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-	IFXFORCEINLINE U32 AnimationModifier::GetMotionInfoCount() const
-	{
-		return m_motionInfoList.GetNumberElements();
-	}
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
-
-	//***************************************************************************
-	//  Failure return codes
-	//***************************************************************************
-
-	/**
-	@todo:  Insert module/interface specific return code description.
-	*/
-	//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

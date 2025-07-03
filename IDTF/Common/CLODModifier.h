@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef CLODModifier_H
 #define CLODModifier_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,108 +36,104 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class CLODModifier : public Modifier
+    {
+    public:
+        CLODModifier() {};
+        virtual ~CLODModifier() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        void SetAutoLODControl(const IFXString& rValue);
+        const IFXString& GetAutoLODControl() const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        void SetLODBias(const F32& rLodBias);
+        const F32& GetLODBias() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class CLODModifier : public Modifier
-{
-public:
-	CLODModifier() {};
-	virtual ~CLODModifier() {};
+        /**
+         */
+        void SetCLODLevel(const F32& rClodLevel);
+        const F32& GetCLODLevel() const;
 
-	/**
-	*/
-	void SetAutoLODControl( const IFXString& rValue );
-	const IFXString& GetAutoLODControl() const;
+    private:
+        IFXString m_autoLODControl;
+        F32 m_lodBias;
+        F32 m_clodLevel;
+    };
 
-	/**
-	*/
-	void SetLODBias( const F32& rLodBias );
-	const F32& GetLODBias() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	void SetCLODLevel( const F32& rClodLevel );
-	const F32& GetCLODLevel() const;
+    IFXFORCEINLINE void CLODModifier::SetLODBias(const F32& rLodBias)
+    {
+        m_lodBias = rLodBias;
+    }
 
-private:
-	IFXString m_autoLODControl;
-	F32 m_lodBias;
-	F32 m_clodLevel;
-};
+    IFXFORCEINLINE const F32& CLODModifier::GetLODBias() const
+    {
+        return m_lodBias;
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE void CLODModifier::SetCLODLevel(const F32& rClodLevel)
+    {
+        m_clodLevel = rClodLevel;
+    }
 
-IFXFORCEINLINE void CLODModifier::SetLODBias( const F32& rLodBias )
-{
-	m_lodBias = rLodBias;
-}
+    IFXFORCEINLINE const F32& CLODModifier::GetCLODLevel() const
+    {
+        return m_clodLevel;
+    }
 
-IFXFORCEINLINE const F32& CLODModifier::GetLODBias() const
-{
-	return m_lodBias;
-}
+    IFXFORCEINLINE void CLODModifier::SetAutoLODControl(const IFXString& rValue)
+    {
+        m_autoLODControl = rValue;
+    }
 
-IFXFORCEINLINE void CLODModifier::SetCLODLevel( const F32& rClodLevel )
-{
-	m_clodLevel = rClodLevel;
-}
+    IFXFORCEINLINE const IFXString& CLODModifier::GetAutoLODControl() const
+    {
+        return m_autoLODControl;
+    }
 
-IFXFORCEINLINE const F32& CLODModifier::GetCLODLevel() const
-{
-	return m_clodLevel;
-}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE void CLODModifier::SetAutoLODControl( const IFXString& rValue )
-{
-	m_autoLODControl = rValue;
-}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-IFXFORCEINLINE const IFXString& CLODModifier::GetAutoLODControl() const
-{
-	return m_autoLODControl;
-}
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
-
-/**
-@todo:  Insert module/interface specific return code description.
-*/
-//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

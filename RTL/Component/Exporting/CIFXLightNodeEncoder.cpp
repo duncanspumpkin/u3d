@@ -20,27 +20,25 @@
 //
 //	DESCRIPTION:
 //		Implementation of the CIFXLightNodeEncoder.
-//		The CIFXLightNodeEncoder contains light node encoding functionality 
+//		The CIFXLightNodeEncoder contains light node encoding functionality
 //		that is used by the write manager.
-//	
+//
 //*****************************************************************************
 
-
 #include "CIFXLightNodeEncoder.h"
+#include "IFXAutoRelease.h"
 #include "IFXBlockTypes.h"
 #include "IFXCheckX.h"
 #include "IFXException.h"
-#include "IFXPalette.h"
 #include "IFXLight.h"
 #include "IFXMetaDataX.h"
-#include "IFXAutoRelease.h"
-
+#include "IFXPalette.h"
 
 // constructor
 CIFXLightNodeEncoder::CIFXLightNodeEncoder()
 {
-	m_bInitialized = FALSE;
-	m_uRefCount = 0;
+    m_bInitialized = FALSE;
+    m_uRefCount = 0;
 }
 
 // destructor
@@ -48,238 +46,234 @@ CIFXLightNodeEncoder::~CIFXLightNodeEncoder()
 {
 }
 
-
-
 // IFXUnknown
 U32 CIFXLightNodeEncoder::AddRef()
 {
-	return ++m_uRefCount;
+    return ++m_uRefCount;
 }
 
 U32 CIFXLightNodeEncoder::Release()
 {
-	if ( !( --m_uRefCount ) ) 
-	{
-		delete this;
+    if (!(--m_uRefCount))
+    {
+        delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return m_uRefCount;
+    return m_uRefCount;
 }
 
-IFXRESULT CIFXLightNodeEncoder::QueryInterface( IFXREFIID	interfaceId, 
-											    void**		ppInterface )
+IFXRESULT CIFXLightNodeEncoder::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if ( ppInterface ) 
-	{
-		if ( interfaceId == IID_IFXEncoderX )
-		{
-			*ppInterface = ( IFXEncoderX* ) this;
-			this->AddRef();
-		} 
-		
-		else if ( interfaceId == IID_IFXUnknown ) 
-		{
-			*ppInterface = ( IFXUnknown* ) this;
-			this->AddRef();
-		} 
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXEncoderX)
+        {
+            *ppInterface = (IFXEncoderX*)this;
+            this->AddRef();
+        }
 
-		else 
-		{
-			*ppInterface = NULL;
-			rc = IFX_E_UNSUPPORTED;
-		}
-	} 
-	
-	else 
-		rc = IFX_E_INVALID_POINTER;
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+            this->AddRef();
+        }
 
+        else
+        {
+            *ppInterface = NULL;
+            rc = IFX_E_UNSUPPORTED;
+        }
+    }
 
-	IFXRETURN(rc);
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
+
+    IFXRETURN(rc);
 }
-
-
-
-
-
 
 // IFXEncoderX
-void CIFXLightNodeEncoder::InitializeX( IFXCoreServices& rCoreServices )
+void CIFXLightNodeEncoder::InitializeX(IFXCoreServices& rCoreServices)
 {
-	try
-	{	
-		// initialize base class(es)
-		CIFXNodeBaseEncoder::Initialize( rCoreServices );
+    try
+    {
+        // initialize base class(es)
+        CIFXNodeBaseEncoder::Initialize(rCoreServices);
 
-		// initialize locally
-		if ( TRUE == CIFXNodeBaseEncoder::m_bInitialized )
-			CIFXLightNodeEncoder::m_bInitialized = TRUE;
-		else
-			CIFXLightNodeEncoder::m_bInitialized = FALSE;
+        // initialize locally
+        if (TRUE == CIFXNodeBaseEncoder::m_bInitialized)
+        {
+            CIFXLightNodeEncoder::m_bInitialized = TRUE;
+        }
+        else
+        {
+            CIFXLightNodeEncoder::m_bInitialized = FALSE;
+        }
 
-		return;
-	}
+        return;
+    }
 
-	catch ( ... )
-	{
-		throw;
-	}
+    catch (...)
+    {
+        throw;
+    }
 }
 
-void CIFXLightNodeEncoder::EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units )
+void CIFXLightNodeEncoder::EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units)
 {
-	IFXDataBlockX*	pDataBlock = NULL;
-	IFXLight*		pLight = NULL;
+    IFXDataBlockX* pDataBlock = NULL;
+    IFXLight* pLight = NULL;
 
-	try
-	{
-		
-		// use node base class to encode shared node data (i.e. data that all node
-		// types possess)
+    try
+    {
 
-		// check for initialization
-		if ( FALSE == CIFXLightNodeEncoder::m_bInitialized )
-			throw IFXException( IFX_E_NOT_INITIALIZED );
+        // use node base class to encode shared node data (i.e. data that all node
+        // types possess)
 
-		if ( NULL == m_pNode )
-			throw IFXException( IFX_E_CANNOT_FIND );
+        // check for initialization
+        if (FALSE == CIFXLightNodeEncoder::m_bInitialized)
+        {
+            throw IFXException(IFX_E_NOT_INITIALIZED);
+        }
 
-		CIFXNodeBaseEncoder::CommonNodeEncodeU3D( rName, units );
+        if (NULL == m_pNode)
+        {
+            throw IFXException(IFX_E_CANNOT_FIND);
+        }
 
-		m_pNode->QueryInterface( IID_IFXLight, (void**)&pLight );
+        CIFXNodeBaseEncoder::CommonNodeEncodeU3D(rName, units);
 
-		// get resource name
-		IFXString sName;
+        m_pNode->QueryInterface(IID_IFXLight, (void**)&pLight);
 
-		U32 uLightResourceIndex = 0;
-		pLight->GetLightResourceID( &uLightResourceIndex );
-		IFXDECLARELOCAL( IFXPalette, pLightResourcePalette );
-	
-		IFXCHECKX( m_pSceneGraph->GetPalette( IFXSceneGraph::LIGHT, &pLightResourcePalette ) );
+        // get resource name
+        IFXString sName;
 
-		if ( uLightResourceIndex != (U32)(-1) )
-		{
-			IFXCHECKX( pLightResourcePalette->GetName( uLightResourceIndex, 
-													   &sName) );
-		}
-		else
-		{
-			IFXCHECKX( sName.Assign(L"") );	// make it a null string
-		}
+        U32 uLightResourceIndex = 0;
+        pLight->GetLightResourceID(&uLightResourceIndex);
+        IFXDECLARELOCAL(IFXPalette, pLightResourcePalette);
 
-		// write resource name
-		m_pBitStream->WriteIFXStringX( sName );
+        IFXCHECKX(m_pSceneGraph->GetPalette(IFXSceneGraph::LIGHT, &pLightResourcePalette));
 
-		// get the block
-		m_pBitStream->GetDataBlockX( pDataBlock );
+        if (uLightResourceIndex != (U32)(-1))
+        {
+            IFXCHECKX(pLightResourcePalette->GetName(uLightResourceIndex, &sName));
+        }
+        else
+        {
+            IFXCHECKX(sName.Assign(L"")); // make it a null string
+        }
 
-		// set the data block type
-		pDataBlock->SetBlockTypeX( BlockType_NodeLightU3D );
+        // write resource name
+        m_pBitStream->WriteIFXStringX(sName);
 
-		// set the priority on the datablock
-		pDataBlock->SetPriorityX( 0 ); // returns void
+        // get the block
+        m_pBitStream->GetDataBlockX(pDataBlock);
 
-		// set metadata
-		IFXDECLARELOCAL(IFXMetaDataX, pBlockMD);
-		IFXDECLARELOCAL(IFXMetaDataX, pObjectMD);
-		pDataBlock->QueryInterface(IID_IFXMetaDataX, (void**)&pBlockMD);
-		m_pNode->QueryInterface(IID_IFXMetaDataX, (void**)&pObjectMD);
-		pBlockMD->AppendX(pObjectMD);
+        // set the data block type
+        pDataBlock->SetBlockTypeX(BlockType_NodeLightU3D);
 
-		// Put the data block on the list
-		rDataBlockQueue.AppendBlockX( *pDataBlock );
+        // set the priority on the datablock
+        pDataBlock->SetPriorityX(0); // returns void
 
-		// clean up
-		IFXRELEASE( pDataBlock );
-		IFXRELEASE( pLight );
+        // set metadata
+        IFXDECLARELOCAL(IFXMetaDataX, pBlockMD);
+        IFXDECLARELOCAL(IFXMetaDataX, pObjectMD);
+        pDataBlock->QueryInterface(IID_IFXMetaDataX, (void**)&pBlockMD);
+        m_pNode->QueryInterface(IID_IFXMetaDataX, (void**)&pObjectMD);
+        pBlockMD->AppendX(pObjectMD);
 
-		return;
-	}
+        // Put the data block on the list
+        rDataBlockQueue.AppendBlockX(*pDataBlock);
 
-	catch ( ... )
-	{
-		// release IFXCOM objects
-		IFXRELEASE( pDataBlock );
-		IFXRELEASE( pLight );
+        // clean up
+        IFXRELEASE(pDataBlock);
+        IFXRELEASE(pLight);
 
-		throw;
-	}
+        return;
+    }
+
+    catch (...)
+    {
+        // release IFXCOM objects
+        IFXRELEASE(pDataBlock);
+        IFXRELEASE(pLight);
+
+        throw;
+    }
 }
 
-void CIFXLightNodeEncoder::SetObjectX( IFXUnknown& rObject )
+void CIFXLightNodeEncoder::SetObjectX(IFXUnknown& rObject)
 {
-	IFXNode* pNode = NULL;
+    IFXNode* pNode = NULL;
 
+    try
+    {
+        // get the IFXNode interface
+        IFXCHECKX(rObject.QueryInterface(IID_IFXNode, (void**)&pNode));
 
-	try
-	{
-		// get the IFXNode interface
-		IFXCHECKX( rObject.QueryInterface( IID_IFXNode, (void**)&pNode ) );
+        if (NULL == pNode)
+        {
+            throw IFXException(IFX_E_INVALID_POINTER);
+        }
 
-		if ( NULL == pNode )
-			throw IFXException( IFX_E_INVALID_POINTER );
+        // set the node on the CIFXNodeBaseEncoder base class
+        CIFXNodeBaseEncoder::SetNode(*pNode);
 
-		// set the node on the CIFXNodeBaseEncoder base class
-		CIFXNodeBaseEncoder::SetNode( *pNode );
+        // clean up
+        IFXRELEASE(pNode);
 
-		// clean up
-		IFXRELEASE( pNode );
+        return;
+    }
 
-		return;
-	}
+    catch (...)
+    {
+        IFXRELEASE(pNode);
 
-	catch ( ... )
-	{
-		IFXRELEASE( pNode );
-		
-		throw;
-	}
+        throw;
+    }
 }
-
-
-
-
-
 
 // Factory friend
-IFXRESULT IFXAPI_CALLTYPE CIFXLightNodeEncoder_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXLightNodeEncoder_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
+    if (ppInterface)
+    {
+        // Create the CIFXLoadManager component.
+        CIFXLightNodeEncoder* pComponent = new CIFXLightNodeEncoder;
 
-	if ( ppInterface ) 
-	{
-		// Create the CIFXLoadManager component.
-		CIFXLightNodeEncoder *pComponent = new CIFXLightNodeEncoder;
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-		if ( pComponent ) 
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+            // Attempt to obtain a pointer to the requested interface.
+            rc = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Attempt to obtain a pointer to the requested interface.
-			rc = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		
-		else 
-			rc = IFX_E_OUT_OF_MEMORY;
-	} 
-	
-	else 
-		rc = IFX_E_INVALID_POINTER;
+        else
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
+    }
 
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	IFXRETURN( rc );
+    IFXRETURN(rc);
 }
-
-

@@ -33,78 +33,73 @@ This module defines ...
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This class is used for manipulation with TGA images.
+    */
+    class TGAImage
+    {
+    public:
+        TGAImage();
+        virtual ~TGAImage();
 
+        TGAImage(const TGAImage& other);
+        TGAImage& operator=(const TGAImage& other);
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        U8* GetData() const { return m_RGBPixels; };
+        void SetData(const U8* data);
+        U32 GetWidth() const { return m_Width; };
+        U32 GetHeight() const { return m_Height; };
+        U32 GetChannels() const { return m_Channels; };
+        IFXRESULT Initialize(U32 width, U32 height, U32 channels);
+        IFXRESULT Deallocate();
 
-	/**
-	This class is used for manipulation with TGA images.
-	*/
-	class TGAImage
-	{
-	public:
-		TGAImage();
-		virtual ~TGAImage();
+        IFXRESULT Write(const IFXCHAR* pFileName) const;
+        IFXRESULT Read(const IFXCHAR* pFileName);
 
-		TGAImage(const TGAImage& other );
-		TGAImage& operator = (const TGAImage& other);
-		
-		U8* GetData() const { return m_RGBPixels;};
-		void SetData(const U8* data );
-		U32 GetWidth() const { return m_Width; };
-		U32 GetHeight() const { return m_Height; };
-		U32 GetChannels() const { return m_Channels; };
-		IFXRESULT Initialize( U32 width, U32 height, U32 channels );
-		IFXRESULT Deallocate();
+        bool IsSet() const { return m_RGBPixels != NULL; }
 
-		IFXRESULT Write( const IFXCHAR* pFileName ) const;
-		IFXRESULT Read( const IFXCHAR* pFileName );
+    private:
+        U32 m_Width, m_Height;
+        U32 m_Channels;
+        U8* m_RGBPixels; // RGBA
+    };
 
-		bool IsSet() const { return m_RGBPixels != NULL; }
-		
-	private:
-		U32 m_Width, m_Height;
-		U32 m_Channels;
-		U8* m_RGBPixels; // RGBA
-	};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
-
-	//***************************************************************************
-	//  Failure return codes
-	//***************************************************************************
-
-	/**
-	@todo:  Insert module/interface specific return code description.
-	*/
-	//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

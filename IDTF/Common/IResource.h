@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef IResource_H
 #define IResource_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,77 +36,72 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class IResource
+    {
+    public:
+        /**
+        Set node's type
+        */
+        virtual void IFXAPI SetType(const IFXString& rType) = 0;
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+        Get node's type
+        */
+        virtual IFXRESULT IFXAPI GetType(IFXString* pType) const = 0;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+        Set node's name
+        */
+        virtual void IFXAPI SetName(const IFXString& rName) = 0;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class IResource
-	{
-	public:
-		/**
-		Set node's type
-		*/
-		virtual void IFXAPI SetType( const IFXString& rType ) = 0;
+        /**
+        Get node's name
+        */
+        virtual IFXRESULT IFXAPI GetName(IFXString* pName) const = 0;
 
-		/**
-		Get node's type
-		*/
-		virtual IFXRESULT IFXAPI GetType( IFXString* pType ) const  = 0;
+        /**
+        Set parent list
+        */
+        // virtual void IFXAPI SetParentList( const ParentList& rParentList ) = 0;
 
-		/**
-		Set node's name
-		*/
-		virtual void IFXAPI SetName( const IFXString& rName ) = 0;
+        /**
+        Get parent list
+        */
+        // virtual IFXRESULT  IFXAPI GetParentList( ParentList* pParentList ) const = 0;
+    };
 
-		/**
-		Get node's name
-		*/
-		virtual IFXRESULT IFXAPI GetName( IFXString* pName ) const = 0;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		Set parent list
-		*/
-		//virtual void IFXAPI SetParentList( const ParentList& rParentList ) = 0;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-		/**
-		Get parent list
-		*/
-		//virtual IFXRESULT  IFXAPI GetParentList( ParentList* pParentList ) const = 0;
-	};
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

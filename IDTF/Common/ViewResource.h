@@ -31,72 +31,67 @@
 //  Includes
 //***************************************************************************
 
-#include "IFXString.h"
 #include "IFXArray.h"
+#include "IFXString.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+     */
+    class ViewResource : public Resource
+    {
+    public:
+        void AddRootNode(const IFXString& rRootNodeName);
+        const IFXString& GetRootNode(U32 index) const;
+        U32 GetRootNodeCount() const;
 
+    private:
+        IFXArray<IFXString> m_rootNodeList;
+    };
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-/**
-*/
-class ViewResource : public Resource
-{
-public:
-	void AddRootNode( const IFXString& rRootNodeName );
-	const IFXString& GetRootNode( U32 index ) const;
-	U32 GetRootNodeCount() const;
+    IFXFORCEINLINE void ViewResource::AddRootNode(const IFXString& rRootNodeName)
+    {
+        IFXString& rRootNode = m_rootNodeList.CreateNewElement();
+        rRootNode = rRootNodeName;
+    }
 
-private:
-	IFXArray< IFXString > m_rootNodeList;
-};
+    IFXFORCEINLINE const IFXString& ViewResource::GetRootNode(U32 index) const
+    {
+        return m_rootNodeList.GetElementConst(index);
+    }
 
+    IFXFORCEINLINE U32 ViewResource::GetRootNodeCount() const
+    {
+        return m_rootNodeList.GetNumberElements();
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE void ViewResource::AddRootNode( const IFXString& rRootNodeName )
-{
-	IFXString& rRootNode = m_rootNodeList.CreateNewElement();
-	rRootNode = rRootNodeName;
-}
-
-IFXFORCEINLINE const IFXString& ViewResource::GetRootNode( U32 index ) const
-{
-	return m_rootNodeList.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 ViewResource::GetRootNodeCount() const
-{
-	return m_rootNodeList.GetNumberElements();
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

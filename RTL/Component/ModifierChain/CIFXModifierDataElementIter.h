@@ -17,10 +17,10 @@
 //***************************************************************************
 
 /**
-	@file	CIFXModifierDataElementIterator.h
+        @file	CIFXModifierDataElementIterator.h
 
-			The header file that defines the base implementation class of the
-			CIFXModifierDataElementIterator. 
+                        The header file that defines the base implementation class of the
+                        CIFXModifierDataElementIterator.
 */
 
 #ifndef __CIFXMODIFIERDATAELEMENTITERATOR_H__
@@ -32,28 +32,25 @@
 class CIFXModifierDataElementIterator : public IFXModifierDataElementIterator
 {
 public:
-	CIFXModifierDataElementIterator();
-	virtual ~CIFXModifierDataElementIterator();
+    CIFXModifierDataElementIterator();
+    virtual ~CIFXModifierDataElementIterator();
 
-	virtual U32 Release( void );
+    virtual U32 Release(void);
 
-	//  CIFXModifierDataElementIterator
-	void Initialize(U32 in_Flags,
-			IFXDidEntry* in_pElements,
-			U32 in_NumElements,
-			IFXModifierDataPacket* in_pDp);
+    //  CIFXModifierDataElementIterator
+    void Initialize(U32 in_Flags, IFXDidEntry* in_pElements, U32 in_NumElements, IFXModifierDataPacket* in_pDp);
 
-	//  IFXModifierDataElementIterator
-	void* First();
-	void* Next();
-	U32	CurIndex();
+    //  IFXModifierDataElementIterator
+    void* First();
+    void* Next();
+    U32 CurIndex();
 
 private:
-	IFXModifierDataPacket* m_pDataPacket;
-	IFXDidEntry* m_pDids;
-	U32 m_NumElements;
-	U32 m_CurElement;
-	U32 m_Flags;
+    IFXModifierDataPacket* m_pDataPacket;
+    IFXDidEntry* m_pDids;
+    U32 m_NumElements;
+    U32 m_CurElement;
+    U32 m_Flags;
 };
 
 #endif

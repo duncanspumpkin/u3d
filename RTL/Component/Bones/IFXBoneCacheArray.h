@@ -17,20 +17,20 @@
 //***************************************************************************
 
 /**
-	@file IFXBoneCacheArray.h
+        @file IFXBoneCacheArray.h
 */
 
 #ifndef IFXBONECACHEARRAY_H
 #define IFXBONECACHEARRAY_H
 
-#include "IFXList.h"
 #include "IFXArray.h"
 #include "IFXBoneCache.h"
+#include "IFXList.h"
 
-class IFXBoneCacheArray: public IFXArray<IFXBoneCache>
+class IFXBoneCacheArray : public IFXArray<IFXBoneCache>
 {
 public:
-	void Dump(void);
+    void Dump(void);
 };
 
 #endif

@@ -19,60 +19,58 @@
 /**
   @file U3DHeaders.h
 
-	  This header defines the ... functionality.
+          This header defines the ... functionality.
 
   @note
 */
 
-
 #ifndef U3DHeaders_H
 #define U3DHeaders_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXString.h"
-#include "IFXCoreCIDs.h"
 #include "IFXAutoRelease.h"
+#include "IFXCoreCIDs.h"
+#include "IFXString.h"
 
-#include "IFXSceneGraph.h"
 #include "IFXLight.h"
 #include "IFXMaterialResource.h"
+#include "IFXMatrix4x4.h"
 #include "IFXModel.h"
 #include "IFXModifier.h"
 #include "IFXNode.h"
+#include "IFXPalette.h"
+#include "IFXSceneGraph.h"
 #include "IFXShader.h"
 #include "IFXShaderLitTexture.h"
 #include "IFXView.h"
-#include "IFXPalette.h"
-#include "IFXMatrix4x4.h"
 
 #include "IFXAnimationModifier.h"
 #include "IFXBoneWeightsModifier.h"
 #include "IFXSkeleton.h"
 
-#include "IFXMotionResource.h"
 #include "IFXMixerConstruct.h"
+#include "IFXMotionResource.h"
 
-#include "IFXImportingCIDs.h"
 #include "IFXExportingCIDs.h"
+#include "IFXImportingCIDs.h"
 
 #include "IFXScheduler.h"
 
 #include "IFXAuthorGeomCompiler.h"
 
-#include "IFXSubdivModifier.h"
 #include "IFXCLODModifier.h"
-#include "IFXShadingModifier.h"
 #include "IFXGlyph2DModifier.h"
 #include "IFXGlyphCommandList.h"
+#include "IFXShadingModifier.h"
+#include "IFXSubdivModifier.h"
 
-#include "IFXAuthorMesh.h"
-#include "IFXAuthorMeshScrub.h"
 #include "IFXAuthorLineSet.h"
 #include "IFXAuthorLineSetResource.h"
+#include "IFXAuthorMesh.h"
+#include "IFXAuthorMeshScrub.h"
 #include "IFXAuthorPointSet.h"
 #include "IFXAuthorPointSetResource.h"
 
@@ -83,46 +81,39 @@
 #include "IFXCLODManagerInterface.h"
 #include "IFXNeighborResControllerIntfc.h"
 
-#include "IFXImageCodec.h"
-#include "IFXLoadManager.h"
-#include "IFXWriteManager.h"
 #include "IFXBoundSphereDataElement.h"
 #include "IFXDids.h"
+#include "IFXImageCodec.h"
+#include "IFXLoadManager.h"
 #include "IFXStdio.h"
+#include "IFXWriteManager.h"
 
 //***************************************************************************
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Inline functions
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global data
 //***************************************************************************
-
 
 #endif

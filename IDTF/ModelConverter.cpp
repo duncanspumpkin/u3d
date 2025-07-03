@@ -22,7 +22,6 @@
       This module defines common functionality for models conversion.
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -38,7 +37,6 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
@@ -49,281 +47,283 @@ const U32 DEFAULT_QUALITY_FACTOR = 1000;
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
 
-ModelConverter::ModelConverter( SceneUtilities* pSceneUtils )
-: m_pSceneUtils( pSceneUtils )
+ModelConverter::ModelConverter(SceneUtilities* pSceneUtils)
+    : m_pSceneUtils(pSceneUtils)
 {
-	m_defaultGeoQuality = DEFAULT_QUALITY_FACTOR;
-	m_positionQuality = DEFAULT_QUALITY_FACTOR;
-	m_texCoordQuality = DEFAULT_QUALITY_FACTOR;
-	m_normalQuality = DEFAULT_QUALITY_FACTOR;
-	m_diffuseQuality = DEFAULT_QUALITY_FACTOR;
-	m_specularQuality = DEFAULT_QUALITY_FACTOR;
+    m_defaultGeoQuality = DEFAULT_QUALITY_FACTOR;
+    m_positionQuality = DEFAULT_QUALITY_FACTOR;
+    m_texCoordQuality = DEFAULT_QUALITY_FACTOR;
+    m_normalQuality = DEFAULT_QUALITY_FACTOR;
+    m_diffuseQuality = DEFAULT_QUALITY_FACTOR;
+    m_specularQuality = DEFAULT_QUALITY_FACTOR;
 
-	m_excludeNormals = FALSE;
+    m_excludeNormals = FALSE;
 }
 
 ModelConverter::~ModelConverter()
 {
-	m_pSceneUtils = NULL;
+    m_pSceneUtils = NULL;
 }
 
-
 /**
-	Build a model node in U3D from the IDTF representation.
+        Build a model node in U3D from the IDTF representation.
 */
 IFXRESULT ModelConverter::Convert()
 {
-	return IFX_OK;
+    return IFX_OK;
 }
 
-void ModelConverter::SetDefaultQuality( U32 defaultGeoQuality )
+void ModelConverter::SetDefaultQuality(U32 defaultGeoQuality)
 {
-	m_defaultGeoQuality = defaultGeoQuality;
+    m_defaultGeoQuality = defaultGeoQuality;
 }
 
-void ModelConverter::SetPositionQuality( U32 positionQuality )
+void ModelConverter::SetPositionQuality(U32 positionQuality)
 {
-	m_positionQuality = positionQuality;
+    m_positionQuality = positionQuality;
 }
 
-void ModelConverter::SetTexCoordQuality( U32 texCoordQuality )
+void ModelConverter::SetTexCoordQuality(U32 texCoordQuality)
 {
-	m_texCoordQuality = texCoordQuality;
+    m_texCoordQuality = texCoordQuality;
 }
 
-void ModelConverter::SetNormalQuality( U32 normalQuality )
+void ModelConverter::SetNormalQuality(U32 normalQuality)
 {
-	m_normalQuality = normalQuality;
+    m_normalQuality = normalQuality;
 }
 
-void ModelConverter::SetDiffuseColorQuality( U32 diffuseQuality )
+void ModelConverter::SetDiffuseColorQuality(U32 diffuseQuality)
 {
-	m_diffuseQuality = diffuseQuality;
+    m_diffuseQuality = diffuseQuality;
 }
 
-void ModelConverter::SetSpecularColorQuality( U32 specularQuality )
+void ModelConverter::SetSpecularColorQuality(U32 specularQuality)
 {
-	m_specularQuality = specularQuality;
+    m_specularQuality = specularQuality;
 }
 
-void ModelConverter::SetZeroAreaFacesRemoval( BOOL isRemove )
+void ModelConverter::SetZeroAreaFacesRemoval(BOOL isRemove)
 {
-	m_removeZeroAreaFaces = isRemove;
+    m_removeZeroAreaFaces = isRemove;
 }
 
-void ModelConverter::SetZeroAreaFaceTolerance( F32 tolerance )
+void ModelConverter::SetZeroAreaFaceTolerance(F32 tolerance)
 {
-	m_zeroAreaFaceTolerance = tolerance;
+    m_zeroAreaFaceTolerance = tolerance;
 }
 
-void ModelConverter::SetNormalsExclusion( BOOL excludeNormals )
+void ModelConverter::SetNormalsExclusion(BOOL excludeNormals)
 {
-	m_excludeNormals = excludeNormals;
+    m_excludeNormals = excludeNormals;
 }
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-IFXRESULT ModelConverter::ConvertShadingDescriptions( 
-										const ShadingDescriptionList& rShadingDescriptions,
-										const U32 numberOfShaders,
-										IFXAuthorMaterial* pShaders )
+IFXRESULT ModelConverter::ConvertShadingDescriptions(
+    const ShadingDescriptionList& rShadingDescriptions,
+    const U32 numberOfShaders,
+    IFXAuthorMaterial* pShaders)
 {
-	IFXRESULT result = IFX_OK;
-	//const U32 count = rShadingDescriptions.GetShadingDescriptionCount();
+    IFXRESULT result = IFX_OK;
+    // const U32 count = rShadingDescriptions.GetShadingDescriptionCount();
 
-	if( NULL == pShaders )
-	{
-		result = IFX_E_INVALID_POINTER;
-		IFXASSERT( IFXRESULT( result ) );
-	}
+    if (NULL == pShaders)
+    {
+        result = IFX_E_INVALID_POINTER;
+        IFXASSERT(IFXRESULT(result));
+    }
 
-	if( IFXSUCCESS( result ) )
-	{
-		// Loop thru all shaders used by this model.
-		U32 i;
-		for( i = 0; i < numberOfShaders; ++i )
-		{
-			const ShadingDescription& rShading = 
-				rShadingDescriptions.GetShadingDescription( i );
+    if (IFXSUCCESS(result))
+    {
+        // Loop thru all shaders used by this model.
+        U32 i;
+        for (i = 0; i < numberOfShaders; ++i)
+        {
+            const ShadingDescription& rShading = rShadingDescriptions.GetShadingDescription(i);
 
-			// Get the number of texture layers used by the shader
-			const U32 layerCount = rShading.GetTextureLayerCount();
-			IFXASSERT( IFX_MAX_TEXUNITS >= layerCount );
+            // Get the number of texture layers used by the shader
+            const U32 layerCount = rShading.GetTextureLayerCount();
+            IFXASSERT(IFX_MAX_TEXUNITS >= layerCount);
 
-			pShaders[i].m_uNumTextureLayers = layerCount;
+            pShaders[i].m_uNumTextureLayers = layerCount;
 
-			// Collect the dimensions of the texture coordinates used by each
-			// texture layer in this shader.
-			U32 k;
-			for( k = 0; k < layerCount; ++k )
-			{
-				// load the layer dimension data
-				const U32& texDim = rShading.GetTextureCoordDimention( k );
-				pShaders[i].m_uTexCoordDimensions[k] = texDim;
-			}
+            // Collect the dimensions of the texture coordinates used by each
+            // texture layer in this shader.
+            U32 k;
+            for (k = 0; k < layerCount; ++k)
+            {
+                // load the layer dimension data
+                const U32& texDim = rShading.GetTextureCoordDimention(k);
+                pShaders[i].m_uTexCoordDimensions[k] = texDim;
+            }
 
-			// Set the original mapping
-			pShaders[i].m_uOriginalMaterialID = rShading.m_shaderId;
-		} 
-	}
+            // Set the original mapping
+            pShaders[i].m_uOriginalMaterialID = rShading.m_shaderId;
+        }
+    }
 
-	IFXASSERT( IFXSUCCESS( result ) ); 
-	return result;
+    IFXASSERT(IFXSUCCESS(result));
+    return result;
 }
 
-
-
-IFXRESULT ModelConverter::ConvertSkeleton( const ModelSkeleton& rIDTFSkeleton,
-										   IFXSkeleton** ppSkeleton )
+IFXRESULT ModelConverter::ConvertSkeleton(const ModelSkeleton& rIDTFSkeleton, IFXSkeleton** ppSkeleton)
 {
-	IFXRESULT result = IFX_OK;
-	IFXSkeleton* pSkeleton = NULL;
+    IFXRESULT result = IFX_OK;
+    IFXSkeleton* pSkeleton = NULL;
 
-	if( !ppSkeleton )
-	{
-		result = IFX_E_INVALID_POINTER;
-		IFXASSERT( IFXSUCCESS( result ) );
-	}
+    if (!ppSkeleton)
+    {
+        result = IFX_E_INVALID_POINTER;
+        IFXASSERT(IFXSUCCESS(result));
+    }
 
-	// create skeleton component
-	if( IFXSUCCESS( result ) )
-		result = IFXCreateComponent( CID_IFXSkeleton, IID_IFXSkeleton, (void**)&pSkeleton );
+    // create skeleton component
+    if (IFXSUCCESS(result))
+    {
+        result = IFXCreateComponent(CID_IFXSkeleton, IID_IFXSkeleton, (void**)&pSkeleton);
+    }
 
-	// Load the reference data and animation for each bone in the skeleton.
-	if( IFXSUCCESS( result ) )
-	{
-		U32 i;
-		for( i = 0; i < rIDTFSkeleton.GetBoneInfoCount() && IFXSUCCESS( result ); ++i )
-			result = ConvertBone( pSkeleton, i, rIDTFSkeleton.GetBoneInfo( i ) );
-	}
+    // Load the reference data and animation for each bone in the skeleton.
+    if (IFXSUCCESS(result))
+    {
+        U32 i;
+        for (i = 0; i < rIDTFSkeleton.GetBoneInfoCount() && IFXSUCCESS(result); ++i)
+        {
+            result = ConvertBone(pSkeleton, i, rIDTFSkeleton.GetBoneInfo(i));
+        }
+    }
 
-	if( pSkeleton && IFXSUCCESS( result ) )
-		*ppSkeleton = pSkeleton; // releasing the ppSkeleton is left to the caller
+    if (pSkeleton && IFXSUCCESS(result))
+    {
+        *ppSkeleton = pSkeleton; // releasing the ppSkeleton is left to the caller
+    }
 
-	IFXASSERT( IFXSUCCESS( result ) ); 
-	return result;
+    IFXASSERT(IFXSUCCESS(result));
+    return result;
 }
-
 
 IFXRESULT ModelConverter::ConvertBone(
-								IFXSkeleton* pSkeleton, 
-								U32 boneIndex,
-								const BoneInfo& rIDTFBoneInfo )
+    IFXSkeleton* pSkeleton,
+    U32 boneIndex,
+    const BoneInfo& rIDTFBoneInfo)
 {
-	IFXRESULT	result = IFX_OK;
-	IFXBoneInfo	boneInfo;
+    IFXRESULT result = IFX_OK;
+    IFXBoneInfo boneInfo;
 
-	if( !pSkeleton )
-	{
-		result = IFX_E_INVALID_POINTER;
-		IFXASSERT( IFXSUCCESS( result ) );
-	}
+    if (!pSkeleton)
+    {
+        result = IFX_E_INVALID_POINTER;
+        IFXASSERT(IFXSUCCESS(result));
+    }
 
-	// Get the bone name
-	if( IFXSUCCESS( result ) )
-		boneInfo.stringBoneName = rIDTFBoneInfo.name;
+    // Get the bone name
+    if (IFXSUCCESS(result))
+    {
+        boneInfo.stringBoneName = rIDTFBoneInfo.name;
+    }
 
-	// Get the name of the parent bone
-	// NOTE!  For this to work the parent bone must have been loaded
-	//		  before any of the children that use it.
-	if( IFXSUCCESS( result ) )
-	{
-		// Record the ID of the parent bone
-		boneInfo.iParentBoneID = GetBoneIdx( pSkeleton, rIDTFBoneInfo.parentName );
-	}
+    // Get the name of the parent bone
+    // NOTE!  For this to work the parent bone must have been loaded
+    //		  before any of the children that use it.
+    if (IFXSUCCESS(result))
+    {
+        // Record the ID of the parent bone
+        boneInfo.iParentBoneID = GetBoneIdx(pSkeleton, rIDTFBoneInfo.parentName);
+    }
 
-	// Set the initial length of the bone
-	if( IFXSUCCESS( result ) )
-		boneInfo.fBoneLength = rIDTFBoneInfo.length;
+    // Set the initial length of the bone
+    if (IFXSUCCESS(result))
+    {
+        boneInfo.fBoneLength = rIDTFBoneInfo.length;
+    }
 
-	// Is displacement from the tip of its parent
-	if( IFXSUCCESS( result ) )
-		boneInfo.v3BoneDisplacement = rIDTFBoneInfo.displacement.GetPoint();
+    // Is displacement from the tip of its parent
+    if (IFXSUCCESS(result))
+    {
+        boneInfo.v3BoneDisplacement = rIDTFBoneInfo.displacement.GetPoint();
+    }
 
-	// The bone's rotation relative to the X-axis of its parent.
-	if( IFXSUCCESS( result ) )
-		boneInfo.v4BoneRotation = rIDTFBoneInfo.orientation.GetQuat();
+    // The bone's rotation relative to the X-axis of its parent.
+    if (IFXSUCCESS(result))
+    {
+        boneInfo.v4BoneRotation = rIDTFBoneInfo.orientation.GetQuat();
+    }
 
-	// We now have collected all necessary information for this bone - 
-	// send these data to the BonesGenerator.
-	if( IFXSUCCESS( result ) )
-		result = pSkeleton->SetBoneInfo( boneIndex, &boneInfo );
+    // We now have collected all necessary information for this bone -
+    // send these data to the BonesGenerator.
+    if (IFXSUCCESS(result))
+    {
+        result = pSkeleton->SetBoneInfo(boneIndex, &boneInfo);
+    }
 
-	IFXASSERT( IFXSUCCESS( result ) ); 
-	return result;
+    IFXASSERT(IFXSUCCESS(result));
+    return result;
 }
 
-
-I32 ModelConverter::GetBoneIdx( 
-							IFXSkeleton* pSkeleton, 
-							const IFXString& rName )
+I32 ModelConverter::GetBoneIdx(
+    IFXSkeleton* pSkeleton,
+    const IFXString& rName)
 {
-	IFXRESULT result = IFX_OK;
-	U32       boneCount = 0;
-	IFXBoneInfo   boneInfo;
+    IFXRESULT result = IFX_OK;
+    U32 boneCount = 0;
+    IFXBoneInfo boneInfo;
 
-	if( !pSkeleton )
-	{
-		IFXASSERT( pSkeleton != 0 );
-		return -1;
-	}
+    if (!pSkeleton)
+    {
+        IFXASSERT(pSkeleton != 0);
+        return -1;
+    }
 
-	result = pSkeleton->GetNumBones( boneCount );
+    result = pSkeleton->GetNumBones(boneCount);
 
-	if( IFXSUCCESS( result ) )
-	{
-		U32 i;
-		for( i = 0; i < boneCount; ++i )
-		{
-			result = pSkeleton->GetBoneInfo( i, &boneInfo );
+    if (IFXSUCCESS(result))
+    {
+        U32 i;
+        for (i = 0; i < boneCount; ++i)
+        {
+            result = pSkeleton->GetBoneInfo(i, &boneInfo);
 
-			if( !( boneInfo.stringBoneName.Compare( &rName ) ) 
-				&& IFXSUCCESS( result ) )
-			{
-				return (I32)i;
-			}
-		}
-	}
+            if (!(boneInfo.stringBoneName.Compare(&rName))
+                && IFXSUCCESS(result))
+            {
+                return (I32)i;
+            }
+        }
+    }
 
-	return -1;
+    return -1;
 }
 
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions

@@ -18,9 +18,9 @@
 #ifndef FACE_H
 #define FACE_H
 
-#include "Primitives.h"
-#include "Matrix4x4.h"
 #include "GeometryObject.h"
+#include "Matrix4x4.h"
+#include "Primitives.h"
 
 class Pair;
 class Vertex;
@@ -28,47 +28,59 @@ class Vertex;
 class Face : public GeometryObject
 {
 public:
-	Face ();
+    Face();
 
-	void Set(Pair *pa, Pair *pb, Pair *pc, int idx);
-	BOOL isCounterClockwise (Vertex *x, Vertex *y);
+    void Set(Pair* pa, Pair* pb, Pair* pc, int idx);
+    BOOL isCounterClockwise(Vertex* x, Vertex* y);
 
-	void remove();
-	inline void ReplacePair (Pair *oldPair, Pair *newPair)
-	{
-		if (a == oldPair) a = newPair;
-		else if (b == oldPair) b = newPair;
-		else if (c == oldPair) c = newPair;
-	};
-	
-	Pair *a,*b,*c; 
-	
-	U32 index;
+    void remove();
+    inline void ReplacePair(Pair* oldPair, Pair* newPair)
+    {
+        if (a == oldPair)
+        {
+            a = newPair;
+        }
+        else if (b == oldPair)
+        {
+            b = newPair;
+        }
+        else if (c == oldPair)
+        {
+            c = newPair;
+        }
+    };
+
+    Pair *a, *b, *c;
+
+    U32 index;
 
 private:
-	Matrix4x4 quadric;
-	float A, B, C, D;
-	float area;
-	void computeArea();
+    Matrix4x4 quadric;
+    float A, B, C, D;
+    float area;
+    void computeArea();
 
 public:
-	Matrix4x4 &Quadric() {	return quadric; };
-	void computeQuadric();
-	inline void planeEquation (float &rA, float &rB, float &rC, float &rD)
-	{ 
-		rA = A;  rB = B;  rC = C;  rD = D; 
-	};
-	inline float getArea() 
-	{ 
-		if(area != -1.0) 
-		{
-			return area; 
-		}	
-		computeArea();
-		return area; 
-	};
-	inline void  setArea(float a) { area = a; };
-	float computeNewArea(Vertex *kv, Vertex *rv);
+    Matrix4x4& Quadric() { return quadric; };
+    void computeQuadric();
+    inline void planeEquation(float& rA, float& rB, float& rC, float& rD)
+    {
+        rA = A;
+        rB = B;
+        rC = C;
+        rD = D;
+    };
+    inline float getArea()
+    {
+        if (area != -1.0)
+        {
+            return area;
+        }
+        computeArea();
+        return area;
+    };
+    inline void setArea(float a) { area = a; };
+    float computeNewArea(Vertex* kv, Vertex* rv);
 };
 
 #endif

@@ -24,97 +24,90 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ParentData_H
 #define ParentData_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXString.h"
 #include "IFXMatrix4x4.h"
+#include "IFXString.h"
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ParentData
+    {
+    public:
+        ParentData() {};
+        virtual ~ParentData() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+        Set parent name
+        */
+        void SetParentName(const IFXString& rParentName);
+        const IFXString& GetParentName() const;
+        void SetParentTM(const IFXMatrix4x4& rMatrix);
+        const IFXMatrix4x4& GetParentTM() const;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+    protected:
+    private:
+        IFXString m_parentName;
+        IFXMatrix4x4 m_parentTM;
+    };
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class ParentData
-	{
-	public:
-		ParentData() {};
-		virtual ~ParentData() {};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		Set parent name
-		*/
-		void SetParentName( const IFXString& rParentName );
-		const IFXString& GetParentName() const;
-		void SetParentTM( const IFXMatrix4x4& rMatrix );
-		const IFXMatrix4x4& GetParentTM() const;
+    IFXFORCEINLINE void ParentData::SetParentName(const IFXString& rParentName)
+    {
+        m_parentName = rParentName;
+    }
 
-	protected:
+    IFXFORCEINLINE const IFXString& ParentData::GetParentName() const
+    {
+        return m_parentName;
+    }
 
-	private:
-		IFXString m_parentName;
-		IFXMatrix4x4 m_parentTM;
-	};
+    IFXFORCEINLINE void ParentData::SetParentTM(const IFXMatrix4x4& rMatrix)
+    {
+        m_parentTM = rMatrix;
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE const IFXMatrix4x4& ParentData::GetParentTM() const
+    {
+        return m_parentTM;
+    }
 
-	IFXFORCEINLINE void ParentData::SetParentName( const IFXString& rParentName )
-	{
-		m_parentName = rParentName;
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE const IFXString& ParentData::GetParentName() const
-	{
-		return m_parentName;
-	}
-
-	IFXFORCEINLINE void ParentData::SetParentTM( const IFXMatrix4x4& rMatrix )
-	{
-		m_parentTM = rMatrix;
-	}
-
-	IFXFORCEINLINE const IFXMatrix4x4& ParentData::GetParentTM() const
-	{
-		return m_parentTM;
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

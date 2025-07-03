@@ -17,44 +17,44 @@
 //***************************************************************************
 
 /**
-	@file IFXCylinder.h
+        @file IFXCylinder.h
 */
 
 #ifndef IFXCYLINDER_H
 #define IFXCYLINDER_H
 
 /**
-	Tapered Cylinder (non-right)
+        Tapered Cylinder (non-right)
 
-	Consists of center and scale at base and end points.
-	Convention dictates that X is the longitudinal axis.
+        Consists of center and scale at base and end points.
+        Convention dictates that X is the longitudinal axis.
 */
 class IFXCylinder
 {
 public:
-	IFXCylinder(void)
-	{
-		m_center[0].Reset();
-		m_center[0].Reset();
-		m_scale[1].Reset();
-		m_scale[1].Reset();
-	}
+    IFXCylinder(void)
+    {
+        m_center[0].Reset();
+        m_center[0].Reset();
+        m_scale[1].Reset();
+        m_scale[1].Reset();
+    }
 
-	IFXVector3  &GetCenter(I32 index)
-	{
-		IFXASSERT(index==0 || index==1);
-		return m_center[index];
-	}
+    IFXVector3& GetCenter(I32 index)
+    {
+        IFXASSERT(index == 0 || index == 1);
+        return m_center[index];
+    }
 
-	IFXVector3  &GetScale(I32 index)
-	{
-		IFXASSERT(index==0 || index==1);
-		return m_scale[index];
-	}
+    IFXVector3& GetScale(I32 index)
+    {
+        IFXASSERT(index == 0 || index == 1);
+        return m_scale[index];
+    }
 
 private:
-	IFXVector3 m_center[2];
-	IFXVector3 m_scale[2];
+    IFXVector3 m_center[2];
+    IFXVector3 m_scale[2];
 };
 
 #endif

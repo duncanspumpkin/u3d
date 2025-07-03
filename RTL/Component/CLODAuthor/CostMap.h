@@ -22,10 +22,10 @@
 // these constants partition the cost space.
 
 // all base mesh vertices have costs >= to this.
-#define BASE_VERTEX_COST FLT_MAX/2
-#define BASE_VERTEX_DELTA FLT_MAX/200000
+#define BASE_VERTEX_COST FLT_MAX / 2
+#define BASE_VERTEX_DELTA FLT_MAX / 200000
 
 // all normal flips have costs >= to this and < BASE_VERTEX_COST
-#define NORMAL_FLIP_COST FLT_MAX/4
+#define NORMAL_FLIP_COST FLT_MAX / 4
 
 #endif // COSTMAP_DOT_H

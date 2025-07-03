@@ -16,11 +16,10 @@
 //
 //***************************************************************************
 /**
-	@file	CIFXBoundSphereDataElement.h
+        @file	CIFXBoundSphereDataElement.h
 
-			The header file that defines the IFXBoundSphereDataElement.              
+                        The header file that defines the IFXBoundSphereDataElement.
 */
-
 
 #ifndef __CIFXBOUNDINGSPHEREDATAELEMENT_H__
 #define __CIFXBOUNDINGSPHEREDATAELEMENT_H__
@@ -30,34 +29,29 @@
 
 class CIFXBoundSphereDataElement : virtual public IFXBoundSphereDataElement
 {
-            CIFXBoundSphereDataElement();
-  virtual  ~CIFXBoundSphereDataElement();
-  friend
-  IFXRESULT IFXAPI_CALLTYPE CIFXBoundSphereDataElement_Factory( IFXREFIID riid,
-                                                void**    ppv );
+    CIFXBoundSphereDataElement();
+    virtual ~CIFXBoundSphereDataElement();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXBoundSphereDataElement_Factory(IFXREFIID riid, void** ppv);
 
 public:
-  // IFXUnknown
-  U32 IFXAPI        AddRef ();
-  U32 IFXAPI        Release ();
-  IFXRESULT IFXAPI  QueryInterface ( IFXREFIID riid,
-                            void**    ppv );
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-  // IFXBoundSphereDataElement
-  IFXVector4& IFXAPI Bound( void );
-  U32&        IFXAPI RenderableIndex( void ) { return m_uRenderableDataElementIndex; };
+    // IFXBoundSphereDataElement
+    IFXVector4& IFXAPI Bound(void);
+    U32& IFXAPI RenderableIndex(void) { return m_uRenderableDataElementIndex; };
 
 private:
-  U32        m_uRefCount;
-  IFXVector4 m_vBoundingSphere;
-  U32        m_uRenderableDataElementIndex;
+    U32 m_uRefCount;
+    IFXVector4 m_vBoundingSphere;
+    U32 m_uRenderableDataElementIndex;
 };
 
-
-IFXINLINE IFXVector4& CIFXBoundSphereDataElement::Bound( void )
+IFXINLINE IFXVector4& CIFXBoundSphereDataElement::Bound(void)
 {
-  return m_vBoundingSphere;
+    return m_vBoundingSphere;
 }
-
 
 #endif

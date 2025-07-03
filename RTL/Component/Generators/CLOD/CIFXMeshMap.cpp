@@ -17,293 +17,317 @@
 //***************************************************************************
 
 /**
-	@file	CIFXMeshMap.cpp
+        @file	CIFXMeshMap.cpp
 */
 
-#include "IFXAuthorMeshMap.h"
 #include "CIFXMeshMap.h"
+#include "IFXAuthorMeshMap.h"
 #include "IFXVertexMap.h"
 
-IFXRESULT CIFXMeshMap::Construct( U32* pMapSizes )
+IFXRESULT CIFXMeshMap::Construct(U32* pMapSizes)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	U32 i, j;
-	for( i = 0; i < 6 && IFXSUCCESS(result); ++i )
-	{
-		if( 0 != pMapSizes[i] )
-		{
-			IFXDELETE( m_pMaps[i] );
-			m_pMaps[i] = new IFXVertexMap;
-			if( NULL != m_pMaps[i] )
-			{
-				m_pMaps[i]->AllocateMap(pMapSizes[i]);
-			}
-			else
-			{
-				result = IFX_E_OUT_OF_MEMORY;
+    U32 i, j;
+    for (i = 0; i < 6 && IFXSUCCESS(result); ++i)
+    {
+        if (0 != pMapSizes[i])
+        {
+            IFXDELETE(m_pMaps[i]);
+            m_pMaps[i] = new IFXVertexMap;
+            if (NULL != m_pMaps[i])
+            {
+                m_pMaps[i]->AllocateMap(pMapSizes[i]);
+            }
+            else
+            {
+                result = IFX_E_OUT_OF_MEMORY;
 
-				// delete all previously allocated maps
-				for( j = 0; j < i; ++j )
-					IFXDELETE(m_pMaps[i]);
-			}
-		}
-	}
-	
-	if( IFXFAILURE( result ) )
-	{
-		for( i = 0; i < 6; ++i )
-			pMapSizes[i] = 0;
-	}
+                // delete all previously allocated maps
+                for (j = 0; j < i; ++j)
+                {
+                    IFXDELETE(m_pMaps[i]);
+                }
+            }
+        }
+    }
 
-	return result;
+    if (IFXFAILURE(result))
+    {
+        for (i = 0; i < 6; ++i)
+        {
+            pMapSizes[i] = 0;
+        }
+    }
+
+    return result;
 }
 
+IFXRESULT CIFXMeshMap::Allocate(IFXAuthorMesh* pMesh)
+{
+    U32 mapSizes[6];
+    mapSizes[0] = pMesh->GetMaxMeshDesc()->NumFaces;
+    mapSizes[1] = pMesh->GetMaxMeshDesc()->NumPositions;
+    mapSizes[2] = pMesh->GetMaxMeshDesc()->NumNormals;
+    mapSizes[3] = pMesh->GetMaxMeshDesc()->NumTexCoords;
+    mapSizes[4] = pMesh->GetMaxMeshDesc()->NumDiffuseColors;
+    mapSizes[5] = pMesh->GetMaxMeshDesc()->NumSpecularColors;
 
-IFXRESULT CIFXMeshMap::Allocate( IFXAuthorMesh* pMesh )
-{	
-	U32 mapSizes[6]; 
-	mapSizes[0] = pMesh->GetMaxMeshDesc()->NumFaces;
-	mapSizes[1] = pMesh->GetMaxMeshDesc()->NumPositions;
-	mapSizes[2] = pMesh->GetMaxMeshDesc()->NumNormals;
-	mapSizes[3] = pMesh->GetMaxMeshDesc()->NumTexCoords;
-	mapSizes[4] = pMesh->GetMaxMeshDesc()->NumDiffuseColors;
-	mapSizes[5] = pMesh->GetMaxMeshDesc()->NumSpecularColors;
-	
-	return Construct( mapSizes );
+    return Construct(mapSizes);
 }
 
-IFXRESULT CIFXMeshMap::Allocate( IFXAuthorLineSet* pLineSet )
-{	
-	U32 mapSizes[6]; 
-	mapSizes[0] = pLineSet->GetMaxLineSetDesc()->m_numLines;
-	mapSizes[1] = pLineSet->GetMaxLineSetDesc()->m_numPositions;
-	mapSizes[2] = pLineSet->GetMaxLineSetDesc()->m_numNormals;
-	mapSizes[3] = pLineSet->GetMaxLineSetDesc()->m_numTexCoords;
-	mapSizes[4] = pLineSet->GetMaxLineSetDesc()->m_numDiffuseColors;
-	mapSizes[5] = pLineSet->GetMaxLineSetDesc()->m_numSpecularColors;
-	
-	return Construct( mapSizes );
+IFXRESULT CIFXMeshMap::Allocate(IFXAuthorLineSet* pLineSet)
+{
+    U32 mapSizes[6];
+    mapSizes[0] = pLineSet->GetMaxLineSetDesc()->m_numLines;
+    mapSizes[1] = pLineSet->GetMaxLineSetDesc()->m_numPositions;
+    mapSizes[2] = pLineSet->GetMaxLineSetDesc()->m_numNormals;
+    mapSizes[3] = pLineSet->GetMaxLineSetDesc()->m_numTexCoords;
+    mapSizes[4] = pLineSet->GetMaxLineSetDesc()->m_numDiffuseColors;
+    mapSizes[5] = pLineSet->GetMaxLineSetDesc()->m_numSpecularColors;
+
+    return Construct(mapSizes);
 }
 
-IFXRESULT CIFXMeshMap::Allocate( IFXAuthorPointSet* pPointSet )
-{	
-	U32 mapSizes[6]; 
-	mapSizes[0] = pPointSet->GetMaxPointSetDesc()->m_numPoints;
-	mapSizes[1] = pPointSet->GetMaxPointSetDesc()->m_numPositions;
-	mapSizes[2] = pPointSet->GetMaxPointSetDesc()->m_numNormals;
-	mapSizes[3] = pPointSet->GetMaxPointSetDesc()->m_numTexCoords;
-	mapSizes[4] = pPointSet->GetMaxPointSetDesc()->m_numDiffuseColors;
-	mapSizes[5] = pPointSet->GetMaxPointSetDesc()->m_numSpecularColors;
-	
-	return Construct( mapSizes );
+IFXRESULT CIFXMeshMap::Allocate(IFXAuthorPointSet* pPointSet)
+{
+    U32 mapSizes[6];
+    mapSizes[0] = pPointSet->GetMaxPointSetDesc()->m_numPoints;
+    mapSizes[1] = pPointSet->GetMaxPointSetDesc()->m_numPositions;
+    mapSizes[2] = pPointSet->GetMaxPointSetDesc()->m_numNormals;
+    mapSizes[3] = pPointSet->GetMaxPointSetDesc()->m_numTexCoords;
+    mapSizes[4] = pPointSet->GetMaxPointSetDesc()->m_numDiffuseColors;
+    mapSizes[5] = pPointSet->GetMaxPointSetDesc()->m_numSpecularColors;
+
+    return Construct(mapSizes);
 }
 
-IFXRESULT CIFXMeshMap::Allocate( IFXMeshMap* pMeshMap )
-{	
-	U32 mapSizes[6] = {0};
-	U32 i;
-	for( i = 0; i < 6; ++i )
-	{
-		IFXVertexMap* pVertexMap = pMeshMap->GetMap( i );
-		if( NULL != pVertexMap )
-			mapSizes[i] = pVertexMap->GetNumMapEntries();
-		else
-			mapSizes[i] = 0;
-	}
+IFXRESULT CIFXMeshMap::Allocate(IFXMeshMap* pMeshMap)
+{
+    U32 mapSizes[6] = { 0 };
+    U32 i;
+    for (i = 0; i < 6; ++i)
+    {
+        IFXVertexMap* pVertexMap = pMeshMap->GetMap(i);
+        if (NULL != pVertexMap)
+        {
+            mapSizes[i] = pVertexMap->GetNumMapEntries();
+        }
+        else
+        {
+            mapSizes[i] = 0;
+        }
+    }
 
-	return Construct( mapSizes );
+    return Construct(mapSizes);
 }
-
 
 // Combines this map with an AuthorMeshMap to provide a complete
 // mapping from an orginal author mesh to the final IFXMesh.
 // This map is modified in place.
-IFXRESULT CIFXMeshMap::Concatenate(IFXAuthorMeshMap *pAuthorMap)
+IFXRESULT CIFXMeshMap::Concatenate(IFXAuthorMeshMap* pAuthorMap)
 {
-	IFXRESULT r = IFX_OK;
-	U32 i;
-	for( i = 0; i < 6; i++)
-	{
-		if(m_pMaps[i])
-		{
-			r = m_pMaps[i]->Concatenate(
-								pAuthorMap->GetMap(i), 
-								pAuthorMap->GetMapSize(i));
-			if(r != IFX_OK)
-				return r;
-		}
-	}
+    IFXRESULT r = IFX_OK;
+    U32 i;
+    for (i = 0; i < 6; i++)
+    {
+        if (m_pMaps[i])
+        {
+            r = m_pMaps[i]->Concatenate(
+                pAuthorMap->GetMap(i),
+                pAuthorMap->GetMapSize(i));
+            if (r != IFX_OK)
+            {
+                return r;
+            }
+        }
+    }
 
-	return r;
+    return r;
 }
 
-IFXRESULT CIFXMeshMap::ConcatenateMeshMap( 
-							IFXMeshMap* pMeshMap, 
-							IFXMeshMap** ppOutMap )
+IFXRESULT CIFXMeshMap::ConcatenateMeshMap(
+    IFXMeshMap* pMeshMap,
+    IFXMeshMap** ppOutMap)
 {
-	IFXRESULT result = IFX_OK;
-	IFXVertexMap* pResultVertexMap = NULL;
+    IFXRESULT result = IFX_OK;
+    IFXVertexMap* pResultVertexMap = NULL;
 
-	if( NULL != *ppOutMap )
-	{
-		U32 i;
-		for( i = 0; i < 6 && IFXSUCCESS( result ); ++i )
-		{
-			if( NULL != m_pMaps[i] )
-			{
-				pResultVertexMap = (*ppOutMap)->GetMap(i);
-				result = m_pMaps[i]->ConcatenateVertexMap( 
-											pMeshMap->GetMap(i), 
-											&pResultVertexMap );
-			}
-		}
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+    if (NULL != *ppOutMap)
+    {
+        U32 i;
+        for (i = 0; i < 6 && IFXSUCCESS(result); ++i)
+        {
+            if (NULL != m_pMaps[i])
+            {
+                pResultVertexMap = (*ppOutMap)->GetMap(i);
+                result = m_pMaps[i]->ConcatenateVertexMap(
+                    pMeshMap->GetMap(i),
+                    &pResultVertexMap);
+            }
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
-IFXRESULT CIFXMeshMap::PopulateMeshMap(IFXAuthorMeshMap *pAuthorMeshMap)
+IFXRESULT CIFXMeshMap::PopulateMeshMap(IFXAuthorMeshMap* pAuthorMeshMap)
 {
-	IFXRESULT		result = IFX_OK;
-	IFXVertexMap	*pOutputMap;
-	U32				*pInputMap;
-	U32				mapSize = 0;
-	U32				i, j;
+    IFXRESULT result = IFX_OK;
+    IFXVertexMap* pOutputMap;
+    U32* pInputMap;
+    U32 mapSize = 0;
+    U32 i, j;
 
-	if (!pAuthorMeshMap)
-		result = IFX_E_INVALID_POINTER;
+    if (!pAuthorMeshMap)
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	// Populate one map at a time.
-	for (i = 0; IFXSUCCESS(result) && (i < 6); i++)
-	{
-		pInputMap = pAuthorMeshMap->GetMap(i);
-		mapSize = pAuthorMeshMap->GetMapSize(i);
-		pOutputMap = m_pMaps[i];
+    // Populate one map at a time.
+    for (i = 0; IFXSUCCESS(result) && (i < 6); i++)
+    {
+        pInputMap = pAuthorMeshMap->GetMap(i);
+        mapSize = pAuthorMeshMap->GetMapSize(i);
+        pOutputMap = m_pMaps[i];
 
-		if (pOutputMap)
-		{
-			// Before we proceed, do a range check
-			if (mapSize > pOutputMap->GetNumMapEntries())
-				result = IFX_E_INVALID_RANGE;
-			else
-			{
-				// Copy the IFXAuthorMeshMap to the IFXMeshMap
-				for (j = 0; IFXSUCCESS(result) && (j < mapSize); j++)
-				{
-					//  Index j became this index (including, possibly, IFX_NULL_INDEX32)
-					U32 remappedIndex = pInputMap[j];
+        if (pOutputMap)
+        {
+            // Before we proceed, do a range check
+            if (mapSize > pOutputMap->GetNumMapEntries())
+            {
+                result = IFX_E_INVALID_RANGE;
+            }
+            else
+            {
+                // Copy the IFXAuthorMeshMap to the IFXMeshMap
+                for (j = 0; IFXSUCCESS(result) && (j < mapSize); j++)
+                {
+                    //  Index j became this index (including, possibly, IFX_NULL_INDEX32)
+                    U32 remappedIndex = pInputMap[j];
 
-					// Only replicate this mapping forward if the original
-					// vertex actually ended up in the remapped mesh.
-					if (IFX_NULL_INDEX32 != remappedIndex)
-						result = pOutputMap->AddVertex(j, 0, remappedIndex);
-				}
-			}
-		}
-	}
+                    // Only replicate this mapping forward if the original
+                    // vertex actually ended up in the remapped mesh.
+                    if (IFX_NULL_INDEX32 != remappedIndex)
+                    {
+                        result = pOutputMap->AddVertex(j, 0, remappedIndex);
+                    }
+                }
+            }
+        }
+    }
 
-	return result;
+    return result;
 }
 
 IFXRESULT CIFXMeshMap::AddIdentityMappingToMap(U32 mapIndex)
 {
-	IFXRESULT		result = IFX_OK;
-	IFXVertexMap	*pMap = NULL;
-	U32				i;
+    IFXRESULT result = IFX_OK;
+    IFXVertexMap* pMap = NULL;
+    U32 i;
 
-	if (mapIndex >= 6)
-		result = IFX_E_INVALID_RANGE;
+    if (mapIndex >= 6)
+    {
+        result = IFX_E_INVALID_RANGE;
+    }
 
-	if (IFXSUCCESS(result))
-	{
-		pMap = m_pMaps[mapIndex];
-	}
+    if (IFXSUCCESS(result))
+    {
+        pMap = m_pMaps[mapIndex];
+    }
 
-	// Note - if pMap is NULL this function is a NOOP.
-	if (pMap && IFXSUCCESS(result))
-	{
-		for (i = 0; IFXSUCCESS(result) && (i < pMap->GetNumMapEntries()); i++)
-		{
-			result = pMap->AddVertex(i, 0, i);
-		}
-	}
+    // Note - if pMap is NULL this function is a NOOP.
+    if (pMap && IFXSUCCESS(result))
+    {
+        for (i = 0; IFXSUCCESS(result) && (i < pMap->GetNumMapEntries()); i++)
+        {
+            result = pMap->AddVertex(i, 0, i);
+        }
+    }
 
-	return result;
+    return result;
 }
 
 IFXRESULT CIFXMeshMap::AddMappingToMap(
-							const U32 mapIndex, const U32 origVertexIndex, 
-							const U32 indexMesh, U32 indexVertex)
+    const U32 mapIndex, const U32 origVertexIndex,
+    const U32 indexMesh, U32 indexVertex)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if (mapIndex < 6)
-	{
-		if (NULL != m_pMaps[mapIndex])
-		{
-			result = m_pMaps[mapIndex]->AddVertex(
-											origVertexIndex, 
-											indexMesh, 
-											indexVertex);
-		}
-		else
-			result = IFX_E_INVALID_POINTER;
-	}
-	else
-		result = IFX_E_INVALID_RANGE;
+    if (mapIndex < 6)
+    {
+        if (NULL != m_pMaps[mapIndex])
+        {
+            result = m_pMaps[mapIndex]->AddVertex(
+                origVertexIndex,
+                indexMesh,
+                indexVertex);
+        }
+        else
+        {
+            result = IFX_E_INVALID_POINTER;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_RANGE;
+    }
 
-	return result;
+    return result;
 }
-
 
 IFXVertexMap* CIFXMeshMap::GetFaceMap()
-{	
-	return m_pMaps[0];
+{
+    return m_pMaps[0];
 }
 IFXVertexMap* CIFXMeshMap::GetPositionMap()
-{	
-	return m_pMaps[1];
+{
+    return m_pMaps[1];
 }
 IFXVertexMap* CIFXMeshMap::GetNormalMap()
-{	
-	return m_pMaps[2];
+{
+    return m_pMaps[2];
 }
 IFXVertexMap* CIFXMeshMap::GetTextureMap()
-{	
-	return m_pMaps[3];
+{
+    return m_pMaps[3];
 }
 IFXVertexMap* CIFXMeshMap::GetDiffuseMap()
-{	
-	return m_pMaps[4];
+{
+    return m_pMaps[4];
 }
 IFXVertexMap* CIFXMeshMap::GetSpecularMap()
-{	
-	return m_pMaps[5];
+{
+    return m_pMaps[5];
 }
 
 IFXVertexMap* CIFXMeshMap::GetMap(U32 i)
-{	
-	IFXASSERT(i < 6);  // map index too large
-	return m_pMaps[i];
-}
-	
-CIFXMeshMap::CIFXMeshMap()
 {
-	m_refCount = 0;
-	U32 i;
-	for( i = 0; i < 6; i++)
-		m_pMaps[i] = NULL;
+    IFXASSERT(i < 6); // map index too large
+    return m_pMaps[i];
 }
 
+CIFXMeshMap::CIFXMeshMap()
+{
+    m_refCount = 0;
+    U32 i;
+    for (i = 0; i < 6; i++)
+    {
+        m_pMaps[i] = NULL;
+    }
+}
 
 CIFXMeshMap::~CIFXMeshMap()
 {
-	U32 i;
-	for( i = 0; i < 6; i++)
-		IFXDELETE(m_pMaps[i]);
+    U32 i;
+    for (i = 0; i < 6; i++)
+    {
+        IFXDELETE(m_pMaps[i]);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -318,7 +342,7 @@ CIFXMeshMap::~CIFXMeshMap()
 
 U32 CIFXMeshMap::AddRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
 
 //---------------------------------------------------------------------------
@@ -333,15 +357,15 @@ U32 CIFXMeshMap::AddRef()
 
 U32 CIFXMeshMap::Release()
 {
-	if ( 1 == m_refCount )
-	{
-		delete this;
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+    if (1 == m_refCount)
+    {
+        delete this;
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-	return --m_refCount;
+    return --m_refCount;
 }
 
 //---------------------------------------------------------------------------
@@ -357,35 +381,37 @@ U32 CIFXMeshMap::Release()
 //	description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
 
-IFXRESULT CIFXMeshMap::QueryInterface( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXMeshMap::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT	result	= IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if(interfaceId == IID_IFXUnknown)
-		{
-			*ppInterface = ( IFXUnknown* ) this;
-		}
-		if ( interfaceId == IID_IFXMeshMap )
-		{
-			*ppInterface = ( IFXMeshMap* ) this;
-		}
-		else
-		{
-			*ppInterface = NULL;
-			result = IFX_E_UNSUPPORTED;
-		}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        if (interfaceId == IID_IFXMeshMap)
+        {
+            *ppInterface = (IFXMeshMap*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+            result = IFX_E_UNSUPPORTED;
+        }
 
-		if ( IFXSUCCESS( result ) )
-			AddRef();
-	}
-	else
-	{
-		result = IFX_E_INVALID_POINTER;
-	}
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
 //---------------------------------------------------------------------------
@@ -395,34 +421,37 @@ IFXRESULT CIFXMeshMap::QueryInterface( IFXREFIID interfaceId, void** ppInterface
 //	CIFXClassName component can be instaniated multiple times.
 //---------------------------------------------------------------------------
 
-IFXRESULT IFXAPI_CALLTYPE CIFXMeshMap_Factory( IFXREFIID	interfaceId,
-								 void**		ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXMeshMap_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXAuthorMeshGroup component.
-		CIFXMeshMap	*pComponent	= new CIFXMeshMap;
+    if (ppInterface)
+    {
+        // Create the CIFXAuthorMeshGroup component.
+        CIFXMeshMap* pComponent = new CIFXMeshMap;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }

@@ -24,160 +24,154 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef Node_H
 #define Node_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
 #include "IFXString.h"
-#include "ParentList.h"
 #include "MetaDataList.h"
+#include "ParentList.h"
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class Node : public MetaDataList
+    {
+    public:
+        Node();
+        virtual ~Node();
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+        Set node's type
+        */
+        void SetType(const IFXString& rType);
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+        Get node's type
+        */
+        const IFXString& GetType() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class Node : public MetaDataList
-	{
-	public:
-		Node();
-		virtual ~Node();
+        /**
+        Set node's name
+        */
+        void SetName(const IFXString& rName);
 
-		/**
-		Set node's type
-		*/
-		void SetType( const IFXString& rType );
+        /**
+        Get node's name
+        */
+        const IFXString& GetName() const;
 
-		/**
-		Get node's type
-		*/
-		const IFXString& GetType() const;
+        /**
+        Set node's parent list
+        */
+        void SetParentList(const ParentList& rParentList);
 
-		/**
-		Set node's name
-		*/
-		void SetName( const IFXString& rName );
+        /**
+        Get node's parent list
+        */
+        const ParentList& GetParentList() const;
 
-		/**
-		Get node's name
-		*/
-		const IFXString& GetName() const;
+        /**
+        Set name of node resource
+        */
+        void SetResourceName(const IFXString& rName);
 
-		/**
-		Set node's parent list
-		*/
-		void SetParentList( const ParentList& rParentList );
+        /**
+        Get name of node resource
+        */
+        const IFXString& GetResourceName() const;
 
-		/**
-		Get node's parent list
-		*/
-		const ParentList& GetParentList() const;
+    protected:
+        IFXString m_resourceName;
 
-		/**
-		Set name of node resource
-		*/
-		void SetResourceName( const IFXString& rName );
+    private:
+        IFXString m_type;
+        IFXString m_name;
+        ParentList m_parentList;
+    };
 
-		/**
-		Get name of node resource
-		*/
-		const IFXString& GetResourceName() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	protected:
-		IFXString m_resourceName;
+    IFXFORCEINLINE Node::Node()
+    {
+    }
 
-	private:
-		IFXString m_type;
-		IFXString m_name;
-		ParentList m_parentList;
-	};
+    IFXFORCEINLINE Node::~Node()
+    {
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE void Node::SetType(const IFXString& rType)
+    {
+        m_type = rType;
+    }
 
-	IFXFORCEINLINE Node::Node()
-	{
-	}
+    IFXFORCEINLINE const IFXString& Node::GetType() const
+    {
+        return m_type;
+    }
 
-	IFXFORCEINLINE Node::~Node()
-	{
-	}
+    IFXFORCEINLINE void Node::SetName(const IFXString& rName)
+    {
+        m_name = rName;
+    }
 
-	IFXFORCEINLINE void Node::SetType( const IFXString& rType )
-	{
-		m_type = rType;
-	}
+    IFXFORCEINLINE const IFXString& Node::GetName() const
+    {
+        return m_name;
+    }
 
-	IFXFORCEINLINE const IFXString& Node::GetType() const
-	{
-		return m_type;
-	}
+    IFXFORCEINLINE void Node::SetParentList(const ParentList& rParentList)
+    {
+        m_parentList = rParentList;
+    }
 
-	IFXFORCEINLINE void Node::SetName( const IFXString& rName )
-	{
-		m_name = rName;
-	}
+    IFXFORCEINLINE const ParentList& Node::GetParentList() const
+    {
+        return m_parentList;
+    }
 
-	IFXFORCEINLINE const IFXString& Node::GetName() const
-	{
-		return m_name;
-	}
+    IFXFORCEINLINE void Node::SetResourceName(const IFXString& rName)
+    {
+        m_resourceName = rName;
+    }
 
-	IFXFORCEINLINE void Node::SetParentList( const ParentList& rParentList )
-	{
-		m_parentList = rParentList;
-	}
+    IFXFORCEINLINE const IFXString& Node::GetResourceName() const
+    {
+        return m_resourceName;
+    }
 
-	IFXFORCEINLINE const ParentList& Node::GetParentList() const
-	{
-		return m_parentList;
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-		IFXFORCEINLINE void Node::SetResourceName( const IFXString& rName )
-	{
-		m_resourceName = rName;
-	}
-
-	IFXFORCEINLINE const IFXString& Node::GetResourceName() const
-	{
-		return m_resourceName;
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

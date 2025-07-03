@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ViewNodeData_H
 #define ViewNodeData_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,220 +36,217 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    struct ViewTexture
+    {
+        IFXString m_name;
+        F32 m_blend;
+        F32 m_rotation;
+        F32 m_locationX;
+        F32 m_locationY;
+        I32 m_regPointX;
+        I32 m_regPointY;
+        F32 m_scaleX;
+        F32 m_scaleY;
+    };
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
+    */
+    class ViewNodeData
+    {
+    public:
+        ViewNodeData() {};
+        virtual ~ViewNodeData() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        void SetUnitType(const IFXString& rUnitType);
+        const IFXString& GetUnitType() const;
 
-struct ViewTexture
-{
-	IFXString m_name;
-	F32 m_blend;
-	F32 m_rotation;
-	F32 m_locationX;
-	F32 m_locationY;
-	I32 m_regPointX;
-	I32 m_regPointY;
-	F32 m_scaleX;
-	F32 m_scaleY;
-};
+        void SetType(const IFXString& rType);
+        const IFXString& GetType() const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
-*/
-class ViewNodeData
-{
-public:
-	ViewNodeData() {};
-	virtual ~ViewNodeData() {};
+        void SetClipping(const F32& rNearClip, const F32& rFarClip);
+        IFXRESULT GetClipping(F32* pNearClip, F32* pFarClip) const;
 
-	/**
-	*/
-	void SetUnitType( const IFXString& rUnitType );
-	const IFXString& GetUnitType() const;
+        void SetProjection(const F32& rProjection);
+        const F32& GetProjection() const;
 
-	void SetType( const IFXString& rType );
-	const IFXString& GetType() const;
+        void SetViewPort(const F32& rWidth, const F32& rHeight, const F32& rHorPos, const F32& rVertPos);
 
-	void SetClipping( const F32& rNearClip, const F32& rFarClip );
-	IFXRESULT GetClipping( F32* pNearClip, F32* pFarClip ) const;
+        IFXRESULT GetViewPort(F32* pWidth, F32* pHeight, F32* pHorPos, F32* pVertPos) const;
 
-	void SetProjection( const F32& rProjection );
-	const F32& GetProjection() const;
+        void AddBackdrop(const ViewTexture& rOverlay);
+        const ViewTexture& GetBackdrop(const U32 index) const;
+        const U32& GetBackdropCount() const;
 
-	void SetViewPort( const F32& rWidth, const F32& rHeight,
-		const F32& rHorPos, const F32& rVertPos );
+        void AddOverlay(const ViewTexture& rOverlay);
+        const ViewTexture& GetOverlay(const U32 index) const;
+        const U32& GetOverlayCount() const;
 
-	IFXRESULT GetViewPort( F32* pWidth, F32* pHeight,
-		F32* pHorPos, F32* pVertPos ) const;
+    private:
+        IFXString m_type;
+        IFXString m_unitType;
+        F32 m_nearClip;
+        F32 m_farClip;
+        F32 m_projection;
+        F32 m_width;
+        F32 m_height;
+        F32 m_horizontalPosition;
+        F32 m_verticalPosition;
+        IFXArray<ViewTexture> m_backdropList;
+        IFXArray<ViewTexture> m_overlayList;
+    };
 
-	void AddBackdrop( const ViewTexture& rOverlay );
-	const ViewTexture& GetBackdrop( const U32 index ) const;
-	const U32& GetBackdropCount() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	void AddOverlay( const ViewTexture& rOverlay );
-	const ViewTexture& GetOverlay( const U32 index ) const;
-	const U32& GetOverlayCount() const;
+    IFXFORCEINLINE void ViewNodeData::SetUnitType(const IFXString& rUnitType)
+    {
+        m_unitType = rUnitType;
+    }
 
-private:
-	IFXString m_type;
-	IFXString m_unitType;
-	F32 m_nearClip;
-	F32 m_farClip;
-	F32 m_projection;
-	F32 m_width;
-	F32 m_height;
-	F32 m_horizontalPosition;
-	F32 m_verticalPosition;
-	IFXArray< ViewTexture > m_backdropList;
-	IFXArray< ViewTexture > m_overlayList;
-};
+    IFXFORCEINLINE const IFXString& ViewNodeData::GetUnitType() const
+    {
+        return m_unitType;
+    }
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    IFXFORCEINLINE void ViewNodeData::SetType(const IFXString& rType)
+    {
+        m_type = rType;
+    }
 
-IFXFORCEINLINE void ViewNodeData::SetUnitType( const IFXString& rUnitType )
-{
-	m_unitType = rUnitType;
-}
+    IFXFORCEINLINE const IFXString& ViewNodeData::GetType() const
+    {
+        return m_type;
+    }
 
-IFXFORCEINLINE const IFXString& ViewNodeData::GetUnitType() const
-{
-	return m_unitType;
-}
+    IFXFORCEINLINE void ViewNodeData::SetProjection(const F32& rProjection)
+    {
+        m_projection = rProjection;
+    }
 
-IFXFORCEINLINE void ViewNodeData::SetType( const IFXString& rType )
-{
-	m_type = rType;
-}
+    IFXFORCEINLINE const F32& ViewNodeData::GetProjection() const
+    {
+        return m_projection;
+    }
 
-IFXFORCEINLINE const IFXString& ViewNodeData::GetType() const
-{
-	return m_type;
-}
+    IFXFORCEINLINE void ViewNodeData::SetClipping(const F32& rNearClip, const F32& rFarClip)
+    {
+        m_nearClip = rNearClip;
+        m_farClip = rFarClip;
+    }
 
-IFXFORCEINLINE void ViewNodeData::SetProjection( const F32& rProjection )
-{
-	m_projection = rProjection;
-}
+    IFXFORCEINLINE IFXRESULT ViewNodeData::GetClipping(F32* pNearClip, F32* pFarClip) const
+    {
+        IFXRESULT result = IFX_OK;
 
-IFXFORCEINLINE const F32& ViewNodeData::GetProjection() const
-{
-	return m_projection;
-}
+        if (NULL == pNearClip || NULL == pFarClip)
+        {
+            result = IFX_E_INVALID_POINTER;
+        }
+        else
+        {
+            *pNearClip = m_nearClip;
+            *pFarClip = m_farClip;
+        }
 
-IFXFORCEINLINE void ViewNodeData::SetClipping( const F32& rNearClip, const F32& rFarClip )
-{
-	m_nearClip = rNearClip;
-	m_farClip = rFarClip;
-}
+        return result;
+    }
 
-IFXFORCEINLINE IFXRESULT ViewNodeData::GetClipping( F32* pNearClip, F32* pFarClip ) const
-{
-	IFXRESULT result = IFX_OK;
+    IFXFORCEINLINE void ViewNodeData::SetViewPort(
+        const F32& rWidth,
+        const F32& rHeight,
+        const F32& rHorPos,
+        const F32& rVertPos)
+    {
+        m_width = rWidth;
+        m_height = rHeight;
+        m_horizontalPosition = rHorPos;
+        m_verticalPosition = rVertPos;
+    }
 
-	if( NULL == pNearClip || NULL == pFarClip )
-		result = IFX_E_INVALID_POINTER;
-	else
-	{
-		*pNearClip = m_nearClip;
-		*pFarClip = m_farClip;
-	}
+    IFXFORCEINLINE IFXRESULT ViewNodeData::GetViewPort(
+        F32* pWidth, F32* pHeight,
+        F32* pHorPos, F32* pVertPos) const
+    {
+        IFXRESULT result = IFX_OK;
 
-	return result;
-}
+        if (NULL == pWidth || NULL == pHeight || NULL == pHorPos || NULL == pVertPos)
+        {
+            result = IFX_E_INVALID_POINTER;
+        }
+        else
+        {
+            *pWidth = m_width;
+            *pHeight = m_height;
+            *pHorPos = m_horizontalPosition;
+            *pVertPos = m_verticalPosition;
+        }
 
-IFXFORCEINLINE void ViewNodeData::SetViewPort( 
-									const F32& rWidth,
-									const F32& rHeight,
-									const F32& rHorPos,
-									const F32& rVertPos )
-{
-	m_width = rWidth;
-	m_height = rHeight;
-	m_horizontalPosition = rHorPos;
-	m_verticalPosition = rVertPos;
-}
+        return result;
+    }
 
-IFXFORCEINLINE IFXRESULT ViewNodeData::GetViewPort( 
-									F32* pWidth, F32* pHeight,
-									F32* pHorPos, F32* pVertPos ) const
-{
-	IFXRESULT result = IFX_OK;
+    IFXFORCEINLINE void ViewNodeData::AddBackdrop(const ViewTexture& rBackdrop)
+    {
+        ViewTexture& backdrop = m_backdropList.CreateNewElement();
+        backdrop = rBackdrop;
+    }
 
-	if( NULL == pWidth || NULL == pHeight || NULL == pHorPos || NULL == pVertPos )
-		result = IFX_E_INVALID_POINTER;
-	else
-	{
-		*pWidth = m_width;
-		*pHeight = m_height;
-		*pHorPos = m_horizontalPosition;
-		*pVertPos = m_verticalPosition;
-	}
+    IFXFORCEINLINE const ViewTexture& ViewNodeData::GetBackdrop(const U32 index) const
+    {
+        return m_backdropList.GetElementConst(index);
+    }
 
-	return result;
-}
+    IFXFORCEINLINE const U32& ViewNodeData::GetBackdropCount() const
+    {
+        return m_backdropList.GetNumberElements();
+    }
 
-IFXFORCEINLINE void ViewNodeData::AddBackdrop( const ViewTexture& rBackdrop )
-{
-	ViewTexture& backdrop = m_backdropList.CreateNewElement();
-	backdrop = rBackdrop;
-}
+    IFXFORCEINLINE void ViewNodeData::AddOverlay(const ViewTexture& rOverlay)
+    {
+        ViewTexture& overlay = m_overlayList.CreateNewElement();
+        overlay = rOverlay;
+    }
 
-IFXFORCEINLINE const ViewTexture& ViewNodeData::GetBackdrop( const U32 index ) const
-{
-	return m_backdropList.GetElementConst( index );
-}
+    IFXFORCEINLINE const ViewTexture& ViewNodeData::GetOverlay(const U32 index) const
+    {
+        return m_overlayList.GetElementConst(index);
+    }
 
-IFXFORCEINLINE const U32& ViewNodeData::GetBackdropCount() const
-{
-	return m_backdropList.GetNumberElements();
-}
+    IFXFORCEINLINE const U32& ViewNodeData::GetOverlayCount() const
+    {
+        return m_overlayList.GetNumberElements();
+    }
 
-IFXFORCEINLINE void ViewNodeData::AddOverlay( const ViewTexture& rOverlay )
-{
-	ViewTexture& overlay = m_overlayList.CreateNewElement();
-	overlay = rOverlay;
-}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-IFXFORCEINLINE const ViewTexture& ViewNodeData::GetOverlay( const U32 index ) const
-{
-	return m_overlayList.GetElementConst( index );
-}
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-IFXFORCEINLINE const U32& ViewNodeData::GetOverlayCount() const
-{
-	return m_overlayList.GetNumberElements();
-}
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
 }
 

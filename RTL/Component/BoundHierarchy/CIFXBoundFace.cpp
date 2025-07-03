@@ -19,25 +19,25 @@
 //	CIFXBoundFace.cpp
 //
 //	DESCRIPTION
-//	
+//
 //		Source file for CIFXBoundFace class.  Contains definitions for the
-//		methods that manipulate a bounding face.	
+//		methods that manipulate a bounding face.
 //
 //	NOTES
 //
 //*****************************************************************************
 //*****************************************************************************
 //	Includes
-//***************************************************************************** 
+//*****************************************************************************
 #include "CIFXBoundFace.h"
 
 //*****************************************************************************
 //	Defines
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Constants
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Enumerations
@@ -63,7 +63,6 @@ CIFXBoundFace::~CIFXBoundFace()
 {
 }
 
-
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::GetCentroid
 //
@@ -71,10 +70,9 @@ CIFXBoundFace::~CIFXBoundFace()
 //-----------------------------------------------------------------------------
 
 void CIFXBoundFace::GetCentroid(IFXVector3& vCentroid)
-{ 
-	vCentroid = m_vCentroid;
+{
+    vCentroid = m_vCentroid;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::GetCentroidComponent
@@ -83,12 +81,11 @@ void CIFXBoundFace::GetCentroid(IFXVector3& vCentroid)
 //-----------------------------------------------------------------------------
 
 F32 CIFXBoundFace::GetCentroidComponent(U32 uIndex)
-{ 
-	IFXASSERT(uIndex <= 2);
+{
+    IFXASSERT(uIndex <= 2);
 
-	return m_vCentroid[uIndex];
+    return m_vCentroid[uIndex];
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::SetCentroid
@@ -97,10 +94,9 @@ F32 CIFXBoundFace::GetCentroidComponent(U32 uIndex)
 //-----------------------------------------------------------------------------
 
 void CIFXBoundFace::SetCentroid(IFXVector3& vCentroid)
-{ 
-	m_vCentroid = vCentroid;
+{
+    m_vCentroid = vCentroid;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::GetFace
@@ -108,17 +104,20 @@ void CIFXBoundFace::SetCentroid(IFXVector3& vCentroid)
 //  Return a pointer to the IFXU32Face
 //-----------------------------------------------------------------------------
 
-IFXRESULT CIFXBoundFace::GetFace(IFXU32Face *pFace)
-{ 
-	IFXRESULT result = IFX_OK;
+IFXRESULT CIFXBoundFace::GetFace(IFXU32Face* pFace)
+{
+    IFXRESULT result = IFX_OK;
 
-	if( pFace )
-		*pFace = m_face;
-	else 
-		result = IFX_E_INVALID_POINTER;
-	return result;
+    if (pFace)
+    {
+        *pFace = m_face;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
+    return result;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::SetFace
@@ -126,17 +125,20 @@ IFXRESULT CIFXBoundFace::GetFace(IFXU32Face *pFace)
 //  Set the IFXU32Face
 //-----------------------------------------------------------------------------
 
-IFXRESULT CIFXBoundFace::SetFace(IFXU32Face *pFace)
-{ 
-	IFXRESULT result = IFX_OK;
+IFXRESULT CIFXBoundFace::SetFace(IFXU32Face* pFace)
+{
+    IFXRESULT result = IFX_OK;
 
-	if( pFace )
-		m_face = *pFace;
-	else 
-		result = IFX_E_INVALID_POINTER;
-	return result;
+    if (pFace)
+    {
+        m_face = *pFace;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
+    return result;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::GetMeshID
@@ -146,9 +148,8 @@ IFXRESULT CIFXBoundFace::SetFace(IFXU32Face *pFace)
 
 U32 CIFXBoundFace::GetMeshID()
 {
-	return m_uMeshID;
+    return m_uMeshID;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::SetMeshID
@@ -156,11 +157,10 @@ U32 CIFXBoundFace::GetMeshID()
 //  Set the MeshID from which this face comes
 //-----------------------------------------------------------------------------
 
-void CIFXBoundFace::SetMeshID(U32 uMeshID) 
-{ 
-	m_uMeshID = uMeshID; 
+void CIFXBoundFace::SetMeshID(U32 uMeshID)
+{
+    m_uMeshID = uMeshID;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::GetFaceID
@@ -169,10 +169,9 @@ void CIFXBoundFace::SetMeshID(U32 uMeshID)
 //-----------------------------------------------------------------------------
 
 U32 CIFXBoundFace::GetFaceID()
-{ 
-	return m_uFaceID; 
+{
+    return m_uFaceID;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::SetFaceID
@@ -180,11 +179,10 @@ U32 CIFXBoundFace::GetFaceID()
 //  Set the FaceID from which this face comes - indexes into the faceList
 //-----------------------------------------------------------------------------
 
-void CIFXBoundFace::SetFaceID(U32 uFaceID) 
-{ 
-	m_uFaceID = uFaceID; 
+void CIFXBoundFace::SetFaceID(U32 uFaceID)
+{
+    m_uFaceID = uFaceID;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::GetIntersect
@@ -193,11 +191,10 @@ void CIFXBoundFace::SetFaceID(U32 uFaceID)
 //-----------------------------------------------------------------------------
 
 BOOL CIFXBoundFace::GetIntersect()
-{ 
-	return m_bIntersect; 
+{
+    return m_bIntersect;
 }
 
-	
 //-----------------------------------------------------------------------------
 //	CIFXBoundFace::SetIntersect
 //
@@ -205,6 +202,6 @@ BOOL CIFXBoundFace::GetIntersect()
 //-----------------------------------------------------------------------------
 
 void CIFXBoundFace::SetIntersect(BOOL bFlag)
-{ 
-	m_bIntersect = bFlag; 
+{
+    m_bIntersect = bFlag;
 }

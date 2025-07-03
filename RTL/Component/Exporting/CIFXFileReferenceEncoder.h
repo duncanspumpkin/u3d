@@ -16,48 +16,47 @@
 //
 //***************************************************************************
 
-/**		
-	@file	CIFXFileReferenceEncoder.h
-			
-			Declaration of CIFXFileReferenceEncoder class implementation
+/**
+        @file	CIFXFileReferenceEncoder.h
+
+                        Declaration of CIFXFileReferenceEncoder class implementation
 */
 
 #ifndef CIFXFileReferenceEncoder_H__
 #define CIFXFileReferenceEncoder_H__
 
+#include "IFXAutoRelease.h"
 #include "IFXCoreServices.h"
 #include "IFXEncoderX.h"
 #include "IFXFileReference.h"
-#include "IFXAutoRelease.h"
 
 class CIFXFileReferenceEncoder : virtual public IFXEncoderX
 {
 public:
-	// IFXUnknown
-	U32 IFXAPI  AddRef ( void );
-	U32 IFXAPI  Release ( void );
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	/// Provide the encoder with a pointer to the object which is to be encoded.
-	void IFXAPI	SetObjectX(IFXUnknown &rObject);
-	/// Initialize and get a reference to the core services
-	void IFXAPI	InitializeX(IFXCoreServices &rCoreServices);
-	/// Encode data into data blocks and place these blocks in a queue
-	void IFXAPI	EncodeX(IFXString &rName, IFXDataBlockQueueX &rDataBlockQueue, F64 units = 1.0f);
+    // IFXEncoderX
+    /// Provide the encoder with a pointer to the object which is to be encoded.
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
+    /// Initialize and get a reference to the core services
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    /// Encode data into data blocks and place these blocks in a queue
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
 
-	// Factory function
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXFileReferenceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
+    // Factory function
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXFileReferenceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
 private:
+    CIFXFileReferenceEncoder();
+    virtual ~CIFXFileReferenceEncoder();
 
-	CIFXFileReferenceEncoder();
-	virtual ~CIFXFileReferenceEncoder();
+    U32 m_uRefCount; // Reference count for IFXUnknown
 
-	U32 m_uRefCount;	// Reference count for IFXUnknown
-
-	IFXDECLAREMEMBER(IFXCoreServices,m_pCoreServices);
-	IFXDECLAREMEMBER(IFXFileReference,m_pFileReference);
+    IFXDECLAREMEMBER(IFXCoreServices, m_pCoreServices);
+    IFXDECLAREMEMBER(IFXFileReference, m_pFileReference);
 };
 
 #endif

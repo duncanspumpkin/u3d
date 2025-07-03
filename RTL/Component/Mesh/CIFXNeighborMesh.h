@@ -20,45 +20,45 @@
 #ifndef CIFX_NEIGHBORMESH_H
 #define CIFX_NEIGHBORMESH_H
 
-#include "IFXUnknown.h"
 #include "IFXNeighborMesh.h"
+#include "IFXUnknown.h"
 
 class CIFXNeighborMesh : virtual public IFXNeighborMesh, virtual public IFXUnknown
 {
-	U32 m_refCount;
+    U32 m_refCount;
+
 public:
-	U32 IFXAPI  AddRef ();
-	U32 IFXAPI  Release ();
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void** ppInterface);
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXNeighborMeshFactory(IFXREFIID intId, void** ppPtr);
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXNeighborMeshFactory(IFXREFIID intId, void** ppPtr);
 
-	// Allocate memory for neighbor mesh in a parallel array
-	// fashion, according to the sizes in IFXMeshGroup.
-	//
-	// Will return IFX_E_OUT_OF_MEMORY if a memory allocation fails.
+    // Allocate memory for neighbor mesh in a parallel array
+    // fashion, according to the sizes in IFXMeshGroup.
+    //
+    // Will return IFX_E_OUT_OF_MEMORY if a memory allocation fails.
     IFXRESULT IFXAPI Allocate(IFXMeshGroup& rMeshGroup);
-	
-	// Frees memory for neighbor mesh.
-	void IFXAPI Deallocate();
 
-	// Builds the neighbormesh from the specified Meshgroup and 
-	// vertex map
-	IFXRESULT IFXAPI Build(IFXMeshGroup& rInMeshGroup, IFXVertexMapGroup* pInVertexMap);
-	
-	// Something needed for Subdiv
-	IFXRESULT IFXAPI MarkAttributeDiscontinuities(IFXMeshGroup& rMeshGroup);
-			
+    // Frees memory for neighbor mesh.
+    void IFXAPI Deallocate();
+
+    // Builds the neighbormesh from the specified Meshgroup and
+    // vertex map
+    IFXRESULT IFXAPI Build(IFXMeshGroup& rInMeshGroup, IFXVertexMapGroup* pInVertexMap);
+
+    // Something needed for Subdiv
+    IFXRESULT IFXAPI MarkAttributeDiscontinuities(IFXMeshGroup& rMeshGroup);
+
 protected:
-	CIFXNeighborMesh();
-	virtual ~CIFXNeighborMesh();
-	
-	virtual IFXRESULT IFXAPI Construct();
+    CIFXNeighborMesh();
+    virtual ~CIFXNeighborMesh();
 
-	IFXRESULT IFXAPI BuildLinks();
+    virtual IFXRESULT IFXAPI Construct();
 
-	IFXVertexMapGroup* m_pVertexMapGroup;
+    IFXRESULT IFXAPI BuildLinks();
+
+    IFXVertexMapGroup* m_pVertexMapGroup;
 };
-
 
 #endif

@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ShadingDescriptionList_H
 #define ShadingDescriptionList_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,88 +36,81 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ShadingDescriptionList
+    {
+    public:
+        ShadingDescriptionList() {};
+        virtual ~ShadingDescriptionList() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+        @todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
+        DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
+        INTERFACE HEADER HERE TO REDUCE DUPLICATION.
 
+        @param  inputValue    An input value.
+        @param  pOutputValue  A pointer to the output value that is
+        initialize upon success.
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+        @return Upon success, IFX_OK is returned.  Otherwise, one of the
+        following failures are returned:  @todo: return codes.
+        */
+        void AddShadingDescription(const ShadingDescription& rShadingDescription);
+        const ShadingDescription& GetShadingDescription(U32 index) const;
+        U32 GetShadingDescriptionCount() const;
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class ShadingDescriptionList
-{
-public:
-	ShadingDescriptionList() {};
-	virtual ~ShadingDescriptionList() {};
+    protected:
+    private:
+        IFXArray<ShadingDescription> m_shadingDescriptionList;
+    };
 
-	/**
-	@todo:  INSERT CUSTOM METHOD PROTOTYPES AND DESCRIPTIONS.
-	DOCUMENT THEM IN ONLY ONE SPOT.  IT'S BEST TO DO THIS IN THE
-	INTERFACE HEADER HERE TO REDUCE DUPLICATION.
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	@param  inputValue    An input value.
-	@param  pOutputValue  A pointer to the output value that is
-	initialize upon success.
+    IFXFORCEINLINE void ShadingDescriptionList::AddShadingDescription(const ShadingDescription& rShadingDescription)
+    {
+        ShadingDescription& description = m_shadingDescriptionList.CreateNewElement();
+        description = rShadingDescription;
+    }
 
-	@return Upon success, IFX_OK is returned.  Otherwise, one of the
-	following failures are returned:  @todo: return codes.
-	*/
-	void AddShadingDescription( const ShadingDescription& rShadingDescription );
-	const ShadingDescription& GetShadingDescription( U32 index ) const;
-	U32 GetShadingDescriptionCount() const;
+    IFXFORCEINLINE const ShadingDescription& ShadingDescriptionList::GetShadingDescription(U32 index) const
+    {
+        return m_shadingDescriptionList.GetElementConst(index);
+    }
 
-protected:
+    IFXFORCEINLINE U32 ShadingDescriptionList::GetShadingDescriptionCount() const
+    {
+        return m_shadingDescriptionList.GetNumberElements();
+    }
 
-private:
-	IFXArray< ShadingDescription > m_shadingDescriptionList;
-};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-IFXFORCEINLINE void ShadingDescriptionList::AddShadingDescription( const ShadingDescription& rShadingDescription )
-{
-	ShadingDescription& description = m_shadingDescriptionList.CreateNewElement();
-	description = rShadingDescription;
-}
-
-IFXFORCEINLINE const ShadingDescription& ShadingDescriptionList::GetShadingDescription( U32 index ) const
-{
-	return m_shadingDescriptionList.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 ShadingDescriptionList::GetShadingDescriptionCount() const
-{
-	return m_shadingDescriptionList.GetNumberElements();
-}
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

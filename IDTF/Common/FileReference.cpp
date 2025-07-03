@@ -22,7 +22,6 @@
       This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -35,42 +34,35 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
 
-FileReference::FileReference() 
+FileReference::FileReference()
 {
 }
 
@@ -78,81 +70,83 @@ FileReference::~FileReference()
 {
 }
 
-void FileReference::SetScopeName( const IFXString& rName )
+void FileReference::SetScopeName(const IFXString& rName)
 {
-	m_scopeName = rName;
+    m_scopeName = rName;
 }
 
 const IFXString& FileReference::GetScopeName() const
 {
-	return m_scopeName;
+    return m_scopeName;
 }
 
-void FileReference::AddUrlList( const UrlList& rUrlList )
+void FileReference::AddUrlList(const UrlList& rUrlList)
 {
-	m_urlList = rUrlList;
+    m_urlList = rUrlList;
 }
 
 const IFXArray<IFXString>& FileReference::GetUrlList() const
 {
-	return m_urlList.GetUrlList();
+    return m_urlList.GetUrlList();
 }
 
-IFXRESULT FileReference::AddFilter( const Filter& rFilter )
+IFXRESULT FileReference::AddFilter(const Filter& rFilter)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	Filter& filter = m_filterList.CreateNewElement();
+    Filter& filter = m_filterList.CreateNewElement();
 
-	const IFXString& rType = rFilter.GetType();
-	filter.SetType( rType );
+    const IFXString& rType = rFilter.GetType();
+    filter.SetType(rType);
 
-	if( rType == "NAME" )
-	{
-		filter.SetObjectName( rFilter.GetObjectName() );
-	}
-	else if( rType == "TYPE" )
-	{
-		filter.SetObjectType( rFilter.GetObjectType() );
-	}
-	else
-		result = IFX_E_UNSUPPORTED;
+    if (rType == "NAME")
+    {
+        filter.SetObjectName(rFilter.GetObjectName());
+    }
+    else if (rType == "TYPE")
+    {
+        filter.SetObjectType(rFilter.GetObjectType());
+    }
+    else
+    {
+        result = IFX_E_UNSUPPORTED;
+    }
 
-	return result;
+    return result;
 }
 
-const Filter& FileReference::GetFilter( U32 index ) const
+const Filter& FileReference::GetFilter(U32 index) const
 {
-	return m_filterList.GetElementConst( index );
+    return m_filterList.GetElementConst(index);
 }
 
 const U32& FileReference::GetFilterCount() const
 {
-	return m_filterList.GetNumberElements();
+    return m_filterList.GetNumberElements();
 }
 
-void FileReference::SetCollisionPolicy( const IFXString& rName )
+void FileReference::SetCollisionPolicy(const IFXString& rName)
 {
-	m_nameCollisionPolicy = rName;
+    m_nameCollisionPolicy = rName;
 }
 
 const IFXString& FileReference::GetCollisionPolicy() const
 {
-	return m_nameCollisionPolicy;
+    return m_nameCollisionPolicy;
 }
 
-void FileReference::SetWorldAlias( const IFXString& rWorldAlias )
+void FileReference::SetWorldAlias(const IFXString& rWorldAlias)
 {
-	m_worldAlias = rWorldAlias;
+    m_worldAlias = rWorldAlias;
 }
 
 const IFXString& FileReference::GetWorldAlias() const
 {
-	return m_worldAlias;
+    return m_worldAlias;
 }
 
 Filter::Filter()
-: m_objectType( 0 )
+    : m_objectType(0)
 {
 }
 
@@ -160,50 +154,47 @@ Filter::~Filter()
 {
 }
 
-void Filter::SetType( const IFXString& rType )
+void Filter::SetType(const IFXString& rType)
 {
-	m_type = rType;
+    m_type = rType;
 }
 
 const IFXString& Filter::GetType() const
 {
-	return m_type;
+    return m_type;
 }
 
-void Filter::SetObjectName( const IFXString& rName )
+void Filter::SetObjectName(const IFXString& rName)
 {
-	m_objectName = rName;
+    m_objectName = rName;
 }
 
 const IFXString& Filter::GetObjectName() const
 {
-	return m_objectName;
+    return m_objectName;
 }
 
-void Filter::SetObjectType( const I32 type )
+void Filter::SetObjectType(const I32 type)
 {
-	m_objectType = type;
+    m_objectType = type;
 }
 
 const I32& Filter::GetObjectType() const
 {
-	return m_objectType;
+    return m_objectType;
 }
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions

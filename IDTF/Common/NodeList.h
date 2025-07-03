@@ -24,83 +24,75 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef NodeList_H
 #define NodeList_H
-
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-#include "IFXResult.h"
 #include "IFXArray.h"
-#include "Node.h"
+#include "IFXResult.h"
 #include "LightNode.h"
-#include "ViewNode.h"
 #include "ModelNode.h"
+#include "Node.h"
+#include "ViewNode.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class NodeList
+    {
+    public:
+        NodeList();
+        virtual ~NodeList();
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        IFXRESULT AddNode(const Node* pNode);
+        const Node* GetNode(U32 index) const;
+        U32 GetNodeCount() const;
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+    protected:
+    private:
+        IFXArray<Node*> m_nodePointerList;
+        IFXArray<LightNode> m_lightNodeList;
+        IFXArray<ViewNode> m_viewNodeList;
+        IFXArray<ModelNode> m_modelNodeList;
+        IFXArray<Node> m_groupNodeList;
+    };
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class NodeList
-{
-public:
-	NodeList();
-	virtual ~NodeList();
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	/**
-	*/
-	IFXRESULT AddNode( const Node* pNode );
-	const Node* GetNode( U32 index ) const;
-	U32   GetNodeCount() const;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-protected:
-
-private:
-	IFXArray< Node* > m_nodePointerList;
-	IFXArray< LightNode > m_lightNodeList;
-	IFXArray< ViewNode > m_viewNodeList;
-	IFXArray< ModelNode > m_modelNodeList;
-	IFXArray< Node > m_groupNodeList;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

@@ -19,16 +19,15 @@
 //	CIFXViewResourceEncoder.h
 //
 //		Declaration of the CIFXViewResourceEncoder.
-//		The CIFXViewResourceEncoder contains view node encoding functionality 
+//		The CIFXViewResourceEncoder contains view node encoding functionality
 //		that is used by the write manager.
-//	
+//
 //*****************************************************************************
 
 #ifndef CIFXViewResourceEncoder_H
 #define CIFXViewResourceEncoder_H
 
-
-// no ordering requirements for include files 
+// no ordering requirements for include files
 #include "CIFXNodeBaseEncoder.h"
 #include "IFXCoreServices.h"
 #include "IFXDataBlockX.h"
@@ -36,34 +35,32 @@
 #include "IFXString.h"
 #include "IFXViewResource.h"
 
-
-class  CIFXViewResourceEncoder : virtual public IFXEncoderX,
-							 public CIFXNodeBaseEncoder
+class CIFXViewResourceEncoder : virtual public IFXEncoderX,
+                                public CIFXNodeBaseEncoder
 {
 public:
-	
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXViewResourceEncoder_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXViewResourceEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXUnknown
-	U32 IFXAPI 			AddRef ( void );
-	U32 IFXAPI 			Release ( void );
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	void	IFXAPI		EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f );
-	void	IFXAPI		InitializeX( IFXCoreServices& rCoreServices );
-	void	IFXAPI		SetObjectX( IFXUnknown& rObject );
+    // IFXEncoderX
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
 
 private:
-	// methods
-	CIFXViewResourceEncoder();
-	~CIFXViewResourceEncoder();
+    // methods
+    CIFXViewResourceEncoder();
+    ~CIFXViewResourceEncoder();
 
-	// members
-	BOOL	m_bInitialized;
-	U32		m_uRefCount;
-	IFXViewResource *m_pViewRes;
+    // members
+    BOOL m_bInitialized;
+    U32 m_uRefCount;
+    IFXViewResource* m_pViewRes;
 };
 
 #endif

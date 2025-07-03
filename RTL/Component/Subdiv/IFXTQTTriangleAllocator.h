@@ -22,29 +22,26 @@
 
 class IFXTQTTriangle;
 
-
 class IFXTQTTriangleAllocator : public IFXUnitAllocator
 {
 
 public:
-        
     IFXTQTTriangleAllocator(U32 uNumInitialUnits, U32 uGrowByNumUnits);
     virtual ~IFXTQTTriangleAllocator();
 
-    IFXTQTTriangle *Allocate();
-    void Deallocate(IFXTQTTriangle *);
+    IFXTQTTriangle* Allocate();
+    void Deallocate(IFXTQTTriangle*);
 };
 
-
-IFXINLINE IFXTQTTriangle * IFXTQTTriangleAllocator::Allocate()
+IFXINLINE IFXTQTTriangle* IFXTQTTriangleAllocator::Allocate()
 {
-    U8 *pu8 = IFXUnitAllocator::Allocate();
-    return ((IFXTQTTriangle *) pu8);
+    U8* pu8 = IFXUnitAllocator::Allocate();
+    return ((IFXTQTTriangle*)pu8);
 }
 
-IFXINLINE void IFXTQTTriangleAllocator::Deallocate(IFXTQTTriangle *pTriangle)
+IFXINLINE void IFXTQTTriangleAllocator::Deallocate(IFXTQTTriangle* pTriangle)
 {
-    U8 *pu8 = (U8 *) pTriangle;
+    U8* pu8 = (U8*)pTriangle;
     IFXUnitAllocator::Deallocate(pu8);
 }
 

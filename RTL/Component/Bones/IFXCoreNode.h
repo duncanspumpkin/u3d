@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file IFXCoreNode.h 
+        @file IFXCoreNode.h
 */
 
 #ifndef IFXCORENODE_H
@@ -30,142 +30,160 @@ class IFXBoneNodeList;
 class IFXCharacter;
 
 /**
-	Defined here: Effections are an association to an effector through
-	an IFXBoneNode
+        Defined here: Effections are an association to an effector through
+        an IFXBoneNode
 */
 class IFXCoreNode
 {
-	class IFXCoreNodeShare
-	{
-	public:
-		IFXCoreNodeShare(void)  { Reset(); }
-		void Reset(void)
-		{
-			m_name=L"none";
-			m_reference_displacement.Reset();
-			m_local_reference_rotation.MakeIdentity();
-			m_referenceTransform.Reset();
-			m_is_bone=false;
-		}
+    class IFXCoreNodeShare
+    {
+    public:
+        IFXCoreNodeShare(void) { Reset(); }
+        void Reset(void)
+        {
+            m_name = L"none";
+            m_reference_displacement.Reset();
+            m_local_reference_rotation.MakeIdentity();
+            m_referenceTransform.Reset();
+            m_is_bone = false;
+        }
 
-		bool            m_is_bone;
-		IFXVector3      m_reference_displacement;
-		IFXQuaternion   m_local_reference_rotation;
-		IFXTransform    m_referenceTransform;
-		IFXString       m_name;
-		U32             m_count;
-	};
+        bool m_is_bone;
+        IFXVector3 m_reference_displacement;
+        IFXQuaternion m_local_reference_rotation;
+        IFXTransform m_referenceTransform;
+        IFXString m_name;
+        U32 m_count;
+    };
 
 public:
-	IFXCoreNode(IFXCoreNode *pCloneOf=NULL);
-	virtual                     ~IFXCoreNode(void);
-	void                Reset(void);
+    IFXCoreNode(IFXCoreNode* pCloneOf = NULL);
+    virtual ~IFXCoreNode(void);
+    void Reset(void);
 
-	bool                IsBone(void) const  { return m_share->m_is_bone; };
+    bool IsBone(void) const { return m_share->m_is_bone; };
 
-	IFXString&          Name(void)              { return m_share->m_name; }
-	const   IFXString&  NameConst(void) const   { return m_share->m_name; }
-	void                SetName(const IFXString& rSet)  { m_share->m_name=rSet; }
-	void                AppendChild(IFXBoneNode *bonenode);
-	void                RemoveChild(IFXBoneNode *bonenode);
+    IFXString& Name(void) { return m_share->m_name; }
+    const IFXString& NameConst(void) const { return m_share->m_name; }
+    void SetName(const IFXString& rSet) { m_share->m_name = rSet; }
+    void AppendChild(IFXBoneNode* bonenode);
+    void RemoveChild(IFXBoneNode* bonenode);
 
-	IFXVector3&			Displacement(void) { return m_displacement; }
+    IFXVector3& Displacement(void) { return m_displacement; }
 
-	IFXVector3 const&	DisplacementConst(void) const { return m_displacement; }
+    IFXVector3 const& DisplacementConst(void) const { return m_displacement; }
 
-	IFXQuaternion&		Rotation(void)         { return m_rotation; }
-	const IFXQuaternion& RotationConst(void) const { return m_rotation; }
+    IFXQuaternion& Rotation(void) { return m_rotation; }
+    const IFXQuaternion& RotationConst(void) const { return m_rotation; }
 
-	IFXVector3&			Scale(void)            { return m_scale; }
-	IFXVector3 const&	ScaleConst(void) const { return m_scale; }
+    IFXVector3& Scale(void) { return m_scale; }
+    IFXVector3 const& ScaleConst(void) const { return m_scale; }
 
-	//* internal:
+    //* internal:
 
-	IFXCoreNode*		Parent(void)           { return m_parent; }
-	const   IFXCoreNode* ParentConst(void) const { return m_parent; }
-	void                SetParent(IFXCoreNode *set) { m_parent=set; }
+    IFXCoreNode* Parent(void) { return m_parent; }
+    const IFXCoreNode* ParentConst(void) const { return m_parent; }
+    void SetParent(IFXCoreNode* set) { m_parent = set; }
 
-	IFXBoneNodeList&	Children(void)         { return *m_pChildren; }
-	const   IFXBoneNodeList& ChildrenConst(void) const { return *m_pChildren; }
+    IFXBoneNodeList& Children(void) { return *m_pChildren; }
+    const IFXBoneNodeList& ChildrenConst(void) const { return *m_pChildren; }
 
-	IFXBoneNodeList&	Effections(void) { return *m_pEffections; }
-	IFXBoneNodeList const& EffectionsConst(void) const { 
-		return *m_pEffections; 
-	}
+    IFXBoneNodeList& Effections(void) { return *m_pEffections; }
+    IFXBoneNodeList const& EffectionsConst(void) const
+    {
+        return *m_pEffections;
+    }
 
-	IFXVector3 const &GetReferenceDisplacement(void) { 
-		return m_share->m_reference_displacement; 
-	}
+    IFXVector3 const& GetReferenceDisplacement(void)
+    {
+        return m_share->m_reference_displacement;
+    }
 
-	IFXVector3 &ReferenceDisplacement(void) { 
-		return m_share->m_reference_displacement; 
-	}
+    IFXVector3& ReferenceDisplacement(void)
+    {
+        return m_share->m_reference_displacement;
+    }
 
-	IFXQuaternion       &LocalReferenceRotation(void) {
-		return m_share->m_local_reference_rotation; 
-	}
+    IFXQuaternion& LocalReferenceRotation(void)
+    {
+        return m_share->m_local_reference_rotation;
+    }
 
-	IFXQuaternion const &LocalReferenceRotationConst(void) {
-		return m_share->m_local_reference_rotation; 
-	}
+    IFXQuaternion const& LocalReferenceRotationConst(void)
+    {
+        return m_share->m_local_reference_rotation;
+    }
 
-	IFXQuaternion const &GlobalReferenceRotationConst(void) { 
-		return m_share->m_referenceTransform.QuaternionConst(); 
-	}
+    IFXQuaternion const& GlobalReferenceRotationConst(void)
+    {
+        return m_share->m_referenceTransform.QuaternionConst();
+    }
 
-	IFXVector3          &BlendDisplacement(void)
-	{ return m_blend_displacement; }
-	const   IFXVector3          &BlendDisplacementConst(void) const
-	{ return m_blend_displacement; }
+    IFXVector3& BlendDisplacement(void)
+    {
+        return m_blend_displacement;
+    }
+    const IFXVector3& BlendDisplacementConst(void) const
+    {
+        return m_blend_displacement;
+    }
 
-	IFXQuaternion       &BlendRotation(void)    { return m_blend_rotation;};
-	const   IFXQuaternion       &BlendRotationConst(void) const
-	{ return m_blend_rotation;}
+    IFXQuaternion& BlendRotation(void) { return m_blend_rotation; };
+    const IFXQuaternion& BlendRotationConst(void) const
+    {
+        return m_blend_rotation;
+    }
 
-	IFXVector3          &BlendScale(void)       { return m_blend_scale; };
-	const   IFXVector3          &BlendScaleConst(void) const
-	{ return m_blend_scale; }
+    IFXVector3& BlendScale(void) { return m_blend_scale; };
+    const IFXVector3& BlendScaleConst(void) const
+    {
+        return m_blend_scale;
+    }
 
-	void                SetRootCharacter(IFXCharacter* set)
-	{ m_character=set; }
-	IFXCharacter        *RootCharacter(void)    { return m_character; }
+    void SetRootCharacter(IFXCharacter* set)
+    {
+        m_character = set;
+    }
+    IFXCharacter* RootCharacter(void) { return m_character; }
 
+    void StoreReferenceTransform(IFXTransform& transform)
+    {
+        transform.UpdateMatrix();
+        m_share->m_referenceTransform = transform;
+    }
+    IFXTransform& ReferenceTransform(void)
+    {
+        return m_share->m_referenceTransform;
+    }
 
-	void                StoreReferenceTransform(IFXTransform &transform)
-	{
-		transform.UpdateMatrix();
-		m_share->m_referenceTransform=transform;
-	}
-	IFXTransform        &ReferenceTransform(void)
-	{ return m_share->m_referenceTransform;}
-
-	void StoreTransform(IFXTransform &rTransform)
-	{
-		rTransform.UpdateMatrix();
-		m_storedTransform=rTransform;
-	}
-	IFXTransform        &StoredTransform(void)
-	{ return m_storedTransform; }
+    void StoreTransform(IFXTransform& rTransform)
+    {
+        rTransform.UpdateMatrix();
+        m_storedTransform = rTransform;
+    }
+    IFXTransform& StoredTransform(void)
+    {
+        return m_storedTransform;
+    }
 
 protected:
-	void                SetIsBone(bool set) { m_share->m_is_bone=set; }
+    void SetIsBone(bool set) { m_share->m_is_bone = set; }
 
 private:
+    IFXCoreNodeShare* m_share;
 
-	IFXCoreNodeShare    *m_share;
-
-	//* WARNING not sharable
-	IFXCharacter        *m_character;
-	IFXCoreNode         *m_parent;
-	IFXBoneNodeList     *m_pChildren;
-	IFXBoneNodeList     *m_pEffections;
-	IFXTransform        m_storedTransform;
-	IFXVector3          m_displacement;
-	IFXQuaternion       m_rotation;
-	IFXVector3          m_scale;
-	IFXVector3          m_blend_displacement;
-	IFXQuaternion       m_blend_rotation;
-	IFXVector3          m_blend_scale;
+    //* WARNING not sharable
+    IFXCharacter* m_character;
+    IFXCoreNode* m_parent;
+    IFXBoneNodeList* m_pChildren;
+    IFXBoneNodeList* m_pEffections;
+    IFXTransform m_storedTransform;
+    IFXVector3 m_displacement;
+    IFXQuaternion m_rotation;
+    IFXVector3 m_scale;
+    IFXVector3 m_blend_displacement;
+    IFXQuaternion m_blend_rotation;
+    IFXVector3 m_blend_scale;
 };
 
 #endif

@@ -17,7 +17,7 @@
 //***************************************************************************
 
 /**
-	@file IFXBoneCache.h
+        @file IFXBoneCache.h
 */
 
 #ifndef IFXBONECACHE_H
@@ -29,29 +29,34 @@
 #define IFXBONECACHE_NORMALS TRUE // only set up for IFXMesh
 
 /**
-	contains minimal data for a each bone required for deformation
+        contains minimal data for a each bone required for deformation
 */
 class IFXBoneCache
 {
 public:
+    IFXMatrix3x4& GetGlobalMatrix(void)
+    {
+        return m_globalmatrix;
+    };
 
-	IFXMatrix3x4& GetGlobalMatrix(void)
-	{ return m_globalmatrix; };
-	
-	const IFXMatrix3x4& GetGlobalMatrixConst(void) const
-	{ return m_globalmatrix; };
+    const IFXMatrix3x4& GetGlobalMatrixConst(void) const
+    {
+        return m_globalmatrix;
+    };
 
-	#if !IFXBONECACHE_NORMALS
-		IFXTransform    &GetGlobalDeltaTransform(void)
-		{ return m_tglobaldelta; };
-	#endif
+#if !IFXBONECACHE_NORMALS
+    IFXTransform& GetGlobalDeltaTransform(void)
+    {
+        return m_tglobaldelta;
+    };
+#endif
 
 private:
-	IFXMatrix3x4    m_globalmatrix;
+    IFXMatrix3x4 m_globalmatrix;
 
-	#if !IFXBONECACHE_NORMALS
-		IFXTransform    m_tglobaldelta;
-	#endif
+#if !IFXBONECACHE_NORMALS
+    IFXTransform m_tglobaldelta;
+#endif
 };
 
 #endif

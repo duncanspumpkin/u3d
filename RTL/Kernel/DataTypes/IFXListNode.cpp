@@ -24,19 +24,21 @@ void IFXListNode::DecReferences(void)
 ******************************************************************************/
 void IFXListNode::DecReferences(void)
 {
-	m_references--;
-	if(!m_references)
-	{
-		if(m_heir)
-			m_heir->DecReferences();
+    m_references--;
+    if (!m_references)
+    {
+        if (m_heir)
+        {
+            m_heir->DecReferences();
+        }
 
-		//delete this;
-#if IFXLIST_USEALLOCATOR==3
-		IFXASSERT(m_pCoreList);
-		m_pCoreList->Deallocate(this);
+        // delete this;
+#if IFXLIST_USEALLOCATOR == 3
+        IFXASSERT(m_pCoreList);
+        m_pCoreList->Deallocate(this);
 #else
-		IFXCoreList::Deallocate(this);
+        IFXCoreList::Deallocate(this);
 #endif
-//		printf("delete 0x%x\n",this);
-	}
+        //		printf("delete 0x%x\n",this);
+    }
 }

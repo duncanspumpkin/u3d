@@ -17,10 +17,10 @@
 //***************************************************************************
 
 /**
-	@file	CIFXGroup.h
+        @file	CIFXGroup.h
 
-			The header file that defines the base implementation class of the
-			CIFXGroup.
+                        The header file that defines the base implementation class of the
+                        CIFXGroup.
 */
 
 #ifndef CIFXGROUP_H
@@ -30,46 +30,34 @@
 #include "IFXCoreCIDs.h"
 
 class CIFXGroup : private CIFXNode,
-          virtual public   IFXNode
+                  virtual public IFXNode
 {
-            CIFXGroup();
-  virtual  ~CIFXGroup();
-  friend
-  IFXRESULT IFXAPI_CALLTYPE CIFXGroup_Factory(IFXREFIID iid, void** ppv);
+    CIFXGroup();
+    virtual ~CIFXGroup();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXGroup_Factory(IFXREFIID iid, void** ppv);
 
 public:
-  // IFXUnknown
-  U32 IFXAPI        AddRef ();
-  U32 IFXAPI        Release ();
-  IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void** ppv);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
+    // Node
+    void IFXAPI Counter(EIFXNodeCounterType type, U32* puOutCount);
 
-  // Node
-  void  IFXAPI  Counter(EIFXNodeCounterType type, U32* puOutCount);
+    // IFXModifier
+    IFXRESULT IFXAPI GetOutputs(IFXGUID**& rpOutOutputs, U32& rOutNumberOfOutputs, U32*& rpOutOutputDepAttrs);
+    IFXRESULT IFXAPI GetDependencies(IFXGUID* pInOutputDID, IFXGUID**& rppOutInputDependencies, U32& rOutNumberInputDependencies, IFXGUID**& rppOutOutputDependencies, U32& rOutNumberOfOutputDependencies, U32*& rpOutOutputDepAttrs);
+    IFXRESULT IFXAPI GenerateOutput(U32 inOutputDataElementIndex, void*& rpOutData, BOOL& rNeedRelease);
+    IFXRESULT IFXAPI SetDataPacket(IFXModifierDataPacket* pInInputDataPacket, IFXModifierDataPacket* pInDataPacket);
+    IFXRESULT IFXAPI Notify(IFXModifierMessage eInMessage, void* pMessageContext);
 
-  // IFXModifier
-  IFXRESULT IFXAPI  GetOutputs ( IFXGUID**& rpOutOutputs,
-                        U32&       rOutNumberOfOutputs,
-              U32*&    rpOutOutputDepAttrs );
-  IFXRESULT IFXAPI  GetDependencies (    IFXGUID*   pInOutputDID,
-                                IFXGUID**& rppOutInputDependencies,
-                                  U32&       rOutNumberInputDependencies,
-                                  IFXGUID**& rppOutOutputDependencies,
-                                U32&       rOutNumberOfOutputDependencies,
-                                U32*&      rpOutOutputDepAttrs );
-  IFXRESULT IFXAPI  GenerateOutput ( U32    inOutputDataElementIndex,
-                            void*& rpOutData, BOOL& rNeedRelease );
-  IFXRESULT IFXAPI  SetDataPacket ( IFXModifierDataPacket* pInInputDataPacket,
-                           IFXModifierDataPacket* pInDataPacket );
-  IFXRESULT IFXAPI  Notify ( IFXModifierMessage eInMessage,
-            void*         pMessageContext );
-
-  // IFXMarkerX
-  void IFXAPI       GetEncoderX (IFXEncoderX*& rpEncoderX);
+    // IFXMarkerX
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
 private:
-  // IFXModifier
-  static const IFXGUID* m_scpOutputDIDs[];
+    // IFXModifier
+    static const IFXGUID* m_scpOutputDIDs[];
 };
 
 #endif

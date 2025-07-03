@@ -22,7 +22,6 @@
       This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -36,42 +35,35 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
 
-NodeList::NodeList() 
+NodeList::NodeList()
 {
 }
 
@@ -79,73 +71,72 @@ NodeList::~NodeList()
 {
 }
 
-IFXRESULT NodeList::AddNode( const Node* pNode )
+IFXRESULT NodeList::AddNode(const Node* pNode)
 {
-	IFXRESULT result = IFX_OK;
-	Node* pTmpNode = NULL;
+    IFXRESULT result = IFX_OK;
+    Node* pTmpNode = NULL;
 
-	const IFXString& rNodeType = pNode->GetType();
+    const IFXString& rNodeType = pNode->GetType();
 
-	if( rNodeType == IDTF_LIGHT )
-	{
-		LightNode& lightNode = m_lightNodeList.CreateNewElement();
-		lightNode = *static_cast<const LightNode*>(pNode);
-		pTmpNode = &lightNode;
-	}
-	else if( rNodeType == IDTF_VIEW )
-	{
-		ViewNode& viewNode = m_viewNodeList.CreateNewElement();
-		viewNode = *static_cast<const ViewNode*>(pNode);
-		pTmpNode = &viewNode;
-	}
-	else if( rNodeType == IDTF_MODEL )
-	{
-		ModelNode& modelNode = m_modelNodeList.CreateNewElement();
-		modelNode = *static_cast<const ModelNode*>(pNode);
-		pTmpNode = &modelNode;
-	}
-	else if( rNodeType == IDTF_GROUP )
-	{
-		Node& groupNode = m_groupNodeList.CreateNewElement();
-		groupNode = *pNode;
-		pTmpNode = &groupNode;
-	}
-	else
-		result = IFX_E_UNDEFINED;
+    if (rNodeType == IDTF_LIGHT)
+    {
+        LightNode& lightNode = m_lightNodeList.CreateNewElement();
+        lightNode = *static_cast<const LightNode*>(pNode);
+        pTmpNode = &lightNode;
+    }
+    else if (rNodeType == IDTF_VIEW)
+    {
+        ViewNode& viewNode = m_viewNodeList.CreateNewElement();
+        viewNode = *static_cast<const ViewNode*>(pNode);
+        pTmpNode = &viewNode;
+    }
+    else if (rNodeType == IDTF_MODEL)
+    {
+        ModelNode& modelNode = m_modelNodeList.CreateNewElement();
+        modelNode = *static_cast<const ModelNode*>(pNode);
+        pTmpNode = &modelNode;
+    }
+    else if (rNodeType == IDTF_GROUP)
+    {
+        Node& groupNode = m_groupNodeList.CreateNewElement();
+        groupNode = *pNode;
+        pTmpNode = &groupNode;
+    }
+    else
+    {
+        result = IFX_E_UNDEFINED;
+    }
 
-	if( IFXSUCCESS( result ) )
-	{
-		// add new node pointer to the node pointer list only if it has known type
-		Node*& node = m_nodePointerList.CreateNewElement();
-		node = pTmpNode;
-	}
+    if (IFXSUCCESS(result))
+    {
+        // add new node pointer to the node pointer list only if it has known type
+        Node*& node = m_nodePointerList.CreateNewElement();
+        node = pTmpNode;
+    }
 
-	return result;
+    return result;
 }
 
-const Node* NodeList::GetNode( U32 index ) const
+const Node* NodeList::GetNode(U32 index) const
 {
-	return m_nodePointerList.GetElementConst( index );
+    return m_nodePointerList.GetElementConst(index);
 }
 
 U32 NodeList::GetNodeCount() const
 {
-	return m_nodePointerList.GetNumberElements();
+    return m_nodePointerList.GetNumberElements();
 }
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions

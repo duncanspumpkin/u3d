@@ -30,38 +30,34 @@
 #include "IFXSubject.h"
 
 class CIFXSimpleObject : virtual public IFXSubject,
-								 public CIFXSubject
+                         public CIFXSubject
 
 {
-  CIFXSimpleObject();
-  ~CIFXSimpleObject();
-  friend IFXRESULT IFXAPI_CALLTYPE CIFXSimpleObject_Factory(IFXREFIID iid, void** ppv);
+    CIFXSimpleObject();
+    ~CIFXSimpleObject();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXSimpleObject_Factory(IFXREFIID iid, void** ppv);
 
 public:
-  // IFXUnknown Interface
-  U32 IFXAPI  AddRef ();
-  U32 IFXAPI  Release ();
-  IFXRESULT IFXAPI  QueryInterface (IFXREFIID riid, void** ppv);
+    // IFXUnknown Interface
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID riid, void** ppv);
 
-  // IFXSubject Interface
+    // IFXSubject Interface
 
-  // attaches an observer to this subject
-  IFXRESULT  IFXAPI 	 Attach( IFXObserver* pInObserver,
-            U32          uInIntrestBits,
-            IFXREFIID    rIType=IID_IFXUnknown,
-            U32          shiftBits=0 );
-  // removes an observer
-  IFXRESULT  IFXAPI 	 Detach(IFXObserver* pObs);
+    // attaches an observer to this subject
+    IFXRESULT IFXAPI Attach(IFXObserver* pInObserver, U32 uInIntrestBits, IFXREFIID rIType = IID_IFXUnknown, U32 shiftBits = 0);
+    // removes an observer
+    IFXRESULT IFXAPI Detach(IFXObserver* pObs);
 
-  // the observers will get update calls when the
-  // subject state the observer is interested in changes
-  void IFXAPI   PostChanges(U32 changedBits);
+    // the observers will get update calls when the
+    // subject state the observer is interested in changes
+    void IFXAPI PostChanges(U32 changedBits);
 
-  void IFXAPI   PreDestruct();
+    void IFXAPI PreDestruct();
 
 private:
-  U32 m_uRefCount;
+    U32 m_uRefCount;
 };
-
 
 #endif

@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef SceneResources_H
 #define SceneResources_H
-
 
 //***************************************************************************
 //  Includes
@@ -36,109 +34,101 @@ This header defines the ... functionality.
 #include "IFXResult.h"
 
 #include "LightResourceList.h"
-#include "ViewResourceList.h"
-#include "ModelResourceList.h"
-#include "ShaderResourceList.h"
-#include "MotionResourceList.h"
 #include "MaterialResourceList.h"
+#include "ModelResourceList.h"
+#include "MotionResourceList.h"
+#include "ShaderResourceList.h"
 #include "TextureResourceList.h"
+#include "ViewResourceList.h"
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class SceneResources
+    {
+    public:
+        SceneResources();
+        virtual ~SceneResources();
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        ResourceList* GetResourceList(const IFXString& type);
 
+        /**
+        Light resource
+        */
+        const LightResourceList& GetLightResourceList() const;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+        View resource
+        */
+        const ViewResourceList& GetViewResourceList() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class SceneResources
-	{
-	public:
-		SceneResources();
-		virtual ~SceneResources();
+        /**
+        Model resource
+        */
+        const ModelResourceList& GetModelResourceList() const;
 
-		ResourceList* GetResourceList( const IFXString& type );
+        /**
+        Shader resource
+        */
+        const ShaderResourceList& GetShaderResourceList() const;
 
-		/**
-		Light resource
-		*/
-		const LightResourceList& GetLightResourceList() const;
+        /**
+        Texture resource
+        */
+        const TextureResourceList& GetTextureResourceList() const;
 
-		/**
-		View resource
-		*/
-		const ViewResourceList& GetViewResourceList() const;
+        /**
+        Material resource
+        */
+        const MaterialResourceList& GetMaterialResourceList() const;
 
-		/**
-		Model resource
-		*/
-		const ModelResourceList& GetModelResourceList() const;
+        /**
+        Motion resource
+        */
+        const MotionResourceList& GetMotionResourceList() const;
 
-		/**
-		Shader resource
-		*/
-		const ShaderResourceList& GetShaderResourceList() const;
+    protected:
+    private:
+        LightResourceList m_lightResourceList;
+        ViewResourceList m_viewResourceList;
+        ModelResourceList m_modelResourceList;
+        ShaderResourceList m_shaderResourceList;
+        MotionResourceList m_motionResourceList;
+        TextureResourceList m_textureResourceList;
+        MaterialResourceList m_materialResourceList;
+    };
 
-		/**
-		Texture resource
-		*/
-		const TextureResourceList& GetTextureResourceList() const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		Material resource
-		*/
-		const MaterialResourceList& GetMaterialResourceList() const;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-		/**
-		Motion resource
-		*/
-		const MotionResourceList& GetMotionResourceList() const;
-
-	protected:
-
-	private:
-		LightResourceList  m_lightResourceList;
-		ViewResourceList   m_viewResourceList;
-		ModelResourceList  m_modelResourceList;
-		ShaderResourceList m_shaderResourceList;
-		MotionResourceList m_motionResourceList;
-		TextureResourceList m_textureResourceList;
-		MaterialResourceList m_materialResourceList;
-	};
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
-
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

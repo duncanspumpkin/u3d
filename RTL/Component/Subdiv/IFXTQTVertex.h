@@ -20,13 +20,16 @@
 
 #include "IFXVector3.h"
 
-typedef struct 
+typedef struct
 {
-    enum        {NotLabeled=0xFFFFFFFF};
-    U32         m_uRenderIndex;
-    IFXVector3  m_position;
-    IFXVector3  m_normal;
-    IFXVector2  m_texCoord;
+    enum
+    {
+        NotLabeled = 0xFFFFFFFF
+    };
+    U32 m_uRenderIndex;
+    IFXVector3 m_position;
+    IFXVector3 m_normal;
+    IFXVector2 m_texCoord;
 } IFXTQTVertex;
 
 #endif

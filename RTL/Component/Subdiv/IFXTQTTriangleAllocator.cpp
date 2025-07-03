@@ -21,9 +21,8 @@
 
 IFXTQTTriangleAllocator::IFXTQTTriangleAllocator(U32 uNumInitialUnits, U32 uGrowByNumUnits)
 {
-    Initialize (sizeof (IFXTQTTriangle), uNumInitialUnits, uGrowByNumUnits);
+    Initialize(sizeof(IFXTQTTriangle), uNumInitialUnits, uGrowByNumUnits);
 }
-
 
 IFXTQTTriangleAllocator::~IFXTQTTriangleAllocator()
 {

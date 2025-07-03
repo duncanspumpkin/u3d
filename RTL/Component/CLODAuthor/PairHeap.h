@@ -15,36 +15,39 @@
 //  limitations under the License.
 //
 //***************************************************************************
-#include <list>
 #include "Pair.h"
+#include <list>
 
-typedef std::list <Pair *> PairList;
+typedef std::list<Pair*> PairList;
 
 class PairHeap
 {
-	private:
+private:
+    PairList pairList;
+    PairList::iterator extIterator;
 
-		PairList pairList;	
-		PairList::iterator extIterator;
+public:
+    Pair* remove();
+    Pair* remove(Pair* p);
+    void insert(Pair* p);
 
-	public:
-
-		Pair *remove ();
-		Pair *remove (Pair *p);
-		void insert (Pair *p);
-
-		// For iteration:
-		inline int size()	{ return pairList.size(); };
-		inline int empty()	{ return pairList.empty(); };
-		inline void reset()	{ extIterator = pairList.begin(); };
-		inline Pair *next()	{ Pair *p = *extIterator; extIterator++; return p; };
-		inline Pair *removeNext() 
-		{	 
-			PairList::iterator tmpIterator = extIterator;
-			Pair *p = *extIterator; 
-			extIterator++;
-			pairList.erase (tmpIterator); 		
-			return p; 
-		};
-		inline int end()	{ return (extIterator == pairList.end()); };
+    // For iteration:
+    inline int size() { return pairList.size(); };
+    inline int empty() { return pairList.empty(); };
+    inline void reset() { extIterator = pairList.begin(); };
+    inline Pair* next()
+    {
+        Pair* p = *extIterator;
+        extIterator++;
+        return p;
+    };
+    inline Pair* removeNext()
+    {
+        PairList::iterator tmpIterator = extIterator;
+        Pair* p = *extIterator;
+        extIterator++;
+        pairList.erase(tmpIterator);
+        return p;
+    };
+    inline int end() { return (extIterator == pairList.end()); };
 };

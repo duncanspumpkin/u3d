@@ -20,38 +20,38 @@
 //
 //	DESCRIPTION
 //		This class implements common Shader functionality. It is not
-//		ment to be instantiated.  
+//		ment to be instantiated.
 //
 //	NOTES
-//		The intent is to simplify the development of new Shaders by 
-//		inheriting and forwarding calls to this implementation. 
+//		The intent is to simplify the development of new Shaders by
+//		inheriting and forwarding calls to this implementation.
 //
 //***************************************************************************
 #ifndef __CIFXSHADER_H__
 #define __CIFXSHADER_H__
 
-#include "IFXSceneGraph.h"
-#include "IFXShader.h"
 #include "CIFXMarker.h"
 #include "CIFXSubject.h"
+#include "IFXSceneGraph.h"
+#include "IFXShader.h"
 
-class CIFXShader : protected CIFXMarker, 
+class CIFXShader : protected CIFXMarker,
                    protected CIFXSubject,
-           virtual public     IFXShader
+                   virtual public IFXShader
 {
 public:
-	IFXList<IFXShadedElement>& IFXAPI ShadedElementList() {return m_shadedElementList;}
+    IFXList<IFXShadedElement>& IFXAPI ShadedElementList() { return m_shadedElementList; }
 
-	U32 IFXAPI SetRenderPassFlags(U32 uFlags) { return m_uRenderPassFlags = uFlags; }
-	U32 IFXAPI GetRenderPassFlags() const { return m_uRenderPassFlags; }
+    U32 IFXAPI SetRenderPassFlags(U32 uFlags) { return m_uRenderPassFlags = uFlags; }
+    U32 IFXAPI GetRenderPassFlags() const { return m_uRenderPassFlags; }
 
 protected:
-	CIFXShader();
-	virtual ~CIFXShader();
+    CIFXShader();
+    virtual ~CIFXShader();
 
-	IFXList<IFXShadedElement> m_shadedElementList;
+    IFXList<IFXShadedElement> m_shadedElementList;
 
-	U32	m_uRenderPassFlags;
+    U32 m_uRenderPassFlags;
 };
 
 #endif

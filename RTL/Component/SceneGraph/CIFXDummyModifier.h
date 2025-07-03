@@ -17,10 +17,10 @@
 //***************************************************************************
 
 /**
-	@file	CIFXDummyModifier.h
+        @file	CIFXDummyModifier.h
 
-			The header file that defines the base implementation class of the
-			CIFXDummyModifier.
+                        The header file that defines the base implementation class of the
+                        CIFXDummyModifier.
 */
 
 #ifndef __CIFXDummyModifier_H__
@@ -28,58 +28,57 @@
 
 #include "CIFXModifier.h"
 #include "IFXCLODManagerInterface.h"
+#include "IFXDummyModifier.h"
 #include "IFXNeighborResControllerIntfc.h"
 #include "IFXRenderable.h"
-#include "IFXDummyModifier.h"
 
 class CIFXDummyModifier : private CIFXModifier,
-							virtual public IFXDummyModifier
+                          virtual public IFXDummyModifier
 {
 public:
-	// IFXUnknown
-	U32 IFXAPI        AddRef ();
-	U32 IFXAPI        Release ();
-	IFXRESULT IFXAPI  QueryInterface (   
-								IFXREFIID  riid,
-								void**     ppv );
-	// IFXMarker
-	void IFXAPI		  GetEncoderX (IFXEncoderX*& rpEncoderX);
+    // IFXUnknown
+    U32 IFXAPI AddRef();
+    U32 IFXAPI Release();
+    IFXRESULT IFXAPI QueryInterface(
+        IFXREFIID riid,
+        void** ppv);
+    // IFXMarker
+    void IFXAPI GetEncoderX(IFXEncoderX*& rpEncoderX);
 
-	// IFXModifier
-	IFXRESULT IFXAPI  GetOutputs ( 
-								IFXGUID**& rpOutOutputs,
-								U32&       rOutNumberOfOutputs,
-								U32*&	   rpOutOutputDepAttrs );
-	IFXRESULT IFXAPI  GetDependencies (    
-								IFXGUID*   pInOutputDID,
-								IFXGUID**& rppOutInputDependencies,
-								U32&       rOutNumberInputDependencies,
-								IFXGUID**& rppOutOutputDependencies,
-								U32&       rOutNumberOfOutputDependencies,
-								U32*&      rpOutOutputDepAttrs );
+    // IFXModifier
+    IFXRESULT IFXAPI GetOutputs(
+        IFXGUID**& rpOutOutputs,
+        U32& rOutNumberOfOutputs,
+        U32*& rpOutOutputDepAttrs);
+    IFXRESULT IFXAPI GetDependencies(
+        IFXGUID* pInOutputDID,
+        IFXGUID**& rppOutInputDependencies,
+        U32& rOutNumberInputDependencies,
+        IFXGUID**& rppOutOutputDependencies,
+        U32& rOutNumberOfOutputDependencies,
+        U32*& rpOutOutputDepAttrs);
 
-	IFXRESULT IFXAPI  GenerateOutput ( 
-								U32    inOutputDataElementIndex,
-								void*& rpOutData, BOOL& rNeedRelease );
+    IFXRESULT IFXAPI GenerateOutput(
+        U32 inOutputDataElementIndex,
+        void*& rpOutData, BOOL& rNeedRelease);
 
-	IFXRESULT IFXAPI  SetDataPacket ( 
-								IFXModifierDataPacket* pInInputDataPacket,
-								IFXModifierDataPacket* pInDataPacket );
-	IFXRESULT IFXAPI  Notify (	IFXModifierMessage eInMessage,
-								void*             pMessageContext );
+    IFXRESULT IFXAPI SetDataPacket(
+        IFXModifierDataPacket* pInInputDataPacket,
+        IFXModifierDataPacket* pInDataPacket);
+    IFXRESULT IFXAPI Notify(IFXModifierMessage eInMessage, void* pMessageContext);
 
-	// IFXDummyModifier
-	IFXRESULT IFXAPI SetDataBlock( IFXDataBlockQueueX *pDataBlock );
-	IFXDataBlockQueueX* IFXAPI GetDataBlock();
+    // IFXDummyModifier
+    IFXRESULT IFXAPI SetDataBlock(IFXDataBlockQueueX* pDataBlock);
+    IFXDataBlockQueueX* IFXAPI GetDataBlock();
 
 private:
-			CIFXDummyModifier();
-	virtual ~CIFXDummyModifier();
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXDummyModifier_Factory( IFXREFIID iid, void** ppv );
+    CIFXDummyModifier();
+    virtual ~CIFXDummyModifier();
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXDummyModifier_Factory(IFXREFIID iid, void** ppv);
 
-	U32 m_uRefCount;
+    U32 m_uRefCount;
 
-	IFXDataBlockQueueX *m_pDataBlockQueue;
+    IFXDataBlockQueueX* m_pDataBlockQueue;
 };
 
 #endif

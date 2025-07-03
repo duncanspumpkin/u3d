@@ -32,33 +32,30 @@
 class CIFXBTreeNode
 {
 public:
+    CIFXBTreeNode();
+    ~CIFXBTreeNode();
 
-	CIFXBTreeNode();
-	~CIFXBTreeNode();
-	
-	IFXRESULT Initialize(U32             uLevel, 
-						 IFXBoundVolume* pBound);
+    IFXRESULT Initialize(U32 uLevel, IFXBoundVolume* pBound);
 
-	IFXRESULT SetBound(IFXBoundVolume *pBound);
-	
-	IFXRESULT SetLeftTreeNode(CIFXBTreeNode *pLeftBTreeNode);
-	
-	IFXRESULT SetRightTreeNode(CIFXBTreeNode *pRightBTreeNode);
+    IFXRESULT SetBound(IFXBoundVolume* pBound);
 
-	// Inlines
-	IFXBoundVolume* GetBound()           { return m_pBound;          };
-	CIFXBTreeNode*  GetRightTreeNode()   { return m_pRightBTreeNode; };
-	CIFXBTreeNode*  GetLeftTreeNode()    { return m_pLeftBTreeNode;  };
+    IFXRESULT SetLeftTreeNode(CIFXBTreeNode* pLeftBTreeNode);
 
-	U32             GetLevel()           { return m_uLevel;   };
-	void            SetLevel(U32 uLevel) { m_uLevel = uLevel; };
+    IFXRESULT SetRightTreeNode(CIFXBTreeNode* pRightBTreeNode);
+
+    // Inlines
+    IFXBoundVolume* GetBound() { return m_pBound; };
+    CIFXBTreeNode* GetRightTreeNode() { return m_pRightBTreeNode; };
+    CIFXBTreeNode* GetLeftTreeNode() { return m_pLeftBTreeNode; };
+
+    U32 GetLevel() { return m_uLevel; };
+    void SetLevel(U32 uLevel) { m_uLevel = uLevel; };
 
 private:
-
-	IFXBoundVolume *m_pBound;
-	CIFXBTreeNode  *m_pLeftBTreeNode,
-				   *m_pRightBTreeNode;
-	U32             m_uLevel;
+    IFXBoundVolume* m_pBound;
+    CIFXBTreeNode *m_pLeftBTreeNode,
+        *m_pRightBTreeNode;
+    U32 m_uLevel;
 };
 
 #endif

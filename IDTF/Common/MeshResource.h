@@ -31,71 +31,63 @@
 //  Includes
 //***************************************************************************
 
-#include "IFXResult.h"
 #include "IFXArray.h"
-#include "ModelResource.h"
+#include "IFXResult.h"
 #include "Int3.h"
+#include "ModelResource.h"
 #include "ShadingDescriptionList.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    struct FaceTexCoords
+    {
+        IFXArray<Int3> m_texCoords; // number of texture layers for this face
+    };
 
+    /**
+     */
+    class MeshResource : public ModelResource
+    {
+    public:
+        MeshResource() {};
+        ~MeshResource() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        I32 faceCount;
+        IFXArray<Int3> m_facePositions;              // number of faces
+        IFXArray<Int3> m_faceNormals;                // number of faces
+        IFXArray<I32> m_faceShaders;                 // number of faces
+        IFXArray<Int3> m_faceDiffuseColors;          // number of faces
+        IFXArray<Int3> m_faceSpecularColors;         // number of faces
+        IFXArray<FaceTexCoords> m_faceTextureCoords; // number of faces
+    };
 
-struct FaceTexCoords
-{
-	IFXArray< Int3 > m_texCoords; // number of texture layers for this face
-};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-/**
-*/
-class MeshResource : public ModelResource
-{
-public:
-	MeshResource() {};
-	~MeshResource() {};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	I32 faceCount;
-	IFXArray< Int3 > m_facePositions; // number of faces
-	IFXArray< Int3 > m_faceNormals; // number of faces
-	IFXArray< I32 >  m_faceShaders; // number of faces
-	IFXArray< Int3 > m_faceDiffuseColors; // number of faces
-	IFXArray< Int3 > m_faceSpecularColors; // number of faces
-	IFXArray< FaceTexCoords > m_faceTextureCoords; // number of faces
-};
-
-
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
-
 
 #endif

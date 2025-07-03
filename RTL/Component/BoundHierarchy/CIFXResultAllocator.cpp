@@ -19,7 +19,7 @@
 //	CIFXResultAllocator.cpp
 //
 //	DESCRIPTION
-//		
+//
 //
 //	NOTES
 //      None.
@@ -28,16 +28,16 @@
 
 //*****************************************************************************
 //	Includes
-//***************************************************************************** 
+//*****************************************************************************
 #include "CIFXResultAllocator.h"
 
 //*****************************************************************************
 //	Defines
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Constants
-//***************************************************************************** 
+//*****************************************************************************
 
 //*****************************************************************************
 //	Enumerations
@@ -61,24 +61,25 @@
 //  Return a pointer to an allocated block of memory.
 //-----------------------------------------------------------------------------
 
-IFXRESULT CIFXResultAllocator::Allocate(CIFXCollisionResult **ppResult)
+IFXRESULT CIFXResultAllocator::Allocate(CIFXCollisionResult** ppResult)
 {
-	IFXRESULT result;
+    IFXRESULT result;
 
-	if( ppResult )
-	{
-		U8 *pu8 = IFXUnitAllocator::Allocate();
-		*ppResult = ((CIFXCollisionResult *) pu8);
-		(*ppResult)->Initialize();
+    if (ppResult)
+    {
+        U8* pu8 = IFXUnitAllocator::Allocate();
+        *ppResult = ((CIFXCollisionResult*)pu8);
+        (*ppResult)->Initialize();
 
-		result = IFX_OK;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        result = IFX_OK;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXAxisAlignedBBox::CIFXAxisAlignedBBox
@@ -88,10 +89,9 @@ IFXRESULT CIFXResultAllocator::Allocate(CIFXCollisionResult **ppResult)
 
 CIFXResultAllocator::CIFXResultAllocator(U32 uNumInitialUnits, U32 uGrowByNumUnits)
 {
-	IFXUnitAllocator::Initialize(sizeof (CIFXCollisionResult), uNumInitialUnits, uGrowByNumUnits);
-	m_uSizeList = 0;
+    IFXUnitAllocator::Initialize(sizeof(CIFXCollisionResult), uNumInitialUnits, uGrowByNumUnits);
+    m_uSizeList = 0;
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXAxisAlignedBBox::~CIFXAxisAlignedBBox
@@ -101,5 +101,5 @@ CIFXResultAllocator::CIFXResultAllocator(U32 uNumInitialUnits, U32 uGrowByNumUni
 
 CIFXResultAllocator::~CIFXResultAllocator()
 {
-	m_uSizeList = 0;
+    m_uSizeList = 0;
 }

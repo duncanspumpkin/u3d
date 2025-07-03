@@ -17,9 +17,9 @@
 //***************************************************************************
 
 /**
-	@file	CIFXUVGenerator.h
+        @file	CIFXUVGenerator.h
 
-			Class header file for the interface generator classes.
+                        Class header file for the interface generator classes.
 */
 #ifndef __IFXUVGENERATOR_CLASS_INTERFACE_H__
 #define __IFXUVGENERATOR_CLASS_INTERFACE_H__
@@ -27,33 +27,29 @@
 #include "IFXUVGenerator.h"
 class IFXUVMapper;
 
-class CIFXUVGenerator : public IFXUVGenerator 
+class CIFXUVGenerator : public IFXUVGenerator
 {
 public:
-	// IFXUnknown methods
-	U32 IFXAPI  AddRef (void);
-	U32 IFXAPI  Release (void);
-	IFXRESULT IFXAPI  QueryInterface (IFXREFIID interfaceId, void **ppInterface);
+    // IFXUnknown methods
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXUVGenerator_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXUVGenerator_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXUVGenerator methods
-	IFXRESULT IFXAPI   Generate(	IFXMesh& pMesh, 
-									IFXUVMapParameters* pMapParams, 
-									IFXMatrix4x4* pModelMatrix,
-									IFXMatrix4x4* pViewMatrix, 
-									const IFXLightSet* pLightSet);
+    // IFXUVGenerator methods
+    IFXRESULT IFXAPI Generate(IFXMesh& pMesh, IFXUVMapParameters* pMapParams, IFXMatrix4x4* pModelMatrix, IFXMatrix4x4* pViewMatrix, const IFXLightSet* pLightSet);
 
-	// variables
-	U32 m_uRefCount;
+    // variables
+    U32 m_uRefCount;
 
 private:
-	CIFXUVGenerator();
-	virtual ~CIFXUVGenerator();
+    CIFXUVGenerator();
+    virtual ~CIFXUVGenerator();
 
-	IFXenum m_LastWrapMode;
-	IFXUVMapper* m_pMapper;
+    IFXenum m_LastWrapMode;
+    IFXUVMapper* m_pMapper;
 };
 
 #endif

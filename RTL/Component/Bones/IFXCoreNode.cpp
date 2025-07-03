@@ -17,65 +17,63 @@
 //***************************************************************************
 
 /**
-	@file IFXCoreNode.cpp
+        @file IFXCoreNode.cpp
 */
 
 #include "IFXBoneNodeList.h"
 
-IFXCoreNode::IFXCoreNode(IFXCoreNode *pCloneOf)
+IFXCoreNode::IFXCoreNode(IFXCoreNode* pCloneOf)
 {
-	m_pChildren = new IFXBoneNodeList();
-	m_pEffections = new IFXBoneNodeList();
+    m_pChildren = new IFXBoneNodeList();
+    m_pEffections = new IFXBoneNodeList();
 
-	Reset();
+    Reset();
 
-	if(pCloneOf)
-	{
-		m_share=pCloneOf->m_share;
-		++m_share->m_count;
+    if (pCloneOf)
+    {
+        m_share = pCloneOf->m_share;
+        ++m_share->m_count;
 
-		m_displacement=pCloneOf->m_displacement;
-		m_rotation=pCloneOf->m_rotation;
-		m_scale=pCloneOf->m_scale;
-	}
-	else
-	{
-		m_share = new IFXCoreNodeShare();
-		m_share->m_count = 1;
-	}
+        m_displacement = pCloneOf->m_displacement;
+        m_rotation = pCloneOf->m_rotation;
+        m_scale = pCloneOf->m_scale;
+    }
+    else
+    {
+        m_share = new IFXCoreNodeShare();
+        m_share->m_count = 1;
+    }
 }
 
 IFXCoreNode::~IFXCoreNode(void)
 {
-	if(!(--m_share->m_count))
-	{
-		IFXDELETE(m_share);
-	}
+    if (!(--m_share->m_count))
+    {
+        IFXDELETE(m_share);
+    }
 
-	IFXDELETE(m_pEffections);
-	IFXDELETE(m_pChildren);
+    IFXDELETE(m_pEffections);
+    IFXDELETE(m_pChildren);
 }
 
 void IFXCoreNode::Reset(void)
 {
-	SetParent(NULL);
-	m_displacement.Reset();
-	m_rotation.MakeIdentity();
-	m_scale.Set(1.0f,1.0f,1.0f);
-	m_storedTransform.Reset();
-	Effections().Clear();
+    SetParent(NULL);
+    m_displacement.Reset();
+    m_rotation.MakeIdentity();
+    m_scale.Set(1.0f, 1.0f, 1.0f);
+    m_storedTransform.Reset();
+    Effections().Clear();
 }
 
-void IFXCoreNode::AppendChild(IFXBoneNode *bonenode)
+void IFXCoreNode::AppendChild(IFXBoneNode* bonenode)
 {
-	Children().Append(bonenode);
-	bonenode->SetParent(this);
+    Children().Append(bonenode);
+    bonenode->SetParent(this);
 }
 
-
-
-void IFXCoreNode::RemoveChild(IFXBoneNode *bonenode)
+void IFXCoreNode::RemoveChild(IFXBoneNode* bonenode)
 {
-	Children().Remove(bonenode);
-	bonenode->SetParent(NULL);
+    Children().Remove(bonenode);
+    bonenode->SetParent(NULL);
 }

@@ -21,6 +21,8 @@
 #ifndef IFX_RENDER_FOG_H
 #define IFX_RENDER_FOG_H
 
+#include "IFXVector4.h"
+
 //==============================
 // IFXRenderFog
 //==============================

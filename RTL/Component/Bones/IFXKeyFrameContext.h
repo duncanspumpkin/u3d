@@ -16,19 +16,19 @@
 //
 //***************************************************************************
 
-/** 
-	@file IFXKeyFrameContext.h
+/**
+        @file IFXKeyFrameContext.h
 
-	@todo [4/26/2006] Eliminate this file from project?
+        @todo [4/26/2006] Eliminate this file from project?
 */
 
 #ifndef IFXKEYFRAMECONTEXT_H
 #define IFXKEYFRAMECONTEXT_H
 
 /**
-	@note empty, not in use
+        @note empty, not in use
 */
-class IFXKeyFrameContext: public IFXListContext
+class IFXKeyFrameContext : public IFXListContext
 {
 };
 

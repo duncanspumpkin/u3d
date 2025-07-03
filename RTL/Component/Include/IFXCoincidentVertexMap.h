@@ -17,25 +17,25 @@
 //***************************************************************************
 
 /**
-	@file	IFXCoincidentVertexMap.h
+        @file	IFXCoincidentVertexMap.h
 
-			Builds a map of vertices that are coincident in space (also called
-			the geometric vertices).  One method performs floating point
-			comparisons of the vertex positions and the other uses a supplied 
-			standard vertex map (IFXVertexMapGroup).
-			
-	@note	The IFXVertexMapGroup method is much faster because it uses the 
-			vertex map created from the process of material partitioning the 
-			original mesh vertices.  If the original mesh has duplicate 
-			vertices (vertices with different indices but same position) then 
-			the neighbor mesh will have boundries on the edges with those 
-			vertices.  If this is not desired, it is recommended that the user 
-			"weld" the vertices in 3D Studio MAX before exporting it.
+                        Builds a map of vertices that are coincident in space (also called
+                        the geometric vertices).  One method performs floating point
+                        comparisons of the vertex positions and the other uses a supplied
+                        standard vertex map (IFXVertexMapGroup).
 
-			The method using vertex position comparisons has O(n) performance
-			at best (widely distributed points), and O(n^2) worst case (all 
-			vertices are the same position).  Models tend to have distributed 
-			vertex positions.
+        @note	The IFXVertexMapGroup method is much faster because it uses the
+                        vertex map created from the process of material partitioning the
+                        original mesh vertices.  If the original mesh has duplicate
+                        vertices (vertices with different indices but same position) then
+                        the neighbor mesh will have boundries on the edges with those
+                        vertices.  If this is not desired, it is recommended that the user
+                        "weld" the vertices in 3D Studio MAX before exporting it.
+
+                        The method using vertex position comparisons has O(n) performance
+                        at best (widely distributed points), and O(n^2) worst case (all
+                        vertices are the same position).  Models tend to have distributed
+                        vertex positions.
 */
 
 #ifndef IFXCOINCEDENTVERTEXMAP_H
@@ -43,40 +43,41 @@
 
 #include "IFXVertexMapGroup.h"
 
-/** This class is used to build a map of vertices that are coincident 
-in space (also called the geometric vertices). One method performs floating 
-point comparisons of the vertex positions and the other uses a supplied 
+class IFXMeshGroup;
+
+/** This class is used to build a map of vertices that are coincident
+in space (also called the geometric vertices). One method performs floating
+point comparisons of the vertex positions and the other uses a supplied
 standard vertex map (IFXVertexMapGroup). */
 class IFXCoincidentVertexMap
 {
 public:
-	IFXCoincidentVertexMap();
-	~IFXCoincidentVertexMap();
-		
-	/** Builds a coincident vertex map using vertex positions 
-	(float hash table). 
-	
-	Build a coincident vertex map by comparing floating point positions
-	of all the vertices in the mesh group.*/
-	IFXRESULT Initialize(IFXMeshGroup* pMeshGroup);
+    IFXCoincidentVertexMap();
+    ~IFXCoincidentVertexMap();
 
-	/** Builds a coincident vertex map using a vertex map. */
-	IFXRESULT Initialize(IFXMeshGroup* pMeshGroup, 
-						 IFXVertexMapGroup* pVertexMapGroup);
+    /** Builds a coincident vertex map using vertex positions
+    (float hash table).
 
-	/** Gets the number of geometric vertices. */
-	U32 GetNumVertexID();
+    Build a coincident vertex map by comparing floating point positions
+    of all the vertices in the mesh group.*/
+    IFXRESULT Initialize(IFXMeshGroup* pMeshGroup);
 
-	/** Converts the IFXMesh vertex index into a geomtric vertex ID. */
-	U32 Convert(U32 meshIndex, U32 vertexIndex);
+    /** Builds a coincident vertex map using a vertex map. */
+    IFXRESULT Initialize(IFXMeshGroup* pMeshGroup, IFXVertexMapGroup* pVertexMapGroup);
+
+    /** Gets the number of geometric vertices. */
+    U32 GetNumVertexID();
+
+    /** Converts the IFXMesh vertex index into a geomtric vertex ID. */
+    U32 Convert(U32 meshIndex, U32 vertexIndex);
 
 private:
-	/// number of pointers to pCoincidentVertexID
-	U32		m_numMeshes;	
-	/// vertex map. Vertices with same position have same ID
-	U32**	m_ppCoincidentVertexID;	
-	/// number of geometric vertices
-	U32		m_numVertexID;
+    /// number of pointers to pCoincidentVertexID
+    U32 m_numMeshes;
+    /// vertex map. Vertices with same position have same ID
+    U32** m_ppCoincidentVertexID;
+    /// number of geometric vertices
+    U32 m_numVertexID;
 };
 
 //
@@ -85,13 +86,12 @@ private:
 
 IFXINLINE U32 IFXCoincidentVertexMap::GetNumVertexID()
 {
-	return m_numVertexID;
+    return m_numVertexID;
 }
-
 
 IFXINLINE U32 IFXCoincidentVertexMap::Convert(U32 meshIndex, U32 vertexIndex)
 {
-	return m_ppCoincidentVertexID[meshIndex][vertexIndex];
+    return m_ppCoincidentVertexID[meshIndex][vertexIndex];
 }
 
 #endif

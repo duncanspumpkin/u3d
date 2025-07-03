@@ -24,199 +24,236 @@
   @note
 */
 
-
 #ifndef DebugInfo_H
 #define DebugInfo_H
 
+#include "IFXResult.h"
+
+class IFXShaderLitTexture;
+class IFXAnimationModifier;
+class IFXSubdivModifier;
+class IFXCLODModifier;
+class IFXAuthorCLODResource;
+class IFXAuthorLineSetResource;
+class IFXGenerator;
+class IFXSkeleton;
+class IFXMotionResource;
+class IFXMixerConstruct;
+class IFXMaterialResource;
+class IFXBoneInfo;
+class IFXQuaternion;
+class IFXKeyFrame;
+class IFXTextureObject;
+class IFXSimulationTask;
+class IFXModifierChain;
+class IFXModifierDataPacket;
+class IFXRenderable;
+class IFXMeshGroup;
+class IFXMesh;
+class IFXView;
+class IFXModel;
+class IFXLight;
+class IFXNode;
+class IFXVector3;
+class IFXVector4;
+class IFXMatrix4x4;
+class IFXPalette;
+class IFXString;
 
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
-
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
 #define IFXDBGINDENT_AMT 3
 #define DISCARD (void)
-//#define PURE   = 0
+// #define PURE   = 0
 
 //---------------------------------------------------------------------------
 //  Debug output routines.
 //---------------------------------------------------------------------------
 #ifdef _DEBUG
-#define DBGOUT(x) {IFXTRACE_GENERIC(L"*** MESSAGE -- from: %s at %d\n",__FILE__, __LINE__); IFXTRACE_GENERIC(L"*** %s\n", (x));};
-#define DBGOUTFMT(x,y) {IFXTRACE_GENERIC(L"*** MESSAGE -- from: %s at %d\n",__FILE__, __LINE__); IFXTRACE_GENERIC(x,y);}  // must look like DBGOUTFMT("Format", Args);
-#define DBGOUTIFERR(x,y) if(IFXFAILURE(x)){  DBGOUT(y); }
+#define DBGOUT(x)                                                                 \
+    {                                                                             \
+        IFXTRACE_GENERIC(L"*** MESSAGE -- from: %s at %d\n", __FILE__, __LINE__); \
+        IFXTRACE_GENERIC(L"*** %s\n", (x));                                       \
+    };
+#define DBGOUTFMT(x, y)                                                           \
+    {                                                                             \
+        IFXTRACE_GENERIC(L"*** MESSAGE -- from: %s at %d\n", __FILE__, __LINE__); \
+        IFXTRACE_GENERIC(x, y);                                                   \
+    } // must look like DBGOUTFMT("Format", Args);
+#define DBGOUTIFERR(x, y) \
+    if (IFXFAILURE(x))    \
+    {                     \
+        DBGOUT(y);        \
+    }
 #else
 #define DBGOUT(x)
-#define DBGOUTFMT(x,y)
-#define DBGOUTIFERR(x,y)
+#define DBGOUTFMT(x, y)
+#define DBGOUTIFERR(x, y)
 #endif
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
+    /**
+        Provides runtime debugging info to a text file.
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+      @b Description: Has methods to write most types of IFX data to the debug file in a textual form.
+    */
+    class DebugInfo
+    {
+    public:
+        /** @enum IFX_EDI_FLAGS
+                Debug Flags
 
-/**
-    Provides runtime debugging info to a text file.
+        @b Description:
+        @remarks
+        */
+        enum IFX_EDI_FLAGS
+        {
+            IFX_EDI_ENABLE,                 /// Is the DebugInfo Enabled
+            IFX_EDI_DUMP,                   // Is DebugInfo currently writing info, if off no out put is
+                                            // written, can be used to progamatically enable and disable logging.
+            IFX_EDI_SKELETON,               // Dump Skeletons
+            IFX_EDI_SKELETON_VERTEXWEIGHTS, // Dump the vertex weights off of the Skeleton
+            IFX_EDI_BONES,                  // Write random comments from the Bone converter.
+            IFX_EDI_MESHGROUP,              // Dump Mesh Groups.
+            IFX_EDI_MESH,                   // Dump Meshes
+            IFX_EDI_LIGHT,                  // Dump Lights.
+            IFX_EDI_TEXTUREOBJECT,
+            IFX_EDI_MOTIONRESOURCE,
+            IFX_EDI_SHADER,
+            IFX_EDI_KEYFRAME,
+            IFX_EDI_GENERATOR,
+            IFX_EDI_MODIFIER,
+            IFX_EDI_PALETTE,
+            IFX_EDI_NODE_PALETTE,
+            IFX_EDI_MODEL_PALETTE,
+            IFX_EDI_LIGHT_PALETTE,
+            IFX_EDI_VIEW_PALETTE,
+            IFX_EDI_MATERIAL_PALETTE,
+            IFX_EDI_SHADER_PALETTE,
+            IFX_EDI_TEXTURE_PALETTE,
+            IFX_EDI_SIMTASK_PALETTE,
+            IFX_EDI_MOTION_PALETTE,
+            IFX_EDI_DUMP_PALETTE_ENTRIES,
+            IFX_EDI_COUNT
+        };
 
-  @b Description: Has methods to write most types of IFX data to the debug file in a textual form.
-*/
-class DebugInfo
-{
-public:
-	/** @enum IFX_EDI_FLAGS
-		Debug Flags
+        DebugInfo();
+        virtual ~DebugInfo();
 
-	@b Description:
-	@remarks
-	*/
-	enum IFX_EDI_FLAGS
-	{
-	IFX_EDI_ENABLE,     /// Is the DebugInfo Enabled
-	IFX_EDI_DUMP,     // Is DebugInfo currently writing info, if off no out put is
-				// written, can be used to progamatically enable and disable logging.
-	IFX_EDI_SKELETON,   // Dump Skeletons
-	IFX_EDI_SKELETON_VERTEXWEIGHTS,  // Dump the vertex weights off of the Skeleton
-	IFX_EDI_BONES,      // Write random comments from the Bone converter.
-	IFX_EDI_MESHGROUP,    // Dump Mesh Groups.
-	IFX_EDI_MESH,     // Dump Meshes
-	IFX_EDI_LIGHT,      // Dump Lights.
-	IFX_EDI_TEXTUREOBJECT,
-	IFX_EDI_MOTIONRESOURCE,
-	IFX_EDI_SHADER,
-	IFX_EDI_KEYFRAME,
-	IFX_EDI_GENERATOR,
-	IFX_EDI_MODIFIER,
-	IFX_EDI_PALETTE,
-	IFX_EDI_NODE_PALETTE,
-	IFX_EDI_MODEL_PALETTE,
-	IFX_EDI_LIGHT_PALETTE,
-	IFX_EDI_VIEW_PALETTE,
-	IFX_EDI_MATERIAL_PALETTE,
-	IFX_EDI_SHADER_PALETTE,
-	IFX_EDI_TEXTURE_PALETTE,
-	IFX_EDI_SIMTASK_PALETTE,
-	IFX_EDI_MOTION_PALETTE,
-	IFX_EDI_DUMP_PALETTE_ENTRIES,
-	IFX_EDI_COUNT
-	};
+        IFXRESULT SetFlag(U32 in_Id, U32 in_value);
+        IFXRESULT Init(const char* pFileName);
+        void Close();
+        void WriteIf(U32 in_Flag, const char* in_Format, ...);
 
-	DebugInfo();
-	virtual ~DebugInfo();
+        void Write(const char*, ...);
+        void Write(IFXShaderLitTexture* pShader);
+        void Write(IFXShaderLitTexture* pShader, U32 channel);
 
-	IFXRESULT SetFlag(U32 in_Id, U32 in_value);
-	IFXRESULT Init(const char* pFileName);
-	void Close();
-	void WriteIf(U32 in_Flag, const char* in_Format, ...);
+        void Write(IFXAnimationModifier*);
+        void Write(IFXSubdivModifier*);
+        void Write(IFXCLODModifier*);
 
-	void Write(const char*, ...);
-	void Write(IFXShaderLitTexture* pShader);
-	void Write(IFXShaderLitTexture* pShader, U32 channel);
+        void Write(IFXAuthorCLODResource*);
+        void Write(IFXAuthorLineSetResource*);
+        void Write(IFXGenerator*);
+        void WriteBoneWeightGenerator(IFXSkeleton*);
 
-	void Write(IFXAnimationModifier*);
-	void Write(IFXSubdivModifier*);
-	void Write(IFXCLODModifier*);
+        void Write(IFXMotionResource*);
+        void Write(IFXMixerConstruct*, IFXPalette* pMixerPalette, IFXPalette* pMotionPalette);
+        void Write(IFXMaterialResource*);
 
-	void Write(IFXAuthorCLODResource*);
-	void Write(IFXAuthorLineSetResource*);
-	void Write(IFXGenerator*);
-	void WriteBoneWeightGenerator(IFXSkeleton *);
+        void Write(IFXBoneInfo* pData);
+        void Write(IFXQuaternion* pData);
+        void Write(IFXKeyFrame*);
 
-	void Write(IFXMotionResource*);
-	void Write(IFXMixerConstruct*, IFXPalette *pMixerPalette, IFXPalette *pMotionPalette);
-	void Write(IFXMaterialResource*);
+        void Write(IFXTextureObject*);
 
-	void Write(IFXBoneInfo * pData);
-	void Write(IFXQuaternion * pData);
-	void Write(IFXKeyFrame*);
+        void Write(IFXSimulationTask*);
 
-	void Write(IFXTextureObject*);
+        void Write(IFXModifierChain*);
+        void Write(IFXModifierDataPacket*);
+        void Write(IFXRenderable*);
+        void Write(IFXMeshGroup*);
+        void Write(IFXMesh*);
+        void Write(IFXView*);
+        void Write(IFXModel*);
+        void Write(IFXLight*);
+        void Write(IFXNode*);
 
-	void Write(IFXSimulationTask*);
+        void Write(IFXVector3* pData);
+        void Write(IFXVector4* pData);
+        void Write(IFXMatrix4x4* pData, const char* pTabchars);
 
-	void Write(IFXModifierChain*);
-	void Write(IFXModifierDataPacket*);
-	void Write(IFXRenderable*);
-	void Write(IFXMeshGroup*);
-	void Write(IFXMesh*);
-	void Write(IFXView*);
-	void Write(IFXModel*);
-	void Write(IFXLight*);
-	void Write(IFXNode*);
+        void Write(IFXString* pData);
+        void Write(F32* pData);
+        void WriteColor(IFXVector4* pData);
+        void WriteColor(IFXVector3* pData);
 
-	void Write(IFXVector3 * pData);
-	void Write(IFXVector4 * pData);
-	void Write(IFXMatrix4x4 * pData, const char* pTabchars);
+        void Write(IFXPalette* pData);
+        void WriteNodePalette(IFXPalette* pData);
+        void WriteLightPalette(IFXPalette* pData);
+        void WriteViewPalette(IFXPalette* pData);
+        void WriteModelPalette(IFXPalette* pData);
+        void WriteMaterialPalette(IFXPalette* pData);
+        void WriteShaderPalette(IFXPalette* pData);
+        void WriteMotionPalette(IFXPalette* pData);
+        void WriteMixerPalette(IFXPalette* pData, IFXPalette* pMotionPalette);
+        void WriteTexturePalette(IFXPalette* pData);
+        void WriteSimulationTaskPalette(IFXPalette* pData);
 
-	void Write(IFXString* pData);
-	void Write(F32 * pData);
-	void WriteColor(IFXVector4 * pData);
-	void WriteColor(IFXVector3 * pData);
+        IFXRESULT DumpChildNodes(IFXPalette* pNodePalette, IFXNode* pNode, U32 indent, U32 numSiblings);
 
-	void Write(IFXPalette * pData);
-	void WriteNodePalette(IFXPalette * pData);
-	void WriteLightPalette(IFXPalette * pData);
-	void WriteViewPalette(IFXPalette * pData);
-	void WriteModelPalette(IFXPalette * pData);
-	void WriteMaterialPalette(IFXPalette * pData);
-	void WriteShaderPalette(IFXPalette * pData);
-	void WriteMotionPalette(IFXPalette * pData);
-	void WriteMixerPalette(IFXPalette * pData, IFXPalette *pMotionPalette);
-	void WriteTexturePalette(IFXPalette * pData);
-	void WriteSimulationTaskPalette(IFXPalette * pData);
+    private:
+        /**
+        The handle of the output file
 
-	IFXRESULT DumpChildNodes(IFXPalette *pNodePalette, IFXNode *pNode,
-				U32 indent, U32 numSiblings);
+        @b Description:
+        @remarks
+        */
+        FILE* m_DbgFile;
 
-private:
-	/**
-	The handle of the output file
+        /**
+        The option flags of what to write
 
-	@b Description:
-	@remarks
-	*/
-	FILE* m_DbgFile;
+        @b Description:
+        @remarks
+        */
+        U32 m_Flags[IFX_EDI_COUNT];
+    };
 
-	/**
-	The option flags of what to write
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	@b Description:
-	@remarks
-	*/
-	U32 m_Flags[IFX_EDI_COUNT];
-};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 #ifndef DEFINE_DBGINFO
-extern DebugInfo g_DbgInfo;
+    extern DebugInfo g_DbgInfo;
 #endif
 
 }

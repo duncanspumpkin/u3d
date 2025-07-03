@@ -22,6 +22,7 @@
 #include "IFXMarkerX.h"
 
 class IFXRenderLight;
+class IFXVector4;
 
 /**
 	The interface ID for the IFXLightResource class.

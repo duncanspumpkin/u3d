@@ -22,7 +22,6 @@
       This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
@@ -36,36 +35,29 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
-
 
 //***************************************************************************
 //  Public methods
@@ -73,7 +65,7 @@ using namespace U3D_IDTF;
 
 // MetaDataList
 
-MetaDataList::MetaDataList() 
+MetaDataList::MetaDataList()
 {
 }
 
@@ -81,27 +73,25 @@ MetaDataList::~MetaDataList()
 {
 }
 
-IFXRESULT MetaDataList::SetMetaData( const MetaData* pMetaData )
+IFXRESULT MetaDataList::SetMetaData(const MetaData* pMetaData)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	MetaData& rMetaData = m_metaDataList.CreateNewElement();
-	rMetaData = *pMetaData;
+    MetaData& rMetaData = m_metaDataList.CreateNewElement();
+    rMetaData = *pMetaData;
 
-	return result;
+    return result;
 }
 
-const MetaData& MetaDataList::GetMetaData( const U32 index ) const
+const MetaData& MetaDataList::GetMetaData(const U32 index) const
 {
-	return m_metaDataList.GetElementConst( index );
+    return m_metaDataList.GetElementConst(index);
 }
-
 
 const U32& MetaDataList::GetMetaDataCount() const
 {
-	return m_metaDataList.GetNumberElements();
+    return m_metaDataList.GetNumberElements();
 }
-
 
 // StringMetaData
 
@@ -113,79 +103,85 @@ StringMetaData::~StringMetaData()
 {
 }
 
-void StringMetaData::SetStringValue( const IFXString& rValue )
+void StringMetaData::SetStringValue(const IFXString& rValue)
 {
-	m_value = rValue;
+    m_value = rValue;
 }
 
 const IFXString& StringMetaData::GetStringValue() const
 {
-	return m_value;
+    return m_value;
 }
-
 
 // Binary MetaData
 
 BinaryMetaData::BinaryMetaData()
-: m_pValue( NULL ), m_size( 0 )
+    : m_pValue(NULL)
+    , m_size(0)
 {
 }
 
 BinaryMetaData::~BinaryMetaData()
 {
-	delete [] m_pValue;
+    delete[] m_pValue;
 }
 
-BinaryMetaData::BinaryMetaData( BinaryMetaData& rBinary )
-: m_pValue( new U8[rBinary.GetBinarySize()] ),
-  m_size( rBinary.GetBinarySize() )
+BinaryMetaData::BinaryMetaData(BinaryMetaData& rBinary)
+    : m_pValue(new U8[rBinary.GetBinarySize()])
+    , m_size(rBinary.GetBinarySize())
 {
 }
 
-BinaryMetaData& BinaryMetaData::operator= ( const BinaryMetaData& rBinary )
+BinaryMetaData& BinaryMetaData::operator=(const BinaryMetaData& rBinary)
 {
-	U8* pValue = new U8[rBinary.GetBinarySize()];
-	delete m_pValue;
-	m_pValue = pValue;
-	return *this;
+    U8* pValue = new U8[rBinary.GetBinarySize()];
+    delete m_pValue;
+    m_pValue = pValue;
+    return *this;
 }
 
 const U32& BinaryMetaData::GetBinarySize() const
 {
-	return m_size;
+    return m_size;
 }
 
 const U8* BinaryMetaData::GetBinaryValue() const
 {
-	return m_pValue;
+    return m_pValue;
 }
 
-IFXRESULT BinaryMetaData::SetBinaryValue( const U8* pValue, const U32 size )
+IFXRESULT BinaryMetaData::SetBinaryValue(const U8* pValue, const U32 size)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if( NULL != pValue )
-	{
-		if( NULL != m_pValue )
-			delete [] m_pValue;
+    if (NULL != pValue)
+    {
+        if (NULL != m_pValue)
+        {
+            delete[] m_pValue;
+        }
 
-		m_pValue = new U8[size];
+        m_pValue = new U8[size];
 
-		if( NULL != m_pValue )
-		{
-			U32 i;
-			for( i = 0; i < size; ++i )
-			{
-				m_pValue[i] = pValue[i];
-			}
-		}
-		else
-			result = IFX_E_OUT_OF_MEMORY;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+        if (NULL != m_pValue)
+        {
+            U32 i;
+            for (i = 0; i < size; ++i)
+            {
+                m_pValue[i] = pValue[i];
+            }
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
 // MetaData
@@ -198,40 +194,37 @@ MetaData::~MetaData()
 {
 }
 
-void MetaData::SetKey( const IFXString& rKey )
+void MetaData::SetKey(const IFXString& rKey)
 {
-	m_key = rKey;
+    m_key = rKey;
 }
 
 const IFXString& MetaData::GetKey() const
 {
-	return m_key;
+    return m_key;
 }
 
-void MetaData::SetAttribute( const IFXString& rAttribute )
+void MetaData::SetAttribute(const IFXString& rAttribute)
 {
-	m_attribute = rAttribute;
+    m_attribute = rAttribute;
 }
 
 const IFXString& MetaData::GetAttribute() const
 {
-	return m_attribute;
+    return m_attribute;
 }
 
 //***************************************************************************
 //  Protected methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions

@@ -25,17 +25,14 @@
 //
 //***************************************************************************
 
-#include "IFXSceneGraphPCH.h"
 #include "CIFXShader.h"
-
+#include "IFXSceneGraphPCH.h"
 
 CIFXShader::CIFXShader()
 {
-	m_uRenderPassFlags = 0x00000001;
+    m_uRenderPassFlags = 0x00000001;
 }
-
 
 CIFXShader::~CIFXShader()
 {
 }
-

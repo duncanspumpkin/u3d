@@ -21,23 +21,22 @@
 #ifndef __CIFXRESOURCECLIENT_H__
 #define __CIFXRESOURCECLIENT_H__
 
-#include "IFXResourceClient.h"
 #include "IFXModifier.h"
+#include "IFXResourceClient.h"
 
 class CIFXResourceClient : virtual public IFXResourceClient,
                            virtual public IFXModifier
 {
 public:
-  // IFXResourceClient
-  U32   IFXAPI       GetResourceIndex() { return m_uResourceIndex; }
-  IFXRESULT IFXAPI    SetResourceIndex( U32 uInEntryIndex );
+    // IFXResourceClient
+    U32 IFXAPI GetResourceIndex() { return m_uResourceIndex; }
+    IFXRESULT IFXAPI SetResourceIndex(U32 uInEntryIndex);
 
 protected:
-            CIFXResourceClient();
-  virtual  ~CIFXResourceClient();
+    CIFXResourceClient();
+    virtual ~CIFXResourceClient();
 
-  U32       m_uResourceIndex;
+    U32 m_uResourceIndex;
 };
-
 
 #endif

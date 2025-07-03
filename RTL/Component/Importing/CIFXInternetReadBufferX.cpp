@@ -17,15 +17,15 @@
 //***************************************************************************
 
 /**
-	@file	CIFXInternetReadBufferX.cpp
+        @file	CIFXInternetReadBufferX.cpp
 
-			Implementation of the CIFXInternetReadBufferX class which implements the
-			IFXReadBuffer, IFXReadBufferX and IFXStdio interfaces.
+                        Implementation of the CIFXInternetReadBufferX class which implements the
+                        IFXReadBuffer, IFXReadBufferX and IFXStdio interfaces.
 */
 
 #include "CIFXInternetReadBufferX.h"
-#include "IFXImportingCIDs.h"
 #include "IFXCheckX.h"
+#include "IFXImportingCIDs.h"
 #include "IFXMemory.h"
 #include "IFXScheduler.h"
 
@@ -36,268 +36,275 @@ const U32 INTERNET_READ_TASK_PRIORITY = 4;
 
 // Factory function.
 IFXRESULT IFXAPI_CALLTYPE CIFXInternetReadBufferX_Factory(
-								IFXREFIID interfaceId, void** ppInterface)
+    IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if (ppInterface) 
-	{
-		// Create the CIFXInternetReadBufferX component.
-		CIFXInternetReadBufferX *pComponent = new CIFXInternetReadBufferX;
+    if (ppInterface)
+    {
+        // Create the CIFXInternetReadBufferX component.
+        CIFXInternetReadBufferX* pComponent = new CIFXInternetReadBufferX;
 
-		if (pComponent) 
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			rc = pComponent->QueryInterface(interfaceId, ppInterface);
+            // Attempt to obtain a pointer to the requested interface.
+            rc = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		} 
-		else 
-		{
-			rc = IFX_E_OUT_OF_MEMORY;
-		}
-	} 
-	else 
-	{
-		rc = IFX_E_INVALID_POINTER;
-	}
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	return rc;
+    return rc;
 }
 
-CIFXInternetReadBufferX::CIFXInternetReadBufferX() :
-	IFXDEFINEMEMBER(m_pReadingCallback),
-	IFXDEFINEMEMBER(m_pReadBuffer)
+CIFXInternetReadBufferX::CIFXInternetReadBufferX()
+    : IFXDEFINEMEMBER(m_pReadingCallback)
+    , IFXDEFINEMEMBER(m_pReadBuffer)
 {
-	m_refCount = 0;
-	m_readPosition = 0;
-	m_readTaskHandle = IFXTASK_HANDLE_INVALID;
-	m_pReadBuffer = NULL;
+    m_refCount = 0;
+    m_readPosition = 0;
+    m_readTaskHandle = IFXTASK_HANDLE_INVALID;
+    m_pReadBuffer = NULL;
 }
 
 CIFXInternetReadBufferX::~CIFXInternetReadBufferX()
 {
-	Close();
+    Close();
 }
 
 // IFXUnknown
-U32 CIFXInternetReadBufferX::AddRef( void )
+U32 CIFXInternetReadBufferX::AddRef(void)
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
 
-U32 CIFXInternetReadBufferX::Release( void )
+U32 CIFXInternetReadBufferX::Release(void)
 {
-	if (1 == m_refCount) {
-		delete this;
-		return 0;
-	}
+    if (1 == m_refCount)
+    {
+        delete this;
+        return 0;
+    }
 
-	return --m_refCount;
+    return --m_refCount;
 }
 
-IFXRESULT CIFXInternetReadBufferX::QueryInterface( 
-									IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXInternetReadBufferX::QueryInterface(
+    IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if (ppInterface) 
-	{
-		if (interfaceId == IID_IFXReadBufferX) 
-		{
-			*ppInterface = ( IFXReadBufferX* ) this;
-		} 
-		else if ( interfaceId == IID_IFXStdio ) 
-		{
-			*ppInterface = ( IFXStdio* )this;
-		} 
-		else if ( interfaceId == IID_IFXInet ) 
-		{
-			*ppInterface = ( IFXInet* )this;
-		} 
-		else if ( interfaceId == IID_IFXReadBuffer ) 
-		{
-			*ppInterface = ( IFXReadBuffer* )this;
-		} 
-		else if ( interfaceId == IID_IFXUnknown ) 
-		{
-			*ppInterface = ( IFXUnknown* )this;
-		} 
-		else if ( interfaceId == IID_IFXTask ) 
-		{
-			*ppInterface = ( IFXTask* )this;
-		} 
-		else 
-		{
-			*ppInterface = NULL;
-			rc = IFX_E_UNSUPPORTED;
-		}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXReadBufferX)
+        {
+            *ppInterface = (IFXReadBufferX*)this;
+        }
+        else if (interfaceId == IID_IFXStdio)
+        {
+            *ppInterface = (IFXStdio*)this;
+        }
+        else if (interfaceId == IID_IFXInet)
+        {
+            *ppInterface = (IFXInet*)this;
+        }
+        else if (interfaceId == IID_IFXReadBuffer)
+        {
+            *ppInterface = (IFXReadBuffer*)this;
+        }
+        else if (interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = (IFXUnknown*)this;
+        }
+        else if (interfaceId == IID_IFXTask)
+        {
+            *ppInterface = (IFXTask*)this;
+        }
+        else
+        {
+            *ppInterface = NULL;
+            rc = IFX_E_UNSUPPORTED;
+        }
 
-		if( IFXSUCCESS( rc ) )
-			AddRef();
-	} 
-	else 
-	{
-		rc = IFX_E_INVALID_POINTER;
-	}
+        if (IFXSUCCESS(rc))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	return rc;
+    return rc;
 }
 
 // IFXReadBuffer
-IFXRESULT CIFXInternetReadBufferX::Read( U8* pBytes, U64 position, U32 count )
+IFXRESULT CIFXInternetReadBufferX::Read(U8* pBytes, U64 position, U32 count)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	try
-	{
-		// Check the input pointer and file pointer
-		if(NULL == pBytes) 
-		{
-			IFXCHECKX(IFX_E_INVALID_POINTER);
-		}
+    try
+    {
+        // Check the input pointer and file pointer
+        if (NULL == pBytes)
+        {
+            IFXCHECKX(IFX_E_INVALID_POINTER);
+        }
 
-		// Note the check for the file pointer (m_hFile) is done in GetTotalSizeX
-		ReadX(pBytes,position,count,rc);
+        // Note the check for the file pointer (m_hFile) is done in GetTotalSizeX
+        ReadX(pBytes, position, count, rc);
 
-		if(IFX_W_END_OF_FILE == rc) 
-		{
-			rc = IFX_E_END_OF_FILE; // Convert end of file warning to an error
-		}
-	}
-	catch(IFXException& rException)
-	{
-		rc = rException.GetIFXResult();
-	}
+        if (IFX_W_END_OF_FILE == rc)
+        {
+            rc = IFX_E_END_OF_FILE; // Convert end of file warning to an error
+        }
+    }
+    catch (IFXException& rException)
+    {
+        rc = rException.GetIFXResult();
+    }
 
-	return rc;
+    return rc;
 }
 
-void CIFXInternetReadBufferX::ReadX( 
-									U8* pBytes, U64 position, U32 count, 
-									IFXRESULT& rWarningCode )
+void CIFXInternetReadBufferX::ReadX(
+    U8* pBytes, U64 position, U32 count,
+    IFXRESULT& rWarningCode)
 {
-	rWarningCode = IFX_OK;
-	U32 bytesRead = 0;
+    rWarningCode = IFX_OK;
+    U32 bytesRead = 0;
 
-	// Check the input pointer and file pointer
-	if (NULL == pBytes) 
-	{
-		IFXCHECKX(IFX_E_INVALID_POINTER);
-	} 
+    // Check the input pointer and file pointer
+    if (NULL == pBytes)
+    {
+        IFXCHECKX(IFX_E_INVALID_POINTER);
+    }
 
-	if (m_readPosition != position)
-		IFXCHECKX(IFX_E_IO);
+    if (m_readPosition != position)
+    {
+        IFXCHECKX(IFX_E_IO);
+    }
 
-	// Read the data
-	IFXRESULT result = m_session.Read( pBytes, count, &bytesRead );
+    // Read the data
+    IFXRESULT result = m_session.Read(pBytes, count, &bytesRead);
 
-	if (IFX_OK == result)
-	{
-		m_readPosition += bytesRead;
-	}
-	else 
-	{
-		// Check for end of file
-		if (IFX_W_FINISHED == result)
-		{
-			m_readPosition += bytesRead;
-			rWarningCode = IFX_W_END_OF_FILE;
-		}
-		else
-			IFXCHECKX( result );
-	}
+    if (IFX_OK == result)
+    {
+        m_readPosition += bytesRead;
+    }
+    else
+    {
+        // Check for end of file
+        if (IFX_W_FINISHED == result)
+        {
+            m_readPosition += bytesRead;
+            rWarningCode = IFX_W_END_OF_FILE;
+        }
+        else
+        {
+            IFXCHECKX(result);
+        }
+    }
 }
 
-IFXRESULT CIFXInternetReadBufferX::GetTotalSize( U64* pCount )
+IFXRESULT CIFXInternetReadBufferX::GetTotalSize(U64* pCount)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	try 
-	{
-		// Check the input pointer
-		if (NULL == pCount)
-		{
-			IFXCHECKX(IFX_E_INVALID_POINTER);
-		}
-		// Note the check for the file pointer (m_hFile) is done in GetTotalSizeX
+    try
+    {
+        // Check the input pointer
+        if (NULL == pCount)
+        {
+            IFXCHECKX(IFX_E_INVALID_POINTER);
+        }
+        // Note the check for the file pointer (m_hFile) is done in GetTotalSizeX
 
-		GetTotalSizeX(*pCount);
-	}
-	catch(IFXException& rException) 
-	{
-		rc = rException.GetIFXResult();
-	}
+        GetTotalSizeX(*pCount);
+    }
+    catch (IFXException& rException)
+    {
+        rc = rException.GetIFXResult();
+    }
 
-	return rc;
+    return rc;
 }
 
-void CIFXInternetReadBufferX::GetTotalSizeX( U64& rCount )
+void CIFXInternetReadBufferX::GetTotalSizeX(U64& rCount)
 {
-	GetAvailableSizeX(rCount);
+    GetAvailableSizeX(rCount);
 }
 
-IFXRESULT CIFXInternetReadBufferX::GetAvailableSize( U64* pCount )
+IFXRESULT CIFXInternetReadBufferX::GetAvailableSize(U64* pCount)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	try	
-	{
-		// Check the input pointer and file pointer
-		if(NULL == pCount) 
-		{
-			IFXCHECKX(IFX_E_INVALID_POINTER);
-		}
-		// Note the check for the file pointer (m_hFile) is done in GetAvailableSizeX
+    try
+    {
+        // Check the input pointer and file pointer
+        if (NULL == pCount)
+        {
+            IFXCHECKX(IFX_E_INVALID_POINTER);
+        }
+        // Note the check for the file pointer (m_hFile) is done in GetAvailableSizeX
 
-		GetAvailableSizeX(*pCount);
-	}
-	catch (IFXException& rException) 
-	{
-		rc = rException.GetIFXResult();
-	}
+        GetAvailableSizeX(*pCount);
+    }
+    catch (IFXException& rException)
+    {
+        rc = rException.GetIFXResult();
+    }
 
-	return rc;
+    return rc;
 }
 
-void CIFXInternetReadBufferX::GetAvailableSizeX( U64& rCount )
+void CIFXInternetReadBufferX::GetAvailableSizeX(U64& rCount)
 {
-	// For InternetReadBufferX, available size and total size are the same.
-	/// @todo	Get file size for CIFXInternetReadBufferX is not implemented
-	//IFXInternetQueryDataAvailable(m_hFile, &rCount);
+    // For InternetReadBufferX, available size and total size are the same.
+    /// @todo	Get file size for CIFXInternetReadBufferX is not implemented
+    // IFXInternetQueryDataAvailable(m_hFile, &rCount);
 }
 
 // IFXStdio
-IFXRESULT CIFXInternetReadBufferX::Open(const IFXCHAR *pUrl)
+IFXRESULT CIFXInternetReadBufferX::Open(const IFXCHAR* pUrl)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	try	
-	{
-		m_session.OpenX( pUrl );
-		m_readPosition = 0;
-	}
-	catch (IFXException& rException) 
-	{
-		rc = rException.GetIFXResult();
-	}
+    try
+    {
+        m_session.OpenX(pUrl);
+        m_readPosition = 0;
+    }
+    catch (IFXException& rException)
+    {
+        rc = rException.GetIFXResult();
+    }
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT CIFXInternetReadBufferX::Close()
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	result = m_session.Close();
+    result = m_session.Close();
 
-	return result;
+    return result;
 }
 
 // IFXInet
@@ -305,258 +312,280 @@ IFXRESULT CIFXInternetReadBufferX::Close()
 /// @todo complete CIFXInternetReadBufferX::GetConnectTimeout
 IFXRESULT CIFXInternetReadBufferX::GetConnectTimeout(U32& rConnectTimeout)
 {
-	IFXRESULT rc = IFX_E_UNSUPPORTED;
+    IFXRESULT rc = IFX_E_UNSUPPORTED;
 
-	return rc;
+    return rc;
 }
 
 /// @todo complete CIFXInternetReadBufferX::SetConnectTimeout
 IFXRESULT CIFXInternetReadBufferX::SetConnectTimeout(const U32 connectTimeout)
 {
-	IFXRESULT rc = IFX_E_UNSUPPORTED;
+    IFXRESULT rc = IFX_E_UNSUPPORTED;
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT CIFXInternetReadBufferX::GetSendTimeout(U32& rSendTimeout)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	U32 buffer;
-	I32 buflen = sizeof(buffer);
+    U32 buffer;
+    I32 buflen = sizeof(buffer);
 
-	rc = m_session.GetOptions( IFXOSSOCKET_SEND_TIMEOUT, (I8*)&buffer, &buflen );
+    rc = m_session.GetOptions(IFXOSSOCKET_SEND_TIMEOUT, (I8*)&buffer, &buflen);
 
-	if( IFXSUCCESS( rc ) )
-		rSendTimeout = buffer;
+    if (IFXSUCCESS(rc))
+    {
+        rSendTimeout = buffer;
+    }
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT CIFXInternetReadBufferX::SetSendTimeout(const U32 sendTimeout)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	const I8* buffer = (const I8*)&sendTimeout;
-	U32 buflen = sizeof(sendTimeout);
+    const I8* buffer = (const I8*)&sendTimeout;
+    U32 buflen = sizeof(sendTimeout);
 
-	rc = m_session.SetOptions( IFXOSSOCKET_SEND_TIMEOUT, buffer, buflen );
+    rc = m_session.SetOptions(IFXOSSOCKET_SEND_TIMEOUT, buffer, buflen);
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT CIFXInternetReadBufferX::GetReceiveTimeout(U32& rReceiveTimeout)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	U32 buffer;
-	I32 buflen = sizeof(buffer);
+    U32 buffer;
+    I32 buflen = sizeof(buffer);
 
-	rc = m_session.GetOptions( IFXOSSOCKET_RECEIVE_TIMEOUT, (I8*)&buffer, &buflen );
+    rc = m_session.GetOptions(IFXOSSOCKET_RECEIVE_TIMEOUT, (I8*)&buffer, &buflen);
 
-	if( IFXSUCCESS( rc ) )
-		rReceiveTimeout = buffer;
+    if (IFXSUCCESS(rc))
+    {
+        rReceiveTimeout = buffer;
+    }
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT CIFXInternetReadBufferX::SetReceiveTimeout(const U32 receiveTimeout)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	const I8* pBuffer = (const I8*)&receiveTimeout;
-	U32 buflen = sizeof(receiveTimeout);
+    const I8* pBuffer = (const I8*)&receiveTimeout;
+    U32 buflen = sizeof(receiveTimeout);
 
-	rc = m_session.SetOptions( IFXOSSOCKET_RECEIVE_TIMEOUT, pBuffer, buflen );
+    rc = m_session.SetOptions(IFXOSSOCKET_RECEIVE_TIMEOUT, pBuffer, buflen);
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT CIFXInternetReadBufferX::InitiateRead(
-										IFXCoreServices* pCoreServices, 
-										IFXReadingCallback* pReadingCallback)
+    IFXCoreServices* pCoreServices,
+    IFXReadingCallback* pReadingCallback)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if (IFXSUCCESS(rc) && (NULL == pReadingCallback)) rc = IFX_E_INVALID_POINTER;
+    if (IFXSUCCESS(rc) && (NULL == pReadingCallback))
+    {
+        rc = IFX_E_INVALID_POINTER;
+    }
 
-	m_pCoreServices = pCoreServices;
-	IFXRELEASE(m_pReadingCallback);
-	m_pReadingCallback = pReadingCallback;
-	m_pReadingCallback->AddRef();
+    m_pCoreServices = pCoreServices;
+    IFXRELEASE(m_pReadingCallback);
+    m_pReadingCallback = pReadingCallback;
+    m_pReadingCallback->AddRef();
 
-	m_pReadingCallback->GetURLCount(m_URLs);
-	m_currentURL = 0;
+    m_pReadingCallback->GetURLCount(m_URLs);
+    m_currentURL = 0;
 
-	IFXDECLARELOCAL(IFXScheduler, pScheduler);
+    IFXDECLARELOCAL(IFXScheduler, pScheduler);
 
-	if (IFXSUCCESS(rc))
-		rc = m_pCoreServices->GetScheduler(IID_IFXScheduler, (void**)&pScheduler);
+    if (IFXSUCCESS(rc))
+    {
+        rc = m_pCoreServices->GetScheduler(IID_IFXScheduler, (void**)&pScheduler);
+    }
 
-	IFXDECLARELOCAL(IFXSystemManager, pSysMgr);
+    IFXDECLARELOCAL(IFXSystemManager, pSysMgr);
 
-	if (IFXSUCCESS(rc))
-		rc = pScheduler->GetSystemManager(&pSysMgr);
+    if (IFXSUCCESS(rc))
+    {
+        rc = pScheduler->GetSystemManager(&pSysMgr);
+    }
 
-	IFXDECLARELOCAL(IFXTask, pReadTask);
+    IFXDECLARELOCAL(IFXTask, pReadTask);
 
-	if (IFXSUCCESS(rc))
-		rc = this->QueryInterface(IID_IFXTask, (void**) &pReadTask);
+    if (IFXSUCCESS(rc))
+    {
+        rc = this->QueryInterface(IID_IFXTask, (void**)&pReadTask);
+    }
 
-	if (IFXSUCCESS(rc))
-	{
-		rc = pSysMgr->RegisterTask(
-						pReadTask, INTERNET_READ_TASK_PRIORITY, 
-						NULL, &m_readTaskHandle);
-	}
+    if (IFXSUCCESS(rc))
+    {
+        rc = pSysMgr->RegisterTask(
+            pReadTask, INTERNET_READ_TASK_PRIORITY, NULL, &m_readTaskHandle);
+    }
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT CIFXInternetReadBufferX::Execute(IFXTaskData* pTaskData)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if (m_currentURL < m_URLs) 
-	{
-		U8*	pFile = NULL;
-		U64		totalSize = 0;
+    if (m_currentURL < m_URLs)
+    {
+        U8* pFile = NULL;
+        U64 totalSize = 0;
 
-		if (m_pReadBuffer == NULL)
-		{
-			IFXString sURL;
-			rc = m_pReadingCallback->GetURL(m_currentURL, sURL);
+        if (m_pReadBuffer == NULL)
+        {
+            IFXString sURL;
+            rc = m_pReadingCallback->GetURL(m_currentURL, sURL);
 
-			if(IFXSUCCESS( rc )) 
-			{
-				IFXDECLARELOCAL(IFXStdio, pStdio);
-				U32 tmp = 0;
-				totalSize = 0;
+            if (IFXSUCCESS(rc))
+            {
+                IFXDECLARELOCAL(IFXStdio, pStdio);
+                U32 tmp = 0;
+                totalSize = 0;
 
-				if (IFXSUCCESS(sURL.FindSubstring(L"://", &tmp)))
-					rc = this->QueryInterface(IID_IFXReadBuffer, (void**)&m_pReadBuffer);
-				else 
-				{
-					rc = IFXCreateComponent(
-									CID_IFXStdioReadBuffer, 
-									IID_IFXReadBuffer, 
-									(void**)&m_pReadBuffer);
-					totalSize = 1;
-				}
+                if (IFXSUCCESS(sURL.FindSubstring(L"://", &tmp)))
+                {
+                    rc = this->QueryInterface(IID_IFXReadBuffer, (void**)&m_pReadBuffer);
+                }
+                else
+                {
+                    rc = IFXCreateComponent(
+                        CID_IFXStdioReadBuffer,
+                        IID_IFXReadBuffer,
+                        (void**)&m_pReadBuffer);
+                    totalSize = 1;
+                }
 
-				if (IFXSUCCESS(rc))
-					rc = m_pReadBuffer->QueryInterface(IID_IFXStdio, (void**)&pStdio);
+                if (IFXSUCCESS(rc))
+                {
+                    rc = m_pReadBuffer->QueryInterface(IID_IFXStdio, (void**)&pStdio);
+                }
 
-				if (IFXSUCCESS(rc))
-					rc = pStdio->Open( (IFXCHAR*)sURL.Raw() );
+                if (IFXSUCCESS(rc))
+                {
+                    rc = pStdio->Open((IFXCHAR*)sURL.Raw());
+                }
 
-				if (IFXFAILURE(rc)) 
-				{
-					// try another URL
-					IFXRELEASE(m_pReadBuffer);
-					m_currentURL++;
-				}
-			}
-		}
+                if (IFXFAILURE(rc))
+                {
+                    // try another URL
+                    IFXRELEASE(m_pReadBuffer);
+                    m_currentURL++;
+                }
+            }
+        }
 
-		if (IFXSUCCESS(rc)) 
-		{
-			if (0 != totalSize) // local file
-			{
-				m_pReadBuffer->GetTotalSize(&totalSize);
-				pFile = (U8*)IFXAllocate( (size_t)totalSize );
+        if (IFXSUCCESS(rc))
+        {
+            if (0 != totalSize) // local file
+            {
+                m_pReadBuffer->GetTotalSize(&totalSize);
+                pFile = (U8*)IFXAllocate((size_t)totalSize);
 
-				if (NULL != pFile )
-				{
-					rc = m_pReadBuffer->Read( pFile, 0, (U32)totalSize );
-				}
-				else
-				{
-					rc = IFX_E_OUT_OF_MEMORY;
-				}
+                if (NULL != pFile)
+                {
+                    rc = m_pReadBuffer->Read(pFile, 0, (U32)totalSize);
+                }
+                else
+                {
+                    rc = IFX_E_OUT_OF_MEMORY;
+                }
 
-				if( IFXSUCCESS( rc) )
-				{
-					rc = IFX_W_END_OF_FILE;
-				}
-			}
-			else
-			{
-				U64 readSize = 0;
-				U64 currentSize = 0;
+                if (IFXSUCCESS(rc))
+                {
+                    rc = IFX_W_END_OF_FILE;
+                }
+            }
+            else
+            {
+                U64 readSize = 0;
+                U64 currentSize = 0;
 
-				while (IFX_OK == rc) 
-				{
-					currentSize += BUFFER_BLOCK_SIZE;
-					readSize = m_readPosition;
+                while (IFX_OK == rc)
+                {
+                    currentSize += BUFFER_BLOCK_SIZE;
+                    readSize = m_readPosition;
 
-					pFile = (U8*)IFXReallocate( pFile, (size_t)currentSize );
+                    pFile = (U8*)IFXReallocate(pFile, (size_t)currentSize);
 
-					if (pFile != NULL)
-					{
-						rc = m_pReadBuffer->Read( 
-												pFile+readSize, 
-												readSize, 
-												BUFFER_BLOCK_SIZE );
-					}
-					else
-					{
-						rc = IFX_E_OUT_OF_MEMORY;
-						break;
-					}
-				}
+                    if (pFile != NULL)
+                    {
+                        rc = m_pReadBuffer->Read(
+                            pFile + readSize,
+                            readSize,
+                            BUFFER_BLOCK_SIZE);
+                    }
+                    else
+                    {
+                        rc = IFX_E_OUT_OF_MEMORY;
+                        break;
+                    }
+                }
 
-				if (rc == IFX_E_END_OF_FILE)
-				{
-					totalSize = m_readPosition;
-					pFile = (U8*)IFXReallocate(pFile, (size_t)totalSize);
-					rc = IFX_W_END_OF_FILE;
-				}
-			}
+                if (rc == IFX_E_END_OF_FILE)
+                {
+                    totalSize = m_readPosition;
+                    pFile = (U8*)IFXReallocate(pFile, (size_t)totalSize);
+                    rc = IFX_W_END_OF_FILE;
+                }
+            }
 
-			if (rc == IFX_W_END_OF_FILE) 
-			{
-				IFXDECLARELOCAL(IFXStdio, pStdio);
-				rc = m_pReadBuffer->QueryInterface(IID_IFXStdio, (void**)&pStdio);
+            if (rc == IFX_W_END_OF_FILE)
+            {
+                IFXDECLARELOCAL(IFXStdio, pStdio);
+                rc = m_pReadBuffer->QueryInterface(IID_IFXStdio, (void**)&pStdio);
 
-				if (IFXSUCCESS(rc))
-					pStdio->Close();
+                if (IFXSUCCESS(rc))
+                {
+                    pStdio->Close();
+                }
 
-				IFXRELEASE(m_pReadBuffer);
+                IFXRELEASE(m_pReadBuffer);
 
-				/**
-					@todo	Dangerous pass of pFile buffer allocated here. It will be 
-							deallocated in CIFXImageTools.
-				*/
-				m_pReadingCallback->AcceptSuccess(m_currentURL, pFile, (U32)totalSize);
-				pFile = NULL; // deleting is left to the m_pReadingCallback
-				totalSize = 0;
+                /**
+                        @todo	Dangerous pass of pFile buffer allocated here. It will be
+                                        deallocated in CIFXImageTools.
+                */
+                m_pReadingCallback->AcceptSuccess(m_currentURL, pFile, (U32)totalSize);
+                pFile = NULL; // deleting is left to the m_pReadingCallback
+                totalSize = 0;
 
-				IFXDECLARELOCAL(IFXScheduler, pScheduler);
-				m_pCoreServices->GetScheduler(IID_IFXScheduler, (void**)&pScheduler);
+                IFXDECLARELOCAL(IFXScheduler, pScheduler);
+                m_pCoreServices->GetScheduler(IID_IFXScheduler, (void**)&pScheduler);
 
-				IFXDECLARELOCAL(IFXSystemManager, pSysMgr);
-				pScheduler->GetSystemManager(&pSysMgr);
+                IFXDECLARELOCAL(IFXSystemManager, pSysMgr);
+                pScheduler->GetSystemManager(&pSysMgr);
 
-				pSysMgr->UnregisterTask(m_readTaskHandle);
-				m_readTaskHandle = IFXTASK_HANDLE_INVALID;
-			}
-		}
-	} 
-	else 
-	{
-		m_pReadingCallback->AcceptFailure(IFX_E_CANNOT_FIND);
-		IFXDECLARELOCAL(IFXScheduler, pScheduler);
-		m_pCoreServices->GetScheduler(IID_IFXScheduler, (void**)&pScheduler);
-		IFXDECLARELOCAL(IFXSystemManager, pSysMgr);
-		pScheduler->GetSystemManager(&pSysMgr);
-		pSysMgr->UnregisterTask(m_readTaskHandle);
-		m_readTaskHandle = IFXTASK_HANDLE_INVALID;
-	}
+                pSysMgr->UnregisterTask(m_readTaskHandle);
+                m_readTaskHandle = IFXTASK_HANDLE_INVALID;
+            }
+        }
+    }
+    else
+    {
+        m_pReadingCallback->AcceptFailure(IFX_E_CANNOT_FIND);
+        IFXDECLARELOCAL(IFXScheduler, pScheduler);
+        m_pCoreServices->GetScheduler(IID_IFXScheduler, (void**)&pScheduler);
+        IFXDECLARELOCAL(IFXSystemManager, pSysMgr);
+        pScheduler->GetSystemManager(&pSysMgr);
+        pSysMgr->UnregisterTask(m_readTaskHandle);
+        m_readTaskHandle = IFXTASK_HANDLE_INVALID;
+    }
 
-	//	If one of the URL in the URL list is not valid this is okay, try another one
-	if (rc == IFX_E_INVALID_FILE)
-		rc = IFX_OK;
+    //	If one of the URL in the URL list is not valid this is okay, try another one
+    if (rc == IFX_E_INVALID_FILE)
+    {
+        rc = IFX_OK;
+    }
 
-	return rc;
+    return rc;
 }

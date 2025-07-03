@@ -20,48 +20,46 @@
 //
 //	DESCRIPTION:
 //		Declaration of the CIFXGroupNodeEncoder.
-//		The CIFXGroupNodeEncoder contains group node encoding functionality 
+//		The CIFXGroupNodeEncoder contains group node encoding functionality
 //		that is used by the write manager.
-//	
+//
 //*****************************************************************************
 
 #ifndef CIFXGROUPNODEENCODER_H__
 #define CIFXGROUPNODEENCODER_H__
 
-
-// no ordering requirements for include files 
+// no ordering requirements for include files
 #include "CIFXNodeBaseEncoder.h"
 #include "IFXCoreServices.h"
 #include "IFXDataBlockX.h"
 #include "IFXEncoderX.h"
 #include "IFXString.h"
 
-
-class  CIFXGroupNodeEncoder : virtual public IFXEncoderX,
-							  public CIFXNodeBaseEncoder
+class CIFXGroupNodeEncoder : virtual public IFXEncoderX,
+                             public CIFXNodeBaseEncoder
 {
 public:
-	// Factory function.
-	friend IFXRESULT IFXAPI_CALLTYPE CIFXGroupNodeEncoder_Factory( IFXREFIID interfaceId, void** ppInterface );
+    // Factory function.
+    friend IFXRESULT IFXAPI_CALLTYPE CIFXGroupNodeEncoder_Factory(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXUnknown
-	U32 IFXAPI 			AddRef ( void );
-	U32 IFXAPI 			Release ( void );
-	IFXRESULT IFXAPI 	QueryInterface ( IFXREFIID interfaceId, void** ppInterface );
+    // IFXUnknown
+    U32 IFXAPI AddRef(void);
+    U32 IFXAPI Release(void);
+    IFXRESULT IFXAPI QueryInterface(IFXREFIID interfaceId, void** ppInterface);
 
-	// IFXEncoderX
-	void	IFXAPI		EncodeX( IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f );
-	void	IFXAPI		InitializeX( IFXCoreServices& rCoreServices );
-	void	IFXAPI		SetObjectX( IFXUnknown& rObject );
+    // IFXEncoderX
+    void IFXAPI EncodeX(IFXString& rName, IFXDataBlockQueueX& rDataBlockQueue, F64 units = 1.0f);
+    void IFXAPI InitializeX(IFXCoreServices& rCoreServices);
+    void IFXAPI SetObjectX(IFXUnknown& rObject);
 
 private:
-	// methods
-	CIFXGroupNodeEncoder();
-	~CIFXGroupNodeEncoder();
+    // methods
+    CIFXGroupNodeEncoder();
+    ~CIFXGroupNodeEncoder();
 
-	// members
-	BOOL	m_bInitialized;
-	U32		m_uRefCount;
+    // members
+    BOOL m_bInitialized;
+    U32 m_uRefCount;
 };
 
 #endif

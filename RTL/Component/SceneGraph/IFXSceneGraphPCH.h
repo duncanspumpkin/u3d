@@ -26,15 +26,15 @@
 #ifndef IFX_SCENEGRAPH_PCH_H
 #define IFX_SCENEGRAPH_PCH_H
 
-#include "IFXPalette.h"
 #include "IFXMarker.h"
-#include "IFXVector4.h"
 #include "IFXMatrix4x4.h"
 #include "IFXModel.h"
-#include "IFXModifierChain.h"
 #include "IFXModifier.h"
+#include "IFXModifierChain.h"
 #include "IFXNode.h"
+#include "IFXPalette.h"
 #include "IFXSceneGraph.h"
+#include "IFXVector4.h"
 #include "IFXView.h"
 
 #endif

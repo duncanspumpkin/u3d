@@ -29,16 +29,15 @@
 //  Includes
 //*****************************************************************************
 #include "CIFXDataBlockX.h"
+#include "IFXCOM.h"
 #include "IFXCheckX.h"
 #include "IFXCoreCIDs.h"
-#include "IFXCOM.h"
 #include <memory.h>
 
 // set the value for the static member variable...
 const U32 CIFXDataBlockX::IFXDATABLOCK_DEFAULT_PRIORITY = 256;
 const U32 CIFXDataBlockX::IFXDATABLOCK_INITIAL_SIZE = 4096;
 const U32 CIFXDataBlockX::IFXDATABLOCK_GROW_SIZE = 4096;
-
 
 // IFXDataBlock
 
@@ -52,19 +51,21 @@ const U32 CIFXDataBlockX::IFXDATABLOCK_GROW_SIZE = 4096;
 // Manages m_uBufferSize, which reflects the allocated buffer size, some
 // of which will be invalid data.
 //-----------------------------------------------------------------------------
-IFXRESULT CIFXDataBlockX::SetSize( U32 count )
+IFXRESULT CIFXDataBlockX::SetSize(U32 count)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    SetSizeX(count);
-  }
+    try
+    {
+        SetSizeX(count);
+    }
 
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
 //-----------------------------------------------------------------------------
@@ -77,15 +78,16 @@ IFXRESULT CIFXDataBlockX::SetSize( U32 count )
 // Manages m_uBufferSize, which reflects the allocated buffer size, some
 // of which will be invalid data.
 //-----------------------------------------------------------------------------
-void CIFXDataBlockX::SetSizeX( U32 count )
+void CIFXDataBlockX::SetSizeX(U32 count)
 {
-  //IFXASSERT( m_uCurrentSize == 0 );
+    // IFXASSERT( m_uCurrentSize == 0 );
 
-  if(count > m_uBufferSize) {
-    SetSizeActualX(count);
-  }
+    if (count > m_uBufferSize)
+    {
+        SetSizeActualX(count);
+    }
 
-  m_uCurrentSize = count;
+    m_uCurrentSize = count;
 }
 
 //-----------------------------------------------------------------------------
@@ -95,19 +97,21 @@ void CIFXDataBlockX::SetSizeX( U32 count )
 // Manages m_uBufferSize, which reflects the allocated buffer size, some
 // of which will be invalid data.
 //-----------------------------------------------------------------------------
-IFXRESULT CIFXDataBlockX::GetSize( U32* pCount )
+IFXRESULT CIFXDataBlockX::GetSize(U32* pCount)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    GetSizeX(*pCount);
-  }
+    try
+    {
+        GetSizeX(*pCount);
+    }
 
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
 //-----------------------------------------------------------------------------
@@ -117,9 +121,9 @@ IFXRESULT CIFXDataBlockX::GetSize( U32* pCount )
 // Manages m_uBufferSize, which reflects the allocated buffer size, some
 // of which will be invalid data.
 //-----------------------------------------------------------------------------
-void CIFXDataBlockX::GetSizeX( U32& rCount )
+void CIFXDataBlockX::GetSizeX(U32& rCount)
 {
-  rCount = m_uCurrentSize;
+    rCount = m_uCurrentSize;
 }
 
 //-----------------------------------------------------------------------------
@@ -128,22 +132,25 @@ void CIFXDataBlockX::GetSizeX( U32& rCount )
 // Get number of bytes in entire stream, which may _not_ be fully populated
 // with valid data.
 //-----------------------------------------------------------------------------
-IFXRESULT CIFXDataBlockX::GetTotalSize( U64* pCount )
+IFXRESULT CIFXDataBlockX::GetTotalSize(U64* pCount)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    if(NULL == pCount) {
-      IFXCHECKX(IFX_E_INVALID_POINTER);
+    try
+    {
+        if (NULL == pCount)
+        {
+            IFXCHECKX(IFX_E_INVALID_POINTER);
+        }
+        GetTotalSizeX(*pCount);
     }
-    GetTotalSizeX(*pCount);
-  }
 
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
 //-----------------------------------------------------------------------------
@@ -152,9 +159,9 @@ IFXRESULT CIFXDataBlockX::GetTotalSize( U64* pCount )
 // Get number of bytes in entire stream, which may _not_ be fully populated
 // with valid data.
 //-----------------------------------------------------------------------------
-void CIFXDataBlockX::GetTotalSizeX( U64& rCount )
+void CIFXDataBlockX::GetTotalSizeX(U64& rCount)
 {
-  IFXCHECKX(IFX_E_UNSUPPORTED);
+    IFXCHECKX(IFX_E_UNSUPPORTED);
 }
 
 //-----------------------------------------------------------------------------
@@ -163,27 +170,30 @@ void CIFXDataBlockX::GetTotalSizeX( U64& rCount )
 // Set number of bytes in stream that are valid data
 //-----------------------------------------------------------------------------
 
-IFXRESULT CIFXDataBlockX::GetAvailableSize( U64* pCount )
+IFXRESULT CIFXDataBlockX::GetAvailableSize(U64* pCount)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    if(NULL == pCount) {
-      IFXCHECKX(IFX_E_INVALID_POINTER);
+    try
+    {
+        if (NULL == pCount)
+        {
+            IFXCHECKX(IFX_E_INVALID_POINTER);
+        }
+        GetAvailableSizeX(*pCount);
     }
-    GetAvailableSizeX(*pCount);
-  }
 
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
-void CIFXDataBlockX::GetAvailableSizeX( U64& ruCount )
+void CIFXDataBlockX::GetAvailableSizeX(U64& ruCount)
 {
-  ruCount = m_uCurrentSize; // number of bytes that contain valid data
+    ruCount = m_uCurrentSize; // number of bytes that contain valid data
 }
 
 //-----------------------------------------------------------------------------
@@ -192,19 +202,21 @@ void CIFXDataBlockX::GetAvailableSizeX( U64& ruCount )
 // All IFXDataBlocks have a BlockType which is used to identify the format of
 // the contents of the data block. SetBlockType is used to set this info
 //-----------------------------------------------------------------------------
-IFXRESULT CIFXDataBlockX::SetBlockType( U32 BlockType )
+IFXRESULT CIFXDataBlockX::SetBlockType(U32 BlockType)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    SetBlockTypeX(BlockType);
-  }
+    try
+    {
+        SetBlockTypeX(BlockType);
+    }
 
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
 //-----------------------------------------------------------------------------
@@ -213,9 +225,9 @@ IFXRESULT CIFXDataBlockX::SetBlockType( U32 BlockType )
 // All IFXDataBlocks have a BlockType which is used to identify the format of
 // the contents of the data block. SetBlockTypeX is used to set this info
 //-----------------------------------------------------------------------------
-void CIFXDataBlockX::SetBlockTypeX( U32 BlockType )
+void CIFXDataBlockX::SetBlockTypeX(U32 BlockType)
 {
-  m_uBlockType = BlockType;
+    m_uBlockType = BlockType;
 }
 
 //-----------------------------------------------------------------------------
@@ -223,22 +235,25 @@ void CIFXDataBlockX::SetBlockTypeX( U32 BlockType )
 //
 // GetBlockType returns the BlockType of this data block
 //-----------------------------------------------------------------------------
-IFXRESULT CIFXDataBlockX::GetBlockType( U32* pBlockType )
+IFXRESULT CIFXDataBlockX::GetBlockType(U32* pBlockType)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    if(NULL == pBlockType) {
-      IFXCHECKX(IFX_E_INVALID_POINTER);
+    try
+    {
+        if (NULL == pBlockType)
+        {
+            IFXCHECKX(IFX_E_INVALID_POINTER);
+        }
+        GetBlockTypeX(*pBlockType);
     }
-    GetBlockTypeX(*pBlockType);
-  }
 
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
 //-----------------------------------------------------------------------------
@@ -246,9 +261,9 @@ IFXRESULT CIFXDataBlockX::GetBlockType( U32* pBlockType )
 //
 // GetBlockType returns the BlockType of this data block
 //-----------------------------------------------------------------------------
-void CIFXDataBlockX::GetBlockTypeX( U32& rBlockType )
+void CIFXDataBlockX::GetBlockTypeX(U32& rBlockType)
 {
-  rBlockType = m_uBlockType;
+    rBlockType = m_uBlockType;
 }
 
 //-----------------------------------------------------------------------------
@@ -256,22 +271,25 @@ void CIFXDataBlockX::GetBlockTypeX( U32& rBlockType )
 //
 // GetPointer will pass back the location of the data in a datablock
 //-----------------------------------------------------------------------------
-IFXRESULT CIFXDataBlockX::GetPointer( U8** ppData )
+IFXRESULT CIFXDataBlockX::GetPointer(U8** ppData)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    if(NULL == ppData) {
-      IFXCHECKX(IFX_E_INVALID_POINTER);
+    try
+    {
+        if (NULL == ppData)
+        {
+            IFXCHECKX(IFX_E_INVALID_POINTER);
+        }
+        GetPointerX(*ppData);
     }
-    GetPointerX(*ppData);
-  }
 
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
 //-----------------------------------------------------------------------------
@@ -279,98 +297,108 @@ IFXRESULT CIFXDataBlockX::GetPointer( U8** ppData )
 //
 // GetPointer will pass back the location of the data in a datablock
 //-----------------------------------------------------------------------------
-void CIFXDataBlockX::GetPointerX( U8*& rpData )
+void CIFXDataBlockX::GetPointerX(U8*& rpData)
 {
-  rpData = m_pData;
+    rpData = m_pData;
 }
-
-
 
 // IFXReadBuffer
-IFXRESULT CIFXDataBlockX::Read( U8* pBytes, U64 position, U32 count )
+IFXRESULT CIFXDataBlockX::Read(U8* pBytes, U64 position, U32 count)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  try {
-    ReadX(pBytes,position,count,rc);
-  }
-
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
-
-  IFXRETURN(rc);
-}
-
-void CIFXDataBlockX::ReadX( U8* pBytes, U64 uPosition, U32 uCount, IFXRESULT& rWarningCode )
-{
-  rWarningCode = IFX_OK;
-
-  if(NULL == pBytes) {
-    IFXCHECKX(IFX_E_INVALID_POINTER);
-  }
-
-  // Make sure read will not exceed number of available bytes
-  U32 needSize = (U32)uPosition + uCount;
-  if (needSize > m_uCurrentSize) {
-    rWarningCode = IFX_W_DATA_NOT_AVAILABLE;
-  } else {
-    memcpy(pBytes, m_pData + uPosition, uCount);
-  }
-
-  return;
-}
-
-
-// IFXWriteBuffer
-IFXRESULT CIFXDataBlockX::Write( U8* pBytes, U64 position, U32 count )
-{
-  IFXRESULT rc = IFX_OK;
-
-  try {
-    WriteX( pBytes,position,count);
-  }
-
-  catch(IFXException e) {
-    rc = e.GetIFXResult();
-  }
-
-  IFXRETURN(rc);
-}
-
-void CIFXDataBlockX::WriteX( U8* pBytes, U64 position, U32 count )
-{
-  if(NULL == pBytes) {
-    IFXCHECKX(IFX_E_INVALID_POINTER);
-  }
-
-  // Ensure buffer is large enough
-  U32 needSize = (U32)position + count;
-
-  if (needSize > m_uBufferSize) {
-    // We need to allocate a new buffer.
-    // First compute the new size of the buffer with
-    // extra space to grow into.
-    U32 newSize = 0;
-    if (m_uBufferSize == 0) {
-      newSize = needSize + IFXDATABLOCK_INITIAL_SIZE;
-    } else {
-      newSize = needSize + IFXDATABLOCK_GROW_SIZE;
+    try
+    {
+        ReadX(pBytes, position, count, rc);
     }
 
-    SetSizeActualX(newSize);
-  }
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
 
-  // Write the data
-  memcpy(m_pData + position, pBytes, count);
-  // Keep track of farthest byte written
-  if ((U32)position + count > m_uCurrentSize) {
-    m_uCurrentSize = (U32)position + count;
-  }
-
-  return;
+    IFXRETURN(rc);
 }
 
+void CIFXDataBlockX::ReadX(U8* pBytes, U64 uPosition, U32 uCount, IFXRESULT& rWarningCode)
+{
+    rWarningCode = IFX_OK;
+
+    if (NULL == pBytes)
+    {
+        IFXCHECKX(IFX_E_INVALID_POINTER);
+    }
+
+    // Make sure read will not exceed number of available bytes
+    U32 needSize = (U32)uPosition + uCount;
+    if (needSize > m_uCurrentSize)
+    {
+        rWarningCode = IFX_W_DATA_NOT_AVAILABLE;
+    }
+    else
+    {
+        memcpy(pBytes, m_pData + uPosition, uCount);
+    }
+
+    return;
+}
+
+// IFXWriteBuffer
+IFXRESULT CIFXDataBlockX::Write(U8* pBytes, U64 position, U32 count)
+{
+    IFXRESULT rc = IFX_OK;
+
+    try
+    {
+        WriteX(pBytes, position, count);
+    }
+
+    catch (IFXException e)
+    {
+        rc = e.GetIFXResult();
+    }
+
+    IFXRETURN(rc);
+}
+
+void CIFXDataBlockX::WriteX(U8* pBytes, U64 position, U32 count)
+{
+    if (NULL == pBytes)
+    {
+        IFXCHECKX(IFX_E_INVALID_POINTER);
+    }
+
+    // Ensure buffer is large enough
+    U32 needSize = (U32)position + count;
+
+    if (needSize > m_uBufferSize)
+    {
+        // We need to allocate a new buffer.
+        // First compute the new size of the buffer with
+        // extra space to grow into.
+        U32 newSize = 0;
+        if (m_uBufferSize == 0)
+        {
+            newSize = needSize + IFXDATABLOCK_INITIAL_SIZE;
+        }
+        else
+        {
+            newSize = needSize + IFXDATABLOCK_GROW_SIZE;
+        }
+
+        SetSizeActualX(newSize);
+    }
+
+    // Write the data
+    memcpy(m_pData + position, pBytes, count);
+    // Keep track of farthest byte written
+    if ((U32)position + count > m_uCurrentSize)
+    {
+        m_uCurrentSize = (U32)position + count;
+    }
+
+    return;
+}
 
 // IFXUnknown...
 
@@ -383,10 +411,9 @@ void CIFXDataBlockX::WriteX( U8* pBytes, U64 position, U32 count )
 //  from 1 to 2^32 - 1 that defines the new reference count.  The return
 //  value should only be used for debugging purposes.
 //---------------------------------------------------------------------------
-U32
-CIFXDataBlockX::AddRef()
+U32 CIFXDataBlockX::AddRef()
 {
-  return ++m_uRefCount;
+    return ++m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -398,19 +425,18 @@ CIFXDataBlockX::AddRef()
 //  used for debugging purposes.  If the reference count on a component falls
 //  to zero, the component is destroyed.
 //---------------------------------------------------------------------------
-U32
-CIFXDataBlockX::Release()
+U32 CIFXDataBlockX::Release()
 {
-  if ( 1 == m_uRefCount )
-  {
-    delete this;
+    if (1 == m_uRefCount)
+    {
+        delete this;
 
-    // This second return point is used so that the deleted object's
-    // reference count isn't referenced after the memory is released.
-    return 0;
-  }
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
 
-  return --m_uRefCount;
+    return --m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -425,72 +451,73 @@ CIFXDataBlockX::Release()
 //  QueryInterface.  For a list of such rules, refer to the Microsoft COM
 //  description of the IUnknown::QueryInterface method.
 //---------------------------------------------------------------------------
-IFXRESULT CIFXDataBlockX::QueryInterface( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT CIFXDataBlockX::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  if ( ppInterface )
-  {
-	if ( IID_IFXUnknown == interfaceId ) {
-	  *ppInterface = ( IFXUnknown* ) this;
-	  this->AddRef();
-	}
-
-	else if ( IID_IFXDataBlock == interfaceId  )
+    if (ppInterface)
     {
-      *ppInterface = ( IFXDataBlock* ) this;
-      this->AddRef();
-    }
+        if (IID_IFXUnknown == interfaceId)
+        {
+            *ppInterface = (IFXUnknown*)this;
+            this->AddRef();
+        }
 
-    else if( IID_IFXReadBuffer == interfaceId )
-    {
-      *ppInterface = ( IFXReadBuffer* ) this;
-      this->AddRef();
-    }
+        else if (IID_IFXDataBlock == interfaceId)
+        {
+            *ppInterface = (IFXDataBlock*)this;
+            this->AddRef();
+        }
 
-    else if ( IID_IFXWriteBuffer == interfaceId )
-    {
-      *ppInterface = ( IFXWriteBuffer* ) this;
-      this->AddRef();
-    }
+        else if (IID_IFXReadBuffer == interfaceId)
+        {
+            *ppInterface = (IFXReadBuffer*)this;
+            this->AddRef();
+        }
 
-    else if ( IID_IFXDataBlockX == interfaceId )
-    {
-      *ppInterface = ( IFXDataBlockX* ) this;
-      this->AddRef();
-    }
+        else if (IID_IFXWriteBuffer == interfaceId)
+        {
+            *ppInterface = (IFXWriteBuffer*)this;
+            this->AddRef();
+        }
 
-    else if( IID_IFXReadBufferX == interfaceId )
-    {
-      *ppInterface = ( IFXReadBufferX* ) this;
-      this->AddRef();
-    }
+        else if (IID_IFXDataBlockX == interfaceId)
+        {
+            *ppInterface = (IFXDataBlockX*)this;
+            this->AddRef();
+        }
 
-    else if ( IID_IFXWriteBufferX == interfaceId )
-    {
-      *ppInterface = ( IFXWriteBufferX* ) this;
-      this->AddRef();
-    }
+        else if (IID_IFXReadBufferX == interfaceId)
+        {
+            *ppInterface = (IFXReadBufferX*)this;
+            this->AddRef();
+        }
 
-    else if ( IID_IFXMetaDataX == interfaceId )
-    {
-      *ppInterface = ( IFXMetaDataX* ) this;
-      this->AddRef();
+        else if (IID_IFXWriteBufferX == interfaceId)
+        {
+            *ppInterface = (IFXWriteBufferX*)this;
+            this->AddRef();
+        }
+
+        else if (IID_IFXMetaDataX == interfaceId)
+        {
+            *ppInterface = (IFXMetaDataX*)this;
+            this->AddRef();
+        }
+
+        else
+        {
+            *ppInterface = NULL;
+            rc = IFX_E_UNSUPPORTED;
+        }
     }
 
     else
     {
-      *ppInterface = NULL;
-      rc = IFX_E_UNSUPPORTED;
+        rc = IFX_E_INVALID_POINTER;
     }
-  }
 
-  else
-  {
-    rc = IFX_E_INVALID_POINTER;
-  }
-
-  IFXRETURN(rc);
+    IFXRETURN(rc);
 }
 
 //-----------------------------------------------------------------------------
@@ -499,41 +526,41 @@ IFXRESULT CIFXDataBlockX::QueryInterface( IFXREFIID interfaceId, void** ppInterf
 //  This is the CIFXDataBlockX component factory function.  The
 //  CIFXDataBlockX component can be instaniated multiple times.
 //-----------------------------------------------------------------------------
-IFXRESULT IFXAPI_CALLTYPE CIFXDataBlockX_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXRESULT IFXAPI_CALLTYPE CIFXDataBlockX_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-  IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-  if ( ppInterface )
-  {
-    // Create the CIFXDataBlockX component.
-    CIFXDataBlockX  *pComponent = new CIFXDataBlockX;
-
-    if ( pComponent )
+    if (ppInterface)
     {
-      // Perform a temporary AddRef for our usage of the component.
-      pComponent->AddRef();
+        // Create the CIFXDataBlockX component.
+        CIFXDataBlockX* pComponent = new CIFXDataBlockX;
 
-      // Attempt to obtain a pointer to the requested interface.
-      rc = pComponent->QueryInterface( interfaceId, ppInterface );
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-      // Perform a Release since our usage of the component is now
-      // complete.  Note:  If the QI fails, this will cause the
-      // component to be destroyed.
-      pComponent->Release();
+            // Attempt to obtain a pointer to the requested interface.
+            rc = pComponent->QueryInterface(interfaceId, ppInterface);
+
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+
+        else
+        {
+            rc = IFX_E_OUT_OF_MEMORY;
+        }
     }
 
     else
     {
-      rc = IFX_E_OUT_OF_MEMORY;
+        rc = IFX_E_INVALID_POINTER;
     }
-  }
 
-  else
-  {
-    rc = IFX_E_INVALID_POINTER;
-  }
-
-  return rc;
+    return rc;
 }
 
 //---------------------------------------------------------------------------
@@ -543,17 +570,17 @@ IFXRESULT IFXAPI_CALLTYPE CIFXDataBlockX_Factory( IFXREFIID interfaceId, void** 
 //---------------------------------------------------------------------------
 CIFXDataBlockX::CIFXDataBlockX()
 {
-  m_uRefCount   = 0;    // Reference counter
-  m_uCurrentSize  = 0;    // Size of data block
-  m_uBufferSize = 0;
-  m_uBlockType  = 0x0;    // Data block type
-  m_pData     = NULL;   // Pointer to data
+    m_uRefCount = 0;    // Reference counter
+    m_uCurrentSize = 0; // Size of data block
+    m_uBufferSize = 0;
+    m_uBlockType = 0x0; // Data block type
+    m_pData = NULL;     // Pointer to data
 
-  // set default block priority
-  m_uPriority      = IFXDATABLOCK_DEFAULT_PRIORITY;
+    // set default block priority
+    m_uPriority = IFXDATABLOCK_DEFAULT_PRIORITY;
 
-  m_pMetaData = NULL;
-  IFXCHECKX(IFXCreateComponent(CID_IFXMetaDataX, IID_IFXMetaDataX, (void**)&m_pMetaData));
+    m_pMetaData = NULL;
+    IFXCHECKX(IFXCreateComponent(CID_IFXMetaDataX, IID_IFXMetaDataX, (void**)&m_pMetaData));
 }
 
 //---------------------------------------------------------------------------
@@ -563,38 +590,42 @@ CIFXDataBlockX::CIFXDataBlockX()
 //---------------------------------------------------------------------------
 CIFXDataBlockX::~CIFXDataBlockX()
 {
-  if( m_pData ) {
-    delete [] m_pData;
-    m_pData = NULL;
-  }
-  IFXRELEASE(m_pMetaData);
-  m_pMetaData = NULL;
+    if (m_pData)
+    {
+        delete[] m_pData;
+        m_pData = NULL;
+    }
+    IFXRELEASE(m_pMetaData);
+    m_pMetaData = NULL;
 }
 
 void CIFXDataBlockX::SetSizeActualX(U32 count)
 {
-  // If the current buffer is not big enough
-  if(count > m_uBufferSize) {
-    // Allocate new memory
-    U8 *pNewData = NULL;
-    pNewData = new U8[count];
+    // If the current buffer is not big enough
+    if (count > m_uBufferSize)
+    {
+        // Allocate new memory
+        U8* pNewData = NULL;
+        pNewData = new U8[count];
 
-    if(NULL == pNewData) {
-      IFXCHECKX(IFX_E_OUT_OF_MEMORY);
+        if (NULL == pNewData)
+        {
+            IFXCHECKX(IFX_E_OUT_OF_MEMORY);
+        }
+
+        // Initialize the data to nothing
+        memset(pNewData, 0, count);
+
+        // Copy data from old memory to new memory
+        if (m_pData)
+        {
+            memcpy(pNewData, m_pData, m_uBufferSize);
+            // Delete the old memory
+            IFXDELETE_ARRAY(m_pData);
+        }
+
+        // Set the member variables
+        m_pData = pNewData;
+        m_uBufferSize = count;
     }
-
-    // Initialize the data to nothing
-    memset(pNewData, 0, count );
-
-    // Copy data from old memory to new memory
-    if ( m_pData ) {
-      memcpy(pNewData,m_pData,m_uBufferSize);
-      // Delete the old memory
-      IFXDELETE_ARRAY(m_pData);
-    }
-
-    // Set the member variables
-    m_pData = pNewData;
-    m_uBufferSize = count;
-  }
 }

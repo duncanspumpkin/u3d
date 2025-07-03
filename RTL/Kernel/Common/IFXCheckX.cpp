@@ -28,5 +28,5 @@
 
 void IFXCheckX_Throw(IFXRESULT rc)
 {
-	throw IFXException(rc);
+    throw IFXException(rc);
 }

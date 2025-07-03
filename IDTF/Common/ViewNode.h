@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ViewNode_H
 #define ViewNode_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,69 +36,62 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ViewNode : public Node
+    {
+    public:
+        ViewNode() {};
+        virtual ~ViewNode() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        void SetViewData(const ViewNodeData& rViewData);
+        const ViewNodeData& GetViewData() const;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+    protected:
+    private:
+        ViewNodeData m_viewData;
+    };
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class ViewNode : public Node
-	{
-	public:
-		ViewNode() {};
-		virtual ~ViewNode() {};
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		void SetViewData( const ViewNodeData& rViewData );
-		const ViewNodeData& GetViewData() const;
+    IFXFORCEINLINE void ViewNode::SetViewData(const ViewNodeData& rViewData)
+    {
+        m_viewData = rViewData;
+    }
 
-	protected:
+    IFXFORCEINLINE const ViewNodeData& ViewNode::GetViewData() const
+    {
+        return m_viewData;
+    }
 
-	private:
-		ViewNodeData m_viewData;
-	};
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-	IFXFORCEINLINE void ViewNode::SetViewData( const ViewNodeData& rViewData )
-	{
-		m_viewData = rViewData;
-	}
-
-	IFXFORCEINLINE const ViewNodeData& ViewNode::GetViewData() const
-	{
-		return m_viewData;
-	}
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
-
 
 #endif

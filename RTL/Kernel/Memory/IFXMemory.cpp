@@ -17,101 +17,103 @@
 //***************************************************************************
 
 /**
-	@file	IFXMemory.cpp
+        @file	IFXMemory.cpp
 
-			This module defines a memory abstraction layer.  It's used to funnel
-			memory related services (allocation, deallocation and reallocation)
-			through a common point that can be controlled for tracking or porting
-			purposes.  It also overloads the default C++ new, new[], delete and
-			delete[] operators so that the memory abstraction layer is used.
+                        This module defines a memory abstraction layer.  It's used to funnel
+                        memory related services (allocation, deallocation and reallocation)
+                        through a common point that can be controlled for tracking or porting
+                        purposes.  It also overloads the default C++ new, new[], delete and
+                        delete[] operators so that the memory abstraction layer is used.
 
-	@note	Eventually at some point, add to the debug version, code to report 
-			total memory usage, amount of current memory allocated, etc.
+        @note	Eventually at some point, add to the debug version, code to report
+                        total memory usage, amount of current memory allocated, etc.
 */
 
 //***************************************************************************
 //	Includes
 //***************************************************************************
 
-#include <stdlib.h>
 #include "IFXMemory.h"
+#include <stdlib.h>
 
 //***************************************************************************
 //	Global data
 //***************************************************************************
 
-IFXAllocateFunction		*gs_pAllocateFunction	= malloc;
-IFXDeallocateFunction	*gs_pDeallocateFunction	= free;
-IFXReallocateFunction	*gs_pReallocateFunction	= realloc;
+IFXAllocateFunction* gs_pAllocateFunction = malloc;
+IFXDeallocateFunction* gs_pDeallocateFunction = free;
+IFXReallocateFunction* gs_pReallocateFunction = realloc;
 
 //***************************************************************************
 //	Global functions
 //***************************************************************************
 
 //---------------------------------------------------------------------------
-extern "C"
-void* IFXAPI IFXAllocate( size_t byteCount )
+extern "C" void* IFXAPI IFXAllocate(size_t byteCount)
 {
-	return gs_pAllocateFunction( byteCount );
+    return gs_pAllocateFunction(byteCount);
 }
 
 //---------------------------------------------------------------------------
-extern "C"
-void IFXAPI IFXDeallocate( void* pMemory )
+extern "C" void IFXAPI IFXDeallocate(void* pMemory)
 {
-	gs_pDeallocateFunction( pMemory );
+    gs_pDeallocateFunction(pMemory);
 }
 
 //---------------------------------------------------------------------------
-extern "C"
-void* IFXAPI IFXReallocate( void* pMemory, size_t byteCount )
+extern "C" void* IFXAPI IFXReallocate(void* pMemory, size_t byteCount)
 {
-	return gs_pReallocateFunction( pMemory, byteCount );
+    return gs_pReallocateFunction(pMemory, byteCount);
 }
 
 //---------------------------------------------------------------------------
-extern "C"
-IFXRESULT IFXAPI IFXGetMemoryFunctions(    
-                            IFXAllocateFunction**	ppAllocateFunction,
-							IFXDeallocateFunction**	ppDeallocateFunction,
-							IFXReallocateFunction**	ppReallocateFunction )
+extern "C" IFXRESULT IFXAPI IFXGetMemoryFunctions(
+    IFXAllocateFunction** ppAllocateFunction,
+    IFXDeallocateFunction** ppDeallocateFunction,
+    IFXReallocateFunction** ppReallocateFunction)
 {
-	if ( ppAllocateFunction )
-		*ppAllocateFunction = gs_pAllocateFunction;
+    if (ppAllocateFunction)
+    {
+        *ppAllocateFunction = gs_pAllocateFunction;
+    }
 
-	if ( ppDeallocateFunction )
-		*ppDeallocateFunction = gs_pDeallocateFunction;
+    if (ppDeallocateFunction)
+    {
+        *ppDeallocateFunction = gs_pDeallocateFunction;
+    }
 
-	if ( ppReallocateFunction )
-		*ppReallocateFunction = gs_pReallocateFunction;
+    if (ppReallocateFunction)
+    {
+        *ppReallocateFunction = gs_pReallocateFunction;
+    }
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
 //---------------------------------------------------------------------------
-extern "C"
-IFXRESULT IFXAPI IFXSetMemoryFunctions(    
-                            IFXAllocateFunction*	pAllocateFunction,
-			                IFXDeallocateFunction*	pDeallocateFunction,
-			                IFXReallocateFunction*	pReallocateFunction )
+extern "C" IFXRESULT IFXAPI IFXSetMemoryFunctions(
+    IFXAllocateFunction* pAllocateFunction,
+    IFXDeallocateFunction* pDeallocateFunction,
+    IFXReallocateFunction* pReallocateFunction)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( pAllocateFunction && pDeallocateFunction && pReallocateFunction )
-	{
-		gs_pAllocateFunction	= pAllocateFunction;
-		gs_pDeallocateFunction	= pDeallocateFunction;
-		gs_pReallocateFunction	= pReallocateFunction;
-	}
-	else if ( !pAllocateFunction && !pDeallocateFunction && !pReallocateFunction )
-	{
-		gs_pAllocateFunction	= malloc;
-		gs_pDeallocateFunction	= free;
-		gs_pReallocateFunction	= realloc;
-	}
-	else
-		result = IFX_E_INVALID_POINTER;
+    if (pAllocateFunction && pDeallocateFunction && pReallocateFunction)
+    {
+        gs_pAllocateFunction = pAllocateFunction;
+        gs_pDeallocateFunction = pDeallocateFunction;
+        gs_pReallocateFunction = pReallocateFunction;
+    }
+    else if (!pAllocateFunction && !pDeallocateFunction && !pReallocateFunction)
+    {
+        gs_pAllocateFunction = malloc;
+        gs_pDeallocateFunction = free;
+        gs_pReallocateFunction = realloc;
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-

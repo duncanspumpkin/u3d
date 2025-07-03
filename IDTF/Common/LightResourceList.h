@@ -24,7 +24,6 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef LightResourceList_H
 #define LightResourceList_H
 
@@ -33,87 +32,80 @@ This header defines the ... functionality.
 //***************************************************************************
 
 #include "IFXArray.h"
-#include "ResourceList.h"
 #include "LightResource.h"
+#include "ResourceList.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+            This is the implementation of a class that is used to @todo: usage.
 
+            It supports the following interfaces:  @todo: interfaces.
+    */
+    class LightResourceList : public ResourceList
+    {
+    public:
+        LightResourceList() {};
+        virtual ~LightResourceList() {};
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        /**
+         */
+        void AddResource(const LightResource& rResource);
 
-/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const LightResource& GetResource(U32 index) const;
 
-	It supports the following interfaces:  @todo: interfaces.
-*/
-class LightResourceList : public ResourceList
-{
-public:
-	LightResourceList() {};
-	virtual ~LightResourceList() {};
+        U32 GetResourceCount() const;
 
-	/**
-	*/
-	void AddResource( const LightResource& rResource );
+    protected:
+    private:
+        IFXArray<LightResource> m_resourceList;
+    };
 
-	/**
-	*/
-	const LightResource& GetResource( U32 index ) const;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	U32 GetResourceCount() const;
+    IFXFORCEINLINE void LightResourceList::AddResource(const LightResource& rResource)
+    {
+        LightResource& resource = m_resourceList.CreateNewElement();
+        resource = rResource;
+    }
 
-protected:
+    IFXFORCEINLINE const LightResource& LightResourceList::GetResource(U32 index) const
+    {
+        return m_resourceList.GetElementConst(index);
+    }
 
-private:
-	IFXArray< LightResource > m_resourceList;
-};
+    IFXFORCEINLINE U32 LightResourceList::GetResourceCount() const
+    {
+        return m_resourceList.GetNumberElements();
+    }
 
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-IFXFORCEINLINE void LightResourceList::AddResource( const LightResource& rResource )
-{
-	LightResource& resource = m_resourceList.CreateNewElement();
-	resource = rResource;
-}
-
-IFXFORCEINLINE const LightResource& LightResourceList::GetResource( U32 index ) const
-{
-	return m_resourceList.GetElementConst( index );
-}
-
-IFXFORCEINLINE U32 LightResourceList::GetResourceCount() const
-{
-	return m_resourceList.GetNumberElements();
-}
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

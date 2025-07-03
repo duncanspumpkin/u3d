@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef ModifierConverter_H
 #define ModifierConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -41,99 +39,94 @@ class IFXString;
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class Modifier;
+    class ShadingModifier;
+    class AnimationModifier;
+    class BoneWeightModifier;
+    class CLODModifier;
+    class SubdivisionModifier;
+    class GlyphModifier;
+    class ModifierList;
+    class SceneUtilities;
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class ModifierConverter
+    {
+    public:
+        ModifierConverter(
+            ModifierList* pModifierList,
+            SceneUtilities* pSceneUtils);
+        virtual ~ModifierConverter();
 
-class Modifier;
-class ShadingModifier;
-class AnimationModifier;
-class BoneWeightModifier;
-class CLODModifier;
-class SubdivisionModifier;
-class GlyphModifier;
-class ModifierList;
-class SceneUtilities;
+        /**
+         */
+        virtual IFXRESULT Convert();
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+    protected:
+        IFXRESULT ConvertModifier(const Modifier* pIDTFModifier);
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class ModifierConverter
-{
-public:
-	ModifierConverter( 
-		ModifierList* pModifierList, 
-		SceneUtilities* pSceneUtils );
-	virtual ~ModifierConverter();
+        IFXRESULT ConvertShadingModifier(const ShadingModifier* pIDTFModifier);
 
-	/**
-	*/
-	virtual IFXRESULT Convert();
+        IFXRESULT ConvertAnimationModifier(
+            const AnimationModifier* pIDTFModifier);
 
-protected:
-	IFXRESULT ConvertModifier( const Modifier* pIDTFModifier );
+        IFXRESULT ConvertBoneWeightModifier(
+            const BoneWeightModifier* pIDTFModifier);
 
-	IFXRESULT ConvertShadingModifier( const ShadingModifier* pIDTFModifier );
+        IFXRESULT ConvertCLODModifier(const CLODModifier* pIDTFModifier);
 
-	IFXRESULT ConvertAnimationModifier(
-					const AnimationModifier* pIDTFModifier );
+        IFXRESULT ConvertSubdivisionModifier(
+            const SubdivisionModifier* pIDTFModifier);
 
-	IFXRESULT ConvertBoneWeightModifier(
-					const BoneWeightModifier* pIDTFModifier );
+        IFXRESULT ConvertGlyphModifier(const GlyphModifier* pIDTFModifier);
 
-	IFXRESULT ConvertCLODModifier( const CLODModifier* pIDTFModifier );
+    private:
+        ModifierConverter();
 
-	IFXRESULT ConvertSubdivisionModifier( 
-					const SubdivisionModifier* pIDTFModifier );
+        ModifierList* m_pModifierList;
+        SceneUtilities* m_pSceneUtils;
+    };
 
-	IFXRESULT ConvertGlyphModifier( const GlyphModifier* pIDTFModifier );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-private:
-	ModifierConverter();
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	ModifierList* m_pModifierList;
-	SceneUtilities* m_pSceneUtils;
-};
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
+    //***************************************************************************
+    //  Failure return codes
+    //***************************************************************************
 
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
-//***************************************************************************
-//  Failure return codes
-//***************************************************************************
-
-/**
-@todo:  Insert module/interface specific return code description.
-*/
-//#define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
+    /**
+    @todo:  Insert module/interface specific return code description.
+    */
+    // #define IFX_E_????  MAKE_IFXRESULT_FAIL( IFXRESULT_COMPONENT_????, 0x0000 )
 
 }
 

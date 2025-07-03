@@ -24,7 +24,6 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef MaterialResourceList_H
 #define MaterialResourceList_H
 
@@ -33,82 +32,78 @@ This header defines the ... functionality.
 //***************************************************************************
 
 #include "IFXArray.h"
-#include "ResourceList.h"
 #include "MaterialResource.h"
+#include "ResourceList.h"
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class MaterialResourceList : public ResourceList
+    {
+    public:
+        MaterialResourceList() {};
+        virtual ~MaterialResourceList() {};
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+         */
+        void AddResource(const Material& rResource);
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+         */
+        const Material& GetResource(U32 index) const;
+        U32 GetResourceCount() const;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class MaterialResourceList : public ResourceList
-	{
-	public:
-		MaterialResourceList() {};
-		virtual ~MaterialResourceList() {};
+    private:
+        IFXArray<Material> m_resourceList;
+    };
 
-		/**
-		*/
-		void AddResource( const Material& rResource );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		*/
-		const Material& GetResource( U32 index ) const;
-		U32 GetResourceCount() const;
+    IFXFORCEINLINE void MaterialResourceList::AddResource(const Material& rResource)
+    {
+        Material& resource = m_resourceList.CreateNewElement();
+        resource = rResource;
+    }
 
-	private:
-		IFXArray< Material > m_resourceList;
-	};
+    IFXFORCEINLINE const Material& MaterialResourceList::GetResource(U32 index) const
+    {
+        return m_resourceList.GetElementConst(index);
+    }
 
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
+    IFXFORCEINLINE U32 MaterialResourceList::GetResourceCount() const
+    {
+        return m_resourceList.GetNumberElements();
+    }
 
-	IFXFORCEINLINE void MaterialResourceList::AddResource( const Material& rResource )
-	{
-		Material& resource = m_resourceList.CreateNewElement();
-		resource = rResource;
-	}
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	IFXFORCEINLINE const Material& MaterialResourceList::GetResource( U32 index ) const
-	{
-		return m_resourceList.GetElementConst( index );
-	}
-
-	IFXFORCEINLINE U32 MaterialResourceList::GetResourceCount() const
-	{
-		return m_resourceList.GetNumberElements();
-	}
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
 
 #endif

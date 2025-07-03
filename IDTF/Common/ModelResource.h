@@ -31,90 +31,84 @@
 //  Includes
 //***************************************************************************
 
-#include "IFXResult.h"
-#include "IFXArray.h"
-#include "IFXVector4.h"
-#include "Resource.h"
-#include "Point.h"
 #include "Color.h"
-#include "ShadingDescriptionList.h"
+#include "IFXArray.h"
+#include "IFXResult.h"
+#include "IFXVector4.h"
 #include "ModelSkeleton.h"
+#include "Point.h"
+#include "Resource.h"
+#include "ShadingDescriptionList.h"
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    /**
+            Model description is suffucuent to allocate space for the model data and
+            create model generator object.
+    */
+    struct ModelDescription
+    {
+        I32 positionCount;
+        I32 basePositionCount;
+        I32 normalCount;
+        I32 diffuseColorCount;
+        I32 specularColorCount;
+        I32 textureCoordCount;
+        I32 boneCount;
+        I32 shadingCount;
+    };
 
+    /**
+     */
+    class ModelResource : public Resource
+    {
+    public:
+        ModelResource();
+        ~ModelResource();
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+        void ClearModelDescription();
 
-/**
-	Model description is suffucuent to allocate space for the model data and 
-	create model generator object.
-*/
-struct ModelDescription
-{
-	I32 positionCount;
-	I32 basePositionCount;
-	I32 normalCount;
-	I32 diffuseColorCount;
-	I32 specularColorCount;
-	I32 textureCoordCount;
-	I32 boneCount;
-	I32 shadingCount;
-};
+        IFXString m_type;
+        IFXString m_name;
 
-/**
-*/
-class ModelResource : public Resource
-{
-public:
-	ModelResource();
-	~ModelResource();
+        ModelDescription m_modelDescription;
+        ShadingDescriptionList m_shadingDescriptions;
+        IFXArray<Point> m_positions;
+        IFXArray<Point> m_normals;
+        IFXArray<Color> m_diffuseColors;
+        IFXArray<Color> m_specularColors;
+        IFXArray<IFXVector4> m_textureCoords;
+        IFXArray<I32> m_basePositions;
+        ModelSkeleton m_modelSkeleton;
+    };
 
-	void ClearModelDescription();
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	IFXString m_type;
-	IFXString m_name;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	ModelDescription m_modelDescription;
-	ShadingDescriptionList m_shadingDescriptions;
-	IFXArray< Point > m_positions;
-	IFXArray< Point > m_normals;
-	IFXArray< Color > m_diffuseColors;
-	IFXArray< Color > m_specularColors;
-	IFXArray< IFXVector4 > m_textureCoords;
-	IFXArray< I32 > m_basePositions;
-	ModelSkeleton m_modelSkeleton;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
-
 
 #endif

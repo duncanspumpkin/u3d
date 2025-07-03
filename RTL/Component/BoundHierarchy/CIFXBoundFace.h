@@ -17,11 +17,11 @@
 //***************************************************************************
 
 /**
-	@file	CIFXBoundFace.h
+        @file	CIFXBoundFace.h
 
-			Header file for the class CIFXBoundFace.  Contains the declarations
-			for and methods that manipulate a face (i.e. triangle) contained in
-			the bounding volume.
+                        Header file for the class CIFXBoundFace.  Contains the declarations
+                        for and methods that manipulate a face (i.e. triangle) contained in
+                        the bounding volume.
 */
 
 #ifndef __CIFXBOUNDFACE_H__
@@ -33,43 +33,40 @@
 class CIFXBoundFace
 {
 public:
-	
-	CIFXBoundFace();
-	~CIFXBoundFace();
+    CIFXBoundFace();
+    ~CIFXBoundFace();
 
-	void      GetCentroid(IFXVector3& vCentroid);
-	F32       GetCentroidComponent(U32 uIndex);
-	IFXRESULT GetFace(IFXU32Face* pFace);
-	U32       GetFaceID();
-	BOOL      GetIntersect();
-	U32       GetMeshID();
-	void      SetCentroid(IFXVector3& vCentroid);
-	IFXRESULT SetFace(IFXU32Face* pFace);
-	void      SetFaceID(U32 uFaceID);
-	void      SetIntersect(BOOL bFlag);
-	void      SetMeshID(U32 uMeshID);
+    void GetCentroid(IFXVector3& vCentroid);
+    F32 GetCentroidComponent(U32 uIndex);
+    IFXRESULT GetFace(IFXU32Face* pFace);
+    U32 GetFaceID();
+    BOOL GetIntersect();
+    U32 GetMeshID();
+    void SetCentroid(IFXVector3& vCentroid);
+    IFXRESULT SetFace(IFXU32Face* pFace);
+    void SetFaceID(U32 uFaceID);
+    void SetIntersect(BOOL bFlag);
+    void SetMeshID(U32 uMeshID);
 
-	CIFXBoundFace &operator=(CIFXBoundFace &operand);
+    CIFXBoundFace& operator=(CIFXBoundFace& operand);
 
 private:
-
-	IFXVector3 m_vCentroid;
-    IFXU32Face m_face;         // IFXFace within the node
-	BOOL       m_bIntersect;   // Intesection flag
-	U32        m_uFaceID;      // ID to original mesh face
-    U32        m_uMeshID;      // ID to origianl mesh
+    IFXVector3 m_vCentroid;
+    IFXU32Face m_face; // IFXFace within the node
+    BOOL m_bIntersect; // Intesection flag
+    U32 m_uFaceID;     // ID to original mesh face
+    U32 m_uMeshID;     // ID to origianl mesh
 };
 
-
-IFXINLINE CIFXBoundFace &CIFXBoundFace::operator=(CIFXBoundFace &operand)
+IFXINLINE CIFXBoundFace& CIFXBoundFace::operator=(CIFXBoundFace& operand)
 {
-	m_vCentroid      = operand.m_vCentroid;
-	m_face = operand.m_face;
-	m_bIntersect     = FALSE;
-	m_uFaceID        = operand.m_uFaceID;
-	m_uMeshID        = operand.m_uMeshID;
+    m_vCentroid = operand.m_vCentroid;
+    m_face = operand.m_face;
+    m_bIntersect = FALSE;
+    m_uFaceID = operand.m_uFaceID;
+    m_uMeshID = operand.m_uMeshID;
 
-	return *this;
+    return *this;
 }
 
 #endif

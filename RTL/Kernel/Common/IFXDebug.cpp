@@ -29,23 +29,23 @@ and outputting debug messages according to a user selected debug level.
 //  Includes, Defines
 //***************************************************************************
 
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <wchar.h>
 
 #include "IFXDebug.h"
 #include "IFXOSUtilities.h"
 
-#define _RESULT_VALUE_MESSAGE_LENGTH_MAX  16
-#define _PREFIX_STRING            L"[IFX]"
-#define _MESSAGE_LENGTH_MAX                 1024
+#define _RESULT_VALUE_MESSAGE_LENGTH_MAX 16
+#define _PREFIX_STRING L"[IFX]"
+#define _MESSAGE_LENGTH_MAX 1024
 
-static IFXDebugLevel  gs_debugLevel = IFXDEBUG_DEFAULT;
-static IFXCHAR       gs_pDebugMessage[ _MESSAGE_LENGTH_MAX ];
+static IFXDebugLevel gs_debugLevel = IFXDEBUG_DEFAULT;
+static IFXCHAR gs_pDebugMessage[_MESSAGE_LENGTH_MAX];
 
-const char* _GetStringFromIFXRESULT( const IFXRESULT  result );
-const IFXCHAR* _GetStringFromIFXRESULT_Component( const U32  component );
+const char* _GetStringFromIFXRESULT(const IFXRESULT result);
+const IFXCHAR* _GetStringFromIFXRESULT_Component(const U32 component);
 
 //---------------------------------------------------------------------------
 //  IFXAssert
@@ -53,95 +53,101 @@ const IFXCHAR* _GetStringFromIFXRESULT_Component( const U32  component );
 //  This function is used to display Assert Box.
 //---------------------------------------------------------------------------
 int IFXAssert(
-			  int bShowMessage,
-			  const char* szFile,
-			  unsigned int uLineNum,
-			  const char* szExpression,
-			  const char* szMessage,
-			  int bLog
-			  )
+    int bShowMessage,
+    const char* szFile,
+    unsigned int uLineNum,
+    const char* szExpression,
+    const char* szMessage,
+    int bLog)
 {
-	int rVal = bShowMessage;
-	IFXCHAR *cszFile = NULL, *cszMessage = NULL, *cszExpression = NULL;
-	size_t s;
+    int rVal = bShowMessage;
+    IFXCHAR *cszFile = NULL, *cszMessage = NULL, *cszExpression = NULL;
+    size_t s;
 
-	s=mbstowcs(NULL, szFile, 0);
-	if ((int)s != -1)
-		cszFile = new IFXCHAR[s+1];
-	if (NULL != cszFile) 
-	{
-		mbstowcs(cszFile, szFile, s);
-		cszFile[s]=L'\0';
-	}
+    s = mbstowcs(NULL, szFile, 0);
+    if ((int)s != -1)
+    {
+        cszFile = new IFXCHAR[s + 1];
+    }
+    if (NULL != cszFile)
+    {
+        mbstowcs(cszFile, szFile, s);
+        cszFile[s] = L'\0';
+    }
 
-	s=mbstowcs(NULL, szMessage, 0);
-	if (s != (size_t)-1)
-		cszMessage = new IFXCHAR[s+1];
-	if (NULL != cszMessage) 
-	{
-		mbstowcs(cszMessage, szMessage, s);
-		cszMessage[s]=L'\0';
-	}
+    s = mbstowcs(NULL, szMessage, 0);
+    if (s != (size_t)-1)
+    {
+        cszMessage = new IFXCHAR[s + 1];
+    }
+    if (NULL != cszMessage)
+    {
+        mbstowcs(cszMessage, szMessage, s);
+        cszMessage[s] = L'\0';
+    }
 
-	s=mbstowcs(NULL, szExpression, 0);
-	if (s != (size_t)-1)
-		cszExpression = new IFXCHAR[s+1];
-	if (NULL != cszExpression) 
-	{
-		mbstowcs(cszExpression, szExpression, s);
-		cszExpression[s]=L'\0';
-	}
+    s = mbstowcs(NULL, szExpression, 0);
+    if (s != (size_t)-1)
+    {
+        cszExpression = new IFXCHAR[s + 1];
+    }
+    if (NULL != cszExpression)
+    {
+        mbstowcs(cszExpression, szExpression, s);
+        cszExpression[s] = L'\0';
+    }
 
+    if (NULL != cszFile && NULL != cszMessage && NULL != cszExpression)
+    {
+        if (bLog)
+        {
+            IFXDebugTraceGeneric(L"%s(%d) : %s : %s\n", cszFile, uLineNum, cszMessage, cszExpression);
+        }
 
-	if (NULL != cszFile && NULL != cszMessage && NULL != cszExpression) 
-	{
-		if(bLog) 
-		{
-			IFXDebugTraceGeneric(L"%s(%d) : %s : %s\n", 
-				cszFile, uLineNum, cszMessage, 
-				cszExpression );
-		}
+        if (bShowMessage)
+        {
+            rVal = IFXOSDebugOutput(cszMessage, cszFile, uLineNum, cszExpression);
+        }
+    }
 
-		if(bShowMessage)
-		{
-			rVal = IFXOSDebugOutput( cszMessage, cszFile, uLineNum,
-				cszExpression );
-		}
-	}
+    if (cszFile)
+    {
+        delete cszFile;
+    }
+    if (cszMessage)
+    {
+        delete cszMessage;
+    }
+    if (cszExpression)
+    {
+        delete cszExpression;
+    }
 
-	if (cszFile) delete cszFile;
-	if (cszMessage) delete cszMessage;
-	if (cszExpression) delete cszExpression;
-
-	return rVal;
+    return rVal;
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXDebugAssertBox
 //
 //  This function is exported outside.
 //---------------------------------------------------------------------------
-extern "C"
-void IFXAPI IFXDebugAssertBox(
-							  const char *exp,
-							  const char* szFile,
-							  unsigned int uLineNum,
-							  const char *message,
-							  int box,
-							  int log
-							  )
+extern "C" void IFXAPI IFXDebugAssertBox(
+    const char* exp,
+    const char* szFile,
+    unsigned int uLineNum,
+    const char* message,
+    int box,
+    int log)
 {
-	static int bShowMessage = box;
-	int rVal = IFXAssert(   bShowMessage,
-		szFile,
-		uLineNum,
-		exp, message, log );
+    static int bShowMessage = box;
+    int rVal = IFXAssert(bShowMessage, szFile, uLineNum, exp, message, log);
 
-	bShowMessage = rVal & 1;
-	if(rVal & 2) abort();
+    bShowMessage = rVal & 1;
+    if (rVal & 2)
+    {
+        abort();
+    }
 }
-
 
 //---------------------------------------------------------------------------
 //  IFXDebugStartUp
@@ -150,10 +156,9 @@ void IFXAPI IFXDebugAssertBox(
 //  using the debug macros or functions in this module.  Currently, this only
 //  involves initializing the gs_debugLevel module global.
 //---------------------------------------------------------------------------
-extern "C"
-void IFXAPI IFXDebugStartUp( void )
+extern "C" void IFXAPI IFXDebugStartUp(void)
 {
-	gs_debugLevel = IFXOSGetDebugLevel();
+    gs_debugLevel = IFXOSGetDebugLevel();
 }
 
 //---------------------------------------------------------------------------
@@ -162,10 +167,9 @@ void IFXAPI IFXDebugStartUp( void )
 //  This function is used to perform any required shutdown tasks after
 //  having called IFXDebugStartUp.
 //---------------------------------------------------------------------------
-extern "C"
-void IFXAPI IFXDebugShutDown( void )
+extern "C" void IFXAPI IFXDebugShutDown(void)
 {
-	gs_debugLevel = IFXDEBUG_DEFAULT;
+    gs_debugLevel = IFXDEBUG_DEFAULT;
 }
 
 //---------------------------------------------------------------------------
@@ -182,36 +186,32 @@ void IFXAPI IFXDebugShutDown( void )
 //  Note:  Make sure the final message doesn't exceed _MESSAGE_LENGTH_MAX
 //  characters.
 //---------------------------------------------------------------------------
-extern "C"
-I32 IFXAPI IFXDebugTraceCustom( const U32        component,
-							   const IFXDebugLevel  debugLevel,
-							   const IFXCHAR*      pFormatString,
-							   ... )
+extern "C" I32 IFXAPI IFXDebugTraceCustom(const U32 component, const IFXDebugLevel debugLevel, const IFXCHAR* pFormatString, ...)
 {
 #ifndef HAS_NO_WPRINT
-	if ( gs_debugLevel >= debugLevel )
-	{
-		const IFXCHAR  *pComponentString = _GetStringFromIFXRESULT_Component( component );
+    if (gs_debugLevel >= debugLevel)
+    {
+        const IFXCHAR* pComponentString = _GetStringFromIFXRESULT_Component(component);
 
-		IFXCHAR pMessage[ _MESSAGE_LENGTH_MAX ];
-		wcscpy( pMessage, _PREFIX_STRING );
-		if( pComponentString )
-			wcscat( pMessage, pComponentString );
-		wcscat( pMessage, L" " );
-		swprintf( gs_pDebugMessage, _MESSAGE_LENGTH_MAX, pMessage );
-		IFXOSOutputDebugString( gs_pDebugMessage );
+        IFXCHAR pMessage[_MESSAGE_LENGTH_MAX];
+        wcscpy(pMessage, _PREFIX_STRING);
+        if (pComponentString)
+        {
+            wcscat(pMessage, pComponentString);
+        }
+        wcscat(pMessage, L" ");
+        swprintf(gs_pDebugMessage, _MESSAGE_LENGTH_MAX, pMessage);
+        IFXOSOutputDebugString(gs_pDebugMessage);
 
-		va_list args;
-		va_start( args, pFormatString );
-		vswprintf( gs_pDebugMessage, _MESSAGE_LENGTH_MAX,
-			pFormatString,
-			args );
-		va_end( args );
+        va_list args;
+        va_start(args, pFormatString);
+        vswprintf(gs_pDebugMessage, _MESSAGE_LENGTH_MAX, pFormatString, args);
+        va_end(args);
 
-		IFXOSOutputDebugString( gs_pDebugMessage );
-	}
+        IFXOSOutputDebugString(gs_pDebugMessage);
+    }
 #endif
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -225,33 +225,32 @@ I32 IFXAPI IFXDebugTraceCustom( const U32        component,
 //  Note:  Make sure the final message doesn't exceed _MESSAGE_LENGTH_MAX
 //  characters.
 //---------------------------------------------------------------------------
-extern "C"
-I32 IFXAPI IFXDebugTraceGeneric( const IFXCHAR* pFormatString, ... )
+extern "C" I32 IFXAPI IFXDebugTraceGeneric(const IFXCHAR* pFormatString, ...)
 {
 #ifndef HAS_NO_WPRINT
-	if ( gs_debugLevel >= IFXDEBUG_MESSAGE )
-	{
-		const IFXCHAR  *pComponentString = 
-			_GetStringFromIFXRESULT_Component( IFXRESULT_COMPONENT_GENERIC );
+    if (gs_debugLevel >= IFXDEBUG_MESSAGE)
+    {
+        const IFXCHAR* pComponentString = _GetStringFromIFXRESULT_Component(IFXRESULT_COMPONENT_GENERIC);
 
-		IFXCHAR pMessage[ _MESSAGE_LENGTH_MAX ];
-		wcscpy( pMessage, _PREFIX_STRING );
-		if( pComponentString )
-			wcscat( pMessage, pComponentString );
-		wcscat( pMessage, L" " );
-		swprintf( gs_pDebugMessage, _MESSAGE_LENGTH_MAX, pMessage );
-		IFXOSOutputDebugString( gs_pDebugMessage );
+        IFXCHAR pMessage[_MESSAGE_LENGTH_MAX];
+        wcscpy(pMessage, _PREFIX_STRING);
+        if (pComponentString)
+        {
+            wcscat(pMessage, pComponentString);
+        }
+        wcscat(pMessage, L" ");
+        swprintf(gs_pDebugMessage, _MESSAGE_LENGTH_MAX, pMessage);
+        IFXOSOutputDebugString(gs_pDebugMessage);
 
-		va_list args;
-		va_start( args, pFormatString );
-		vswprintf( gs_pDebugMessage, _MESSAGE_LENGTH_MAX,
-			pFormatString, args );
-		va_end( args );
+        va_list args;
+        va_start(args, pFormatString);
+        vswprintf(gs_pDebugMessage, _MESSAGE_LENGTH_MAX, pFormatString, args);
+        va_end(args);
 
-		IFXOSOutputDebugString( gs_pDebugMessage );
-	}
+        IFXOSOutputDebugString(gs_pDebugMessage);
+    }
 #endif
-	return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -260,38 +259,39 @@ I32 IFXAPI IFXDebugTraceGeneric( const IFXCHAR* pFormatString, ... )
 //  This function returns a pointer to a constant string that represents the
 //  specified IFXRESULT.  If the result isn't recognized, NULL is returned.
 //---------------------------------------------------------------------------
-const char* _GetStringFromIFXRESULT( const IFXRESULT  result )
+const char* _GetStringFromIFXRESULT(const IFXRESULT result)
 {
-	const char  *pString  = NULL;
+    const char* pString = NULL;
 
-#define MAKE_RESULT_CASE( aResult ) case aResult: pString = #aResult; break
+#define MAKE_RESULT_CASE(aResult) \
+    case aResult: pString = #aResult; break
 
-	switch ( result )
-	{
-		MAKE_RESULT_CASE( IFX_OK );
-		MAKE_RESULT_CASE( IFX_TRUE );
-		MAKE_RESULT_CASE( IFX_CANCEL );
-		MAKE_RESULT_CASE( IFX_W_UNEXPECTED_FILE_VERSION );
-		MAKE_RESULT_CASE( IFX_W_ALREADY_EXISTS );
-		MAKE_RESULT_CASE( IFX_E_UNDEFINED );
-		MAKE_RESULT_CASE( IFX_E_UNSUPPORTED );
-		MAKE_RESULT_CASE( IFX_E_OUT_OF_MEMORY );
-		MAKE_RESULT_CASE( IFX_E_INVALID_FILE );
-		MAKE_RESULT_CASE( IFX_E_INVALID_HANDLE );
-		MAKE_RESULT_CASE( IFX_E_INVALID_POINTER );
-		MAKE_RESULT_CASE( IFX_E_INVALID_RANGE );
-		MAKE_RESULT_CASE( IFX_E_ALREADY_INITIALIZED );
-		MAKE_RESULT_CASE( IFX_E_NOT_INITIALIZED );
-		MAKE_RESULT_CASE( IFX_E_CANNOT_CHANGE );
-		MAKE_RESULT_CASE( IFX_E_ABORTED );
-		MAKE_RESULT_CASE( IFX_E_WRITE_FAILED );
-		MAKE_RESULT_CASE( IFX_E_READ_FAILED );
-		MAKE_RESULT_CASE( IFX_E_CANNOT_FIND );
-	}
+    switch (result)
+    {
+        MAKE_RESULT_CASE(IFX_OK);
+        MAKE_RESULT_CASE(IFX_TRUE);
+        MAKE_RESULT_CASE(IFX_CANCEL);
+        MAKE_RESULT_CASE(IFX_W_UNEXPECTED_FILE_VERSION);
+        MAKE_RESULT_CASE(IFX_W_ALREADY_EXISTS);
+        MAKE_RESULT_CASE(IFX_E_UNDEFINED);
+        MAKE_RESULT_CASE(IFX_E_UNSUPPORTED);
+        MAKE_RESULT_CASE(IFX_E_OUT_OF_MEMORY);
+        MAKE_RESULT_CASE(IFX_E_INVALID_FILE);
+        MAKE_RESULT_CASE(IFX_E_INVALID_HANDLE);
+        MAKE_RESULT_CASE(IFX_E_INVALID_POINTER);
+        MAKE_RESULT_CASE(IFX_E_INVALID_RANGE);
+        MAKE_RESULT_CASE(IFX_E_ALREADY_INITIALIZED);
+        MAKE_RESULT_CASE(IFX_E_NOT_INITIALIZED);
+        MAKE_RESULT_CASE(IFX_E_CANNOT_CHANGE);
+        MAKE_RESULT_CASE(IFX_E_ABORTED);
+        MAKE_RESULT_CASE(IFX_E_WRITE_FAILED);
+        MAKE_RESULT_CASE(IFX_E_READ_FAILED);
+        MAKE_RESULT_CASE(IFX_E_CANNOT_FIND);
+    }
 
 #undef MAKE_RESULT_CASE
 
-	return pString;
+    return pString;
 }
 
 //---------------------------------------------------------------------------
@@ -301,41 +301,41 @@ const char* _GetStringFromIFXRESULT( const IFXRESULT  result )
 //  specified system component.  If the component isn't recognized, NULL
 //  is returned.
 //---------------------------------------------------------------------------
-const IFXCHAR* _GetStringFromIFXRESULT_Component( const U32  component )
+const IFXCHAR* _GetStringFromIFXRESULT_Component(const U32 component)
 {
-	const IFXCHAR  *pString  = NULL;
+    const IFXCHAR* pString = NULL;
 
-#define MAKE_COMPONENT_CASE( aComponent, aString )  case aComponent: pString = aString; break
+#define MAKE_COMPONENT_CASE(aComponent, aString) \
+    case aComponent: pString = aString; break
 
-	switch ( component )
-	{
-		// Note:  The generic component isn't included here because we don't
-		// want it to clutter the output debug window.
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_AUTHORGEOM,			L"[AuthorGeom]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_BITSTREAM,				L"[BitStream]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_CORE_SERVICES,			L"[CoreServices]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_DATAPACKET,			L"[DataPacket]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_IMAGE_TOOLS,			L"[ImageTools]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_LOADER,				L"[Loader]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_MODIFIER_DATAPACKET,	L"[DataPacket]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_MODIFIER,				L"[Modifier]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_MODIFIERCHAIN,			L"[ModifierChain]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_PALETTE_MANAGER,		L"[PaletteManager]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_READ_BUFFER,			L"[ReadBuffer]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_SCENEGRAPH,			L"[SceneGraph]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_SCHEDULER,				L"[Scheduler]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_TEXTURE_MANAGER,		L"[TextureManager]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_WRITE_BUFFER,			L"[WriteBuffer]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_COMPONENT_WRITER,				L"[Writer]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_CONVERTERS,						L"[Converters]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_NEIGHBORMESH,					L"[NeighborMesh]" );
-		MAKE_COMPONENT_CASE( IFXRESULT_SUBDIV,							L"[Subdiv]" );
-	}
+    switch (component)
+    {
+        // Note:  The generic component isn't included here because we don't
+        // want it to clutter the output debug window.
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_AUTHORGEOM, L"[AuthorGeom]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_BITSTREAM, L"[BitStream]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_CORE_SERVICES, L"[CoreServices]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_DATAPACKET, L"[DataPacket]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_IMAGE_TOOLS, L"[ImageTools]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_LOADER, L"[Loader]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_MODIFIER_DATAPACKET, L"[DataPacket]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_MODIFIER, L"[Modifier]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_MODIFIERCHAIN, L"[ModifierChain]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_PALETTE_MANAGER, L"[PaletteManager]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_READ_BUFFER, L"[ReadBuffer]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_SCENEGRAPH, L"[SceneGraph]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_SCHEDULER, L"[Scheduler]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_TEXTURE_MANAGER, L"[TextureManager]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_WRITE_BUFFER, L"[WriteBuffer]");
+        MAKE_COMPONENT_CASE(IFXRESULT_COMPONENT_WRITER, L"[Writer]");
+        MAKE_COMPONENT_CASE(IFXRESULT_CONVERTERS, L"[Converters]");
+        MAKE_COMPONENT_CASE(IFXRESULT_NEIGHBORMESH, L"[NeighborMesh]");
+        MAKE_COMPONENT_CASE(IFXRESULT_SUBDIV, L"[Subdiv]");
+    }
 
 #undef MAKE_COMPONENT_CASE
 
-	return pString;
+    return pString;
 }
-
 
 #endif

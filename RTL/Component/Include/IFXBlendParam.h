@@ -20,6 +20,7 @@
 #ifndef __IFXBlendParam_h__
 #define __IFXBlendParam_h__
 
+#include "IFXDataTypes.h"
 
 
 /**************************************************************************//**

@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef MeshConverter_H
 #define MeshConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -41,77 +39,71 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    class MeshResource;
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class MeshConverter : public ModelConverter
+    {
+    public:
+        MeshConverter(
+            const MeshResource* pMeshResource,
+            SceneUtilities* pSceneUtils);
+        virtual ~MeshConverter();
 
-	class MeshResource;
+        /**
+         */
+        IFXRESULT Convert();
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+    protected:
+        /**
+         */
+        IFXRESULT ConvertMeshFormat(
+            IFXAuthorMeshDesc* pAllocationDescriptor,
+            U32* pMinimumMeshResolution);
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class MeshConverter : public ModelConverter
-	{
-	public:
-		MeshConverter(
-			const MeshResource* pMeshResource,
-			SceneUtilities* pSceneUtils );
-		virtual ~MeshConverter();
+        /**
+         */
+        IFXRESULT ConvertMesh(
+            IFXAuthorMesh** ppMesh,
+            U32* pMinimumMeshResolution);
 
-		/**
-		*/
-		IFXRESULT Convert();
+    private:
+        MeshConverter();
 
-	protected:
+        const MeshResource* m_pIDTFResource;
+    };
 
-		/**
-		*/
-		IFXRESULT ConvertMeshFormat(
-			IFXAuthorMeshDesc* pAllocationDescriptor,
-			U32* pMinimumMeshResolution );
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		*/
-		IFXRESULT ConvertMesh(
-			IFXAuthorMesh** ppMesh,
-			U32* pMinimumMeshResolution );
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	private:
-		MeshConverter();
-
-		const MeshResource* m_pIDTFResource;
-	};
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

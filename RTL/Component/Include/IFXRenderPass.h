@@ -21,46 +21,48 @@
 #ifndef IFX_RENDER_PASS_H
 #define IFX_RENDER_PASS_H
 
+#include "IFXAutoRelease.h"
+#include "IFXCoreCIDs.h"
 #include "IFXEnums.h"
 #include "IFXRenderClear.h"
 #include "IFXRenderFog.h"
 #include "IFXRenderStencil.h"
 #include "IFXSmartPtr.h"
+#include "IFXSpatial.h"
 #include "IFXSpatialSetQuery.h"
-#include "IFXCoreCIDs.h"
-#include "IFXAutoRelease.h"
+#include "IFXMatrix4x4.h"
 
 class IFXRenderPass
 {
 public:
-	void IFXAPI SetDefaults(U32 uRenderPass);
-	IFXRESULT IFXAPI SetRootNode(U32 nodeIndex, U32 nodeInstance);
-	void IFXAPI ClearRootNode();
+    void IFXAPI SetDefaults(U32 uRenderPass);
+    IFXRESULT IFXAPI SetRootNode(U32 nodeIndex, U32 nodeInstance);
+    void IFXAPI ClearRootNode();
 
-	U32 m_nodeIndex, m_nodeInstance;
-	BOOL m_nodeSet;
+    U32 m_nodeIndex, m_nodeInstance;
+    BOOL m_nodeSet;
 
-	IFXRenderClear    m_Clear;
+    IFXRenderClear m_Clear;
 
-	BOOL        m_bFogEnabled;
-	IFXRenderFog    m_Fog;
+    BOOL m_bFogEnabled;
+    IFXRenderFog m_Fog;
 
-	BOOL        m_bColorBuffer; /// @todo: implement color buffer enabling
+    BOOL m_bColorBuffer; /// @todo: implement color buffer enabling
 
-	BOOL        m_bDepthTest;
-	BOOL        m_bDepthWrite;
-	IFXenum       m_eDepthFunc;
+    BOOL m_bDepthTest;
+    BOOL m_bDepthWrite;
+    IFXenum m_eDepthFunc;
 
-	BOOL        m_bStencilEnabled;
-	IFXRenderStencil  m_Stencil;
+    BOOL m_bStencilEnabled;
+    IFXRenderStencil m_Stencil;
 
-	U32         m_uRenderPass;
-	IFXMatrix4x4    m_UnscaledWorldMatrixInverse;
-	SPATIALINSTANCE_LIST   m_pOpaque[16];
-	SPATIALINSTANCE_LIST   m_pTranslucent[8];
+    U32 m_uRenderPass;
+    IFXMatrix4x4 m_UnscaledWorldMatrixInverse;
+    SPATIALINSTANCE_LIST m_pOpaque[16];
+    SPATIALINSTANCE_LIST m_pTranslucent[8];
 
-	IFXRenderPass();
-	~IFXRenderPass();
+    IFXRenderPass();
+    ~IFXRenderPass();
 };
 
 #endif

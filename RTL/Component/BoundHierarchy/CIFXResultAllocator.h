@@ -18,31 +18,27 @@
 #ifndef CIFXRESULTALLOCATOR_DOT_H
 #define CIFXRESULTALLOCATOR_DOT_H
 
-#include "IFXUnitAllocator.h"
 #include "CIFXCollisionResult.h"
-
+#include "IFXUnitAllocator.h"
 
 class CIFXResultAllocator : public IFXUnitAllocator
 {
 
 public:
+    CIFXResultAllocator(U32 uNumInitialUnits, U32 uGrowByNumUnits);
+    ~CIFXResultAllocator();
 
-	CIFXResultAllocator(U32 uNumInitialUnits, U32 uGrowByNumUnits);
-	~CIFXResultAllocator();
-
-    IFXRESULT Allocate(CIFXCollisionResult **ppResult);
-    void Deallocate(CIFXCollisionResult *);
+    IFXRESULT Allocate(CIFXCollisionResult** ppResult);
+    void Deallocate(CIFXCollisionResult*);
 
 private:
-
-	CIFXCollisionResult *pResult;
-	U32                  m_uSizeList;
+    CIFXCollisionResult* pResult;
+    U32 m_uSizeList;
 };
 
-
-inline void CIFXResultAllocator::Deallocate(CIFXCollisionResult *pResult)
+inline void CIFXResultAllocator::Deallocate(CIFXCollisionResult* pResult)
 {
-    U8 *pu8 = (U8 *) pResult;
+    U8* pu8 = (U8*)pResult;
     IFXUnitAllocator::Deallocate(pu8);
 }
 

@@ -23,33 +23,33 @@
 class FaceExam
 {
 public:
-	U32 faceIndex;
-	IV3D normal;
-	U32 smoothID;	
-	unsigned short marked;
+    U32 faceIndex;
+    IV3D normal;
+    U32 smoothID;
+    unsigned short marked;
 };
 
 // A static collection of FaceExams...so we don't have to allocate/deallocate
 // Memory on the fly:
-#define MAX_NUM_FACEEXAMS	200
+#define MAX_NUM_FACEEXAMS 200
 
 class FaceExamList
 {
 public:
-	FaceExam *pFaceExam;
-	
-	inline FaceExamList();
-	inline ~FaceExamList();
+    FaceExam* pFaceExam;
+
+    inline FaceExamList();
+    inline ~FaceExamList();
 };
 
 inline FaceExamList::FaceExamList()
 {
-	pFaceExam = new FaceExam[MAX_NUM_FACEEXAMS];
+    pFaceExam = new FaceExam[MAX_NUM_FACEEXAMS];
 }
 
 inline FaceExamList::~FaceExamList()
 {
-	delete[] pFaceExam;
+    delete[] pFaceExam;
 }
 
 #endif // FACEEXAM_DOT_H

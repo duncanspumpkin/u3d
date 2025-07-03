@@ -19,17 +19,20 @@
 #include "IFXAttributeNeighborhood.h"
 #include "IFXTQTBaseTriangle.h"
 
-void IFXAttributeNeighborhood::CheckForDiscontinuities(U32 uIndex, 
-		IFXTQTTriangle *pTriangle, IFXTQTAddress::Direction uReOrientedDirection)
+void IFXAttributeNeighborhood::CheckForDiscontinuities(U32 uIndex, IFXTQTTriangle* pTriangle, IFXTQTAddress::Direction uReOrientedDirection)
 {
-    IFXTQTBaseTriangle *pBaseTriangle = pTriangle->GetBaseTriangle();
-    IFXEdgeContinuityDescriptor *edgeDescr = pBaseTriangle->GetEdgeDescriptor(uReOrientedDirection);
+    IFXTQTBaseTriangle* pBaseTriangle = pTriangle->GetBaseTriangle();
+    IFXEdgeContinuityDescriptor* edgeDescr = pBaseTriangle->GetEdgeDescriptor(uReOrientedDirection);
 
     // Are normals discontinuous?
     if (edgeDescr->bAttribute.bNormal)
-        m_normal.m_ppValues[uIndex]  = NULL;
+    {
+        m_normal.m_ppValues[uIndex] = NULL;
+    }
 
     // Are texcoords discontinuous?:
     if (edgeDescr->bAttribute.bTexCoord)
+    {
         m_texCoord.m_ppValues[uIndex] = NULL;
+    }
 }

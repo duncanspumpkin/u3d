@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef NodeConverter_H
 #define NodeConverter_H
-
 
 //***************************************************************************
 //  Includes
@@ -41,77 +39,71 @@ class IFXNode;
 
 namespace U3D_IDTF
 {
-//***************************************************************************
-//  Defines
-//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-//***************************************************************************
-//  Constants
-//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-//***************************************************************************
-//  Enumerations
-//***************************************************************************
+    class SceneUtilities;
+    class NodeList;
+    class Node;
+    class LightNode;
+    class ViewNode;
+    class ModelNode;
 
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
-//***************************************************************************
-//  Classes, structures and types
-//***************************************************************************
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class NodeConverter : public IConverter
+    {
+    public:
+        NodeConverter(
+            NodeList* pNodeList,
+            SceneUtilities* pSceneUtils);
+        virtual ~NodeConverter();
 
-class SceneUtilities;
-class NodeList;
-class Node;
-class LightNode;
-class ViewNode;
-class ModelNode;
+        /**
+         */
+        virtual IFXRESULT Convert();
 
-/**
-This is the implementation of a class that is used to @todo: usage.
+    private:
+        NodeConverter();
 
-It supports the following interfaces:  @todo: interfaces.
-*/
-class NodeConverter : public IConverter
-{
-public:
-	NodeConverter(
-		NodeList* pNodeList,
-		SceneUtilities* pSceneUtils );
-	virtual ~NodeConverter();
+        IFXRESULT ConvertModel(const ModelNode* pIDTFModel);
+        IFXRESULT ConvertLight(const LightNode* pIDTFLight);
+        IFXRESULT ConvertView(const ViewNode* pIDTFView);
+        IFXRESULT ConvertGroup(const Node* pNode);
+        IFXRESULT ConvertParentList(
+            IFXNode* pIFXNode, const ParentList& rParentList);
 
-	/**
-	*/
-	virtual IFXRESULT Convert();
+        NodeList* m_pNodeList;
+        SceneUtilities* m_pSceneUtils;
+    };
 
-private:
-	NodeConverter();
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-	IFXRESULT ConvertModel( const ModelNode* pIDTFModel );
-	IFXRESULT ConvertLight( const LightNode* pIDTFLight );
-	IFXRESULT ConvertView( const ViewNode* pIDTFView );
-	IFXRESULT ConvertGroup( const Node* pNode );
-	IFXRESULT ConvertParentList( 
-					IFXNode* pIFXNode, const ParentList& rParentList );
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-	NodeList* m_pNodeList;
-	SceneUtilities* m_pSceneUtils;
-};
-
-//***************************************************************************
-//  Inline functions
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global function prototypes
-//***************************************************************************
-
-
-//***************************************************************************
-//  Global data
-//***************************************************************************
-
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 
 }
 

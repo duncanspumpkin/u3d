@@ -24,10 +24,8 @@ This header defines the ... functionality.
 @note
 */
 
-
 #ifndef INode_H
 #define INode_H
-
 
 //***************************************************************************
 //  Includes
@@ -38,72 +36,65 @@ This header defines the ... functionality.
 
 namespace U3D_IDTF
 {
-	//***************************************************************************
-	//  Defines
-	//***************************************************************************
+    //***************************************************************************
+    //  Defines
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Constants
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Constants
-	//***************************************************************************
+    //***************************************************************************
+    //  Enumerations
+    //***************************************************************************
 
+    //***************************************************************************
+    //  Classes, structures and types
+    //***************************************************************************
 
-	//***************************************************************************
-	//  Enumerations
-	//***************************************************************************
+    /**
+    This is the implementation of a class that is used to @todo: usage.
 
+    It supports the following interfaces:  @todo: interfaces.
+    */
+    class INode
+    {
+    public:
+        /**
+        Set node's type
+        */
+        virtual void IFXAPI SetType(const IFXString& rType) = 0;
 
-	//***************************************************************************
-	//  Classes, structures and types
-	//***************************************************************************
+        /**
+        Get node's type
+        */
+        virtual const IFXString& GetType() const = 0;
 
-	/**
-	This is the implementation of a class that is used to @todo: usage.
+        /**
+        Set node's name
+        */
+        virtual void IFXAPI SetName(const IFXString& rName) = 0;
 
-	It supports the following interfaces:  @todo: interfaces.
-	*/
-	class INode
-	{
-	public:
-		/**
-		Set node's type
-		*/
-		virtual void IFXAPI SetType( const IFXString& rType ) = 0;
+        /**
+        Get node's name
+        */
+        virtual const IFXString& GetName() const = 0;
 
-		/**
-		Get node's type
-		*/
-		virtual const IFXString& GetType() const  = 0;
+        virtual void IFXAPI SetParentList(const ParentList& rParentList) = 0;
+        virtual const ParentList& GetParentList() const = 0;
+    };
 
-		/**
-		Set node's name
-		*/
-		virtual void IFXAPI SetName( const IFXString& rName ) = 0;
+    //***************************************************************************
+    //  Inline functions
+    //***************************************************************************
 
-		/**
-		Get node's name
-		*/
-		virtual const IFXString& GetName() const = 0;
+    //***************************************************************************
+    //  Global function prototypes
+    //***************************************************************************
 
-		virtual void IFXAPI SetParentList( const ParentList& rParentList ) = 0;
-		virtual const ParentList& GetParentList() const = 0;
-
-	};
-
-	//***************************************************************************
-	//  Inline functions
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global function prototypes
-	//***************************************************************************
-
-
-	//***************************************************************************
-	//  Global data
-	//***************************************************************************
+    //***************************************************************************
+    //  Global data
+    //***************************************************************************
 }
-
 
 #endif

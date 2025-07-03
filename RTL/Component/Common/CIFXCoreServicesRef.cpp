@@ -40,39 +40,39 @@
 #include "IFXCoreCIDs.h"
 
 IFXRESULT
-IFXAPI_CALLTYPE CIFXCoreServicesRef_Factory( IFXREFIID interfaceId, void** ppInterface )
+IFXAPI_CALLTYPE CIFXCoreServicesRef_Factory(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT	result = IFX_E_UNDEFINED;
+    IFXRESULT result = IFX_E_UNDEFINED;
 
-	if ( ppInterface )
-	{
-		// Create the CIFXCoreServicesRef component.
-		CIFXCoreServicesRef	*pComponent	= new CIFXCoreServicesRef;
+    if (ppInterface)
+    {
+        // Create the CIFXCoreServicesRef component.
+        CIFXCoreServicesRef* pComponent = new CIFXCoreServicesRef;
 
-		if ( pComponent )
-		{
-			// Perform a temporary AddRef for our usage of the component.
-			pComponent->AddRef();
+        if (pComponent)
+        {
+            // Perform a temporary AddRef for our usage of the component.
+            pComponent->AddRef();
 
-			// Attempt to obtain a pointer to the requested interface.
-			result = pComponent->QueryInterface( interfaceId, ppInterface );
+            // Attempt to obtain a pointer to the requested interface.
+            result = pComponent->QueryInterface(interfaceId, ppInterface);
 
-			// Perform a Release since our usage of the component is now
-			// complete.  Note:  If the QI fails, this will cause the
-			// component to be destroyed.
-			pComponent->Release();
-		}
-		else
-		{
-			result = IFX_E_OUT_OF_MEMORY;
-		}
-	}
-	else
-	{
-		result = IFX_E_INVALID_POINTER;
-	}
+            // Perform a Release since our usage of the component is now
+            // complete.  Note:  If the QI fails, this will cause the
+            // component to be destroyed.
+            pComponent->Release();
+        }
+        else
+        {
+            result = IFX_E_OUT_OF_MEMORY;
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
 
 //-----------------------------------------------------------------------------
@@ -84,16 +84,15 @@ IFXAPI_CALLTYPE CIFXCoreServicesRef_Factory( IFXREFIID interfaceId, void** ppInt
 //-----------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::SetReference( IFXCoreServices* pCoreServices )
+CIFXCoreServicesRef::SetReference(IFXCoreServices* pCoreServices)
 {
-	// Want a weak reference so dont AddRef, we also don't need
-	// to check for a previous call to this function because we're
-	// just going to overwrite the reference.
-	m_pCoreServices = pCoreServices;
+    // Want a weak reference so dont AddRef, we also don't need
+    // to check for a previous call to this function because we're
+    // just going to overwrite the reference.
+    m_pCoreServices = pCoreServices;
 
-	IFXRETURN( IFX_OK );
+    IFXRETURN(IFX_OK);
 }
-
 
 //-----------------------------------------------------------------------------
 //	CIFXCoreServicesRef::Initialize
@@ -102,9 +101,9 @@ CIFXCoreServicesRef::SetReference( IFXCoreServices* pCoreServices )
 //-----------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::Initialize( U32 uProfile, F64 units )
+CIFXCoreServicesRef::Initialize(U32 uProfile, F64 units)
 {
-	IFXRETURN( IFX_E_UNDEFINED );
+    IFXRETURN(IFX_E_UNDEFINED);
 }
 
 //---------------------------------------------------------------------------
@@ -121,16 +120,20 @@ CIFXCoreServicesRef::Initialize( U32 uProfile, F64 units )
 //---------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::GetScheduler( IFXREFIID interfaceId, void** ppv )
+CIFXCoreServicesRef::GetScheduler(IFXREFIID interfaceId, void** ppv)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetScheduler( interfaceId, ppv );
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetScheduler(interfaceId, ppv);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -147,16 +150,20 @@ CIFXCoreServicesRef::GetScheduler( IFXREFIID interfaceId, void** ppv )
 //---------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::GetNotificationManager( IFXREFIID interfaceId, void** ppv )
+CIFXCoreServicesRef::GetNotificationManager(IFXREFIID interfaceId, void** ppv)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetNotificationManager( interfaceId, ppv );
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetNotificationManager(interfaceId, ppv);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -174,19 +181,21 @@ CIFXCoreServicesRef::GetNotificationManager( IFXREFIID interfaceId, void** ppv )
 //---------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::GetSceneGraph( IFXREFIID interfaceId, void** ppv )
+CIFXCoreServicesRef::GetSceneGraph(IFXREFIID interfaceId, void** ppv)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetSceneGraph( interfaceId, ppv );
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetSceneGraph(interfaceId, ppv);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
-
-
 
 //---------------------------------------------------------------------------
 //	CIFXCoreServicesRef::GetNameMap
@@ -203,16 +212,20 @@ CIFXCoreServicesRef::GetSceneGraph( IFXREFIID interfaceId, void** ppv )
 //---------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::GetNameMap( IFXREFIID interfaceId, void** ppv )
+CIFXCoreServicesRef::GetNameMap(IFXREFIID interfaceId, void** ppv)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetNameMap( interfaceId, ppv );
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetNameMap(interfaceId, ppv);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -229,16 +242,20 @@ CIFXCoreServicesRef::GetNameMap( IFXREFIID interfaceId, void** ppv )
 //---------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::GetFileReferencePalette( IFXPalette** ppv )
+CIFXCoreServicesRef::GetFileReferencePalette(IFXPalette** ppv)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetFileReferencePalette( ppv );
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetFileReferencePalette(ppv);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -248,14 +265,18 @@ CIFXCoreServicesRef::GetFileReferencePalette( IFXPalette** ppv )
 IFXRESULT
 CIFXCoreServicesRef::SetBaseURL(const IFXString& sURL)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->SetBaseURL(sURL);
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->SetBaseURL(sURL);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -265,14 +286,18 @@ CIFXCoreServicesRef::SetBaseURL(const IFXString& sURL)
 IFXRESULT
 CIFXCoreServicesRef::GetBaseURL(IFXString& sURL)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetBaseURL(sURL);
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetBaseURL(sURL);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -282,14 +307,18 @@ CIFXCoreServicesRef::GetBaseURL(IFXString& sURL)
 IFXRESULT
 CIFXCoreServicesRef::GetProfile(U32& rProfile)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetProfile(rProfile);
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetProfile(rProfile);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -299,14 +328,18 @@ CIFXCoreServicesRef::GetProfile(U32& rProfile)
 IFXRESULT
 CIFXCoreServicesRef::GetUnits(F64& rUnits)
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetUnits(rUnits);
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetUnits(rUnits);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
 
 //---------------------------------------------------------------------------
@@ -324,18 +357,21 @@ CIFXCoreServicesRef::GetUnits(F64& rUnits)
 //---------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::GetWeakInterface( IFXCoreServices** ppCoreServices )
+CIFXCoreServicesRef::GetWeakInterface(IFXCoreServices** ppCoreServices)
 {
-	IFXRESULT	result;
+    IFXRESULT result;
 
-	if ( m_pCoreServices )
-		result = m_pCoreServices->GetWeakInterface( ppCoreServices );
-	else
-		result = IFX_E_NOT_INITIALIZED;
+    if (m_pCoreServices)
+    {
+        result = m_pCoreServices->GetWeakInterface(ppCoreServices);
+    }
+    else
+    {
+        result = IFX_E_NOT_INITIALIZED;
+    }
 
-	IFXRETURN( result );
+    IFXRETURN(result);
 }
-
 
 // IFXUnknown...
 
@@ -351,8 +387,8 @@ CIFXCoreServicesRef::GetWeakInterface( IFXCoreServices** ppCoreServices )
 
 U32 CIFXCoreServicesRef::AddRef()
 {
-	
-	return ++m_uRefCount;
+
+    return ++m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -367,17 +403,17 @@ U32 CIFXCoreServicesRef::AddRef()
 
 U32 CIFXCoreServicesRef::Release()
 {
-	
-	if( 1 == m_uRefCount )
-	{
-		delete this;
 
-		// This second return point is used so that the deleted object's
-		// reference count isn't referenced after the memory is released.
-		return 0;
-	}
+    if (1 == m_uRefCount)
+    {
+        delete this;
 
-	return --m_uRefCount;
+        // This second return point is used so that the deleted object's
+        // reference count isn't referenced after the memory is released.
+        return 0;
+    }
+
+    return --m_uRefCount;
 }
 
 //---------------------------------------------------------------------------
@@ -394,41 +430,41 @@ U32 CIFXCoreServicesRef::Release()
 //---------------------------------------------------------------------------
 
 IFXRESULT
-CIFXCoreServicesRef::QueryInterface( IFXREFIID	interfaceId, void** ppInterface )
+CIFXCoreServicesRef::QueryInterface(IFXREFIID interfaceId, void** ppInterface)
 {
-	IFXRESULT	result	= IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	if ( ppInterface )
-	{
-		if ( interfaceId == IID_IFXCoreServicesRef ||
-			 interfaceId == IID_IFXUnknown )
-		{
-			*ppInterface = static_cast<IFXCoreServicesRef*>(this);
-		}
-		else if ( interfaceId == IID_IFXCoreServices )
-		{
-			*ppInterface = static_cast<IFXCoreServices*>(this);
-		}
-		else if ( IID_IFXMetaDataX == interfaceId ) 
-		{
-			*ppInterface = static_cast<IFXMetaDataX*>(this);
-		} 
-		else
-		{
-			*ppInterface = NULL;
-			result = IFX_E_UNSUPPORTED;
-		}
-		if ( IFXSUCCESS( result ) )
-			AddRef();
-	}
-	else
-	{
-		result = IFX_E_INVALID_POINTER;
-	}
+    if (ppInterface)
+    {
+        if (interfaceId == IID_IFXCoreServicesRef || interfaceId == IID_IFXUnknown)
+        {
+            *ppInterface = static_cast<IFXCoreServicesRef*>(this);
+        }
+        else if (interfaceId == IID_IFXCoreServices)
+        {
+            *ppInterface = static_cast<IFXCoreServices*>(this);
+        }
+        else if (IID_IFXMetaDataX == interfaceId)
+        {
+            *ppInterface = static_cast<IFXMetaDataX*>(this);
+        }
+        else
+        {
+            *ppInterface = NULL;
+            result = IFX_E_UNSUPPORTED;
+        }
+        if (IFXSUCCESS(result))
+        {
+            AddRef();
+        }
+    }
+    else
+    {
+        result = IFX_E_INVALID_POINTER;
+    }
 
-	return result;
+    return result;
 }
-
 
 //---------------------------------------------------------------------------
 //	CIFXCoreServicesRef::CIFXCoreServicesRef
@@ -438,8 +474,8 @@ CIFXCoreServicesRef::QueryInterface( IFXREFIID	interfaceId, void** ppInterface )
 
 CIFXCoreServicesRef::CIFXCoreServicesRef()
 {
-	m_uRefCount			= 0;
-	m_pCoreServices		= NULL;
+    m_uRefCount = 0;
+    m_pCoreServices = NULL;
 }
 
 //---------------------------------------------------------------------------
@@ -448,121 +484,122 @@ CIFXCoreServicesRef::CIFXCoreServicesRef()
 //  Destructor
 //---------------------------------------------------------------------------
 
-CIFXCoreServicesRef::~CIFXCoreServicesRef() {
+CIFXCoreServicesRef::~CIFXCoreServicesRef()
+{
 }
 
 // IFXMetaData
-void CIFXCoreServicesRef::GetCountX(U32& rCount)const
+void CIFXCoreServicesRef::GetCountX(U32& rCount) const
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetCountX(rCount); 
+    ((CIFXCoreServices*)m_pCoreServices)->GetCountX(rCount);
 }
 
 IFXRESULT CIFXCoreServicesRef::GetIndex(const IFXString& rKey, U32& uIndex)
-{ 
-	return ((CIFXCoreServices*)m_pCoreServices)->GetIndex(rKey, uIndex); 
+{
+    return ((CIFXCoreServices*)m_pCoreServices)->GetIndex(rKey, uIndex);
 }
 
 void CIFXCoreServicesRef::GetKeyX(U32 index, IFXString& rOutKey)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetKeyX(index, rOutKey); 
+    ((CIFXCoreServices*)m_pCoreServices)->GetKeyX(index, rOutKey);
 }
 
 void CIFXCoreServicesRef::GetAttributeX(U32 uIndex, IFXMetaDataAttribute& rValueType)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetAttributeX(uIndex, rValueType); 
+    ((CIFXCoreServices*)m_pCoreServices)->GetAttributeX(uIndex, rValueType);
 }
 
 void CIFXCoreServicesRef::SetAttributeX(U32 uIndex, const IFXMetaDataAttribute& rValueType)
 {
-	((CIFXCoreServices*)m_pCoreServices)->SetAttributeX(uIndex, rValueType); 
+    ((CIFXCoreServices*)m_pCoreServices)->SetAttributeX(uIndex, rValueType);
 }
 
 void CIFXCoreServicesRef::GetBinaryX(U32 uIndex, U8* pDataBuffer)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetBinaryX(uIndex, pDataBuffer); 
+    ((CIFXCoreServices*)m_pCoreServices)->GetBinaryX(uIndex, pDataBuffer);
 }
 
 void CIFXCoreServicesRef::GetBinarySizeX(U32 uIndex, U32& rSize)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetBinarySizeX(uIndex, rSize); 
+    ((CIFXCoreServices*)m_pCoreServices)->GetBinarySizeX(uIndex, rSize);
 }
 
 void CIFXCoreServicesRef::GetStringX(U32 uIndex, IFXString& rValue)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetStringX(uIndex, rValue); 
+    ((CIFXCoreServices*)m_pCoreServices)->GetStringX(uIndex, rValue);
 }
 
 void CIFXCoreServicesRef::GetPersistenceX(U32 uIndex, BOOL& rPersistence)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetPersistenceX(uIndex, rPersistence); 
+    ((CIFXCoreServices*)m_pCoreServices)->GetPersistenceX(uIndex, rPersistence);
 }
 
 void CIFXCoreServicesRef::SetBinaryValueX(const IFXString& rKey, U32 length, const U8* data)
 {
-	((CIFXCoreServices*)m_pCoreServices)->SetBinaryValueX(rKey, length, data); 
+    ((CIFXCoreServices*)m_pCoreServices)->SetBinaryValueX(rKey, length, data);
 }
 
 void CIFXCoreServicesRef::SetStringValueX(const IFXString& rKey, const IFXString& rValue)
 {
-	((CIFXCoreServices*)m_pCoreServices)->SetStringValueX(rKey, rValue); 
+    ((CIFXCoreServices*)m_pCoreServices)->SetStringValueX(rKey, rValue);
 }
 
 void CIFXCoreServicesRef::SetPersistenceX(U32 uIndex, BOOL value)
 {
-	((CIFXCoreServices*)m_pCoreServices)->SetPersistenceX(uIndex, value); 
+    ((CIFXCoreServices*)m_pCoreServices)->SetPersistenceX(uIndex, value);
 }
 
 void CIFXCoreServicesRef::DeleteX(U32 uIndex)
 {
-	((CIFXCoreServices*)m_pCoreServices)->DeleteX(uIndex); 
+    ((CIFXCoreServices*)m_pCoreServices)->DeleteX(uIndex);
 }
 
 void CIFXCoreServicesRef::DeleteAll()
 {
-	((CIFXCoreServices*)m_pCoreServices)->DeleteAll(); 
+    ((CIFXCoreServices*)m_pCoreServices)->DeleteAll();
 }
 
 void CIFXCoreServicesRef::AppendX(IFXMetaDataX* pSource)
 {
-	((CIFXCoreServices*)m_pCoreServices)->AppendX(pSource); 
+    ((CIFXCoreServices*)m_pCoreServices)->AppendX(pSource);
 }
 
 void CIFXCoreServicesRef::GetEncodedKeyX(U32 uIndex, IFXString& rOutKey)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetEncodedKeyX(uIndex, rOutKey);
+    ((CIFXCoreServices*)m_pCoreServices)->GetEncodedKeyX(uIndex, rOutKey);
 }
 
 void CIFXCoreServicesRef::GetSubattributesCountX(U32 uIndex, U32& rCountSubattributes)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetSubattributesCountX(uIndex, rCountSubattributes);
+    ((CIFXCoreServices*)m_pCoreServices)->GetSubattributesCountX(uIndex, rCountSubattributes);
 }
 
 IFXRESULT CIFXCoreServicesRef::GetSubattributeIndex(U32 uIndex, const IFXString& rSubattributeName, U32& rSubattributeIndex)
 {
-	return ((CIFXCoreServices*)m_pCoreServices)->GetSubattributeIndex(uIndex, rSubattributeName, rSubattributeIndex);
+    return ((CIFXCoreServices*)m_pCoreServices)->GetSubattributeIndex(uIndex, rSubattributeName, rSubattributeIndex);
 }
 
 void CIFXCoreServicesRef::GetSubattributeNameX(U32 uIndex, U32 uSubattributeIndex, IFXString& rSubattributeName)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetSubattributeNameX(uIndex, uSubattributeIndex, rSubattributeName);
+    ((CIFXCoreServices*)m_pCoreServices)->GetSubattributeNameX(uIndex, uSubattributeIndex, rSubattributeName);
 }
 
 void CIFXCoreServicesRef::GetSubattributeValueX(U32 uIndex, U32 uSubattributeIndex, IFXString*& pSubattributeValue)
 {
-	((CIFXCoreServices*)m_pCoreServices)->GetSubattributeValueX(uIndex, uSubattributeIndex, pSubattributeValue);
+    ((CIFXCoreServices*)m_pCoreServices)->GetSubattributeValueX(uIndex, uSubattributeIndex, pSubattributeValue);
 }
 
 void CIFXCoreServicesRef::SetSubattributeValueX(U32 uIndex, const IFXString& rSubattributeName, const IFXString* pSubattributeValue)
 {
-	((CIFXCoreServices*)m_pCoreServices)->SetSubattributeValueX(uIndex, rSubattributeName, pSubattributeValue);
+    ((CIFXCoreServices*)m_pCoreServices)->SetSubattributeValueX(uIndex, rSubattributeName, pSubattributeValue);
 }
 
 void CIFXCoreServicesRef::DeleteSubattributeX(U32 uIndex, U32 uSubattributeIndex)
 {
-	((CIFXCoreServices*)m_pCoreServices)->DeleteSubattributeX(uIndex, uSubattributeIndex);
+    ((CIFXCoreServices*)m_pCoreServices)->DeleteSubattributeX(uIndex, uSubattributeIndex);
 }
 
 void CIFXCoreServicesRef::DeleteAllSubattributes(U32 uIndex)
 {
-	((CIFXCoreServices*)m_pCoreServices)->DeleteAllSubattributes(uIndex);
+    ((CIFXCoreServices*)m_pCoreServices)->DeleteAllSubattributes(uIndex);
 }

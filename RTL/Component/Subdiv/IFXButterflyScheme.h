@@ -18,60 +18,67 @@
 #ifndef IFXSUBDIVISIONSCHEME_H
 #define IFXSUBDIVISIONSCHEME_H
 
-#include "IFXTQTTriangle.h"
 #include "IFXButterflyMask.h"
-
+#include "IFXTQTTriangle.h"
 
 class IFXBFMaskLayout;
 class IFXAttributeNeighborhood;
 
+#define BUTTERFLY_NUM_MASK_LAYOUTS 5 ///< Number of detectable mask layout variations.
+#define BUTTERFLY_NUM_MASKS 3        ///< Number of mask implementations (optimized for:scalar, 2D, 3D)
 
-#define BUTTERFLY_NUM_MASK_LAYOUTS  5   ///< Number of detectable mask layout variations.
-#define BUTTERFLY_NUM_MASKS         3   ///< Number of mask implementations (optimized for:scalar, 2D, 3D)
-
-
-/// IFXButterflyScheme implements the butterfly subdivision scheme  
+/// IFXButterflyScheme implements the butterfly subdivision scheme
 class IFXButterflyScheme
 {
 public:
-
     IFXButterflyScheme();
     ~IFXButterflyScheme();
 
-    void GatherEdgeNeighborhood (IFXTQTTriangle *pCntrTriangle, 
-		IFXTQTAddress::Direction uDirection, IFXAttributeNeighborhood *pNeighHood);
-    void SubdivideEdge  (IFXAttributeNeighborhood *pNeighHood);
+    void GatherEdgeNeighborhood(IFXTQTTriangle* pCntrTriangle, IFXTQTAddress::Direction uDirection, IFXAttributeNeighborhood* pNeighHood);
+    void SubdivideEdge(IFXAttributeNeighborhood* pNeighHood);
 
-    void SetSubdivMgr       (IFXSubdivisionManager *pSubdivMgr); 
-    void SetSmoothingFactor      (F32 fSurfaceTension);
+    void SetSubdivMgr(IFXSubdivisionManager* pSubdivMgr);
+    void SetSmoothingFactor(F32 fSurfaceTension);
 
 private:
+    enum
+    {
+        BFCorner,
+        BFBoundary,
+        BFNearBoundary,
+        BFNearBoundaryJustAverage,
+        BFContinous
+    };
+    enum
+    {
+        BFMask2D,
+        BFMask3D,
+        BFMask3DNormal
+    };
 
-    enum {BFCorner, BFBoundary, BFNearBoundary, BFNearBoundaryJustAverage, BFContinous};
-    enum {BFMask2D, BFMask3D, BFMask3DNormal};
-
-    IFXBFMaskLayout         *m_pMaskLayout  [BUTTERFLY_NUM_MASK_LAYOUTS];
-    IFXButterflyMask        *m_pMask        [BUTTERFLY_NUM_MASKS];
-    IFXSubdivisionManager   *m_pSubdivMgr;
+    IFXBFMaskLayout* m_pMaskLayout[BUTTERFLY_NUM_MASK_LAYOUTS];
+    IFXButterflyMask* m_pMask[BUTTERFLY_NUM_MASKS];
+    IFXSubdivisionManager* m_pSubdivMgr;
 
     // Implementation methods:
-    void IdentifyLayoutAndApplyMask(F32 **ppMaskValues, IFXButterflyMask *pMask, F32 *pMidpoint, bool bPosition);
+    void IdentifyLayoutAndApplyMask(F32** ppMaskValues, IFXButterflyMask* pMask, F32* pMidpoint, bool bPosition);
 };
 
-
-IFXINLINE void IFXButterflyScheme::SetSubdivMgr (IFXSubdivisionManager *pSubdivMgr)
+IFXINLINE void IFXButterflyScheme::SetSubdivMgr(IFXSubdivisionManager* pSubdivMgr)
 {
     m_pSubdivMgr = pSubdivMgr;
 }
 
-IFXINLINE void IFXButterflyScheme::SetSmoothingFactor (F32 fSurfaceTension)  
-{ 
+IFXINLINE void IFXButterflyScheme::SetSmoothingFactor(F32 fSurfaceTension)
+{
     // Set the smoothing factor in each butterfly mask implementation
-	U32 i;
+    U32 i;
     for (i = 0; i < BUTTERFLY_NUM_MASKS; i++)
     {
         if (m_pMask[i])
+        {
             m_pMask[i]->SetSmoothingValue(fSurfaceTension);
+        }
     }
 }
 

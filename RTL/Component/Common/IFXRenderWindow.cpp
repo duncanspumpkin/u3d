@@ -23,157 +23,154 @@
 //=======================================
 IFXRenderWindow::IFXRenderWindow()
 {
-	InitData();
+    InitData();
 }
 
 IFXRenderWindow::~IFXRenderWindow()
 {
-	// EMPTY
+    // EMPTY
 }
 
 void IFXRenderWindow::InitData()
 {
-	m_eAAMode = IFX_AA_DEFAULT;
-	m_eAAEnabled = IFX_AA_DEFAULT;
-	m_bDirectToScreen = TRUE;
-	m_bTransparent = FALSE;
-	m_rcWindow.Set(0, 0, 320, 240);
-	m_pvWindow = 0;
+    m_eAAMode = IFX_AA_DEFAULT;
+    m_eAAEnabled = IFX_AA_DEFAULT;
+    m_bDirectToScreen = TRUE;
+    m_bTransparent = FALSE;
+    m_rcWindow.Set(0, 0, 320, 240);
+    m_pvWindow = 0;
 }
 
 IFXRESULT IFXRenderWindow::SetAntiAliasingMode(IFXenum eAAMode)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if(m_eAAMode != eAAMode)
-	{
-		switch(eAAMode)
-		{
-		case IFX_AA_DEFAULT:
-		case IFX_AA_2X:
-		case IFX_AA_3X:
-		case IFX_AA_4X:
-		case IFX_AA_4X_SW:
-			m_eAAMode = eAAMode;
-			break;
-		default:
-			rc = IFX_E_INVALID_RANGE;
-		}
-	}
+    if (m_eAAMode != eAAMode)
+    {
+        switch (eAAMode)
+        {
+            case IFX_AA_DEFAULT:
+            case IFX_AA_2X:
+            case IFX_AA_3X:
+            case IFX_AA_4X:
+            case IFX_AA_4X_SW:
+                m_eAAMode = eAAMode;
+                break;
+            default:
+                rc = IFX_E_INVALID_RANGE;
+        }
+    }
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT IFXRenderWindow::SetAntiAliasingEnabled(IFXenum eAAEnabled)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if(m_eAAEnabled != eAAEnabled)
-	{
-		switch(eAAEnabled)
-		{
-		case IFX_AA_DEFAULT:
-		case IFX_AA_ENABLED:
-		case IFX_AA_DISABLED:
-			m_eAAEnabled = eAAEnabled;
-			break;
-		default:
-			rc = IFX_E_INVALID_RANGE;
-		}
-	}
+    if (m_eAAEnabled != eAAEnabled)
+    {
+        switch (eAAEnabled)
+        {
+            case IFX_AA_DEFAULT:
+            case IFX_AA_ENABLED:
+            case IFX_AA_DISABLED:
+                m_eAAEnabled = eAAEnabled;
+                break;
+            default:
+                rc = IFX_E_INVALID_RANGE;
+        }
+    }
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT IFXRenderWindow::SetDTS(BOOL bDTS)
 {
-	m_bDirectToScreen = bDTS;
+    m_bDirectToScreen = bDTS;
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
 IFXRESULT IFXRenderWindow::SetTransparent(BOOL bTransparent)
 {
-	m_bTransparent = bTransparent;
+    m_bTransparent = bTransparent;
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
 IFXRESULT IFXRenderWindow::SetWindowSize(const IFXRect& rcWindow)
 {
-	IFXRESULT rc = IFX_OK;
+    IFXRESULT rc = IFX_OK;
 
-	if(rcWindow.m_Width <= 0 || rcWindow.m_Height <= 0)
-	{
-		rc = IFX_E_INVALID_RANGE;
-	}
-	else
-	{
-		m_rcWindow = rcWindow;
-	}
+    if (rcWindow.m_Width <= 0 || rcWindow.m_Height <= 0)
+    {
+        rc = IFX_E_INVALID_RANGE;
+    }
+    else
+    {
+        m_rcWindow = rcWindow;
+    }
 
-	return rc;
+    return rc;
 }
 
 IFXRESULT IFXRenderWindow::SetWindowPtr(IFXHANDLE pvWindow)
 {
-	if(pvWindow != m_pvWindow)
-	{
-		m_pvWindow = pvWindow;
-	}
+    if (pvWindow != m_pvWindow)
+    {
+        m_pvWindow = pvWindow;
+    }
 
-	return IFX_OK;
+    return IFX_OK;
 }
 
 IFXenum IFXRenderWindow::GetAntiAliasingEnabled() const
 {
-	return m_eAAEnabled;
+    return m_eAAEnabled;
 }
 
 IFXenum IFXRenderWindow::GetAntiAliasingMode() const
 {
-	return m_eAAMode;
+    return m_eAAMode;
 }
 
 BOOL IFXRenderWindow::GetDTS() const
 {
-	return m_bDirectToScreen;
+    return m_bDirectToScreen;
 }
 
 BOOL IFXRenderWindow::GetTransparent() const
 {
-	return m_bTransparent;
+    return m_bTransparent;
 }
 
 const IFXRect& IFXRenderWindow::GetWindowSize() const
 {
-	return m_rcWindow;
+    return m_rcWindow;
 }
 
 void* IFXRenderWindow::GetWindowPtr() const
 {
-	return m_pvWindow;
+    return m_pvWindow;
 }
 
 BOOL IFXAPI IFXRenderWindow::SetDirtyWindow(IFXRenderWindow& window)
 {
-	BOOL bDirty = FALSE;
+    BOOL bDirty = FALSE;
 
-	if(!(GetDTS() == window.GetDTS()) ||
-		!(GetTransparent() == window.GetTransparent()) ||
-		!(GetWindowSize() == window.GetWindowSize()) ||
-		!(GetWindowPtr() == window.GetWindowPtr())) 
-	{ 
-		bDirty = TRUE; 
-		memcpy(this, &window, sizeof(window));
-	}
+    if (!(GetDTS() == window.GetDTS()) || !(GetTransparent() == window.GetTransparent()) || !(GetWindowSize() == window.GetWindowSize()) || !(GetWindowPtr() == window.GetWindowPtr()))
+    {
+        bDirty = TRUE;
+        memcpy(this, &window, sizeof(window));
+    }
 
-	return bDirty;
+    return bDirty;
 }
 
 void IFXRenderWindow::GetWindowSizeVC(IFXRect& rcIn) const
 {
-	rcIn = m_rcWindow;
+    rcIn = m_rcWindow;
 
-	return;
+    return;
 }

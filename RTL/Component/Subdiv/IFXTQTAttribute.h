@@ -18,9 +18,7 @@
 #ifndef IFXTQTATTRIBUTE_DOT_H
 #define IFXTQTATTRIBUTE_DOT_H
 
-
 #include "IFXDataTypes.h"
-
 
 // IFXEdgeContinuityDescriptor is used to indicate whether or not
 // a particular mesh attribute is continuous across an edge or not.
@@ -30,21 +28,21 @@
 // is non-zero, then one or more of the attributes must be discontinuous.
 // The structure is employed by the subdivision neighbor gathering code,
 // to build the inputs to the subdivision computation.
-#define IFXCONTINUOUS   ((U8) 0)
+#define IFXCONTINUOUS ((U8)0)
 typedef struct
 {
     union
     {
         struct
         {
-            U8  bPosition       :1;
-            U8  bNormal         :1;
-            U8  bTexCoord       :1;
-            U8  bMaterial       :1;
-            U8  bUserAttribute1 :1;
-            U8  bUserAttribute2 :1;
-        }bAttribute;
-        U8  AllAttributes      :8;
+            U8 bPosition : 1;
+            U8 bNormal : 1;
+            U8 bTexCoord : 1;
+            U8 bMaterial : 1;
+            U8 bUserAttribute1 : 1;
+            U8 bUserAttribute2 : 1;
+        } bAttribute;
+        U8 AllAttributes : 8;
     };
 } IFXEdgeContinuityDescriptor;
 

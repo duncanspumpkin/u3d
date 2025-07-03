@@ -22,17 +22,16 @@
       This module defines ...
 */
 
-
 //***************************************************************************
 //  Includes
 //***************************************************************************
 
 #include "FileReferenceConverter.h"
 #include "FileReference.h"
+#include "IFXCheckX.h"
 #include "IFXFileReference.h"
 #include "SceneUtilities.h"
 #include "Tokens.h"
-#include "IFXCheckX.h"
 
 using namespace U3D_IDTF;
 
@@ -40,134 +39,139 @@ using namespace U3D_IDTF;
 //  Defines
 //***************************************************************************
 
-
 //***************************************************************************
 //  Constants
 //***************************************************************************
-
 
 //***************************************************************************
 //  Enumerations
 //***************************************************************************
 
-
 //***************************************************************************
 //  Classes, structures and types
 //***************************************************************************
-
 
 //***************************************************************************
 //  Global data
 //***************************************************************************
 
-
 //***************************************************************************
 //  Local data
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local function prototypes
 //***************************************************************************
 
-
 //***************************************************************************
 //  Public methods
 //***************************************************************************
 
-FileReferenceConverter::FileReferenceConverter( 
-						SceneUtilities* pSceneUtils,
-						const FileReference* pFileReference)
-: m_pFileReference( pFileReference ), m_pSceneUtils( pSceneUtils )
+FileReferenceConverter::FileReferenceConverter(
+    SceneUtilities* pSceneUtils,
+    const FileReference* pFileReference)
+    : m_pFileReference(pFileReference)
+    , m_pSceneUtils(pSceneUtils)
 {
-	IFXCHECKX_RESULT( NULL != pSceneUtils, IFX_E_INVALID_POINTER );
-	IFXCHECKX_RESULT( NULL != pFileReference, IFX_E_INVALID_POINTER );
+    IFXCHECKX_RESULT(NULL != pSceneUtils, IFX_E_INVALID_POINTER);
+    IFXCHECKX_RESULT(NULL != pFileReference, IFX_E_INVALID_POINTER);
 }
 
 FileReferenceConverter::~FileReferenceConverter()
 {
-	m_pFileReference = NULL;
-	m_pSceneUtils = NULL;
+    m_pFileReference = NULL;
+    m_pSceneUtils = NULL;
 }
 
 IFXRESULT FileReferenceConverter::Convert()
 {
-	IFXRESULT result = IFX_OK;
+    IFXRESULT result = IFX_OK;
 
-	IFXDECLARELOCAL( IFXFileReference, pIFXFileReference );
+    IFXDECLARELOCAL(IFXFileReference, pIFXFileReference);
 
-	result = m_pSceneUtils->CreateFileReference( 
-							m_pFileReference->GetScopeName(), 
-							&pIFXFileReference );
+    result = m_pSceneUtils->CreateFileReference(
+        m_pFileReference->GetScopeName(),
+        &pIFXFileReference);
 
-	if( IFXSUCCESS( result ) )
-	{
-		IFXObjectFilters objectFilters;
-		const IFXString& rCollisionPolicy = 
-								m_pFileReference->GetCollisionPolicy();
+    if (IFXSUCCESS(result))
+    {
+        IFXObjectFilters objectFilters;
+        const IFXString& rCollisionPolicy = m_pFileReference->GetCollisionPolicy();
 
-		U32 i;
-		for( i = 0; 
-			 i < m_pFileReference->GetFilterCount() && IFXSUCCESS( result ); 
-			 ++i )
-		{
-			const Filter& rFilter = m_pFileReference->GetFilter( i );
-			const IFXString& rType = rFilter.GetType();
-			IFXObjectFilter& rIFXFilter = objectFilters.CreateNewElement();
-			
-			if( rType == IDTF_FILTER_TYPE_TYPE )
-			{
-				rIFXFilter.FilterType = IFXOBJECTFILTER_TYPE;
-				rIFXFilter.ObjectTypeFilterValue = rFilter.GetObjectType();
-			}
-			else if( rType == IDTF_FILTER_TYPE_NAME )
-			{
-				rIFXFilter.FilterType = IFXOBJECTFILTER_NAME;
-				rIFXFilter.ObjectNameFilterValue = rFilter.GetObjectName();
-			}
-			else
-				result = IFX_E_UNSUPPORTED;
-		}
+        U32 i;
+        for (i = 0;
+             i < m_pFileReference->GetFilterCount() && IFXSUCCESS(result);
+             ++i)
+        {
+            const Filter& rFilter = m_pFileReference->GetFilter(i);
+            const IFXString& rType = rFilter.GetType();
+            IFXObjectFilter& rIFXFilter = objectFilters.CreateNewElement();
 
-		if( IFXSUCCESS( result ) )
-		{
+            if (rType == IDTF_FILTER_TYPE_TYPE)
+            {
+                rIFXFilter.FilterType = IFXOBJECTFILTER_TYPE;
+                rIFXFilter.ObjectTypeFilterValue = rFilter.GetObjectType();
+            }
+            else if (rType == IDTF_FILTER_TYPE_NAME)
+            {
+                rIFXFilter.FilterType = IFXOBJECTFILTER_NAME;
+                rIFXFilter.ObjectNameFilterValue = rFilter.GetObjectName();
+            }
+            else
+            {
+                result = IFX_E_UNSUPPORTED;
+            }
+        }
 
-			pIFXFileReference->SetObjectFilters( objectFilters );
+        if (IFXSUCCESS(result))
+        {
 
-			pIFXFileReference->SetFileURLs( m_pFileReference->GetUrlList() );
+            pIFXFileReference->SetObjectFilters(objectFilters);
 
-			pIFXFileReference->SetScopeName( m_pFileReference->GetScopeName() );
+            pIFXFileReference->SetFileURLs(m_pFileReference->GetUrlList());
 
-			pIFXFileReference->SetWorldAlias( m_pFileReference->GetWorldAlias() );
+            pIFXFileReference->SetScopeName(m_pFileReference->GetScopeName());
 
-			if( rCollisionPolicy == "REPLACE" )
-				pIFXFileReference->SetCollisionPolicy( IFXCOLLISIONPOLICY_REPLACE );
-			else if( rCollisionPolicy == "DISCARD" )
-				pIFXFileReference->SetCollisionPolicy( IFXCOLLISIONPOLICY_DISCARD );
-			else if( rCollisionPolicy == "PREPEND_ALL" )
-				pIFXFileReference->SetCollisionPolicy( IFXCOLLISIONPOLICY_PREPENDALL );
-			else if( rCollisionPolicy == "PREPENDCOLLIDED" )
-				pIFXFileReference->SetCollisionPolicy( IFXCOLLISIONPOLICY_PREPENDCOLLIDED );
-			else if( rCollisionPolicy == "POSTMANGLE" )
-				pIFXFileReference->SetCollisionPolicy( IFXCOLLISIONPOLICY_POSTMANGLE );
-			else
-				result = IFX_E_UNSUPPORTED;
-		}
-	}
+            pIFXFileReference->SetWorldAlias(m_pFileReference->GetWorldAlias());
 
-	IFXASSERT( IFXSUCCESS( result ) ); 
-	return result;
+            if (rCollisionPolicy == "REPLACE")
+            {
+                pIFXFileReference->SetCollisionPolicy(IFXCOLLISIONPOLICY_REPLACE);
+            }
+            else if (rCollisionPolicy == "DISCARD")
+            {
+                pIFXFileReference->SetCollisionPolicy(IFXCOLLISIONPOLICY_DISCARD);
+            }
+            else if (rCollisionPolicy == "PREPEND_ALL")
+            {
+                pIFXFileReference->SetCollisionPolicy(IFXCOLLISIONPOLICY_PREPENDALL);
+            }
+            else if (rCollisionPolicy == "PREPENDCOLLIDED")
+            {
+                pIFXFileReference->SetCollisionPolicy(IFXCOLLISIONPOLICY_PREPENDCOLLIDED);
+            }
+            else if (rCollisionPolicy == "POSTMANGLE")
+            {
+                pIFXFileReference->SetCollisionPolicy(IFXCOLLISIONPOLICY_POSTMANGLE);
+            }
+            else
+            {
+                result = IFX_E_UNSUPPORTED;
+            }
+        }
+    }
+
+    IFXASSERT(IFXSUCCESS(result));
+    return result;
 }
 
 //***************************************************************************
 //  Private methods
 //***************************************************************************
 
-
 //***************************************************************************
 //  Global functions
 //***************************************************************************
-
 
 //***************************************************************************
 //  Local functions
